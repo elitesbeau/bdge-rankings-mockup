@@ -501,7 +501,7 @@ body.drawer-open .tb { padding-right: 712px; transition: padding-right 280ms cub
 /* Compare button — primary CTA in the fbar. Always solid cotton-blue so the
    feature is discoverable. Idle states use a breathing pulse + instructional
    text ("Pick 2 to Compare"). Ready (≥2) swaps to a shimmer sweep + ▶ glyph
-   + pink notification dot. Per Nick: must stand out so users actually use it. */
+   + pink notification dot. Must stand out so users actually use it. */
 .fbar-pill.action.compare {
   position: relative;
   overflow: hidden;
@@ -4148,7 +4148,7 @@ const TEAM_FULL = {SF:"49ers",ATL:"Falcons",CIN:"Bengals",MIN:"Vikings",MIA:"Dol
 
 const roundsEl = document.getElementById('rounds');
 
-// ─── Tiebreaker tag library — 6 tags total (Nick + Beau feedback) ───
+// ─── Tiebreaker tag library — 6 tags total ───
 // Covers the action spectrum: TAKE / NEW / RISING / RISKY / HIDDEN / AVOID.
 // Steal/High-Floor/Volume-King dropped — Sleeper + Boom-Bust convey the same message.
 function tiebreakerTags(p) {
@@ -4365,7 +4365,7 @@ function effectiveRank(p) {
   return v;
 }
 function passesFilters(p) {
-  // Drafted/team players DISAPPEAR from the board (per BDGE feedback 2026-05-11).
+  // Drafted/team players DISAPPEAR from the board.
   if (isDrafted(p.rk) || isOnTeam(p.rk)) return false;
   if (activePos !== 'all' && p.pos !== activePos) return false;
   if (activeTagFilters && activeTagFilters.size > 0) {
@@ -6102,8 +6102,7 @@ function renderSelectionBar() {
     bar.setAttribute('aria-hidden', n > 0 ? 'false' : 'true');
   }
   // Sync the always-visible Compare button in the fbar. Instructional text
-  // tells users what to do at each state — discoverability over minimalism
-  // (per Nick's feedback 2026-05-14).
+  // tells users what to do at each state — discoverability over minimalism.
   const fbarCmp = document.getElementById('fbarCompareBtn');
   if (fbarCmp) {
     const ready = n >= 2;
