@@ -1,0 +1,720 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Watchlist Toggle — 5 Mockups v2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#f9f5eb;
+  --bg-soft:#f3eedf;
+  --ink:#082430;
+  --ink-soft:#08243099;
+  --ink-dim:#08243066;
+  --ink-faint:#08243022;
+  --accent:#fb637a;       /* cotton pink */
+  --accent-2:#259fd6;     /* cotton blue */
+  --line:#082430;
+  --line-soft:#08243033;
+  --card:#fdfbf3;
+  --shadow: 6px 6px 0 #082430;
+}
+* { box-sizing: border-box; }
+html, body { margin:0; padding:0; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: "Inter", sans-serif;
+  background-image: repeating-linear-gradient(0deg, transparent, transparent 39px, color-mix(in srgb, var(--ink) 4%, transparent) 39px, color-mix(in srgb, var(--ink) 4%, transparent) 40px);
+  padding: 40px 32px 80px;
+}
+
+h1 {
+  font-family: "Oswald", sans-serif;
+  font-weight: 700; font-size: 38px;
+  letter-spacing: 0.02em; text-transform: uppercase;
+  margin: 0 0 4px;
+}
+.subtitle {
+  font-family: "Inter", sans-serif;
+  font-size: 13px; color: var(--ink-soft);
+  margin: 0 0 36px;
+  max-width: 760px;
+}
+.swatch { display: inline-flex; align-items: center; gap: 4px; font-family: "JetBrains Mono", monospace; font-size: 11px; margin-right: 14px; }
+.swatch span { width: 12px; height: 12px; border: 1px solid var(--line); display:inline-block; }
+
+.variant {
+  background: var(--card);
+  border: 1.5px solid var(--line);
+  box-shadow: var(--shadow);
+  margin-bottom: 36px;
+  padding: 22px 26px 24px;
+  position: relative;
+}
+.v-head {
+  display: flex; align-items: baseline; gap: 14px;
+  margin-bottom: 18px;
+  padding-bottom: 14px;
+  border-bottom: 1px dashed var(--line-soft);
+}
+.v-num {
+  font-family: "Oswald", sans-serif;
+  font-size: 11px; font-weight: 700;
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  padding: 3px 10px;
+  letter-spacing: 0.1em;
+}
+.v-name {
+  font-family: "Oswald", sans-serif;
+  font-size: 24px; font-weight: 600;
+  letter-spacing: 0.02em; text-transform: uppercase;
+}
+.v-desc {
+  font-size: 12px; color: var(--ink-soft);
+  margin-left: auto;
+  max-width: 420px; text-align: right;
+  line-height: 1.5;
+}
+
+.states {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 22px;
+}
+.state {
+  background: var(--bg);
+  border: 1px solid var(--line-soft);
+  padding: 22px 12px 12px;
+  display: flex; flex-direction: column; align-items: center; gap: 14px;
+  min-height: 90px;
+  justify-content: space-between;
+}
+.state-label {
+  font-family: "Oswald", sans-serif;
+  font-size: 10px; font-weight: 600;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--ink-dim);
+}
+
+/* Faux row */
+.row-ctx {
+  display: flex; align-items: center; gap: 14px;
+  background: var(--card);
+  border: 1px solid var(--line-soft);
+  padding: 8px 16px;
+  min-height: 56px;
+  overflow: hidden;
+}
+.row-ctx .rk {
+  font-family: "Oswald", sans-serif;
+  font-weight: 700; font-size: 18px;
+  width: 36px; text-align: center;
+  color: var(--ink);
+  background: var(--bg-soft);
+  border: 1px solid var(--line-soft);
+  padding: 6px 0;
+}
+.row-ctx .pfp {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #cbd5e1, #94a3b8);
+  border: 2px solid var(--line);
+  flex-shrink: 0;
+}
+.row-ctx .who { display: flex; flex-direction: column; gap: 2px; min-width: 0; flex: 1; }
+.row-ctx .who-main {
+  display: flex; align-items: center; gap: 8px;
+  font-family: "Oswald", sans-serif;
+  font-size: 18px; font-weight: 600;
+}
+.row-ctx .pos-pill {
+  font-family: "Inter", sans-serif;
+  font-size: 10px; font-weight: 700;
+  padding: 2px 6px;
+  background: color-mix(in srgb, var(--accent-2) 18%, transparent);
+  color: var(--accent-2);
+  border-radius: 3px;
+  letter-spacing: 0.04em;
+}
+.row-ctx .who-sub {
+  font-family: "Inter", sans-serif;
+  font-size: 11px; color: var(--ink-dim);
+}
+
+.tech-note {
+  margin-top: 12px;
+  font-size: 11px; color: var(--ink-dim);
+  font-family: "JetBrains Mono", monospace;
+  border-left: 2px solid var(--accent-2);
+  padding-left: 10px;
+  line-height: 1.6;
+}
+
+/* ════════════════════════════════════════════════════
+   V1 — PINK SPARK
+   Twitter-heart energy. ★ presses with spring scale,
+   bursts 8 cotton-pink sparkles outward on activation.
+   ════════════════════════════════════════════════════ */
+.v1 {
+  position: relative;
+  width: 30px; height: 30px;
+  background: transparent; border: 0; padding: 0;
+  cursor: pointer;
+  display: inline-grid; place-items: center;
+  font-size: 18px; line-height: 1;
+  color: var(--ink-faint);
+  transition: color 180ms ease, transform 180ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  font-family: inherit;
+}
+.v1 svg { width: 20px; height: 20px; transition: transform 280ms cubic-bezier(0.34, 1.56, 0.64, 1); overflow: visible; }
+.v1 .v1-shape { fill: none; stroke: currentColor; stroke-width: 2; }
+.v1:hover, .v1.demo-hover { color: color-mix(in srgb, var(--accent) 65%, var(--ink-dim)); }
+.v1.on { color: var(--accent); }
+.v1.on .v1-shape { fill: var(--accent); stroke: var(--accent); filter: drop-shadow(0 0 6px color-mix(in srgb, var(--accent) 60%, transparent)); }
+.v1.on:hover, .v1.on.demo-hover { color: #e8485f; }
+.v1.on .v1-shape, .v1.demo-hover .v1-shape { animation: v1pop 380ms cubic-bezier(0.34, 1.56, 0.64, 1); }
+@keyframes v1pop {
+  0%   { transform: scale(0.4); }
+  55%  { transform: scale(1.25); }
+  100% { transform: scale(1); }
+}
+/* Sparkle particles */
+.v1-spark {
+  position: absolute; left: 50%; top: 50%;
+  width: 3px; height: 3px;
+  background: var(--accent);
+  border-radius: 50%;
+  opacity: 0;
+  pointer-events: none;
+}
+.v1.firing .v1-spark { animation: v1spark 620ms cubic-bezier(0, 0.9, 0.57, 1) forwards; }
+.v1.firing .v1-spark:nth-child(1) { --dx:  14px; --dy:  -14px; }
+.v1.firing .v1-spark:nth-child(2) { --dx:  20px; --dy:    0px; }
+.v1.firing .v1-spark:nth-child(3) { --dx:  14px; --dy:   14px; }
+.v1.firing .v1-spark:nth-child(4) { --dx:   0px; --dy:   20px; }
+.v1.firing .v1-spark:nth-child(5) { --dx: -14px; --dy:   14px; }
+.v1.firing .v1-spark:nth-child(6) { --dx: -20px; --dy:    0px; }
+.v1.firing .v1-spark:nth-child(7) { --dx: -14px; --dy:  -14px; }
+.v1.firing .v1-spark:nth-child(8) { --dx:   0px; --dy:  -20px; }
+@keyframes v1spark {
+  0%   { opacity: 1; transform: translate(-50%, -50%) translate(0, 0) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, -50%) translate(var(--dx), var(--dy)) scale(0.4); }
+}
+
+/* ════════════════════════════════════════════════════
+   V2 — HOLO FOIL
+   Trading-card foil aesthetic. Off = dashed sticker slot.
+   On = cotton pink ↔ blue gradient with continuous shimmer.
+   ════════════════════════════════════════════════════ */
+.v2 {
+  position: relative;
+  width: 30px; height: 28px;
+  border: 1.5px dashed var(--line-soft);
+  background: transparent;
+  color: var(--ink-dim);
+  cursor: pointer;
+  display: inline-grid; place-items: center;
+  font-size: 14px;
+  border-radius: 4px;
+  overflow: hidden;
+  padding: 0;
+  transition: color 160ms ease, border-color 160ms ease;
+}
+.v2:hover, .v2.demo-hover {
+  color: var(--accent);
+  border-color: var(--accent);
+  border-style: solid;
+}
+.v2.on {
+  color: #fff;
+  border: 1.5px solid #6b1d2a;
+  background:
+    linear-gradient(120deg,
+      var(--accent) 0%,
+      #ff9aa9 25%,
+      var(--accent-2) 55%,
+      #5fc4e8 80%,
+      var(--accent) 100%);
+  background-size: 260% 100%;
+  text-shadow: 0 1px 0 rgba(8, 36, 48, 0.4);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.4),
+    inset 0 -1px 0 rgba(8, 36, 48, 0.2),
+    0 1px 0 rgba(8, 36, 48, 0.15);
+  animation: v2foil 4s linear infinite;
+}
+.v2.on::after {
+  content: "";
+  position: absolute; top: 0; left: -150%;
+  width: 50%; height: 100%;
+  background: linear-gradient(90deg,
+    transparent,
+    rgba(255,255,255,0.65),
+    transparent);
+  animation: v2shimmer 2.6s ease-in-out infinite;
+  animation-delay: 0.4s;
+  pointer-events: none;
+}
+@keyframes v2foil {
+  0%, 100% { background-position: 0% 50%; }
+  50%      { background-position: 100% 50%; }
+}
+@keyframes v2shimmer {
+  0%, 30%  { left: -150%; }
+  70%,100% { left: 150%; }
+}
+
+/* ════════════════════════════════════════════════════
+   V3 — INK BLOOM
+   Editorial. Hollow navy star fills with cotton-pink ink
+   from bottom up via SVG clip — overshoots, settles.
+   ════════════════════════════════════════════════════ */
+.v3 {
+  width: 32px; height: 32px;
+  background: transparent; border: 0; padding: 0;
+  cursor: pointer;
+  display: inline-grid; place-items: center;
+  transition: transform 160ms ease;
+}
+.v3:active { transform: scale(0.9); }
+.v3 svg { width: 24px; height: 24px; overflow: visible; }
+.v3 .v3-outline { fill: none; stroke: var(--ink); stroke-width: 2; }
+.v3 .v3-fill { fill: var(--accent); transform-origin: 12px 22px; transform: scaleY(0); }
+.v3.on .v3-fill { animation: v3bloom 620ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+.v3:hover .v3-outline, .v3.demo-hover .v3-outline { stroke: var(--accent); }
+.v3.on .v3-outline { stroke: #6b1d2a; }
+@keyframes v3bloom {
+  0%   { transform: scaleY(0); }
+  72%  { transform: scaleY(1.08); }
+  100% { transform: scaleY(1); }
+}
+/* idle on-state: keep filled without re-running animation */
+.v3.on.idle .v3-fill { transform: scaleY(1); animation: none; }
+
+/* ════════════════════════════════════════════════════
+   V4 — DOG-EAR BOOKMARK
+   Editorial / sports-magazine. Off = subtle corner fold.
+   On = full magazine page-corner turned, cotton-pink under-
+   side showing, "PICKED" Oswald micro-stamp at a tilt.
+   ════════════════════════════════════════════════════ */
+.v4 {
+  position: relative;
+  width: 36px; height: 30px;
+  background: transparent; border: 0; padding: 0;
+  cursor: pointer;
+  overflow: visible;
+}
+.v4 .v4-page {
+  position: absolute; inset: 0;
+  background: var(--card);
+  border: 1.5px solid var(--line-soft);
+  transition: border-color 200ms ease;
+}
+.v4:hover .v4-page, .v4.demo-hover .v4-page { border-color: var(--ink-soft); }
+.v4 .v4-fold {
+  position: absolute;
+  top: -1px; right: -1px;
+  width: 10px; height: 10px;
+  background: linear-gradient(225deg, var(--bg-soft) 50%, var(--line-soft) 50%);
+  transition: width 280ms cubic-bezier(0.34, 1.56, 0.64, 1),
+              height 280ms cubic-bezier(0.34, 1.56, 0.64, 1),
+              background 200ms ease;
+}
+.v4:hover .v4-fold, .v4.demo-hover .v4-fold {
+  width: 14px; height: 14px;
+  background: linear-gradient(225deg, color-mix(in srgb, var(--accent) 18%, var(--bg-soft)) 50%, var(--accent) 50%);
+}
+.v4.on .v4-page { border-color: var(--accent); background: var(--card); }
+.v4.on .v4-fold {
+  width: 100%; height: 100%;
+  background: linear-gradient(225deg, var(--accent) 50%, transparent 50%);
+}
+.v4 .v4-stamp {
+  position: absolute; inset: 0;
+  display: grid; place-items: center;
+  font-family: "Oswald", sans-serif;
+  font-weight: 700; font-size: 9px;
+  letter-spacing: 0.14em;
+  color: var(--card);
+  opacity: 0;
+  transform: rotate(-12deg) scale(0.6);
+  transition: opacity 220ms ease 120ms, transform 280ms cubic-bezier(0.34, 1.56, 0.64, 1) 120ms;
+  pointer-events: none;
+  text-shadow: 0 1px 0 rgba(8, 36, 48, 0.25);
+}
+.v4.on .v4-stamp { opacity: 1; transform: rotate(-12deg) scale(1); }
+
+/* ════════════════════════════════════════════════════
+   V5 — PUNCH-OUT BADGE
+   Sports-broadcast lower-third feel. Off = dim circle.
+   On click = cotton-pink ring strokes around (SVG dash),
+   then a ★ punches forward (scale spring), with a sub-
+   tle ripple radiating from the center.
+   ════════════════════════════════════════════════════ */
+.v5 {
+  position: relative;
+  width: 30px; height: 30px;
+  background: transparent; border: 0; padding: 0;
+  cursor: pointer;
+  display: inline-grid; place-items: center;
+  border-radius: 50%;
+}
+.v5 .v5-ring {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  overflow: visible;
+}
+.v5 .v5-ring circle {
+  fill: none;
+  stroke: var(--line-soft);
+  stroke-width: 2;
+  cx: 15; cy: 15; r: 13;
+  transition: stroke 200ms ease;
+}
+.v5:hover .v5-ring circle, .v5.demo-hover .v5-ring circle { stroke: var(--accent); }
+.v5 .v5-ring .v5-trace {
+  stroke: var(--accent);
+  stroke-dasharray: 82;
+  stroke-dashoffset: 82;
+  transform: rotate(-90deg);
+  transform-origin: 15px 15px;
+  transition: none;
+}
+.v5.on .v5-ring .v5-trace {
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 420ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+.v5 .v5-star {
+  font-size: 14px; line-height: 1;
+  color: var(--ink-dim);
+  transform: scale(0.72);
+  transition: color 200ms ease, transform 320ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.v5:hover .v5-star, .v5.demo-hover .v5-star { color: var(--accent); transform: scale(0.85); }
+.v5.on .v5-star { color: var(--accent); transform: scale(1.1); animation: v5punch 320ms cubic-bezier(0.34, 1.56, 0.64, 1) 280ms; }
+@keyframes v5punch {
+  0%   { transform: scale(0.5); opacity: 0.4; }
+  60%  { transform: scale(1.3); opacity: 1; }
+  100% { transform: scale(1.1); opacity: 1; }
+}
+.v5 .v5-ripple {
+  position: absolute; left: 50%; top: 50%;
+  width: 12px; height: 12px;
+  margin: -6px 0 0 -6px;
+  border: 2px solid var(--accent);
+  border-radius: 50%;
+  opacity: 0;
+  pointer-events: none;
+}
+.v5.firing .v5-ripple { animation: v5ripple 540ms cubic-bezier(0, 0.9, 0.57, 1) forwards; }
+@keyframes v5ripple {
+  0%   { opacity: 0.8; transform: scale(0.4); }
+  100% { opacity: 0;   transform: scale(3.2); }
+}
+
+.foot {
+  margin-top: 32px;
+  font-size: 12px; color: var(--ink-dim);
+  font-family: "Inter", sans-serif;
+  text-align: center;
+  padding: 18px;
+  border: 1.5px dashed var(--line-soft);
+  background: var(--bg-soft);
+}
+.foot b { color: var(--ink); font-weight: 700; }
+</style>
+</head>
+<body>
+
+<h1>★ Watchlist Toggle — v2</h1>
+<p class="subtitle">
+Brand-aligned this time. No gold. Palette only:
+<span class="swatch"><span style="background:#fb637a"></span>cotton pink</span>
+<span class="swatch"><span style="background:#259fd6"></span>cotton blue</span>
+<span class="swatch"><span style="background:#082430"></span>navy</span>
+<span class="swatch"><span style="background:#f9f5eb"></span>cream</span>
+<br><br>
+Five concepts. Each pulls a different technique from the references (spring overshoot, sparkle burst, shimmer sweep, SVG clip-bloom, stroke trace). <b>Click each one</b> to see the actual transition.
+</p>
+
+<!-- ──────────── V1 — PINK SPARK ──────────── -->
+<section class="variant">
+  <div class="v-head">
+    <span class="v-num">V1</span>
+    <span class="v-name">Pink Spark</span>
+    <span class="v-desc">Twitter-heart energy in BDGE pink. Spring scale 0.4 → 1.25 → 1, 8 sparkle particles burst outward on activate. Drop-shadow glow on the filled state.</span>
+  </div>
+  <div class="states">
+    <div class="state">
+      <button class="v1"><svg viewBox="0 0 24 24"><path class="v1-shape" d="M12 2.5l2.95 6.5 7.05.6-5.3 4.7 1.6 6.95L12 17.5l-6.3 3.75 1.6-6.95-5.3-4.7 7.05-.6z"/></svg></button>
+      <span class="state-label">Off</span>
+    </div>
+    <div class="state">
+      <button class="v1 demo-hover"><svg viewBox="0 0 24 24"><path class="v1-shape" d="M12 2.5l2.95 6.5 7.05.6-5.3 4.7 1.6 6.95L12 17.5l-6.3 3.75 1.6-6.95-5.3-4.7 7.05-.6z"/></svg></button>
+      <span class="state-label">Off · Hover</span>
+    </div>
+    <div class="state">
+      <button class="v1 on"><svg viewBox="0 0 24 24"><path class="v1-shape" d="M12 2.5l2.95 6.5 7.05.6-5.3 4.7 1.6 6.95L12 17.5l-6.3 3.75 1.6-6.95-5.3-4.7 7.05-.6z"/></svg></button>
+      <span class="state-label">On</span>
+    </div>
+    <div class="state">
+      <button class="v1 on demo-hover"><svg viewBox="0 0 24 24"><path class="v1-shape" d="M12 2.5l2.95 6.5 7.05.6-5.3 4.7 1.6 6.95L12 17.5l-6.3 3.75 1.6-6.95-5.3-4.7 7.05-.6z"/></svg></button>
+      <span class="state-label">On · Hover</span>
+    </div>
+  </div>
+  <div class="row-ctx">
+    <div class="rk">12</div>
+    <div class="pfp"></div>
+    <div class="who">
+      <div class="who-main">
+        Bijan Robinson
+        <span class="pos-pill">RB1</span>
+        <button class="v1 on idle"><svg viewBox="0 0 24 24"><path class="v1-shape" d="M12 2.5l2.95 6.5 7.05.6-5.3 4.7 1.6 6.95L12 17.5l-6.3 3.75 1.6-6.95-5.3-4.7 7.05-.6z"/></svg></button>
+      </div>
+      <div class="who-sub">RB · Age 23 · #7</div>
+    </div>
+  </div>
+  <div class="tech-note">spring scale via cubic-bezier(0.34, 1.56, 0.64, 1) · 8 radial sparkles at 620ms · drop-shadow(0 0 6px) on filled</div>
+</section>
+
+<!-- ──────────── V2 — HOLO FOIL ──────────── -->
+<section class="variant">
+  <div class="v-head">
+    <span class="v-num">V2</span>
+    <span class="v-name">Holo Foil</span>
+    <span class="v-desc">Trading-card foil. Off = dashed sticker slot. On = cotton-pink → cotton-blue iridescent gradient (4s loop) with a separate white-light shimmer sweep (2.6s). Plays directly to the dynasty-rookie card vibe.</span>
+  </div>
+  <div class="states">
+    <div class="state"><button class="v2">★</button><span class="state-label">Off</span></div>
+    <div class="state"><button class="v2 demo-hover">★</button><span class="state-label">Off · Hover</span></div>
+    <div class="state"><button class="v2 on">★</button><span class="state-label">On</span></div>
+    <div class="state"><button class="v2 on demo-hover">★</button><span class="state-label">On · Hover</span></div>
+  </div>
+  <div class="row-ctx">
+    <div class="rk">12</div>
+    <div class="pfp"></div>
+    <div class="who">
+      <div class="who-main">
+        Bijan Robinson
+        <span class="pos-pill">RB1</span>
+        <button class="v2 on">★</button>
+      </div>
+      <div class="who-sub">RB · Age 23 · #7</div>
+    </div>
+  </div>
+  <div class="tech-note">background-size: 260% + animated background-position (foil) · ::after diagonal-sweep gradient (shimmer)</div>
+</section>
+
+<!-- ──────────── V3 — INK BLOOM ──────────── -->
+<section class="variant">
+  <div class="v-head">
+    <span class="v-num">V3</span>
+    <span class="v-name">Ink Bloom</span>
+    <span class="v-desc">Hollow navy star fills with cotton-pink ink from bottom up. Spring overshoot (scaleY 0 → 1.08 → 1). Outline turns from navy to a deep pink. Most editorial — feels like a printed page.</span>
+  </div>
+  <div class="states">
+    <div class="state">
+      <button class="v3"><svg viewBox="0 0 24 24"><defs><clipPath id="v3clip"><path d="M12 2l2.95 6.5 7.05.6-5.3 4.7 1.6 6.95L12 17l-6.3 3.75 1.6-6.95L2 9.1l7.05-.6z"/></clipPath></defs><rect class="v3-fill" x="0" y="0" width="24" height="24" clip-path="url(#v3clip)"/><path class="v3-outline" d="M12 2l2.95 6.5 7.05.6-5.3 4.7 1.6 6.95L12 17l-6.3 3.75 1.6-6.95L2 9.1l7.05-.6z"/></svg></button>
+      <span class="state-label">Off</span>
+    </div>
+    <div class="state">
+      <button class="v3 demo-hover"><svg viewBox="0 0 24 24"><defs><clipPath id="v3clipB"><path d="M12 2l2.95 6.5 7.05.6-5.3 4.7 1.6 6.95L12 17l-6.3 3.75 1.6-6.95L2 9.1l7.05-.6z"/></clipPath></defs><rect class="v3-fill" x="0" y="0" width="24" height="24" clip-path="url(#v3clipB)"/><path class="v3-outline" d="M12 2l2.95 6.5 7.05.6-5.3 4.7 1.6 6.95L12 17l-6.3 3.75 1.6-6.95L2 9.1l7.05-.6z"/></svg></button>
+      <span class="state-label">Off · Hover</span>
+    </div>
+    <div class="state">
+      <button class="v3 on idle"><svg viewBox="0 0 24 24"><defs><clipPath id="v3clipC"><path d="M12 2l2.95 6.5 7.05.6-5.3 4.7 1.6 6.95L12 17l-6.3 3.75 1.6-6.95L2 9.1l7.05-.6z"/></clipPath></defs><rect class="v3-fill" x="0" y="0" width="24" height="24" clip-path="url(#v3clipC)"/><path class="v3-outline" d="M12 2l2.95 6.5 7.05.6-5.3 4.7 1.6 6.95L12 17l-6.3 3.75 1.6-6.95L2 9.1l7.05-.6z"/></svg></button>
+      <span class="state-label">On</span>
+    </div>
+    <div class="state">
+      <button class="v3 on idle demo-hover"><svg viewBox="0 0 24 24"><defs><clipPath id="v3clipD"><path d="M12 2l2.95 6.5 7.05.6-5.3 4.7 1.6 6.95L12 17l-6.3 3.75 1.6-6.95L2 9.1l7.05-.6z"/></clipPath></defs><rect class="v3-fill" x="0" y="0" width="24" height="24" clip-path="url(#v3clipD)"/><path class="v3-outline" d="M12 2l2.95 6.5 7.05.6-5.3 4.7 1.6 6.95L12 17l-6.3 3.75 1.6-6.95L2 9.1l7.05-.6z"/></svg></button>
+      <span class="state-label">On · Hover</span>
+    </div>
+  </div>
+  <div class="row-ctx">
+    <div class="rk">12</div>
+    <div class="pfp"></div>
+    <div class="who">
+      <div class="who-main">
+        Bijan Robinson
+        <span class="pos-pill">RB1</span>
+        <button class="v3 on idle"><svg viewBox="0 0 24 24"><defs><clipPath id="v3clipE"><path d="M12 2l2.95 6.5 7.05.6-5.3 4.7 1.6 6.95L12 17l-6.3 3.75 1.6-6.95L2 9.1l7.05-.6z"/></clipPath></defs><rect class="v3-fill" x="0" y="0" width="24" height="24" clip-path="url(#v3clipE)"/><path class="v3-outline" d="M12 2l2.95 6.5 7.05.6-5.3 4.7 1.6 6.95L12 17l-6.3 3.75 1.6-6.95L2 9.1l7.05-.6z"/></svg></button>
+      </div>
+      <div class="who-sub">RB · Age 23 · #7</div>
+    </div>
+  </div>
+  <div class="tech-note">SVG clipPath + transform-origin bottom · scaleY spring 0 → 1.08 → 1 in 620ms</div>
+</section>
+
+<!-- ──────────── V4 — DOG-EAR BOOKMARK ──────────── -->
+<section class="variant">
+  <div class="v-head">
+    <span class="v-num">V4</span>
+    <span class="v-name">Dog-Ear Bookmark</span>
+    <span class="v-desc">Magazine page-corner fold. Off = subtle 10×10 corner. Hover = 14×14 cotton-pink hint. On = full corner turned, "PICKED" Oswald micro-stamp at -12° appears. Most BDGE-native — pure editorial sports-mag DNA.</span>
+  </div>
+  <div class="states">
+    <div class="state">
+      <button class="v4"><div class="v4-page"></div><div class="v4-fold"></div><div class="v4-stamp">PICKED</div></button>
+      <span class="state-label">Off</span>
+    </div>
+    <div class="state">
+      <button class="v4 demo-hover"><div class="v4-page"></div><div class="v4-fold"></div><div class="v4-stamp">PICKED</div></button>
+      <span class="state-label">Off · Hover</span>
+    </div>
+    <div class="state">
+      <button class="v4 on"><div class="v4-page"></div><div class="v4-fold"></div><div class="v4-stamp">PICKED</div></button>
+      <span class="state-label">On</span>
+    </div>
+    <div class="state">
+      <button class="v4 on demo-hover"><div class="v4-page"></div><div class="v4-fold"></div><div class="v4-stamp">PICKED</div></button>
+      <span class="state-label">On · Hover</span>
+    </div>
+  </div>
+  <div class="row-ctx">
+    <div class="rk">12</div>
+    <div class="pfp"></div>
+    <div class="who">
+      <div class="who-main">
+        Bijan Robinson
+        <span class="pos-pill">RB1</span>
+        <button class="v4 on"><div class="v4-page"></div><div class="v4-fold"></div><div class="v4-stamp">PICKED</div></button>
+      </div>
+      <div class="who-sub">RB · Age 23 · #7</div>
+    </div>
+  </div>
+  <div class="tech-note">animated linear-gradient 225° on the fold · transform: rotate(-12deg) scale stamp · spring on width/height</div>
+</section>
+
+<!-- ──────────── V5 — PUNCH-OUT BADGE ──────────── -->
+<section class="variant">
+  <div class="v-head">
+    <span class="v-num">V5</span>
+    <span class="v-name">Punch-Out Badge</span>
+    <span class="v-desc">Sports broadcast lower-third. Click = cotton-pink ring strokes around (SVG stroke-dashoffset, 420ms), then ★ punches forward (spring scale, 280ms delay) + ripple radiates outward. Multi-stage choreography.</span>
+  </div>
+  <div class="states">
+    <div class="state">
+      <button class="v5">
+        <svg class="v5-ring" viewBox="0 0 30 30"><circle/><circle class="v5-trace"/></svg>
+        <span class="v5-star">★</span>
+        <span class="v5-ripple"></span>
+      </button>
+      <span class="state-label">Off</span>
+    </div>
+    <div class="state">
+      <button class="v5 demo-hover">
+        <svg class="v5-ring" viewBox="0 0 30 30"><circle/><circle class="v5-trace"/></svg>
+        <span class="v5-star">★</span>
+        <span class="v5-ripple"></span>
+      </button>
+      <span class="state-label">Off · Hover</span>
+    </div>
+    <div class="state">
+      <button class="v5 on">
+        <svg class="v5-ring" viewBox="0 0 30 30"><circle/><circle class="v5-trace"/></svg>
+        <span class="v5-star">★</span>
+        <span class="v5-ripple"></span>
+      </button>
+      <span class="state-label">On</span>
+    </div>
+    <div class="state">
+      <button class="v5 on demo-hover">
+        <svg class="v5-ring" viewBox="0 0 30 30"><circle/><circle class="v5-trace"/></svg>
+        <span class="v5-star">★</span>
+        <span class="v5-ripple"></span>
+      </button>
+      <span class="state-label">On · Hover</span>
+    </div>
+  </div>
+  <div class="row-ctx">
+    <div class="rk">12</div>
+    <div class="pfp"></div>
+    <div class="who">
+      <div class="who-main">
+        Bijan Robinson
+        <span class="pos-pill">RB1</span>
+        <button class="v5 on">
+          <svg class="v5-ring" viewBox="0 0 30 30"><circle/><circle class="v5-trace"/></svg>
+          <span class="v5-star">★</span>
+          <span class="v5-ripple"></span>
+        </button>
+      </div>
+      <div class="who-sub">RB · Age 23 · #7</div>
+    </div>
+  </div>
+  <div class="tech-note">SVG stroke-dasharray trace · staggered animation: ring fills → star punches at 280ms → ripple expands to 3.2× scale</div>
+</section>
+
+<p class="foot">
+  <b>Click any button</b> to toggle and see the real transition (V1 fires sparkles, V5 fires the trace+punch+ripple choreography). Pick a winner — or mash two together — and I'll wire it into bigboard.html.
+</p>
+
+<script>
+// Sparkle particles for V1
+document.querySelectorAll('.v1').forEach(b => {
+  // inject 8 sparkles
+  for (let i = 0; i < 8; i++) {
+    const s = document.createElement('span');
+    s.className = 'v1-spark';
+    b.appendChild(s);
+  }
+  b.addEventListener('click', () => {
+    const wasOn = b.classList.contains('on');
+    b.classList.toggle('on');
+    b.classList.remove('idle');
+    if (!wasOn) {
+      b.classList.add('firing');
+      setTimeout(() => b.classList.remove('firing'), 700);
+    }
+  });
+});
+
+// V2 holo foil
+document.querySelectorAll('.v2').forEach(b => {
+  b.addEventListener('click', () => b.classList.toggle('on'));
+});
+
+// V3 ink bloom
+document.querySelectorAll('.v3').forEach(b => {
+  b.addEventListener('click', () => {
+    const wasOn = b.classList.contains('on');
+    if (wasOn) {
+      b.classList.remove('on', 'idle');
+    } else {
+      b.classList.remove('idle');
+      b.classList.add('on');
+      setTimeout(() => b.classList.add('idle'), 700);
+    }
+  });
+});
+
+// V4 dog-ear
+document.querySelectorAll('.v4').forEach(b => {
+  b.addEventListener('click', () => b.classList.toggle('on'));
+});
+
+// V5 punch-out
+document.querySelectorAll('.v5').forEach(b => {
+  b.addEventListener('click', () => {
+    const wasOn = b.classList.contains('on');
+    if (wasOn) {
+      b.classList.remove('on');
+      // reset trace so the next activation animates again
+      const trace = b.querySelector('.v5-trace');
+      if (trace) { trace.style.transition = 'none'; trace.style.strokeDashoffset = '82'; setTimeout(() => trace.style.transition = '', 20); }
+    } else {
+      b.classList.add('on');
+      b.classList.add('firing');
+      setTimeout(() => b.classList.remove('firing'), 700);
+    }
+  });
+});
+</script>
+</body>
+</html>

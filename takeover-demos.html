@@ -1,0 +1,1026 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>BDGE — Takeover Layout Demos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@200;400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#000002; --card:#000205; --panel:#070b14; --table-hd:#0a0a0f;
+  --border:#404246; --border-faint:#1a1c20;
+  --text-bright:#f8f8f8; --text:#e0f3f4; --text-muted:#98c8ca; --text-dim:#5e7c81;
+  --neon-cyan:#00d1da; --neon-purple:#a855f7; --neon-emerald:#00d690;
+  --neon-gold:#fab800; --neon-red:#ff2234;
+  --pos-qb:#5da8b5; --pos-rb:#4ea584; --pos-wr:#5a8fb8; --pos-te:#c69b3a;
+  --bk-target:#5da8b5; --bk-nicks:#00d690; --bk-gut:#fb637a;
+  --bk-mo:#259fd6; --bk-sexy:#ff4dca;
+  --font-mono:"JetBrains Mono", monospace;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  -webkit-font-smoothing: antialiased;
+}
+
+.chooser {
+  position: sticky; top: 0; z-index: 80;
+  background: rgba(0,0,2,0.95);
+  backdrop-filter: blur(8px);
+  padding: 12px 24px;
+  border-bottom: 1px solid var(--border-faint);
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+}
+.chooser-l {
+  font-size: 10px; letter-spacing: 0.22em; font-weight: 800;
+  color: var(--text-muted);
+  margin-right: 6px;
+}
+.pick {
+  font-family: var(--font-mono);
+  font-size: 11px; letter-spacing: 0.10em; font-weight: 600;
+  padding: 8px 14px;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text);
+  cursor: pointer;
+  transition: all 160ms;
+}
+.pick:hover { border-color: var(--neon-cyan); color: var(--neon-cyan); }
+.pick.active {
+  background: var(--neon-cyan);
+  color: #001216;
+  border-color: var(--neon-cyan);
+}
+.demo-meta {
+  padding: 12px 24px;
+  font-size: 11px; letter-spacing: 0.04em;
+  color: var(--text-dim);
+  border-bottom: 1px solid var(--border-faint);
+  background: rgba(7,11,20,0.4);
+}
+.demo-meta b { color: var(--neon-cyan); font-weight: 700; }
+
+.frame { display: none; min-height: 100vh; position: relative; }
+.frame.active { display: block; }
+
+.tk-bar {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 18px;
+  background: rgba(7,11,20,0.6);
+  border-bottom: 1px solid var(--border-faint);
+  font-size: 10px; letter-spacing: 0.18em; font-weight: 700;
+  color: var(--text-muted);
+}
+.tk-bar .crumb { color: var(--neon-cyan); }
+.tk-bar .sep { color: var(--text-dim); }
+.tk-bar .spacer { flex: 1; }
+.tk-bar .close {
+  padding: 5px 12px;
+  background: transparent;
+  border: 1px solid rgba(255,34,52,0.4);
+  color: var(--neon-red);
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 10px; letter-spacing: 0.20em; font-weight: 800;
+}
+
+/* Player rail */
+.pr { display: flex; flex-direction: column; gap: 14px; }
+.pr-video {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  background: linear-gradient(180deg, rgba(10,18,28,0.6), rgba(2,6,12,0.95));
+  border: 1px solid rgba(0,209,218,0.35);
+  display: grid; place-items: center;
+  overflow: hidden;
+}
+.pr-video img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+.pr-video::after {
+  content: "▶ PLAY HIGHLIGHTS";
+  position: absolute; bottom: 10px; left: 0; right: 0;
+  text-align: center;
+  font-size: 9px; letter-spacing: 0.22em; font-weight: 700;
+  color: rgba(255,255,255,0.85);
+  text-shadow: 0 1px 3px rgba(0,0,0,0.9);
+}
+.pr-corn { position: absolute; width: 16px; height: 16px; }
+.pr-corn.tl { top: 6px; left: 6px; border-top: 2px solid var(--neon-cyan); border-left: 2px solid var(--neon-cyan); }
+.pr-corn.tr { top: 6px; right: 6px; border-top: 2px solid var(--neon-cyan); border-right: 2px solid var(--neon-cyan); }
+.pr-corn.bl { bottom: 6px; left: 6px; border-bottom: 2px solid var(--neon-cyan); border-left: 2px solid var(--neon-cyan); }
+.pr-corn.br { bottom: 6px; right: 6px; border-bottom: 2px solid var(--neon-cyan); border-right: 2px solid var(--neon-cyan); }
+.pr-tier-row { display: flex; gap: 5px; flex-wrap: wrap; align-items: center; }
+.pr-tier {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 4px 10px;
+  font-size: 10px; letter-spacing: 0.22em; font-weight: 800;
+  color: var(--neon-cyan);
+  background: rgba(0,209,218,0.14);
+  border: 1px solid rgba(0,209,218,0.5);
+  box-shadow: 0 0 10px rgba(0,209,218,0.3);
+}
+.pr-tag {
+  padding: 3px 7px;
+  font-size: 9px; letter-spacing: 0.18em; font-weight: 700;
+  border: 1px solid;
+}
+.pr-tag.gold { color: var(--neon-gold); border-color: rgba(250,184,0,0.4); background: rgba(250,184,0,0.10); }
+.pr-tag.cyan { color: var(--neon-cyan); border-color: rgba(0,209,218,0.4); background: rgba(0,209,218,0.10); }
+.pr-tag.purple { color: var(--neon-purple); border-color: rgba(168,85,247,0.4); background: rgba(168,85,247,0.10); }
+.pr-tag.emerald { color: var(--neon-emerald); border-color: rgba(0,214,144,0.4); background: rgba(0,214,144,0.10); }
+.pr-name {
+  font-family: "Inter", sans-serif;
+  font-size: 30px; font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: var(--text-bright);
+}
+.pr-name .last { color: var(--neon-cyan); }
+.pr-sub {
+  font-size: 11px; letter-spacing: 0.12em; font-weight: 600;
+  color: var(--text-muted);
+  margin-top: 6px;
+}
+.pr-vitals {
+  display: grid; grid-template-columns: repeat(6, 1fr);
+  gap: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--border-faint);
+}
+.pr-v { display: flex; flex-direction: column; gap: 2px; }
+.pr-v .k { font-size: 8px; letter-spacing: 0.20em; color: var(--text-dim); font-weight: 800; }
+.pr-v .v { font-size: 13px; color: var(--text-bright); font-weight: 700; font-variant-numeric: tabular-nums; }
+.pr-buckets { display: flex; flex-wrap: wrap; gap: 4px; }
+.pr-bk-chip {
+  font-family: var(--font-mono);
+  font-size: 9px; letter-spacing: 0.10em; font-weight: 700;
+  padding: 4px 8px;
+  background: transparent;
+  border: 1px solid color-mix(in srgb, var(--c) 40%, transparent);
+  color: color-mix(in srgb, var(--c) 90%, white);
+  cursor: pointer;
+}
+.pr-bk-chip.active {
+  background: color-mix(in srgb, var(--c) 24%, transparent);
+  color: var(--c);
+}
+
+/* Section content (shared) */
+.sec-h {
+  display: flex; align-items: center; gap: 8px;
+  padding: 6px 0 12px;
+  font-family: var(--font-mono);
+  font-size: 14px; font-weight: 800; letter-spacing: 0.10em;
+  color: var(--text-bright);
+  border-bottom: 1px solid var(--border-faint);
+  margin-bottom: 14px;
+}
+.sec-h .ico { color: var(--neon-cyan); }
+.card {
+  background: rgba(7,11,20,0.5);
+  border: 1px solid var(--border-faint);
+  padding: 14px 16px;
+  margin-bottom: 14px;
+}
+.card-h {
+  display: flex; justify-content: space-between; align-items: baseline;
+  font-size: 11px; letter-spacing: 0.18em; font-weight: 700;
+  color: var(--text-bright);
+  padding-bottom: 8px; margin-bottom: 8px;
+  border-bottom: 1px solid var(--border-faint);
+}
+.card-h .src { font-size: 9px; color: var(--text-dim); font-weight: 500; letter-spacing: 0.10em; }
+.take {
+  font-family: "Inter", sans-serif;
+  font-size: 13px; line-height: 1.55;
+  color: var(--text);
+  padding: 6px 10px;
+  border-left: 2px solid var(--neon-cyan);
+  margin-bottom: 8px;
+}
+.strip {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1px;
+  background: var(--border-faint);
+  border: 1px solid var(--border-faint);
+}
+.strip > div {
+  background: rgba(2,6,12,0.7);
+  padding: 12px 14px;
+  display: flex; flex-direction: column; gap: 4px;
+}
+.strip .k { font-size: 9px; letter-spacing: 0.22em; color: var(--text-muted); font-weight: 800; }
+.strip .v { font-size: 22px; font-weight: 800; letter-spacing: -0.02em; color: var(--text-bright); font-variant-numeric: tabular-nums; }
+.strip .v.cy { color: var(--neon-cyan); }
+.strip .v.em { color: var(--neon-emerald); }
+.strip .v.go { color: var(--neon-gold); }
+.strip .v.rd { color: var(--neon-red); }
+.strip .d { font-size: 9px; letter-spacing: 0.10em; color: var(--text-dim); }
+
+.pct-row {
+  display: grid;
+  grid-template-columns: 160px 1fr 90px;
+  gap: 10px; align-items: center;
+  padding: 8px 4px;
+  border-bottom: 1px solid var(--border-faint);
+}
+.pct-row:last-child { border-bottom: 0; }
+.pct-k { font-size: 10px; letter-spacing: 0.18em; color: var(--text); font-weight: 700; }
+.pct-bar { display: grid; grid-template-columns: repeat(15, 1fr); gap: 1.5px; }
+.pct-bar i { display: block; height: 18px; background: rgba(255,255,255,0.04); }
+.pct-bar i.on { background: var(--neon-emerald); box-shadow: 0 0 5px rgba(0,214,144,0.4); }
+.pct-v { text-align: right; font-size: 13px; font-weight: 700; color: var(--text-bright); font-variant-numeric: tabular-nums; }
+.pct-v small { display: block; font-size: 9px; letter-spacing: 0.18em; color: var(--text-dim); margin-top: 2px; }
+
+.placeholder-card {
+  background: rgba(7,11,20,0.5);
+  border: 1px dashed var(--border-faint);
+  padding: 40px 20px;
+  text-align: center;
+  color: var(--text-dim);
+  font-size: 11px; letter-spacing: 0.18em;
+}
+
+/* ════════════ DEMO A — Icon rail ════════════ */
+.frame.demo-a .layout {
+  display: grid;
+  grid-template-columns: 320px 56px minmax(0, 1fr);
+  gap: 22px;
+  padding: 18px;
+  align-items: start;
+}
+.frame.demo-a .scroll-progress {
+  position: absolute; left: 0; right: 0; top: 41px; height: 2px;
+  background: linear-gradient(90deg, var(--neon-cyan) 0%, var(--neon-cyan) 24%, transparent 24%);
+  z-index: 5;
+}
+.frame.demo-a .icon-rail {
+  position: sticky; top: 0;
+  display: flex; flex-direction: column;
+  background: rgba(7,11,20,0.85);
+  border: 1px solid var(--border-faint);
+  padding: 8px 4px;
+}
+.frame.demo-a .ic-link {
+  display: grid; place-items: center;
+  width: 48px; height: 48px;
+  font-size: 16px;
+  color: var(--text-dim);
+  border-left: 2px solid transparent;
+  cursor: pointer;
+  position: relative;
+  transition: color 140ms, background 140ms;
+}
+.frame.demo-a .ic-link:hover { color: var(--text-bright); background: rgba(0,209,218,0.06); }
+.frame.demo-a .ic-link.active {
+  color: var(--neon-cyan);
+  background: rgba(0,209,218,0.14);
+  border-left-color: var(--neon-cyan);
+}
+.frame.demo-a .ic-link::after {
+  content: attr(data-l);
+  position: absolute; left: 100%; top: 50%;
+  transform: translateY(-50%) translateX(8px);
+  background: rgba(7,11,20,0.95);
+  border: 1px solid var(--border);
+  padding: 6px 10px;
+  font-size: 9px; letter-spacing: 0.20em; font-weight: 700;
+  color: var(--neon-cyan);
+  white-space: nowrap;
+  opacity: 0; pointer-events: none;
+  transition: opacity 160ms, transform 160ms;
+  z-index: 10;
+}
+.frame.demo-a .ic-link:hover::after { opacity: 1; transform: translateY(-50%) translateX(12px); }
+.frame.demo-a .ic-divider { height: 1px; margin: 6px 8px; background: var(--border-faint); }
+.frame.demo-a .ic-grp { font-size: 7px; letter-spacing: 0.30em; font-weight: 800; color: var(--text-dim); text-align: center; padding: 6px 0 2px; }
+
+/* ════════════ DEMO B — Right ToC ════════════ */
+.frame.demo-b .layout {
+  display: grid;
+  grid-template-columns: 320px minmax(0, 1fr) 200px;
+  gap: 22px;
+  padding: 18px;
+  align-items: start;
+}
+.frame.demo-b .toc {
+  position: sticky; top: 0;
+  border-left: 1px solid var(--border-faint);
+  padding: 14px 0 14px 14px;
+  display: flex; flex-direction: column; gap: 1px;
+}
+.frame.demo-b .toc-h { font-size: 9px; letter-spacing: 0.30em; font-weight: 800; color: var(--text-muted); padding: 0 0 12px 0; margin-bottom: 4px; }
+.frame.demo-b .toc-link {
+  display: flex; align-items: center; gap: 8px;
+  padding: 6px 10px;
+  font-size: 10px; letter-spacing: 0.10em; font-weight: 600;
+  color: var(--text-muted);
+  border-right: 2px solid transparent;
+  cursor: pointer;
+  transition: all 140ms;
+}
+.frame.demo-b .toc-link:hover { color: var(--text-bright); }
+.frame.demo-b .toc-link.active {
+  color: var(--neon-cyan);
+  border-right-color: var(--neon-cyan);
+  background: linear-gradient(90deg, transparent, rgba(0,209,218,0.10));
+}
+.frame.demo-b .toc-grp { font-size: 8px; letter-spacing: 0.30em; font-weight: 800; color: var(--text-dim); padding: 12px 10px 4px; }
+
+/* ════════════ DEMO C — Floating dock ════════════ */
+.frame.demo-c .layout {
+  display: grid;
+  grid-template-columns: 320px minmax(0, 1fr);
+  gap: 22px;
+  padding: 18px 18px 100px;
+  align-items: start;
+}
+.frame.demo-c .dock {
+  position: fixed;
+  bottom: 22px; left: 50%;
+  transform: translateX(-50%);
+  display: flex; align-items: center; gap: 4px;
+  background: rgba(7,11,20,0.94);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(0,209,218,0.32);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.7), 0 0 24px rgba(0,209,218,0.18);
+  padding: 8px 12px;
+  z-index: 60;
+}
+.frame.demo-c .dk-link {
+  display: grid; place-items: center;
+  width: 38px; height: 38px;
+  font-size: 14px;
+  color: var(--text-dim);
+  cursor: pointer;
+  position: relative;
+  border-radius: 4px;
+  transition: all 160ms;
+}
+.frame.demo-c .dk-link:hover {
+  color: var(--neon-cyan);
+  background: rgba(0,209,218,0.10);
+  transform: translateY(-2px);
+}
+.frame.demo-c .dk-link.active {
+  color: var(--neon-cyan);
+  background: rgba(0,209,218,0.20);
+  box-shadow: 0 0 10px rgba(0,209,218,0.4);
+}
+.frame.demo-c .dk-link::after {
+  content: attr(data-l);
+  position: absolute; bottom: 100%; left: 50%;
+  transform: translateX(-50%) translateY(-6px);
+  background: rgba(7,11,20,0.95);
+  border: 1px solid var(--border);
+  padding: 5px 9px;
+  font-size: 9px; letter-spacing: 0.20em; font-weight: 700;
+  color: var(--neon-cyan);
+  white-space: nowrap;
+  opacity: 0; pointer-events: none;
+  transition: opacity 160ms;
+}
+.frame.demo-c .dk-link:hover::after { opacity: 1; }
+.frame.demo-c .dk-divider { width: 1px; align-self: stretch; background: var(--border-faint); margin: 4px 4px; }
+
+/* ════════════ DEMO D — Paginated ════════════ */
+.frame.demo-d .layout {
+  display: grid;
+  grid-template-columns: 320px minmax(0, 1fr);
+  gap: 22px;
+  padding: 18px;
+  align-items: start;
+}
+.frame.demo-d .page-tabs {
+  display: flex; gap: 0;
+  margin-bottom: 18px;
+  border-bottom: 1px solid var(--border-faint);
+  position: sticky; top: 0;
+  background: var(--bg);
+  z-index: 30;
+  overflow-x: auto;
+  padding: 6px 0;
+}
+.frame.demo-d .pt-link {
+  font-family: var(--font-mono);
+  font-size: 10px; letter-spacing: 0.18em; font-weight: 700;
+  padding: 12px 16px;
+  background: transparent;
+  border: 0;
+  color: var(--text-muted);
+  cursor: pointer;
+  white-space: nowrap;
+  border-bottom: 2px solid transparent;
+  transition: all 160ms;
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.frame.demo-d .pt-link:hover { color: var(--text-bright); }
+.frame.demo-d .pt-link.active {
+  color: var(--neon-cyan);
+  border-bottom-color: var(--neon-cyan);
+}
+.frame.demo-d .pt-link .ico { color: var(--text-dim); font-size: 12px; }
+.frame.demo-d .pt-link.active .ico { color: var(--neon-cyan); }
+.frame.demo-d .pageturn {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border-faint);
+}
+.frame.demo-d .pt-btn {
+  font-family: var(--font-mono);
+  font-size: 10px; letter-spacing: 0.18em; font-weight: 700;
+  padding: 8px 14px;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  cursor: pointer;
+}
+.frame.demo-d .pt-btn:hover { color: var(--neon-cyan); border-color: var(--neon-cyan); }
+
+/* ════════════ DEMO E — Grouped rail ════════════ */
+.frame.demo-e .layout {
+  display: grid;
+  grid-template-columns: 320px 200px minmax(0, 1fr);
+  gap: 22px;
+  padding: 18px;
+  align-items: start;
+}
+.frame.demo-e .grp-nav {
+  position: sticky; top: 0;
+  display: flex; flex-direction: column;
+  background: linear-gradient(180deg, rgba(7,11,20,0.85), rgba(2,6,12,0.95));
+  border: 1px solid var(--border-faint);
+  padding: 6px 10px 14px;
+}
+.frame.demo-e .grp-h {
+  font-size: 8px; letter-spacing: 0.30em; font-weight: 800;
+  color: var(--neon-cyan);
+  padding: 14px 8px 8px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid var(--border-faint);
+}
+.frame.demo-e .grp-h:first-child { padding-top: 8px; }
+.frame.demo-e .grp-link {
+  display: flex; align-items: center; gap: 8px;
+  padding: 7px 10px;
+  font-family: var(--font-mono);
+  font-size: 10px; letter-spacing: 0.14em; font-weight: 700;
+  color: var(--text-muted);
+  border-left: 2px solid transparent;
+  cursor: pointer;
+  transition: all 140ms;
+}
+.frame.demo-e .grp-link:hover {
+  color: var(--text-bright);
+  background: rgba(255,255,255,0.04);
+  border-left-color: rgba(0,209,218,0.4);
+}
+.frame.demo-e .grp-link.active {
+  color: var(--neon-cyan);
+  background: rgba(0,209,218,0.10);
+  border-left-color: var(--neon-cyan);
+}
+.frame.demo-e .grp-link.priority { color: var(--text-bright); font-weight: 800; }
+.frame.demo-e .grp-link .ico { display: inline-grid; place-items: center; width: 14px; color: var(--text-dim); font-size: 12px; }
+.frame.demo-e .grp-link.active .ico, .frame.demo-e .grp-link.priority .ico { color: var(--neon-cyan); }
+</style>
+</head>
+<body>
+
+<nav class="chooser">
+  <span class="chooser-l">// PICK_A_LAYOUT</span>
+  <button class="pick active" data-d="a">A · Icon Rail</button>
+  <button class="pick" data-d="b">B · Right ToC</button>
+  <button class="pick" data-d="c">C · Floating Dock</button>
+  <button class="pick" data-d="d">D · Paginated</button>
+  <button class="pick" data-d="e">E · Grouped Rail</button>
+</nav>
+
+<!-- ─── Reusable bits inside each frame, mostly the same content
+     so visual comparison is fair across layouts. -->
+
+<!-- DEMO A — ICON RAIL -->
+<div class="frame demo-a active" data-d="a">
+  <div class="demo-meta"><b>A · Icon Rail</b> — 48px icon-only column between player and content. Hover for label tooltip. Saves ~150px width vs current. Scroll-progress bar at top.</div>
+  <div class="scroll-progress"></div>
+  <div class="tk-bar">
+    <span class="crumb">// BIG_BOARD</span><span class="sep">/</span><span>RETURN_TO_RANKINGS</span>
+    <span class="spacer"></span>
+    <span style="color:var(--text-dim)">PID · 3117251 · SF</span>
+    <button class="close">EXIT_PROFILE ✕</button>
+  </div>
+  <div class="layout">
+    <!-- player rail -->
+    <div class="pr">
+      <div class="pr-video">
+        <span class="pr-corn tl"></span><span class="pr-corn tr"></span><span class="pr-corn bl"></span><span class="pr-corn br"></span>
+        <img src="https://i.ytimg.com/vi/z1BU0cIz7BQ/hqdefault.jpg" alt=""/>
+      </div>
+      <div>
+        <div class="pr-tier-row">
+          <span class="pr-tier">✦ ELITE</span>
+          <span class="pr-tag gold">CEILING_GOD</span>
+          <span class="pr-tag cyan">VOLUME_DEMON</span>
+          <span class="pr-tag emerald">DURABILITY+</span>
+        </div>
+        <div class="pr-name" style="margin-top:10px">Christian <span class="last">McCaffrey</span></div>
+        <div class="pr-sub">RB · SAN FRANCISCO 49ERS · #23 · BYE 9</div>
+      </div>
+      <div class="pr-vitals">
+        <div class="pr-v"><span class="k">HT</span><span class="v">5'11"</span></div>
+        <div class="pr-v"><span class="k">WT</span><span class="v">205</span></div>
+        <div class="pr-v"><span class="k">AGE</span><span class="v">29</span></div>
+        <div class="pr-v"><span class="k">EXP</span><span class="v">9YR</span></div>
+        <div class="pr-v"><span class="k">BYE</span><span class="v">9</span></div>
+        <div class="pr-v"><span class="k">COL</span><span class="v" style="font-size:10px">STAN</span></div>
+      </div>
+      <div>
+        <div style="font-size:9px;letter-spacing:0.22em;color:var(--text-muted);font-weight:800;margin-bottom:6px">// ASSIGN_TO_BUCKET</div>
+        <div class="pr-buckets">
+          <button class="pr-bk-chip" style="--c:var(--bk-target)">◉ MY GUY</button>
+          <button class="pr-bk-chip active" style="--c:var(--bk-nicks)">★ NICK'S PICK</button>
+          <button class="pr-bk-chip" style="--c:var(--bk-gut)">⚡ GUT</button>
+          <button class="pr-bk-chip" style="--c:var(--bk-mo)">❖ MO</button>
+          <button class="pr-bk-chip" style="--c:var(--bk-sexy)">✿ SEXY</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- icon rail -->
+    <div class="icon-rail">
+      <div class="ic-grp">HEAD</div>
+      <div class="ic-link active" data-l="OVERVIEW">◈</div>
+      <div class="ic-link" data-l="IMPACT">⌁</div>
+      <div class="ic-link" data-l="FIELD CHART">⌖</div>
+      <div class="ic-divider"></div>
+      <div class="ic-grp">STATS</div>
+      <div class="ic-link" data-l="PROSPECT_STATS">▦</div>
+      <div class="ic-link" data-l="6_FACTOR">⬢</div>
+      <div class="ic-link" data-l="USAGE">≣</div>
+      <div class="ic-link" data-l="ADP">◊</div>
+      <div class="ic-divider"></div>
+      <div class="ic-grp">CTX</div>
+      <div class="ic-link" data-l="VEGAS">⌬</div>
+      <div class="ic-link" data-l="MATCHUPS">⌗</div>
+      <div class="ic-link" data-l="INJURY">+</div>
+      <div class="ic-divider"></div>
+      <div class="ic-grp">SCOUT</div>
+      <div class="ic-link" data-l="REPORTS">✎</div>
+      <div class="ic-link" data-l="COMPS">⊞</div>
+      <div class="ic-link" data-l="COMPARE">⇆</div>
+      <div class="ic-link" data-l="DISCUSSION">◧</div>
+    </div>
+
+    <div class="content">
+      <section style="margin-bottom:36px">
+        <div class="sec-h"><span class="ico">◈</span>// OVERVIEW</div>
+        <div class="card">
+          <div class="card-h">Season Outlook<span class="src">// AI v4.2 · 78% conf</span></div>
+          <div class="take">Workhorse RB1 with no concrete handcuff threat after the Mason re-sign — <em>still the alpha</em>.</div>
+          <div class="take">Volume risk attached to durability profile. Floor-driven CEO who hits ceiling more reliably than any back since Faulk.</div>
+        </div>
+        <div class="strip">
+          <div><span class="k">PROJ PTS</span><span class="v">348.2</span><span class="d">PPG 21.8</span></div>
+          <div><span class="k">CEIL</span><span class="v em">412</span><span class="d">90th pct</span></div>
+          <div><span class="k">FLOOR</span><span class="v rd">268</span><span class="d">10th pct</span></div>
+          <div><span class="k">VBD</span><span class="v go">+62.4</span><span class="d">vs replacement</span></div>
+          <div><span class="k">CONS</span><span class="v">78%</span><span class="d">consistency</span></div>
+        </div>
+      </section>
+      <section style="margin-bottom:36px">
+        <div class="sec-h"><span class="ico">⌁</span>// IMPACT</div>
+        <div class="strip" style="grid-template-columns:repeat(4,1fr);margin-bottom:14px">
+          <div style="border-left:2px solid var(--neon-cyan)"><span class="k">BDGE+</span><span class="v cy">85</span><span class="d">overall, age-adj</span></div>
+          <div><span class="k">OFF EPA+</span><span class="v em">+1.68</span><span class="d">vs replacement</span></div>
+          <div><span class="k">RAW EPA</span><span class="v">1.68</span><span class="d">unadjusted</span></div>
+          <div><span class="k">AGE BUMP</span><span class="v go">+0.0</span><span class="d">@ 29</span></div>
+        </div>
+        <div class="card">
+          <div class="card-h">Offensive impact components <span class="src">// 2025</span></div>
+          <div class="pct-row"><span class="pct-k">EPA/PLAY</span><span class="pct-bar" data-on="12"></span><span class="pct-v">1.68<small>86th</small></span></div>
+          <div class="pct-row"><span class="pct-k">SUCCESS RATE</span><span class="pct-bar" data-on="11"></span><span class="pct-v">63%<small>78th</small></span></div>
+          <div class="pct-row"><span class="pct-k">YPRR / TRUE-YPC</span><span class="pct-bar" data-on="12"></span><span class="pct-v">6.08<small>84th</small></span></div>
+          <div class="pct-row"><span class="pct-k">YAC/EXP OVER</span><span class="pct-bar" data-on="12"></span><span class="pct-v">+2.08<small>81st</small></span></div>
+          <div class="pct-row"><span class="pct-k">TGT/CAR SHARE</span><span class="pct-bar" data-on="11"></span><span class="pct-v">32%<small>76th</small></span></div>
+        </div>
+      </section>
+      <section>
+        <div class="sec-h"><span class="ico">⌖</span>// FIELD_CHART</div>
+        <div class="placeholder-card">[ KDE field-chart visualization · 200 dots colored by zone success rate · synced cursor on two upper line charts ]</div>
+      </section>
+    </div>
+  </div>
+</div>
+
+<!-- DEMO B — RIGHT TOC -->
+<div class="frame demo-b" data-d="b">
+  <div class="demo-meta"><b>B · Right ToC</b> — Player on left, content center, narrow Table of Contents on the FAR right. Reading flow: face → data → nav. Stratechery / paper feel.</div>
+  <div class="tk-bar">
+    <span class="crumb">// BIG_BOARD</span><span class="sep">/</span><span>RETURN_TO_RANKINGS</span>
+    <span class="spacer"></span>
+    <button class="close">EXIT_PROFILE ✕</button>
+  </div>
+  <div class="layout">
+    <div class="pr">
+      <div class="pr-video">
+        <span class="pr-corn tl"></span><span class="pr-corn tr"></span><span class="pr-corn bl"></span><span class="pr-corn br"></span>
+        <img src="https://i.ytimg.com/vi/z1BU0cIz7BQ/hqdefault.jpg" alt=""/>
+      </div>
+      <div>
+        <div class="pr-tier-row">
+          <span class="pr-tier">✦ ELITE</span>
+          <span class="pr-tag gold">CEILING_GOD</span>
+          <span class="pr-tag cyan">VOLUME_DEMON</span>
+        </div>
+        <div class="pr-name" style="margin-top:10px">Christian <span class="last">McCaffrey</span></div>
+        <div class="pr-sub">RB · SAN FRANCISCO 49ERS · #23 · BYE 9</div>
+      </div>
+      <div class="pr-vitals">
+        <div class="pr-v"><span class="k">HT</span><span class="v">5'11"</span></div>
+        <div class="pr-v"><span class="k">WT</span><span class="v">205</span></div>
+        <div class="pr-v"><span class="k">AGE</span><span class="v">29</span></div>
+        <div class="pr-v"><span class="k">EXP</span><span class="v">9YR</span></div>
+        <div class="pr-v"><span class="k">BYE</span><span class="v">9</span></div>
+        <div class="pr-v"><span class="k">COL</span><span class="v" style="font-size:10px">STAN</span></div>
+      </div>
+      <div>
+        <div style="font-size:9px;letter-spacing:0.22em;color:var(--text-muted);font-weight:800;margin-bottom:6px">// BUCKET</div>
+        <div class="pr-buckets">
+          <button class="pr-bk-chip active" style="--c:var(--bk-nicks)">★ NICK'S PICK</button>
+          <button class="pr-bk-chip" style="--c:var(--bk-gut)">⚡ GUT</button>
+          <button class="pr-bk-chip" style="--c:var(--bk-mo)">❖ MO</button>
+          <button class="pr-bk-chip" style="--c:var(--bk-sexy)">✿ SEXY</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="content">
+      <section style="margin-bottom:36px">
+        <div class="sec-h"><span class="ico">◈</span>// OVERVIEW</div>
+        <div class="card">
+          <div class="card-h">Season Outlook<span class="src">// AI v4.2 · 78% conf</span></div>
+          <div class="take">Workhorse RB1 with no concrete handcuff threat after the Mason re-sign — <em>still the alpha</em>.</div>
+          <div class="take">Volume risk attached to durability profile. Floor-driven CEO who hits ceiling more reliably than any back since Faulk.</div>
+        </div>
+        <div class="strip">
+          <div><span class="k">PROJ PTS</span><span class="v">348.2</span><span class="d">PPG 21.8</span></div>
+          <div><span class="k">CEIL</span><span class="v em">412</span><span class="d">90th pct</span></div>
+          <div><span class="k">FLOOR</span><span class="v rd">268</span><span class="d">10th pct</span></div>
+          <div><span class="k">VBD</span><span class="v go">+62.4</span><span class="d">vs replacement</span></div>
+          <div><span class="k">CONS</span><span class="v">78%</span><span class="d">consistency</span></div>
+        </div>
+      </section>
+      <section style="margin-bottom:36px">
+        <div class="sec-h"><span class="ico">⌁</span>// IMPACT</div>
+        <div class="strip" style="grid-template-columns:repeat(4,1fr);margin-bottom:14px">
+          <div style="border-left:2px solid var(--neon-cyan)"><span class="k">BDGE+</span><span class="v cy">85</span><span class="d">overall, age-adj</span></div>
+          <div><span class="k">OFF EPA+</span><span class="v em">+1.68</span><span class="d">vs replacement</span></div>
+          <div><span class="k">RAW EPA</span><span class="v">1.68</span><span class="d">unadjusted</span></div>
+          <div><span class="k">AGE BUMP</span><span class="v go">+0.0</span><span class="d">@ 29</span></div>
+        </div>
+        <div class="card">
+          <div class="card-h">Offensive impact components</div>
+          <div class="pct-row"><span class="pct-k">EPA/PLAY</span><span class="pct-bar" data-on="12"></span><span class="pct-v">1.68<small>86th</small></span></div>
+          <div class="pct-row"><span class="pct-k">SUCCESS RATE</span><span class="pct-bar" data-on="11"></span><span class="pct-v">63%<small>78th</small></span></div>
+          <div class="pct-row"><span class="pct-k">YPRR / TRUE-YPC</span><span class="pct-bar" data-on="12"></span><span class="pct-v">6.08<small>84th</small></span></div>
+        </div>
+      </section>
+      <section>
+        <div class="sec-h"><span class="ico">⌖</span>// FIELD_CHART</div>
+        <div class="placeholder-card">[ field chart placeholder ]</div>
+      </section>
+    </div>
+
+    <nav class="toc">
+      <div class="toc-h">// TABLE_OF_CONTENTS</div>
+      <div class="toc-grp">HEADLINE</div>
+      <div class="toc-link active">OVERVIEW</div>
+      <div class="toc-link">IMPACT</div>
+      <div class="toc-link">FIELD CHART</div>
+      <div class="toc-grp">DEEP STATS</div>
+      <div class="toc-link">PROSPECT_STATS</div>
+      <div class="toc-link">6_FACTOR</div>
+      <div class="toc-link">USAGE</div>
+      <div class="toc-link">ADP</div>
+      <div class="toc-grp">CONTEXT</div>
+      <div class="toc-link">VEGAS</div>
+      <div class="toc-link">MATCHUPS</div>
+      <div class="toc-link">INJURY</div>
+      <div class="toc-grp">COMMUNITY</div>
+      <div class="toc-link">REPORTS</div>
+      <div class="toc-link">COMPS</div>
+      <div class="toc-link">COMPARE</div>
+      <div class="toc-link">DISCUSSION</div>
+    </nav>
+  </div>
+</div>
+
+<!-- DEMO C — FLOATING DOCK -->
+<div class="frame demo-c" data-d="c">
+  <div class="demo-meta"><b>C · Floating Dock</b> — Drop the rail entirely. Section nav floats at bottom-center as a pill of icons. macOS-dock feel. Maximum content width.</div>
+  <div class="tk-bar">
+    <span class="crumb">// BIG_BOARD</span><span class="sep">/</span><span>RETURN_TO_RANKINGS</span>
+    <span class="spacer"></span>
+    <button class="close">EXIT_PROFILE ✕</button>
+  </div>
+  <div class="layout">
+    <div class="pr">
+      <div class="pr-video">
+        <span class="pr-corn tl"></span><span class="pr-corn tr"></span><span class="pr-corn bl"></span><span class="pr-corn br"></span>
+        <img src="https://i.ytimg.com/vi/z1BU0cIz7BQ/hqdefault.jpg" alt=""/>
+      </div>
+      <div>
+        <div class="pr-tier-row">
+          <span class="pr-tier">✦ ELITE</span>
+          <span class="pr-tag gold">CEILING_GOD</span>
+          <span class="pr-tag cyan">VOLUME_DEMON</span>
+          <span class="pr-tag emerald">DURABILITY+</span>
+        </div>
+        <div class="pr-name" style="margin-top:10px">Christian <span class="last">McCaffrey</span></div>
+        <div class="pr-sub">RB · SAN FRANCISCO 49ERS · #23 · BYE 9</div>
+      </div>
+      <div class="pr-vitals">
+        <div class="pr-v"><span class="k">HT</span><span class="v">5'11"</span></div>
+        <div class="pr-v"><span class="k">WT</span><span class="v">205</span></div>
+        <div class="pr-v"><span class="k">AGE</span><span class="v">29</span></div>
+        <div class="pr-v"><span class="k">EXP</span><span class="v">9YR</span></div>
+        <div class="pr-v"><span class="k">BYE</span><span class="v">9</span></div>
+        <div class="pr-v"><span class="k">COL</span><span class="v" style="font-size:10px">STAN</span></div>
+      </div>
+      <div>
+        <div style="font-size:9px;letter-spacing:0.22em;color:var(--text-muted);font-weight:800;margin-bottom:6px">// ASSIGN_TO_BUCKET</div>
+        <div class="pr-buckets">
+          <button class="pr-bk-chip" style="--c:var(--bk-target)">◉ MY GUY</button>
+          <button class="pr-bk-chip active" style="--c:var(--bk-nicks)">★ NICK'S PICK</button>
+          <button class="pr-bk-chip" style="--c:var(--bk-gut)">⚡ GUT</button>
+          <button class="pr-bk-chip" style="--c:var(--bk-mo)">❖ MO</button>
+          <button class="pr-bk-chip" style="--c:var(--bk-sexy)">✿ SEXY</button>
+        </div>
+      </div>
+    </div>
+    <div class="content">
+      <section style="margin-bottom:36px">
+        <div class="sec-h"><span class="ico">◈</span>// OVERVIEW</div>
+        <div class="card">
+          <div class="card-h">Season Outlook<span class="src">// AI v4.2 · 78% conf</span></div>
+          <div class="take">Workhorse RB1 with no concrete handcuff threat after the Mason re-sign — <em>still the alpha</em>.</div>
+          <div class="take">Volume risk attached to durability profile. Floor-driven CEO who hits ceiling more reliably than any back since Faulk.</div>
+        </div>
+        <div class="strip">
+          <div><span class="k">PROJ PTS</span><span class="v">348.2</span><span class="d">PPG 21.8</span></div>
+          <div><span class="k">CEIL</span><span class="v em">412</span><span class="d">90th pct</span></div>
+          <div><span class="k">FLOOR</span><span class="v rd">268</span><span class="d">10th pct</span></div>
+          <div><span class="k">VBD</span><span class="v go">+62.4</span><span class="d">vs replacement</span></div>
+          <div><span class="k">CONS</span><span class="v">78%</span><span class="d">consistency</span></div>
+        </div>
+      </section>
+      <section style="margin-bottom:36px">
+        <div class="sec-h"><span class="ico">⌁</span>// IMPACT</div>
+        <div class="strip" style="grid-template-columns:repeat(4,1fr);margin-bottom:14px">
+          <div style="border-left:2px solid var(--neon-cyan)"><span class="k">BDGE+</span><span class="v cy">85</span><span class="d">overall, age-adj</span></div>
+          <div><span class="k">OFF EPA+</span><span class="v em">+1.68</span><span class="d">vs replacement</span></div>
+          <div><span class="k">RAW EPA</span><span class="v">1.68</span><span class="d">unadjusted</span></div>
+          <div><span class="k">AGE BUMP</span><span class="v go">+0.0</span><span class="d">@ 29</span></div>
+        </div>
+        <div class="card">
+          <div class="card-h">Offensive impact components</div>
+          <div class="pct-row"><span class="pct-k">EPA/PLAY</span><span class="pct-bar" data-on="12"></span><span class="pct-v">1.68<small>86th</small></span></div>
+          <div class="pct-row"><span class="pct-k">SUCCESS RATE</span><span class="pct-bar" data-on="11"></span><span class="pct-v">63%<small>78th</small></span></div>
+          <div class="pct-row"><span class="pct-k">YPRR / TRUE-YPC</span><span class="pct-bar" data-on="12"></span><span class="pct-v">6.08<small>84th</small></span></div>
+        </div>
+      </section>
+      <section>
+        <div class="sec-h"><span class="ico">⌖</span>// FIELD_CHART</div>
+        <div class="placeholder-card">[ field chart placeholder ]</div>
+      </section>
+    </div>
+  </div>
+  <div class="dock">
+    <div class="dk-link active" data-l="OVERVIEW">◈</div>
+    <div class="dk-link" data-l="IMPACT">⌁</div>
+    <div class="dk-link" data-l="FIELD CHART">⌖</div>
+    <div class="dk-divider"></div>
+    <div class="dk-link" data-l="STATS">▦</div>
+    <div class="dk-link" data-l="6_FACTOR">⬢</div>
+    <div class="dk-link" data-l="USAGE">≣</div>
+    <div class="dk-link" data-l="ADP">◊</div>
+    <div class="dk-divider"></div>
+    <div class="dk-link" data-l="VEGAS">⌬</div>
+    <div class="dk-link" data-l="MATCHUPS">⌗</div>
+    <div class="dk-link" data-l="INJURY">+</div>
+    <div class="dk-divider"></div>
+    <div class="dk-link" data-l="REPORTS">✎</div>
+    <div class="dk-link" data-l="COMPS">⊞</div>
+    <div class="dk-link" data-l="COMPARE">⇆</div>
+    <div class="dk-link" data-l="DISCUSSION">◧</div>
+  </div>
+</div>
+
+<!-- DEMO D — PAGINATED -->
+<div class="frame demo-d" data-d="d">
+  <div class="demo-meta"><b>D · Paginated</b> — Top tab strip, ONE section visible at a time, no scroll-stream. Each section fits in viewport. Click to swap; prev/next arrows at bottom.</div>
+  <div class="tk-bar">
+    <span class="crumb">// BIG_BOARD</span><span class="sep">/</span><span>RETURN_TO_RANKINGS</span>
+    <span class="spacer"></span>
+    <button class="close">EXIT_PROFILE ✕</button>
+  </div>
+  <div class="layout">
+    <div class="pr">
+      <div class="pr-video">
+        <span class="pr-corn tl"></span><span class="pr-corn tr"></span><span class="pr-corn bl"></span><span class="pr-corn br"></span>
+        <img src="https://i.ytimg.com/vi/z1BU0cIz7BQ/hqdefault.jpg" alt=""/>
+      </div>
+      <div>
+        <div class="pr-tier-row">
+          <span class="pr-tier">✦ ELITE</span>
+          <span class="pr-tag gold">CEILING_GOD</span>
+          <span class="pr-tag cyan">VOLUME_DEMON</span>
+        </div>
+        <div class="pr-name" style="margin-top:10px">Christian <span class="last">McCaffrey</span></div>
+        <div class="pr-sub">RB · SAN FRANCISCO 49ERS · #23 · BYE 9</div>
+      </div>
+      <div class="pr-vitals">
+        <div class="pr-v"><span class="k">HT</span><span class="v">5'11"</span></div>
+        <div class="pr-v"><span class="k">WT</span><span class="v">205</span></div>
+        <div class="pr-v"><span class="k">AGE</span><span class="v">29</span></div>
+        <div class="pr-v"><span class="k">EXP</span><span class="v">9YR</span></div>
+        <div class="pr-v"><span class="k">BYE</span><span class="v">9</span></div>
+        <div class="pr-v"><span class="k">COL</span><span class="v" style="font-size:10px">STAN</span></div>
+      </div>
+      <div>
+        <div style="font-size:9px;letter-spacing:0.22em;color:var(--text-muted);font-weight:800;margin-bottom:6px">// BUCKET</div>
+        <div class="pr-buckets">
+          <button class="pr-bk-chip active" style="--c:var(--bk-nicks)">★ NICK'S PICK</button>
+          <button class="pr-bk-chip" style="--c:var(--bk-gut)">⚡ GUT</button>
+          <button class="pr-bk-chip" style="--c:var(--bk-mo)">❖ MO</button>
+        </div>
+      </div>
+    </div>
+    <div class="content">
+      <div class="page-tabs">
+        <button class="pt-link active"><span class="ico">◈</span>OVERVIEW</button>
+        <button class="pt-link"><span class="ico">⌁</span>IMPACT</button>
+        <button class="pt-link"><span class="ico">⌖</span>FIELD</button>
+        <button class="pt-link"><span class="ico">▦</span>STATS</button>
+        <button class="pt-link"><span class="ico">⬢</span>6_FACTOR</button>
+        <button class="pt-link"><span class="ico">≣</span>USAGE</button>
+        <button class="pt-link"><span class="ico">⌬</span>VEGAS</button>
+        <button class="pt-link"><span class="ico">◊</span>ADP</button>
+        <button class="pt-link"><span class="ico">⌗</span>MATCHUPS</button>
+        <button class="pt-link"><span class="ico">+</span>INJURY</button>
+        <button class="pt-link"><span class="ico">✎</span>REPORTS</button>
+        <button class="pt-link"><span class="ico">⊞</span>COMPS</button>
+        <button class="pt-link"><span class="ico">⇆</span>COMPARE</button>
+        <button class="pt-link"><span class="ico">◧</span>DISCUSSION</button>
+      </div>
+      <div>
+        <div class="card">
+          <div class="card-h">Season Outlook<span class="src">// AI v4.2 · 78% conf</span></div>
+          <div class="take">Workhorse RB1 with no concrete handcuff threat after the Mason re-sign — <em>still the alpha</em>.</div>
+          <div class="take">Volume risk attached to durability profile. Floor-driven CEO who hits ceiling more reliably than any back since Faulk.</div>
+        </div>
+        <div class="strip">
+          <div><span class="k">PROJ PTS</span><span class="v">348.2</span><span class="d">PPG 21.8</span></div>
+          <div><span class="k">CEIL</span><span class="v em">412</span><span class="d">90th pct</span></div>
+          <div><span class="k">FLOOR</span><span class="v rd">268</span><span class="d">10th pct</span></div>
+          <div><span class="k">VBD</span><span class="v go">+62.4</span><span class="d">vs replacement</span></div>
+          <div><span class="k">CONS</span><span class="v">78%</span><span class="d">consistency</span></div>
+        </div>
+        <div class="placeholder-card" style="margin-top:14px;padding:80px 20px">[ projection cone · attribute radar · vegas + context ]</div>
+        <div class="pageturn">
+          <button class="pt-btn">← BIG_BOARD</button>
+          <button class="pt-btn">IMPACT →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DEMO E — GROUPED RAIL -->
+<div class="frame demo-e" data-d="e">
+  <div class="demo-meta"><b>E · Grouped Rail</b> — Same 200px text rail (current width) but split into 4 groups: HEADLINE / DEEP STATS / CONTEXT / COMMUNITY. Visual hierarchy makes the money tabs pop.</div>
+  <div class="tk-bar">
+    <span class="crumb">// BIG_BOARD</span><span class="sep">/</span><span>RETURN_TO_RANKINGS</span>
+    <span class="spacer"></span>
+    <button class="close">EXIT_PROFILE ✕</button>
+  </div>
+  <div class="layout">
+    <div class="pr">
+      <div class="pr-video">
+        <span class="pr-corn tl"></span><span class="pr-corn tr"></span><span class="pr-corn bl"></span><span class="pr-corn br"></span>
+        <img src="https://i.ytimg.com/vi/z1BU0cIz7BQ/hqdefault.jpg" alt=""/>
+      </div>
+      <div>
+        <div class="pr-tier-row">
+          <span class="pr-tier">✦ ELITE</span>
+          <span class="pr-tag gold">CEILING_GOD</span>
+          <span class="pr-tag cyan">VOLUME_DEMON</span>
+        </div>
+        <div class="pr-name" style="margin-top:10px">Christian <span class="last">McCaffrey</span></div>
+        <div class="pr-sub">RB · SF · #23 · BYE 9</div>
+      </div>
+      <div class="pr-vitals">
+        <div class="pr-v"><span class="k">HT</span><span class="v">5'11"</span></div>
+        <div class="pr-v"><span class="k">WT</span><span class="v">205</span></div>
+        <div class="pr-v"><span class="k">AGE</span><span class="v">29</span></div>
+        <div class="pr-v"><span class="k">EXP</span><span class="v">9YR</span></div>
+        <div class="pr-v"><span class="k">BYE</span><span class="v">9</span></div>
+        <div class="pr-v"><span class="k">COL</span><span class="v" style="font-size:10px">STAN</span></div>
+      </div>
+      <div>
+        <div style="font-size:9px;letter-spacing:0.22em;color:var(--text-muted);font-weight:800;margin-bottom:6px">// BUCKET</div>
+        <div class="pr-buckets">
+          <button class="pr-bk-chip active" style="--c:var(--bk-nicks)">★ NICK'S PICK</button>
+          <button class="pr-bk-chip" style="--c:var(--bk-gut)">⚡ GUT</button>
+          <button class="pr-bk-chip" style="--c:var(--bk-mo)">❖ MO</button>
+        </div>
+      </div>
+    </div>
+
+    <nav class="grp-nav">
+      <div class="grp-h">// HEADLINE</div>
+      <a class="grp-link active priority"><span class="ico">◈</span>OVERVIEW</a>
+      <a class="grp-link priority"><span class="ico">⌁</span>IMPACT</a>
+      <a class="grp-link priority"><span class="ico">⌖</span>FIELD CHART</a>
+      <div class="grp-h">// DEEP STATS</div>
+      <a class="grp-link"><span class="ico">▦</span>PROSPECT_STATS</a>
+      <a class="grp-link"><span class="ico">⬢</span>6_FACTOR</a>
+      <a class="grp-link"><span class="ico">≣</span>USAGE</a>
+      <a class="grp-link"><span class="ico">◊</span>ADP</a>
+      <div class="grp-h">// CONTEXT</div>
+      <a class="grp-link"><span class="ico">⌬</span>VEGAS</a>
+      <a class="grp-link"><span class="ico">⌗</span>MATCHUPS</a>
+      <a class="grp-link"><span class="ico">+</span>INJURY</a>
+      <div class="grp-h">// COMMUNITY</div>
+      <a class="grp-link"><span class="ico">✎</span>REPORTS</a>
+      <a class="grp-link"><span class="ico">⊞</span>COMPS</a>
+      <a class="grp-link"><span class="ico">⇆</span>COMPARE</a>
+      <a class="grp-link"><span class="ico">◧</span>DISCUSSION</a>
+    </nav>
+
+    <div class="content">
+      <section style="margin-bottom:36px">
+        <div class="sec-h"><span class="ico">◈</span>// OVERVIEW</div>
+        <div class="card">
+          <div class="card-h">Season Outlook<span class="src">// AI v4.2 · 78% conf</span></div>
+          <div class="take">Workhorse RB1 with no concrete handcuff threat after the Mason re-sign — <em>still the alpha</em>.</div>
+          <div class="take">Volume risk attached to durability profile. Floor-driven CEO who hits ceiling more reliably than any back since Faulk.</div>
+        </div>
+        <div class="strip">
+          <div><span class="k">PROJ PTS</span><span class="v">348.2</span><span class="d">PPG 21.8</span></div>
+          <div><span class="k">CEIL</span><span class="v em">412</span><span class="d">90th pct</span></div>
+          <div><span class="k">FLOOR</span><span class="v rd">268</span><span class="d">10th pct</span></div>
+          <div><span class="k">VBD</span><span class="v go">+62.4</span><span class="d">vs replacement</span></div>
+          <div><span class="k">CONS</span><span class="v">78%</span><span class="d">consistency</span></div>
+        </div>
+      </section>
+      <section style="margin-bottom:36px">
+        <div class="sec-h"><span class="ico">⌁</span>// IMPACT</div>
+        <div class="strip" style="grid-template-columns:repeat(4,1fr);margin-bottom:14px">
+          <div style="border-left:2px solid var(--neon-cyan)"><span class="k">BDGE+</span><span class="v cy">85</span><span class="d">overall, age-adj</span></div>
+          <div><span class="k">OFF EPA+</span><span class="v em">+1.68</span><span class="d">vs replacement</span></div>
+          <div><span class="k">RAW EPA</span><span class="v">1.68</span><span class="d">unadjusted</span></div>
+          <div><span class="k">AGE BUMP</span><span class="v go">+0.0</span><span class="d">@ 29</span></div>
+        </div>
+        <div class="card">
+          <div class="card-h">Offensive impact components</div>
+          <div class="pct-row"><span class="pct-k">EPA/PLAY</span><span class="pct-bar" data-on="12"></span><span class="pct-v">1.68<small>86th</small></span></div>
+          <div class="pct-row"><span class="pct-k">SUCCESS RATE</span><span class="pct-bar" data-on="11"></span><span class="pct-v">63%<small>78th</small></span></div>
+        </div>
+      </section>
+      <section>
+        <div class="sec-h"><span class="ico">⌖</span>// FIELD_CHART</div>
+        <div class="placeholder-card">[ field chart placeholder ]</div>
+      </section>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  // Build percentile bar cells from data-on
+  document.querySelectorAll('.pct-bar').forEach(bar => {
+    const on = parseInt(bar.dataset.on || '0', 10);
+    let html = '';
+    for (let i = 0; i < 15; i++) html += '<i' + (i < on ? ' class="on"' : '') + '></i>';
+    bar.innerHTML = html;
+  });
+  // Tab switcher
+  document.querySelectorAll('.pick').forEach(p => p.addEventListener('click', () => {
+    const d = p.dataset.d;
+    document.querySelectorAll('.pick').forEach(x => x.classList.toggle('active', x === p));
+    document.querySelectorAll('.frame').forEach(f => f.classList.toggle('active', f.dataset.d === d));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }));
+})();
+</script>
+</body>
+</html>

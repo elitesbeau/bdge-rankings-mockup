@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Card · Tier Poster</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#1c1c1f;--bg-soft:#232328;--ink:#e8e3d6;--ink-soft:#e8e3d6cc;--ink-dim:#e8e3d688;--ink-faint:#e8e3d622;
+    --accent:#fb637a;--accent-2:#7ab2cc;--line:#3a3a3f;--line-soft:#3a3a3faa;--card:#25252a;
+    --shadow:6px 6px 0 #3a3a3f;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,sans-serif;min-height:100vh}
+  .nav{display:flex;align-items:center;justify-content:space-between;padding:12px 24px;background:var(--bg);border-bottom:2px solid var(--line)}
+  .nav .back{color:var(--ink);text-decoration:none;font-size:11px;text-transform:uppercase;letter-spacing:.18em}
+  .nav .pickers{display:flex;border:1.5px solid var(--line);font-size:11px;font-family:"Bebas Neue",sans-serif;letter-spacing:.16em}
+  .nav .pickers a{padding:5px 14px;color:var(--ink);text-decoration:none;border-right:1px solid var(--line-soft)}
+  .nav .pickers a:last-child{border-right:0}
+  .nav .pickers a.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+
+  .hero{padding:32px}
+  .hero h1{font-family:"Bebas Neue",sans-serif;font-size:48px;letter-spacing:.02em;margin:0 0 4px;line-height:1}
+  .hero .tag{font-family:"Bebas Neue",sans-serif;letter-spacing:.18em;font-size:13px;color:var(--accent);margin-bottom:6px}
+  .hero p{font-size:14px;color:var(--ink-soft);max-width:680px;margin:8px 0 0;line-height:1.5}
+
+  .board{padding:0 32px 48px;display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+  @media(max-width:900px){.board{grid-template-columns:1fr}}
+
+  /* ─── Card · Tier Poster variation ─── */
+  .card{background:var(--card);border:2.5px solid var(--line);padding:0;position:relative;cursor:pointer;transition:all 200ms;overflow:hidden;display:grid;grid-template-columns:38px 90px 1fr auto;align-items:stretch;min-height:120px}
+  .card:hover{transform:translate(-3px,-3px);box-shadow:var(--shadow)}
+  .card-rk{font-family:"Bebas Neue",sans-serif;font-size:38px;letter-spacing:-.02em;text-align:center;color:var(--ink);align-self:center;background:var(--bg-soft);border-right:1.5px solid var(--line)}
+  .card-pfp-wrap{position:relative;background:linear-gradient(135deg,var(--bg-soft),var(--card) 65%);border-right:1.5px solid var(--line-soft);display:flex;align-items:center;justify-content:center}
+  .card-pfp{width:78px;height:78px;border-radius:50%;border:2px solid var(--line);background:var(--bg);overflow:hidden}
+  .card-pfp img{width:100%;height:100%;object-fit:cover;object-position:top}
+  .card-pfp-wrap .jersey{position:absolute;top:6px;right:6px;font-family:"Bebas Neue",sans-serif;font-size:24px;line-height:1;letter-spacing:.04em;color:var(--ink-faint)}
+
+  /* Tier ribbon */
+  .tier-ribbon{position:absolute;top:8px;left:-2px;background:var(--accent);color:#fff;font-family:"Bebas Neue",sans-serif;font-size:11px;letter-spacing:.18em;padding:3px 10px 2px 8px;z-index:2;clip-path:polygon(0 0,100% 0,calc(100% - 7px) 50%,100% 100%,0 100%)}
+  .tier-ribbon.elite{background:#fb637a}
+  .tier-ribbon.franchise{background:#f59e0b;color:#1c1c1f}
+  .tier-ribbon.allpro{background:#7ab2cc;color:#1c1c1f}
+  .tier-ribbon.starter{background:#4ade80;color:#1c1c1f}
+
+  .card-body{padding:14px 16px;display:flex;flex-direction:column;justify-content:center;gap:6px;min-width:0}
+  .card-name{font-family:"Bebas Neue",sans-serif;font-size:26px;letter-spacing:.01em;color:var(--ink);line-height:.95;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .card-meta{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600;color:var(--ink-soft)}
+  .card-pos{display:inline-grid;place-items:center;min-width:30px;height:20px;padding:0 6px;font-family:"Bebas Neue",sans-serif;font-size:12px;letter-spacing:.06em;border-radius:3px}
+  .card[data-pos="QB"] .card-pos{background:rgba(251,99,122,.18);color:#fb7185}
+  .card[data-pos="RB"] .card-pos{background:rgba(74,222,128,.16);color:#4ade80}
+  .card[data-pos="WR"] .card-pos{background:rgba(122,178,204,.18);color:#7ab2cc}
+  .card[data-pos="TE"] .card-pos{background:rgba(245,158,11,.16);color:#f59e0b}
+  .card-team{font-weight:700;letter-spacing:.04em;color:var(--ink)}
+  .card-bye{display:inline-flex;align-items:center;gap:4px;color:var(--ink-dim)}
+  .card-bye b{color:var(--ink);font-family:"Bebas Neue",sans-serif;font-size:13px;letter-spacing:.04em}
+
+  .tags{display:flex;gap:4px;flex-wrap:wrap;margin-top:2px}
+  .tbk{display:inline-flex;font-size:10px;font-weight:700;letter-spacing:.06em;padding:2px 6px;border-radius:2px;text-transform:uppercase}
+  .tbk.must{background:rgba(74,222,128,.14);color:#4ade80}
+  .tbk.boom{background:rgba(245,158,11,.14);color:#f59e0b}
+  .tbk.fade{background:rgba(251,99,122,.14);color:#fb7185}
+
+  .card-r{display:flex;flex-direction:column;justify-content:space-between;align-items:flex-end;padding:14px 16px;background:var(--bg-soft);border-left:1.5px solid var(--line-soft);gap:8px;min-width:130px}
+  .card-cmp{padding:5px 9px 6px;border:1.5px solid var(--line-soft);border-radius:4px;background:var(--bg);text-align:center;width:100%}
+  .card-cmp .lbl{font-size:9px;letter-spacing:.16em;font-weight:800;color:var(--ink-dim);text-transform:uppercase}
+  .card-cmp .val{font-family:"Bebas Neue",sans-serif;font-size:22px;color:var(--ink);margin-top:1px;line-height:1}
+  .card-cmp .delta{display:inline-block;margin-top:5px;font-size:10px;font-weight:800;letter-spacing:.08em;padding:2px 7px;border-radius:2px}
+  .card-cmp .delta.up{background:rgba(74,222,128,.18);color:#4ade80}
+  .card-cmp .delta.down{background:rgba(251,99,122,.18);color:#fb7185}
+  .card-cmp .delta.flat{background:rgba(232,227,214,.08);color:var(--ink-soft)}
+  .card-act{display:flex;gap:4px;width:100%;justify-content:flex-end}
+  .card-act button{display:inline-flex;align-items:center;justify-content:center;gap:4px;padding:5px 8px;background:var(--card);border:1.5px solid var(--line-soft);font-family:"Inter",sans-serif;font-size:11px;font-weight:700;color:var(--ink-soft);cursor:pointer;border-radius:4px;flex:1}
+  .card-act button.on.team{background:var(--accent);color:#fff;border-color:var(--accent)}
+</style>
+</head>
+<body>
+<div class="nav">
+  <a class="back" href="index.html">← All variations</a>
+  <span class="pickers">
+    <a href="1-data-strip.html">DATA STRIP</a>
+    <a class="on" href="2-tier-poster.html">TIER POSTER</a>
+    <a href="3-stat-pills.html">STAT PILLS</a>
+  </span>
+</div>
+
+<section class="hero">
+  <div class="tag">VARIATION 2</div>
+  <h1>Tier Poster</h1>
+  <p>Bigger PFP (78px) with a faint team-gradient backdrop, jersey number watermarked behind it, tier ribbon (<b>ELITE / FRANCHISE / ALL-PRO / STARTER</b>) along the top-left. Right column gets its own bg block so the ADP panel + actions feel anchored. Card reads as a poster, not a row.</p>
+</section>
+
+<div class="board">
+
+  <div class="card" data-pos="RB">
+    <span class="tier-ribbon elite">★ ELITE</span>
+    <div class="card-rk">1</div>
+    <div class="card-pfp-wrap">
+      <span class="jersey">#23</span>
+      <div class="card-pfp"><img src="https://a.espncdn.com/i/headshots/nfl/players/full/3117251.png" alt="CMC"/></div>
+    </div>
+    <div class="card-body">
+      <div class="card-name">CHRISTIAN MCCAFFREY</div>
+      <div class="card-meta"><span class="card-pos">RB</span><span class="card-team">SF</span><span class="card-bye">BYE <b>14</b></span><span class="card-bye">AGE <b>29</b></span></div>
+      <div class="tags"><span class="tbk must">MUST DRAFT</span><span class="tbk fade">INJURY RISK</span></div>
+    </div>
+    <div class="card-r">
+      <div class="card-cmp"><div class="lbl">ADP</div><div class="val">2.1</div><span class="delta up">▲ STEAL +1.1</span></div>
+      <div class="card-act"><button>★ TEAM</button><button>⚖ VS</button></div>
+    </div>
+  </div>
+
+  <div class="card" data-pos="RB">
+    <span class="tier-ribbon elite">★ ELITE</span>
+    <div class="card-rk">2</div>
+    <div class="card-pfp-wrap">
+      <span class="jersey">#7</span>
+      <div class="card-pfp"><img src="https://a.espncdn.com/i/headshots/nfl/players/full/4430807.png" alt="Bijan"/></div>
+    </div>
+    <div class="card-body">
+      <div class="card-name">BIJAN ROBINSON</div>
+      <div class="card-meta"><span class="card-pos">RB</span><span class="card-team">ATL</span><span class="card-bye">BYE <b>12</b></span><span class="card-bye">AGE <b>24</b></span></div>
+      <div class="tags"><span class="tbk must">MUST DRAFT</span></div>
+    </div>
+    <div class="card-r">
+      <div class="card-cmp"><div class="lbl">ADP</div><div class="val">1.8</div><span class="delta flat">● EVEN</span></div>
+      <div class="card-act"><button class="on team">★ TEAM</button><button>⚖ VS</button></div>
+    </div>
+  </div>
+
+  <div class="card" data-pos="WR">
+    <span class="tier-ribbon elite">★ ELITE</span>
+    <div class="card-rk">3</div>
+    <div class="card-pfp-wrap">
+      <span class="jersey">#1</span>
+      <div class="card-pfp"><img src="https://a.espncdn.com/i/headshots/nfl/players/full/4362628.png" alt="Chase"/></div>
+    </div>
+    <div class="card-body">
+      <div class="card-name">JA'MARR CHASE</div>
+      <div class="card-meta"><span class="card-pos">WR</span><span class="card-team">CIN</span><span class="card-bye">BYE <b>10</b></span><span class="card-bye">AGE <b>26</b></span></div>
+      <div class="tags"><span class="tbk boom">BOOM</span><span class="tbk must">MUST DRAFT</span></div>
+    </div>
+    <div class="card-r">
+      <div class="card-cmp"><div class="lbl">ADP</div><div class="val">3.4</div><span class="delta flat">● EVEN</span></div>
+      <div class="card-act"><button>★ TEAM</button><button>⚖ VS</button></div>
+    </div>
+  </div>
+
+  <div class="card" data-pos="WR">
+    <span class="tier-ribbon elite">★ ELITE</span>
+    <div class="card-rk">4</div>
+    <div class="card-pfp-wrap">
+      <span class="jersey">#18</span>
+      <div class="card-pfp"><img src="https://a.espncdn.com/i/headshots/nfl/players/full/4262921.png" alt="JJ"/></div>
+    </div>
+    <div class="card-body">
+      <div class="card-name">JUSTIN JEFFERSON</div>
+      <div class="card-meta"><span class="card-pos">WR</span><span class="card-team">MIN</span><span class="card-bye">BYE <b>6</b></span><span class="card-bye">AGE <b>26</b></span></div>
+      <div class="tags"><span class="tbk must">MUST DRAFT</span></div>
+    </div>
+    <div class="card-r">
+      <div class="card-cmp"><div class="lbl">ADP</div><div class="val">4.1</div><span class="delta flat">● EVEN</span></div>
+      <div class="card-act"><button>★ TEAM</button><button>⚖ VS</button></div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

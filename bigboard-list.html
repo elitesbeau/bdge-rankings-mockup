@@ -1,0 +1,1736 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>BDGE — Draft Rankings · 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800;900&family=Barlow+Condensed:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+/* ─── Theme tokens ─── */
+:root[data-theme="dark"] {
+  --bg:#0a1620;
+  --bg-2:#0e1d2a;
+  --bg-soft:#13283a;
+  --row:#0e1d2a;
+  --row-alt:#102232;
+  --row-hover:#163349;
+  --ink:#eaf0f7;
+  --ink-soft:#a3b6c8;
+  --ink-dim:#6d8499;
+  --line:#1d3a55;
+  --line-soft:#1d3a5566;
+  --accent:#259fd6;
+  --accent-pink:#fb637a;
+  --accent-yellow:#febe02;
+  --positive:#1fcf8e;
+  --negative:#fb637a;
+  --neutral:#8aa2b8;
+  --warn:#febe02;
+  --grad:linear-gradient(90deg,#259fd6,#fb637a);
+  --grad-soft:linear-gradient(90deg,#259fd61a,#fb637a1a);
+  --rail-bg:#0a1620;
+  --shadow-card:0 1px 0 #1d3a55, 0 0 0 1px #1d3a5588;
+}
+:root[data-theme="light"] {
+  --bg:#f4f0e3;
+  --bg-2:#f9f5eb;
+  --bg-soft:#ede5d0;
+  --row:#fdfbf3;
+  --row-alt:#f7f1de;
+  --row-hover:#f0e8d2;
+  --ink:#082430;
+  --ink-soft:#082430bb;
+  --ink-dim:#08243088;
+  --line:#08243033;
+  --line-soft:#0824301c;
+  --accent:#0c7fb3;
+  --accent-pink:#e94864;
+  --accent-yellow:#c08800;
+  --positive:#1a9966;
+  --negative:#d04562;
+  --neutral:#5a7184;
+  --warn:#c08800;
+  --grad:linear-gradient(90deg,#0c7fb3,#e94864);
+  --grad-soft:linear-gradient(90deg,#0c7fb31a,#e948641a);
+  --rail-bg:#f4f0e3;
+  --shadow-card:0 1px 0 #08243044;
+}
+
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--bg);
+  color:var(--ink);
+  font-family:"Inter",system-ui,sans-serif;
+  font-size:13px;
+  line-height:1.4;
+  -webkit-font-smoothing:antialiased;
+  transition:background 200ms ease,color 200ms ease;
+  min-height:100vh;
+}
+h1,h2,h3,h4{font-family:"Barlow",sans-serif;font-weight:700;margin:0;letter-spacing:-0.005em}
+
+/* ─── Top bar (full-bleed, denser) ─── */
+.tb{
+  position:sticky;top:0;z-index:80;
+  background:var(--bg);
+  border-bottom:1px solid var(--line);
+  padding:10px 24px;
+  display:flex;align-items:center;gap:14px;
+}
+.tb-brand{display:inline-flex;align-items:center;line-height:0;gap:10px}
+.tb-brand img{height:34px;width:auto;display:block;user-select:none}
+.tb-wm{
+  font-family:"Barlow",sans-serif;
+  font-weight:800;
+  font-size:13px;
+  letter-spacing:0.04em;
+  color:var(--ink);
+  padding:3px 10px;
+  border:1.5px solid var(--accent);
+  color:var(--accent);
+  border-radius:3px;
+}
+.tb-h{
+  font-family:"Barlow",sans-serif;
+  font-weight:700;
+  font-size:18px;
+  margin-left:6px;
+  color:var(--ink);
+}
+.tb-h .pink{color:var(--accent-pink)}
+.tb-spacer{flex:1}
+.tb-search{
+  width:280px;
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--bg-2);
+  border:1px solid var(--line);
+  padding:8px 12px;
+  border-radius:6px;
+}
+.tb-search:focus-within{border-color:var(--accent)}
+.tb-search input{
+  flex:1;background:transparent;border:0;outline:none;
+  color:var(--ink);font-family:inherit;font-size:13px;
+}
+.tb-search input::placeholder{color:var(--ink-dim)}
+.tb-search .ico{color:var(--ink-dim)}
+.tb-search .kbd{
+  font-family:"JetBrains Mono",monospace;
+  font-size:10px;
+  background:var(--bg);
+  border:1px solid var(--line);
+  padding:1px 5px;
+  border-radius:3px;
+  color:var(--ink-dim);
+}
+.tb-icon-btn,.tb-help-btn{
+  background:transparent;
+  border:1px solid var(--line);
+  color:var(--ink-soft);
+  width:34px;height:34px;
+  font-family:"Barlow",sans-serif;
+  font-size:15px;font-weight:600;
+  cursor:pointer;
+  display:inline-flex;align-items:center;justify-content:center;
+  border-radius:6px;
+  transition:all 120ms ease;
+}
+.tb-icon-btn:hover,.tb-help-btn:hover{background:var(--bg-2);color:var(--ink);border-color:var(--accent)}
+.tb-theme{display:inline-flex;border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.tb-theme button{background:transparent;border:0;cursor:pointer;font-family:"Barlow",sans-serif;font-size:12px;font-weight:600;padding:8px 12px;color:var(--ink-soft)}
+.tb-theme button.active{background:var(--accent);color:#fff}
+.tb-acct{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:7px 12px;
+  background:var(--bg-2);
+  border:1px solid var(--line);
+  color:var(--ink);
+  font-family:"Barlow",sans-serif;
+  font-size:13px;font-weight:600;
+  border-radius:6px;
+}
+.tb-acct .avatar{width:22px;height:22px;border-radius:50%;background:var(--grad);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700}
+
+/* ─── Sub-header strip (banner + filters + actions, no dead vertical space) ─── */
+.sub{
+  background:var(--bg);
+  border-bottom:1px solid var(--line);
+  padding:14px 24px 12px;
+  position:relative;
+}
+.sub-row{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.sub-title{
+  font-family:"Barlow",sans-serif;
+  font-weight:800;
+  font-size:32px;
+  line-height:1;
+  color:var(--ink);
+  letter-spacing:-0.015em;
+  display:inline-flex;align-items:baseline;gap:10px;
+  margin-right:8px;
+}
+.sub-title .yr{
+  font-family:"Barlow Condensed",sans-serif;
+  font-weight:600;
+  font-size:14px;
+  color:var(--accent);
+  letter-spacing:0.06em;
+  padding:3px 8px;
+  border:1px solid var(--accent);
+  border-radius:3px;
+  position:relative;top:-3px;
+}
+.sub-title .grad{
+  background:var(--grad);
+  -webkit-background-clip:text;background-clip:text;
+  color:transparent;
+}
+.sub-rule{height:2px;background:var(--grad);margin:10px 0 0;border-radius:2px}
+
+/* Position pills (segmented, sharper) */
+.pos-seg{
+  display:inline-flex;
+  border:1px solid var(--line);
+  border-radius:8px;
+  overflow:hidden;
+  background:var(--bg-2);
+}
+.pos-seg button{
+  background:transparent;
+  border:0;
+  border-right:1px solid var(--line);
+  font-family:"Barlow",sans-serif;
+  font-weight:700;
+  font-size:13px;
+  color:var(--ink-soft);
+  padding:8px 14px;
+  cursor:pointer;
+  transition:all 120ms ease;
+  letter-spacing:0.02em;
+}
+.pos-seg button:last-child{border-right:0}
+.pos-seg button:hover{color:var(--ink);background:var(--row-hover)}
+.pos-seg button.active{
+  background:var(--accent);color:#fff;
+}
+.pos-seg button.active[data-pos="QB"]{background:var(--accent-pink)}
+.pos-seg button.active[data-pos="RB"]{background:var(--positive)}
+.pos-seg button.active[data-pos="WR"]{background:var(--accent)}
+.pos-seg button.active[data-pos="TE"]{background:var(--accent-yellow);color:var(--bg)}
+
+/* Action buttons */
+.act-btn{
+  font-family:"Barlow",sans-serif;
+  font-weight:700;font-size:12.5px;letter-spacing:0.01em;
+  background:var(--bg-2);
+  border:1px solid var(--line);
+  color:var(--ink);
+  padding:8px 14px;
+  border-radius:6px;
+  cursor:pointer;
+  display:inline-flex;align-items:center;gap:8px;
+  transition:all 120ms ease;
+  position:relative;
+}
+.act-btn:hover{border-color:var(--accent);color:var(--accent)}
+.act-btn .ico{font-size:13px;line-height:1}
+.act-btn .ct{
+  background:var(--accent);
+  color:#fff;
+  font-size:11px;
+  font-weight:800;
+  padding:1px 7px;
+  border-radius:10px;
+  min-width:20px;
+  text-align:center;
+  line-height:1.4;
+}
+.act-btn.compare.has{background:color-mix(in srgb,var(--accent-pink) 14%,transparent);border-color:var(--accent-pink);color:var(--accent-pink)}
+.act-btn.compare.has .ct{background:var(--accent-pink)}
+.act-btn.team.has{background:color-mix(in srgb,var(--accent-yellow) 14%,transparent);border-color:var(--accent-yellow);color:var(--accent-yellow)}
+.act-btn.team.has .ct{background:var(--accent-yellow);color:var(--bg)}
+.act-btn.drafted.has{background:color-mix(in srgb,var(--positive) 14%,transparent);border-color:var(--positive);color:var(--positive)}
+.act-btn.drafted.has .ct{background:var(--positive);color:var(--bg)}
+
+/* ─── Layout: 2-column with sticky right rail (kills dead space) ─── */
+.shell{
+  display:grid;
+  grid-template-columns: minmax(0,1fr) 320px;
+  gap:0;
+  align-items:start;
+}
+.main{
+  padding:0 0 80px;
+  min-width:0;
+}
+.rail{
+  position:sticky;
+  top:0;
+  height:calc(100vh - 0px);
+  border-left:1px solid var(--line);
+  background:var(--rail-bg);
+  padding:14px 16px;
+  overflow-y:auto;
+}
+
+/* Sticky list column header */
+.list-cols{
+  position:sticky;
+  top:0;
+  z-index:30;
+  background:var(--bg-2);
+  display:grid;
+  grid-template-columns: 28px 50px minmax(220px,1.5fr) 88px 90px 70px 130px minmax(140px,1fr) 124px;
+  align-items:center;
+  gap:10px;
+  padding:8px 18px;
+  font-family:"Barlow",sans-serif;
+  font-size:11px;font-weight:700;
+  letter-spacing:0.08em;
+  color:var(--ink-dim);
+  border-bottom:1px solid var(--line);
+}
+.list-cols .ch{display:inline-flex;align-items:center;gap:4px;cursor:pointer;user-select:none;text-transform:none}
+.list-cols .ch:hover{color:var(--ink-soft)}
+.list-cols .ch.sorted{color:var(--accent)}
+.list-cols .ch.right{justify-content:flex-end;text-align:right}
+.list-cols .ch.center{justify-content:center;text-align:center}
+
+/* Round header strip (full-bleed inside main) */
+.rg{margin:0;background:transparent}
+.rg-h{
+  position:relative;
+  display:flex;align-items:center;gap:14px;
+  padding:14px 24px 10px;
+  cursor:pointer;
+  user-select:none;
+  background:var(--bg);
+  border-top:1px solid var(--line);
+}
+.rg:first-of-type .rg-h{border-top:0}
+.rg-h .caret{
+  font-family:"Barlow",sans-serif;
+  color:var(--ink-soft);
+  font-size:13px;
+  width:14px;
+  display:inline-block;
+  transition:transform 200ms ease;
+}
+.rg.collapsed .rg-h .caret{transform:rotate(-90deg)}
+.rg-h .num{
+  font-family:"Barlow",sans-serif;
+  font-weight:900;
+  font-size:42px;
+  line-height:1;
+  letter-spacing:-0.02em;
+  color:var(--accent);
+  width:auto;
+  display:inline-block;
+  font-style:italic;
+}
+.rg-h .num::before{content:"R"}
+.rg-h .label{
+  display:flex;flex-direction:column;
+}
+.rg-h .label .l1{
+  font-family:"Barlow",sans-serif;
+  font-weight:700;
+  font-size:18px;
+  color:var(--ink);
+}
+.rg-h .label .l2{
+  font-family:"Inter",sans-serif;
+  font-size:12px;
+  color:var(--ink-dim);
+}
+.rg-h .progress{
+  margin-left:auto;
+  display:inline-flex;align-items:center;gap:10px;
+}
+.rg-h .progress .bar{
+  width:120px;height:4px;
+  background:var(--line);
+  border-radius:2px;
+  overflow:hidden;
+  display:inline-block;
+}
+.rg-h .progress .bar i{
+  display:block;height:100%;
+  background:var(--positive);
+  transition:width 220ms ease;
+}
+.rg-h .progress .t{
+  font-family:"Barlow",sans-serif;
+  font-size:12px;
+  color:var(--ink-soft);
+  font-weight:600;
+}
+.rg-h .done-pill{
+  background:color-mix(in srgb,var(--positive) 16%,transparent);
+  color:var(--positive);
+  font-weight:700;
+  padding:3px 10px;
+  border-radius:10px;
+  font-size:11px;
+  font-family:"Barlow",sans-serif;
+}
+.rg-body{transition:max-height 280ms ease;overflow:hidden;max-height:9999px}
+.rg.collapsed .rg-body{max-height:0}
+.rg.all-drafted .rg-body{display:none}
+
+/* ─── Player row (denser, multi-info) ─── */
+.row{
+  display:grid;
+  grid-template-columns: 28px 50px minmax(220px,1.5fr) 88px 90px 70px 130px minmax(140px,1fr) 124px;
+  align-items:center;
+  gap:10px;
+  padding:9px 18px;
+  border-bottom:1px solid var(--line-soft);
+  background:var(--row);
+  cursor:pointer;
+  transition:background 100ms ease;
+  position:relative;
+}
+.row:nth-child(even){background:var(--row-alt)}
+.row:hover{background:var(--row-hover)}
+.row.checked{
+  background:color-mix(in srgb,var(--accent) 12%,var(--row));
+  box-shadow:inset 3px 0 0 var(--accent-pink);
+}
+.row.checked:hover{background:color-mix(in srgb,var(--accent) 18%,var(--row))}
+
+.row-chk{display:flex;align-items:center;justify-content:center}
+.row-chk input{
+  appearance:none;-webkit-appearance:none;
+  width:18px;height:18px;
+  border:1.5px solid var(--line);
+  border-radius:4px;
+  background:transparent;
+  cursor:pointer;
+  display:inline-flex;align-items:center;justify-content:center;
+  transition:all 100ms ease;
+}
+.row-chk input:hover{border-color:var(--accent-pink)}
+.row-chk input:checked{background:var(--accent-pink);border-color:var(--accent-pink)}
+.row-chk input:checked::after{content:"✓";color:#fff;font-size:12px;font-weight:800;line-height:1}
+
+.row-rk{
+  display:flex;flex-direction:column;align-items:center;
+  font-family:"Barlow",sans-serif;
+}
+.row-rk .n{
+  font-weight:800;
+  font-size:18px;
+  line-height:1;
+  color:var(--ink);
+  letter-spacing:-0.01em;
+}
+.row-rk .tier-dot{
+  display:block;
+  height:3px;
+  width:26px;
+  margin-top:4px;
+  background:var(--neutral);
+  border-radius:2px;
+}
+.row-rk .tier-dot.elite{background:linear-gradient(90deg,var(--accent-pink),var(--accent))}
+.row-rk .tier-dot.franchise{background:var(--accent-pink)}
+.row-rk .tier-dot.allpro{background:var(--accent)}
+.row-rk .tier-dot.starter{background:var(--positive)}
+.row-rk .tier-dot.depth{background:var(--accent-yellow)}
+
+.row-player{display:flex;align-items:center;gap:10px;min-width:0}
+.row-pfp{
+  width:38px;height:38px;
+  border-radius:50%;
+  background:var(--bg-soft);
+  border:1.5px solid var(--line);
+  object-fit:cover;
+  flex-shrink:0;
+  transition:border-color 120ms ease;
+}
+.row:hover .row-pfp{border-color:var(--accent)}
+.row-name-wrap{min-width:0;display:flex;flex-direction:column;gap:2px}
+.row-name{
+  font-family:"Barlow",sans-serif;
+  font-weight:700;
+  font-size:15px;
+  color:var(--ink);
+  white-space:nowrap;
+  overflow:hidden;text-overflow:ellipsis;
+  letter-spacing:-0.005em;
+}
+.row-sub{
+  font-family:"Inter",sans-serif;
+  font-size:11px;
+  color:var(--ink-dim);
+  display:inline-flex;align-items:center;gap:8px;
+}
+.row-sub .sep{opacity:0.4}
+.row-pos-pill{
+  font-family:"Barlow",sans-serif;
+  font-weight:800;
+  font-size:10px;
+  letter-spacing:0.06em;
+  padding:2px 6px;
+  border-radius:3px;
+  background:var(--bg-soft);
+  color:var(--ink-soft);
+}
+.row-pos-pill.QB{background:color-mix(in srgb,var(--accent-pink) 22%,transparent);color:var(--accent-pink)}
+.row-pos-pill.RB{background:color-mix(in srgb,var(--positive) 22%,transparent);color:var(--positive)}
+.row-pos-pill.WR{background:color-mix(in srgb,var(--accent) 22%,transparent);color:var(--accent)}
+.row-pos-pill.TE{background:color-mix(in srgb,var(--accent-yellow) 22%,transparent);color:var(--accent-yellow)}
+
+.row-team{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:"Barlow",sans-serif;
+  font-weight:700;
+  font-size:13px;
+  color:var(--ink);
+}
+.row-team img{width:26px;height:26px;object-fit:contain}
+.row-team .age{font-family:"Inter",sans-serif;font-weight:400;font-size:11px;color:var(--ink-dim)}
+
+.row-adp{
+  text-align:right;
+  font-family:"Barlow",sans-serif;
+}
+.row-adp .v{font-weight:800;font-size:16px;color:var(--ink);line-height:1.1}
+.row-adp .verdict{
+  display:inline-block;
+  font-size:10px;
+  font-weight:700;
+  padding:2px 6px;
+  border-radius:3px;
+  margin-top:3px;
+  font-family:"Barlow Condensed",sans-serif;
+  letter-spacing:0.06em;
+}
+.row-adp .verdict.steal{background:color-mix(in srgb,var(--positive) 20%,transparent);color:var(--positive)}
+.row-adp .verdict.reach{background:color-mix(in srgb,var(--negative) 20%,transparent);color:var(--negative)}
+.row-adp .verdict.even{background:color-mix(in srgb,var(--neutral) 20%,transparent);color:var(--neutral)}
+
+.row-proj{
+  text-align:right;
+  font-family:"Barlow",sans-serif;
+}
+.row-proj .v{font-weight:800;font-size:15px;color:var(--ink)}
+.row-proj .ppg{font-family:"Inter",sans-serif;font-size:11px;color:var(--ink-dim)}
+
+.row-range{
+  display:flex;flex-direction:column;gap:4px;
+}
+.row-range .nums{
+  display:flex;justify-content:space-between;
+  font-family:"Barlow Condensed",sans-serif;
+  font-size:11px;
+  color:var(--ink-dim);
+  letter-spacing:0.04em;
+}
+.row-range .nums .ce{color:var(--positive)}
+.row-range .nums .fl{color:var(--negative)}
+.row-range .bar{
+  height:6px;
+  background:var(--bg-soft);
+  border-radius:3px;
+  position:relative;
+  overflow:hidden;
+}
+.row-range .bar i{
+  position:absolute;top:0;bottom:0;
+  background:linear-gradient(90deg,var(--negative) 0%,var(--accent-yellow) 50%,var(--positive) 100%);
+  border-radius:3px;
+}
+.row-range .bar .marker{
+  position:absolute;top:-2px;width:2px;height:10px;
+  background:var(--ink);
+}
+
+.row-tags{display:flex;gap:5px;flex-wrap:wrap;align-items:center}
+.row-tag{
+  font-family:"Barlow",sans-serif;
+  font-weight:700;
+  font-size:10px;
+  letter-spacing:0.05em;
+  padding:3px 8px;
+  border-radius:3px;
+  white-space:nowrap;
+}
+.row-tag.must{background:color-mix(in srgb,var(--accent-pink) 16%,transparent);color:var(--accent-pink)}
+.row-tag.rookie{background:color-mix(in srgb,var(--positive) 16%,transparent);color:var(--positive)}
+.row-tag.sleeper{background:color-mix(in srgb,var(--accent-yellow) 16%,transparent);color:var(--accent-yellow)}
+.row-tag.boom{background:color-mix(in srgb,var(--accent) 16%,transparent);color:var(--accent)}
+.row-tag.injury{background:color-mix(in srgb,var(--negative) 16%,transparent);color:var(--negative)}
+.row-tag.fade{background:color-mix(in srgb,var(--neutral) 16%,transparent);color:var(--neutral)}
+
+.row-acts{display:flex;justify-content:flex-end;gap:5px}
+.row-act{
+  background:transparent;
+  border:1px solid var(--line);
+  color:var(--ink-soft);
+  width:30px;height:30px;
+  border-radius:5px;
+  cursor:pointer;
+  font-size:13px;font-weight:700;
+  display:inline-flex;align-items:center;justify-content:center;
+  transition:all 100ms ease;
+}
+.row-act:hover{border-color:var(--accent);color:var(--ink)}
+.row-act.team.active{background:var(--accent-yellow);border-color:var(--accent-yellow);color:var(--bg)}
+.row-act.drafted.active{background:var(--positive);border-color:var(--positive);color:var(--bg)}
+.row-act.open{font-size:16px}
+
+/* ─── Right rail ─── */
+.rail-section{margin-bottom:18px}
+.rail-h{
+  font-family:"Barlow",sans-serif;
+  font-weight:800;font-size:12px;
+  letter-spacing:0.12em;
+  color:var(--ink-dim);
+  margin-bottom:8px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.rail-h .ct{
+  background:var(--accent);color:#fff;
+  font-size:10px;font-weight:800;
+  padding:1px 7px;border-radius:10px;
+}
+.rail-h .ct.pink{background:var(--accent-pink)}
+.rail-h .ct.warn{background:var(--accent-yellow);color:var(--bg)}
+.rail-h .ct.pos{background:var(--positive);color:var(--bg)}
+
+/* Roster slots widget */
+.roster-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:5px;
+  margin-bottom:10px;
+}
+.slot{
+  background:var(--bg-2);
+  border:1.5px dashed var(--line);
+  border-radius:6px;
+  padding:8px 6px;
+  text-align:center;
+  font-family:"Barlow",sans-serif;
+  font-weight:700;
+  font-size:11px;
+  color:var(--ink-dim);
+  letter-spacing:0.04em;
+  position:relative;
+  min-height:48px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+}
+.slot.filled{
+  border-style:solid;
+  background:var(--bg-soft);
+}
+.slot.filled .slot-l{color:var(--ink-dim);font-size:9px;letter-spacing:0.08em}
+.slot.filled .slot-v{font-size:12px;color:var(--ink);font-weight:700;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:100%;}
+
+/* Compare mini-cards */
+.cmp-mini-list{display:flex;flex-direction:column;gap:6px}
+.cmp-mini{
+  display:flex;align-items:center;gap:8px;
+  background:var(--bg-2);
+  border:1px solid var(--line);
+  border-radius:6px;
+  padding:6px 8px;
+  font-family:"Inter",sans-serif;
+  position:relative;
+}
+.cmp-mini .pfp{width:26px;height:26px;border-radius:50%;border:1px solid var(--line);object-fit:cover}
+.cmp-mini .nm{
+  flex:1;
+  font-family:"Barlow",sans-serif;
+  font-weight:600;font-size:12.5px;
+  color:var(--ink);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;
+}
+.cmp-mini .rm{
+  background:transparent;border:0;cursor:pointer;
+  color:var(--ink-dim);font-size:13px;
+  padding:0 4px;
+}
+.cmp-mini .rm:hover{color:var(--negative)}
+.cmp-mini.winner{border-color:var(--accent);box-shadow:inset 2px 0 0 var(--accent)}
+
+.rail-btn{
+  width:100%;
+  background:var(--accent-pink);
+  color:#fff;
+  border:0;
+  padding:10px;
+  border-radius:6px;
+  font-family:"Barlow",sans-serif;
+  font-weight:700;font-size:13px;
+  cursor:pointer;
+  margin-top:8px;
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  letter-spacing:0.02em;
+}
+.rail-btn:hover{filter:brightness(1.08)}
+.rail-btn.ghost{background:transparent;color:var(--ink-soft);border:1px solid var(--line)}
+.rail-btn.ghost:hover{color:var(--ink);border-color:var(--accent)}
+.rail-btn[disabled]{opacity:0.5;cursor:not-allowed}
+
+.rail-empty{
+  font-family:"Inter",sans-serif;font-size:12px;
+  color:var(--ink-dim);
+  padding:10px 8px;
+  text-align:center;
+  background:var(--bg-2);
+  border:1px dashed var(--line);
+  border-radius:6px;
+}
+
+/* Next suggested pick callout */
+.suggest{
+  background:linear-gradient(135deg, color-mix(in srgb,var(--accent-pink) 18%, transparent), color-mix(in srgb,var(--accent) 18%, transparent));
+  border:1px solid var(--accent-pink);
+  border-radius:8px;
+  padding:12px;
+  display:flex;align-items:center;gap:10px;
+  cursor:pointer;
+  transition:transform 120ms ease;
+}
+.suggest:hover{transform:translateY(-1px)}
+.suggest .pfp{width:42px;height:42px;border-radius:50%;border:2px solid var(--accent);object-fit:cover;flex-shrink:0}
+.suggest .body{min-width:0;flex:1}
+.suggest .eyebrow{
+  font-family:"Barlow",sans-serif;
+  font-weight:800;font-size:9.5px;
+  letter-spacing:0.14em;
+  color:var(--accent-pink);
+}
+.suggest .nm{
+  font-family:"Barlow",sans-serif;
+  font-weight:700;font-size:14px;
+  color:var(--ink);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.suggest .why{
+  font-family:"Inter",sans-serif;font-size:11px;
+  color:var(--ink-soft);
+  margin-top:1px;
+}
+
+/* ─── Compare modal (kept distinct from rail; rail is mini-compare; modal is full) ─── */
+.cmp-overlay{
+  position:fixed;inset:0;
+  background:rgba(0,0,0,0.7);
+  z-index:200;
+  display:none;
+  align-items:flex-start;justify-content:center;
+  padding:32px 16px;
+  overflow-y:auto;
+}
+.cmp-overlay.open{display:flex}
+.cmp-modal{
+  background:var(--bg-2);
+  border:1px solid var(--line);
+  border-radius:10px;
+  width:100%;max-width:780px;
+  padding:22px 22px 18px;
+  box-shadow:0 24px 80px rgba(0,0,0,0.5);
+}
+.cmp-h{display:flex;align-items:center;margin-bottom:6px}
+.cmp-h h2{font-family:"Barlow",sans-serif;font-weight:800;font-size:22px;color:var(--ink)}
+.cmp-h h2 .pink{color:var(--accent-pink)}
+.cmp-h .x{
+  margin-left:auto;background:transparent;border:1px solid var(--line);
+  color:var(--ink-soft);width:30px;height:30px;border-radius:6px;cursor:pointer;font-size:14px;
+}
+.cmp-h .x:hover{color:var(--ink);border-color:var(--accent)}
+.cmp-rule{height:2px;background:var(--grad);margin:4px 0 16px;border-radius:2px;max-width:140px}
+.cmp-tiles{display:grid;gap:8px;margin-bottom:14px}
+.cmp-tile{
+  background:var(--bg);
+  border:1.5px solid var(--line);
+  border-radius:8px;
+  padding:10px;
+  text-align:center;
+  position:relative;
+}
+.cmp-tile.winner{
+  border-color:var(--accent);
+  box-shadow:0 0 0 1px var(--accent) inset;
+}
+.cmp-tile.winner::before{
+  content:"";position:absolute;inset:-1.5px -1.5px auto -1.5px;height:3px;
+  background:var(--grad);border-radius:8px 8px 0 0;
+}
+.cmp-tile .pfp{width:50px;height:50px;border-radius:50%;margin:0 auto 6px;border:2px solid var(--accent);background:var(--bg);object-fit:cover}
+.cmp-tile .nm{font-family:"Barlow",sans-serif;font-weight:700;font-size:13px;color:var(--ink);margin-bottom:3px}
+.cmp-tile .team-line{display:inline-flex;align-items:center;gap:6px;font-family:"Barlow",sans-serif;font-size:11px;color:var(--ink-soft)}
+.cmp-tile .team-line img{width:14px;height:14px}
+.cmp-tile .rm{position:absolute;top:5px;right:5px;background:transparent;border:0;color:var(--ink-dim);cursor:pointer;font-size:11px;padding:2px 5px;border-radius:3px}
+.cmp-tile .rm:hover{background:var(--negative);color:#fff}
+.cmp-stats{display:grid;gap:5px}
+.cmp-row{
+  display:grid;align-items:center;gap:8px;
+  padding:8px 10px;background:var(--bg);border-radius:6px;
+  font-family:"Barlow",sans-serif;
+}
+.cmp-row .label{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;font-weight:600;color:var(--ink-soft)}
+.cmp-row .label .ico{width:20px;height:20px;border-radius:50%;background:var(--bg-2);border:1px solid var(--line);display:inline-flex;align-items:center;justify-content:center;font-size:11px;color:var(--accent)}
+.cmp-cell{text-align:center;font-size:13px;font-weight:700;color:var(--ink);padding:5px 8px;border-radius:5px;font-family:"Barlow",sans-serif}
+.cmp-cell.winner{background:color-mix(in srgb,var(--accent) 22%,transparent);color:var(--accent);border:1px solid var(--accent)}
+.cmp-cell.winner::before{content:"♛";font-size:10px;margin-right:4px;color:var(--accent)}
+
+/* ─── Drawer ─── */
+.drw-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:180;display:none}
+.drw-overlay.open{display:block}
+.drw{
+  position:fixed;top:0;right:0;
+  width:min(460px,100vw);height:100vh;
+  background:var(--bg-2);
+  border-left:1px solid var(--line);
+  z-index:190;
+  transform:translateX(100%);
+  transition:transform 280ms cubic-bezier(0.4,0,0.2,1);
+  display:flex;flex-direction:column;
+  overflow-y:auto;
+}
+.drw.open{transform:translateX(0)}
+.drw-close{position:absolute;top:14px;right:14px;background:transparent;border:1px solid var(--line);color:var(--ink-soft);width:32px;height:32px;border-radius:6px;cursor:pointer;font-size:14px;z-index:2}
+.drw-close:hover{color:var(--ink);border-color:var(--accent)}
+.drw-hero{padding:24px 22px 18px;background:var(--bg);border-bottom:1px solid var(--line);position:relative}
+.drw-hero .pfp{width:80px;height:80px;border-radius:50%;border:2px solid var(--accent);background:var(--bg);object-fit:cover;margin-bottom:12px}
+.drw-hero h2{font-family:"Barlow",sans-serif;font-size:26px;font-weight:800;color:var(--ink)}
+.drw-hero .sub{display:flex;align-items:center;gap:8px;margin-top:6px;font-family:"Barlow",sans-serif;font-size:13px;color:var(--ink-soft)}
+.drw-hero .sub img{width:18px;height:18px}
+.drw-stats{padding:16px 22px;display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.drw-stat{background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+.drw-stat .l{font-family:"Inter",sans-serif;font-size:11px;color:var(--ink-dim)}
+.drw-stat .v{font-family:"Barlow",sans-serif;font-weight:800;font-size:22px;color:var(--ink);margin-top:2px}
+.drw-section{padding:0 22px 16px}
+.drw-section h3{font-family:"Barlow",sans-serif;font-size:13px;font-weight:800;color:var(--ink);margin-bottom:8px;letter-spacing:0.04em}
+.drw-stat-row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--line-soft);font-family:"Inter",sans-serif;font-size:13px}
+.drw-stat-row:last-child{border-bottom:0}
+.drw-stat-row .l{color:var(--ink-soft)}
+.drw-stat-row .v{color:var(--ink);font-weight:600}
+.drw-acts{padding:14px 22px;display:flex;gap:8px;flex-wrap:wrap;border-top:1px solid var(--line);background:var(--bg);position:sticky;bottom:0}
+.drw-act{flex:1;min-width:120px;font-family:"Barlow",sans-serif;font-weight:700;font-size:13px;background:var(--bg-2);border:1px solid var(--line);color:var(--ink);padding:10px;border-radius:6px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.drw-act:hover{border-color:var(--accent)}
+.drw-act.warn.active{background:var(--accent-yellow);color:var(--bg);border-color:var(--accent-yellow)}
+.drw-act.pos.active{background:var(--positive);color:var(--bg);border-color:var(--positive)}
+.drw-act.active{background:var(--accent-pink);color:#fff;border-color:var(--accent-pink)}
+
+/* ─── Setup wizard (with Back) ─── */
+.intro-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:300;display:none;align-items:center;justify-content:center;padding:24px}
+.intro-overlay.open{display:flex}
+.intro-card{background:var(--bg-2);border:1px solid var(--line);border-radius:12px;width:100%;max-width:620px;padding:26px;box-shadow:0 24px 80px rgba(0,0,0,0.5)}
+.intro-prog{display:flex;gap:4px;margin-bottom:14px}
+.intro-prog i{flex:1;height:3px;background:var(--line);border-radius:2px}
+.intro-prog i.done{background:var(--accent-pink)}
+.intro-step-num{font-family:"Barlow",sans-serif;font-size:11px;letter-spacing:0.1em;color:var(--accent-pink);font-weight:700}
+.intro-q{font-family:"Barlow",sans-serif;font-size:26px;font-weight:800;color:var(--ink);margin:6px 0 6px}
+.intro-sub{font-family:"Inter",sans-serif;font-size:13px;color:var(--ink-soft);margin-bottom:18px}
+.intro-options{display:grid;gap:8px}
+.intro-options.cols-3{grid-template-columns:repeat(3,1fr)}
+.intro-opt{background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:12px;cursor:pointer;text-align:left;display:flex;align-items:center;gap:10px;font-family:"Barlow",sans-serif;font-size:14px;font-weight:700;color:var(--ink);transition:all 140ms ease}
+.intro-opt:hover{border-color:var(--accent)}
+.intro-opt.selected{background:var(--accent);border-color:var(--accent);color:#fff}
+.intro-opt .icon{width:28px;height:28px;border-radius:6px;background:var(--bg-2);display:inline-flex;align-items:center;justify-content:center;color:var(--accent);font-weight:800;font-size:13px;border:1px solid var(--line);flex-shrink:0}
+.intro-opt.selected .icon{background:rgba(255,255,255,0.18);color:#fff;border-color:rgba(255,255,255,0.3)}
+.intro-opt .lbl-sub{display:block;font-family:"Inter",sans-serif;font-weight:400;font-size:11px;color:var(--ink-dim);margin-top:1px}
+.intro-opt.selected .lbl-sub{color:rgba(255,255,255,0.85)}
+.intro-foot{display:flex;align-items:center;gap:8px;margin-top:20px}
+.intro-skip{background:transparent;border:0;color:var(--ink-dim);font-family:"Inter",sans-serif;font-size:13px;cursor:pointer}
+.intro-skip:hover{color:var(--ink-soft)}
+.intro-back{background:transparent;border:1px solid var(--line);color:var(--ink-soft);padding:8px 16px;border-radius:6px;font-family:"Barlow",sans-serif;font-weight:700;font-size:13px;cursor:pointer;margin-left:auto}
+.intro-back:hover{color:var(--ink);border-color:var(--accent)}
+.intro-back:disabled{opacity:0.3;cursor:not-allowed}
+.intro-next{background:var(--accent-pink);color:#fff;border:0;padding:9px 22px;border-radius:6px;font-family:"Barlow",sans-serif;font-weight:800;font-size:13px;cursor:pointer}
+.intro-next:hover{filter:brightness(1.08)}
+.intro-next:disabled{opacity:0.35;cursor:not-allowed}
+
+/* Empty state */
+.empty{padding:60px 20px;text-align:center;color:var(--ink-dim);font-family:"Inter",sans-serif}
+.empty h3{font-family:"Barlow",sans-serif;font-size:20px;color:var(--ink-soft);margin-bottom:8px}
+
+/* ─── Responsive: collapse rail under 1180px ─── */
+@media (max-width:1180px){
+  .shell{grid-template-columns:minmax(0,1fr)}
+  .rail{display:none}
+}
+@media (max-width:960px){
+  .row,.list-cols{grid-template-columns:24px 40px minmax(160px,1.5fr) 70px 70px 110px}
+  .row > .row-proj, .row > .row-range, .row > .row-tags{display:none}
+  .list-cols .ch.proj, .list-cols .ch.range, .list-cols .ch.tags{display:none}
+  .sub-title{font-size:24px}
+  .row-pfp{width:32px;height:32px}
+}
+</style>
+</head>
+<body>
+
+<!-- ─── TOP BAR ─── -->
+<header class="tb">
+  <a class="tb-brand" href="bigboard-list.html" aria-label="BDGE">
+    <img src="assets/bdge-logo-clear.png" alt="BDGE" />
+  </a>
+  <h1 class="tb-h">The Big <span class="pink">Board</span></h1>
+  <span class="tb-wm">2026</span>
+  <div class="tb-spacer"></div>
+  <label class="tb-search">
+    <span class="ico">⌕</span>
+    <input id="search" placeholder="Search players, teams" />
+    <span class="kbd">/</span>
+  </label>
+  <button class="tb-help-btn" id="helpBtn" title="Re-run setup">?</button>
+  <button class="tb-icon-btn" id="setupBtn" title="Settings">⚙</button>
+  <div class="tb-theme">
+    <button data-theme="light">Light</button>
+    <button class="active" data-theme="dark">Dark</button>
+  </div>
+  <span class="tb-acct"><span class="avatar">B</span> Beau</span>
+</header>
+
+<!-- ─── SUB-HEADER (title + filters + actions, one strip) ─── -->
+<section class="sub">
+  <div class="sub-row">
+    <h2 class="sub-title">Draft <span class="grad">Rankings</span> <span class="yr">2026 · Fantasy Football</span></h2>
+    <span style="flex:1"></span>
+    <nav class="pos-seg" id="posBar">
+      <button class="active" data-pos="all">Overall</button>
+      <button data-pos="QB">QB</button>
+      <button data-pos="RB">RB</button>
+      <button data-pos="WR">WR</button>
+      <button data-pos="TE">TE</button>
+      <button data-pos="FLEX">Flex</button>
+      <button data-pos="DST">D/ST</button>
+      <button data-pos="K">K</button>
+    </nav>
+    <button class="act-btn team" id="myTeamBtn"><span class="ico">★</span>My Team<span class="ct" id="myTeamCt">0</span></button>
+    <button class="act-btn drafted" id="draftedBtn"><span class="ico">✓</span>Drafted<span class="ct" id="draftedCt">0</span></button>
+    <button class="act-btn compare" id="compareBtn"><span class="ico">☐</span>Compare<span class="ct" id="cmpCt">0</span></button>
+  </div>
+</section>
+
+<!-- ─── SHELL: main list + sticky rail ─── -->
+<div class="shell">
+  <main class="main">
+    <div class="list-cols">
+      <div></div>
+      <div class="ch sorted center" data-sort="rk">Rank</div>
+      <div class="ch" data-sort="name">Player</div>
+      <div class="ch" data-sort="team">Team · Age</div>
+      <div class="ch right" data-sort="adp">ADP</div>
+      <div class="ch proj right" data-sort="pts">Proj</div>
+      <div class="ch range">Floor — Ceiling</div>
+      <div class="ch tags">Tags</div>
+      <div class="ch right">Actions</div>
+    </div>
+    <div id="list"></div>
+  </main>
+
+  <aside class="rail" id="rail">
+    <div class="rail-section">
+      <div class="rail-h">Next pick suggested <span class="ct pink">BDGE</span></div>
+      <div id="railSuggest"></div>
+    </div>
+
+    <div class="rail-section">
+      <div class="rail-h">My team <span class="ct warn" id="railTeamCt">0</span></div>
+      <div class="roster-grid" id="railRoster"></div>
+    </div>
+
+    <div class="rail-section">
+      <div class="rail-h">Compare <span class="ct pink" id="railCmpCt">0</span></div>
+      <div id="railCompare"></div>
+      <button class="rail-btn" id="railCmpOpen" disabled>Open compare ›</button>
+    </div>
+
+    <div class="rail-section">
+      <div class="rail-h">Drafted by others <span class="ct pos" id="railDraftCt">0</span></div>
+      <div id="railDrafted"></div>
+    </div>
+  </aside>
+</div>
+
+<!-- ─── COMPARE MODAL ─── -->
+<div class="cmp-overlay" id="cmpOverlay">
+  <div class="cmp-modal" id="cmpModal">
+    <div class="cmp-h">
+      <h2>Compare <span class="pink">players</span></h2>
+      <button class="x" id="cmpClose">✕</button>
+    </div>
+    <div class="cmp-rule"></div>
+    <div class="cmp-tiles" id="cmpTiles"></div>
+    <div class="cmp-stats" id="cmpStats"></div>
+  </div>
+</div>
+
+<!-- ─── DRAWER ─── -->
+<div class="drw-overlay" id="drwOverlay"></div>
+<aside class="drw" id="drw" aria-hidden="true">
+  <button class="drw-close" id="drwClose">✕</button>
+  <div id="drwBody"></div>
+</aside>
+
+<!-- ─── SETUP WIZARD ─── -->
+<div class="intro-overlay" id="intro">
+  <div class="intro-card">
+    <div class="intro-prog">
+      <i id="prog1"></i><i id="prog2"></i><i id="prog3"></i><i id="prog4"></i>
+    </div>
+    <div class="intro-step-num" id="stepNum">Step 1 of 4</div>
+
+    <div id="step1">
+      <h2 class="intro-q">Are you in a draft?</h2>
+      <div class="intro-sub">We'll tune the board for what you need right now.</div>
+      <div class="intro-options cols-3">
+        <button class="intro-opt" data-val="now"><span class="icon">▶</span><span>Drafting now<span class="lbl-sub">2 min on the clock</span></span></button>
+        <button class="intro-opt" data-val="prep"><span class="icon">▤</span><span>Just prepping<span class="lbl-sub">research mode</span></span></button>
+        <button class="intro-opt" data-val="browse"><span class="icon">◇</span><span>Browsing<span class="lbl-sub">show me everything</span></span></button>
+      </div>
+    </div>
+
+    <div id="step2" style="display:none">
+      <h2 class="intro-q">Which platform?</h2>
+      <div class="intro-sub">We'll show how BDGE compares to theirs.</div>
+      <div class="intro-options cols-3">
+        <button class="intro-opt" data-val="espn"><span class="icon">E</span>ESPN</button>
+        <button class="intro-opt" data-val="yahoo"><span class="icon">Y</span>Yahoo</button>
+        <button class="intro-opt" data-val="sleeper"><span class="icon">S</span>Sleeper</button>
+        <button class="intro-opt" data-val="nfl"><span class="icon">N</span>NFL.com</button>
+        <button class="intro-opt" data-val="underdog"><span class="icon">U</span>Underdog</button>
+        <button class="intro-opt" data-val="none"><span class="icon">·</span>Skip</button>
+      </div>
+    </div>
+
+    <div id="step3" style="display:none">
+      <h2 class="intro-q">How many teams?</h2>
+      <div class="intro-sub">Each round will be sized to one pick per team.</div>
+      <div class="intro-options cols-3">
+        <button class="intro-opt" data-val="8"><span class="icon">8</span><span>8 teams<span class="lbl-sub">small league</span></span></button>
+        <button class="intro-opt" data-val="10"><span class="icon">10</span><span>10 teams</span></button>
+        <button class="intro-opt" data-val="12"><span class="icon">12</span><span>12 teams<span class="lbl-sub">most common</span></span></button>
+        <button class="intro-opt" data-val="14"><span class="icon">14</span><span>14 teams</span></button>
+        <button class="intro-opt" data-val="16"><span class="icon">16</span><span>16 teams<span class="lbl-sub">deep league</span></span></button>
+        <button class="intro-opt" data-val="custom"><span class="icon">+</span><span>Custom</span></button>
+      </div>
+    </div>
+
+    <div id="step4" style="display:none">
+      <h2 class="intro-q">Roster format?</h2>
+      <div class="intro-sub">You can change this anytime.</div>
+      <div class="intro-options" style="grid-template-columns:1fr">
+        <button class="intro-opt" data-val="standard"><span class="icon">S</span><span>Standard<span class="lbl-sub">1 QB, 2 RB, 2 WR, 1 TE, 1 FLEX</span></span></button>
+        <button class="intro-opt" data-val="superflex"><span class="icon">SF</span><span>Superflex<span class="lbl-sub">QB can fill FLEX slot</span></span></button>
+        <button class="intro-opt" data-val="bestball"><span class="icon">BB</span><span>Best Ball<span class="lbl-sub">No in-season management</span></span></button>
+        <button class="intro-opt" data-val="custom"><span class="icon">+</span><span>Custom<span class="lbl-sub">Set up your own scoring</span></span></button>
+      </div>
+    </div>
+
+    <div class="intro-foot">
+      <button class="intro-skip" id="introSkip">Skip setup</button>
+      <button class="intro-back" id="introBack" disabled>← Back</button>
+      <button class="intro-next" id="introNext" disabled>Continue →</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ─── DATA ─── */
+const PLAYERS = [
+  { rk:1,  name:"Christian McCaffrey", team:"SF",  pos:"RB", age:29, jersey:23, pts:348.2, adp:2.1,  espn:"3117251", tier:"ELITE",     ceil:412, floor:268, vbd:62.4, ppg:21.8 },
+  { rk:2,  name:"Bijan Robinson",      team:"ATL", pos:"RB", age:24, jersey:7,  pts:336.8, adp:1.8,  espn:"4430807", tier:"ELITE",     ceil:398, floor:251, vbd:58.2, ppg:21.0 },
+  { rk:3,  name:"Ja'Marr Chase",       team:"CIN", pos:"WR", age:26, jersey:1,  pts:336.4, adp:3.4,  espn:"4362628", tier:"ELITE",     ceil:402, floor:262, vbd:63.5, ppg:21.0 },
+  { rk:4,  name:"Justin Jefferson",    team:"MIN", pos:"WR", age:26, jersey:18, pts:317.2, adp:4.1,  espn:"4262921", tier:"ELITE",     ceil:382, floor:251, vbd:52.0, ppg:19.8 },
+  { rk:5,  name:"Tyreek Hill",         team:"MIA", pos:"WR", age:32, jersey:10, pts:298.7, adp:6.5,  espn:"3116406", tier:"FRANCHISE", ceil:368, floor:222, vbd:43.1, ppg:18.7 },
+  { rk:6,  name:"CeeDee Lamb",         team:"DAL", pos:"WR", age:27, jersey:88, pts:294.8, adp:7.2,  espn:"4241389", tier:"FRANCHISE", ceil:362, floor:228, vbd:41.0, ppg:18.4 },
+  { rk:7,  name:"Saquon Barkley",      team:"PHI", pos:"RB", age:29, jersey:26, pts:292.3, adp:8.4,  espn:"3929630", tier:"FRANCHISE", ceil:354, floor:218, vbd:39.5, ppg:18.3 },
+  { rk:8,  name:"Patrick Mahomes",     team:"KC",  pos:"QB", age:30, jersey:15, pts:388.0, adp:38.0, espn:"3139477", tier:"FRANCHISE", ceil:438, floor:312, vbd:74.2, ppg:24.3 },
+  { rk:9,  name:"Amon-Ra St. Brown",   team:"DET", pos:"WR", age:26, jersey:14, pts:281.6, adp:9.6,  espn:"4374302", tier:"FRANCHISE", ceil:344, floor:208, vbd:36.8, ppg:17.6 },
+  { rk:10, name:"Puka Nacua",          team:"LAR", pos:"WR", age:24, jersey:17, pts:276.2, adp:11.8, espn:"4426515", tier:"ALL_PRO",   ceil:332, floor:200, vbd:32.4, ppg:17.3 },
+  { rk:11, name:"Breece Hall",         team:"NYJ", pos:"RB", age:24, jersey:20, pts:271.4, adp:13.2, espn:"4427366", tier:"ALL_PRO",   ceil:330, floor:194, vbd:30.6, ppg:17.0 },
+  { rk:12, name:"A.J. Brown",          team:"PHI", pos:"WR", age:28, jersey:11, pts:267.9, adp:14.8, espn:"4047646", tier:"ALL_PRO",   ceil:324, floor:194, vbd:28.0, ppg:16.7 },
+  { rk:13, name:"Garrett Wilson",      team:"NYJ", pos:"WR", age:25, jersey:5,  pts:264.1, adp:15.6, espn:"4569618", tier:"ALL_PRO",   ceil:318, floor:191, vbd:27.2, ppg:16.5 },
+  { rk:14, name:"Jonathan Taylor",     team:"IND", pos:"RB", age:27, jersey:28, pts:261.8, adp:18.4, espn:"4242335", tier:"ALL_PRO",   ceil:316, floor:188, vbd:24.6, ppg:16.4 },
+  { rk:15, name:"Drake London",        team:"ATL", pos:"WR", age:24, jersey:5,  pts:258.0, adp:19.2, espn:"4426502", tier:"ALL_PRO",   ceil:312, floor:185, vbd:23.8, ppg:16.1 },
+  { rk:16, name:"Marvin Harrison Jr.", team:"ARI", pos:"WR", age:24, jersey:18, pts:255.3, adp:21.0, espn:"4432708", tier:"ALL_PRO",   ceil:308, floor:182, vbd:22.4, ppg:16.0 },
+  { rk:17, name:"Sam LaPorta",         team:"DET", pos:"TE", age:25, jersey:87, pts:218.6, adp:34.2, espn:"4430027", tier:"ALL_PRO",   ceil:282, floor:158, vbd:46.2, ppg:13.7 },
+  { rk:18, name:"Jayden Daniels",      team:"WSH", pos:"QB", age:25, jersey:5,  pts:374.2, adp:42.0, espn:"4426348", tier:"ALL_PRO",   ceil:418, floor:294, vbd:60.4, ppg:23.4 },
+  { rk:19, name:"Kyren Williams",      team:"LAR", pos:"RB", age:25, jersey:23, pts:248.2, adp:23.4, espn:"4430737", tier:"STARTER",   ceil:296, floor:178, vbd:18.4, ppg:15.5 },
+  { rk:20, name:"Derrick Henry",       team:"BAL", pos:"RB", age:31, jersey:22, pts:244.6, adp:24.8, espn:"3043078", tier:"STARTER",   ceil:298, floor:170, vbd:17.0, ppg:15.3 },
+  { rk:21, name:"Tony Pollard",        team:"TEN", pos:"RB", age:28, jersey:20, pts:240.1, adp:30.4, espn:"3916148", tier:"STARTER",   ceil:288, floor:168, vbd:14.8, ppg:15.0 },
+  { rk:22, name:"Mike Evans",          team:"TB",  pos:"WR", age:32, jersey:13, pts:240.4, adp:26.6, espn:"16737",   tier:"STARTER",   ceil:296, floor:166, vbd:14.6, ppg:15.0 },
+  { rk:23, name:"Bo Nix",              team:"DEN", pos:"QB", age:25, jersey:10, pts:362.4, adp:48.2, espn:"4426338", tier:"STARTER",   ceil:402, floor:284, vbd:54.8, ppg:22.7 },
+  { rk:24, name:"Rome Odunze",         team:"CHI", pos:"WR", age:23, jersey:15, pts:236.8, adp:32.8, espn:"4431299", tier:"STARTER",   ceil:288, floor:160, vbd:13.0, ppg:14.8 },
+  { rk:25, name:"Brock Bowers",        team:"LV",  pos:"TE", age:23, jersey:89, pts:208.4, adp:36.0, espn:"4432665", tier:"STARTER",   ceil:268, floor:148, vbd:38.0, ppg:13.0 },
+  { rk:26, name:"De'Von Achane",       team:"MIA", pos:"RB", age:24, jersey:28, pts:232.6, adp:35.4, espn:"4685702", tier:"STARTER",   ceil:284, floor:158, vbd:11.4, ppg:14.5 },
+  { rk:27, name:"DeVonta Smith",       team:"PHI", pos:"WR", age:27, jersey:6,  pts:228.8, adp:39.6, espn:"4241981", tier:"STARTER",   ceil:280, floor:156, vbd:9.0,  ppg:14.3 },
+  { rk:28, name:"Travis Etienne",      team:"JAX", pos:"RB", age:27, jersey:1,  pts:225.1, adp:42.2, espn:"4239996", tier:"STARTER",   ceil:276, floor:152, vbd:8.4,  ppg:14.1 },
+  { rk:29, name:"Davante Adams",       team:"NYJ", pos:"WR", age:33, jersey:17, pts:222.4, adp:44.6, espn:"16800",   tier:"STARTER",   ceil:272, floor:150, vbd:7.2,  ppg:13.9 },
+  { rk:30, name:"DK Metcalf",          team:"PIT", pos:"WR", age:28, jersey:14, pts:220.2, adp:46.2, espn:"4047650", tier:"STARTER",   ceil:268, floor:148, vbd:6.4,  ppg:13.8 },
+  { rk:31, name:"Lamar Jackson",       team:"BAL", pos:"QB", age:29, jersey:8,  pts:354.6, adp:52.4, espn:"3916387", tier:"STARTER",   ceil:392, floor:280, vbd:48.8, ppg:22.2 },
+  { rk:32, name:"Josh Jacobs",         team:"GB",  pos:"RB", age:28, jersey:8,  pts:217.0, adp:48.6, espn:"4047365", tier:"STARTER",   ceil:264, floor:144, vbd:5.0,  ppg:13.6 },
+  { rk:33, name:"Trey McBride",        team:"ARI", pos:"TE", age:26, jersey:85, pts:198.8, adp:40.8, espn:"4361370", tier:"STARTER",   ceil:254, floor:138, vbd:32.0, ppg:12.4 },
+  { rk:34, name:"Nico Collins",        team:"HOU", pos:"WR", age:27, jersey:12, pts:213.6, adp:50.0, espn:"4258234", tier:"STARTER",   ceil:260, floor:142, vbd:3.8,  ppg:13.4 },
+  { rk:35, name:"Terry McLaurin",      team:"WSH", pos:"WR", age:30, jersey:17, pts:211.4, adp:51.2, espn:"3915416", tier:"STARTER",   ceil:258, floor:140, vbd:3.2,  ppg:13.2 },
+  { rk:36, name:"Joe Burrow",          team:"CIN", pos:"QB", age:29, jersey:9,  pts:348.2, adp:56.4, espn:"3915511", tier:"STARTER",   ceil:386, floor:274, vbd:44.4, ppg:21.8 },
+  { rk:37, name:"Aaron Jones Sr.",     team:"MIN", pos:"RB", age:31, jersey:33, pts:208.2, adp:54.6, espn:"3042519", tier:"DEPTH",     ceil:254, floor:138, vbd:1.8,  ppg:13.0 },
+  { rk:38, name:"Jaylen Waddle",       team:"MIA", pos:"WR", age:27, jersey:17, pts:206.4, adp:55.8, espn:"4372016", tier:"DEPTH",     ceil:252, floor:136, vbd:1.0,  ppg:12.9 },
+  { rk:39, name:"Kenneth Walker III",  team:"SEA", pos:"RB", age:25, jersey:9,  pts:204.8, adp:57.2, espn:"4567048", tier:"DEPTH",     ceil:250, floor:134, vbd:0.4,  ppg:12.8 },
+  { rk:40, name:"Brian Thomas Jr.",    team:"JAX", pos:"WR", age:23, jersey:7,  pts:202.0, adp:59.8, espn:"4685720", tier:"DEPTH",     ceil:246, floor:130, vbd:-0.8, ppg:12.6 },
+  { rk:41, name:"Kyler Murray",        team:"ARI", pos:"QB", age:29, jersey:1,  pts:340.4, adp:62.2, espn:"3917315", tier:"DEPTH",     ceil:378, floor:266, vbd:40.0, ppg:21.3 },
+  { rk:42, name:"James Cook",          team:"BUF", pos:"RB", age:26, jersey:4,  pts:200.6, adp:60.4, espn:"4426354", tier:"DEPTH",     ceil:244, floor:128, vbd:-1.4, ppg:12.5 },
+  { rk:43, name:"Chris Olave",         team:"NO",  pos:"WR", age:26, jersey:12, pts:199.2, adp:63.0, espn:"4567099", tier:"DEPTH",     ceil:242, floor:126, vbd:-2.0, ppg:12.4 },
+  { rk:44, name:"Travis Kelce",        team:"KC",  pos:"TE", age:36, jersey:87, pts:184.0, adp:64.4, espn:"15847",   tier:"DEPTH",     ceil:240, floor:124, vbd:24.6, ppg:11.5 },
+  { rk:45, name:"Isiah Pacheco",       team:"KC",  pos:"RB", age:27, jersey:10, pts:198.0, adp:66.2, espn:"4360939", tier:"DEPTH",     ceil:240, floor:122, vbd:-2.6, ppg:12.4 },
+  { rk:46, name:"Tee Higgins",         team:"CIN", pos:"WR", age:27, jersey:5,  pts:196.2, adp:68.4, espn:"4239993", tier:"DEPTH",     ceil:238, floor:120, vbd:-3.4, ppg:12.3 },
+  { rk:47, name:"Jalen Hurts",         team:"PHI", pos:"QB", age:28, jersey:1,  pts:336.4, adp:74.6, espn:"4040715", tier:"DEPTH",     ceil:374, floor:262, vbd:36.8, ppg:21.0 },
+  { rk:48, name:"D'Andre Swift",       team:"CHI", pos:"RB", age:26, jersey:4,  pts:195.0, adp:72.4, espn:"4259545", tier:"DEPTH",     ceil:236, floor:118, vbd:-4.0, ppg:12.2 },
+];
+
+const TEAM_DATA = {
+  ATL:{w:7.5,ol:12,st:'Retractable',sos:14,psos:12},  SF:{w:10.5,ol:7,st:'Outdoor',sos:22,psos:18},
+  CIN:{w:9.5,ol:18,st:'Outdoor',sos:19,psos:14},      MIN:{w:9.0,ol:14,st:'Dome',sos:16,psos:11},
+  MIA:{w:8.5,ol:22,st:'Outdoor',sos:25,psos:19},      DAL:{w:8.5,ol:11,st:'Retractable',sos:17,psos:13},
+  PHI:{w:11.5,ol:4,st:'Outdoor',sos:9,psos:7},        NYJ:{w:6.5,ol:27,st:'Outdoor',sos:28,psos:22},
+  DET:{w:10.5,ol:9,st:'Dome',sos:12,psos:9},          LAR:{w:8.5,ol:17,st:'Dome',sos:21,psos:17},
+  IND:{w:7.5,ol:8,st:'Retractable',sos:15,psos:14},   ARI:{w:4.5,ol:19,st:'Retractable',sos:26,psos:21},
+  KC:{w:11.0,ol:6,st:'Outdoor',sos:7,psos:5},         WSH:{w:7.5,ol:23,st:'Outdoor',sos:18,psos:15},
+  BAL:{w:11.0,ol:13,st:'Outdoor',sos:11,psos:8},      TEN:{w:5.5,ol:26,st:'Outdoor',sos:29,psos:24},
+  TB:{w:7.0,ol:16,st:'Outdoor',sos:13,psos:10},       DEN:{w:7.0,ol:15,st:'Outdoor',sos:24,psos:20},
+  CHI:{w:8.5,ol:21,st:'Outdoor',sos:20,psos:16},      LV:{w:6.0,ol:24,st:'Dome',sos:30,psos:25},
+  JAX:{w:7.5,ol:20,st:'Outdoor',sos:23,psos:19},      PIT:{w:9.5,ol:10,st:'Outdoor',sos:8,psos:6},
+  GB:{w:9.5,ol:5,st:'Outdoor',sos:10,psos:9},         HOU:{w:9.5,ol:25,st:'Retractable',sos:6,psos:4},
+  NO:{w:6.5,ol:28,st:'Dome',sos:27,psos:23},          SEA:{w:8.0,ol:30,st:'Outdoor',sos:31,psos:26},
+  BUF:{w:10.5,ol:4,st:'Outdoor',sos:5,psos:4}
+};
+
+const POS_RK = (() => {
+  const m = new Map(), ct = {};
+  PLAYERS.slice().sort((a,b) => a.rk - b.rk).forEach(p => { ct[p.pos] = (ct[p.pos] || 0) + 1; m.set(p.rk, ct[p.pos]); });
+  return m;
+})();
+function posRk(p) { return POS_RK.get(p.rk) || ''; }
+
+function tagsFor(p) {
+  const out = [];
+  if (p.rk <= 6) out.push({k:'must',l:'Must draft'});
+  if (p.age <= 23 && p.rk >= 10) out.push({k:'rookie',l:'Rookie'});
+  if ((p.ceil - p.floor) >= 140 && p.rk > 6) out.push({k:'boom',l:'Boom-bust'});
+  if (p.rk >= 30 && p.vbd > 1) out.push({k:'sleeper',l:'Sleeper'});
+  const injuryProne = new Set(["Christian McCaffrey","Saquon Barkley","Breece Hall","Tyreek Hill","Travis Kelce","Ja'Marr Chase","Justin Jefferson"]);
+  if (injuryProne.has(p.name)) out.push({k:'injury',l:'Injury risk'});
+  if (p.age >= 31) out.push({k:'fade',l:'Full fade'});
+  return out.slice(0, 2);
+}
+
+/* Global range floor/ceil for projection bar */
+const RANGE_MIN = Math.min(...PLAYERS.map(p => p.floor));
+const RANGE_MAX = Math.max(...PLAYERS.map(p => p.ceil));
+
+/* ─── State ─── */
+function getList(key) { try { return JSON.parse(localStorage.getItem(key) || '[]'); } catch(e){ return []; } }
+function setList(key, arr) { try { localStorage.setItem(key, JSON.stringify(arr)); } catch(e){} }
+function isDrafted(rk) { return getList('bdgeDrafted').includes(rk); }
+function isOnTeam(rk)  { return getList('bdgeMyTeam').includes(rk); }
+function isInCompare(rk) { return getList('bdgeCompare').includes(rk); }
+function toggleList(key, rk) { const a = getList(key); const i = a.indexOf(rk); if (i >= 0) a.splice(i,1); else a.push(rk); setList(key, a); }
+function teamCount() { try { const v = localStorage.getItem('bdgeTeamCount'); if (v && v !== 'custom') return parseInt(v,10) || 12; } catch(e){} return 12; }
+
+let activePos='all', activeQuery='';
+
+/* ─── Row HTML ─── */
+function rowHtml(p) {
+  const checked = isInCompare(p.rk);
+  const onTeam = isOnTeam(p.rk);
+  const drafted = isDrafted(p.rk);
+  const tierClass = ({ELITE:'elite',FRANCHISE:'franchise',ALL_PRO:'allpro',STARTER:'starter',DEPTH:'depth'})[p.tier] || '';
+  const delta = p.adp - p.rk;
+  let verdict='even', vt='Even';
+  if (delta >= 1) { verdict='steal'; vt='Steal +'+delta.toFixed(1); }
+  else if (delta <= -1) { verdict='reach'; vt='Reach '+delta.toFixed(1); }
+  const tags = tagsFor(p);
+
+  // Range bar visualization (relative to global min/max)
+  const totalRange = RANGE_MAX - RANGE_MIN;
+  const flPct = ((p.floor - RANGE_MIN) / totalRange) * 100;
+  const ceWidth = ((p.ceil - p.floor) / totalRange) * 100;
+  const projMarkerPct = ((p.pts - RANGE_MIN) / totalRange) * 100;
+
+  return `<div class="row ${checked?'checked':''}" data-rk="${p.rk}">
+    <label class="row-chk" onclick="event.stopPropagation()">
+      <input type="checkbox" data-act="cmp" data-rk="${p.rk}" ${checked?'checked':''}/>
+    </label>
+    <div class="row-rk">
+      <span class="n">${p.rk}</span>
+      <span class="tier-dot ${tierClass}"></span>
+    </div>
+    <div class="row-player">
+      <img class="row-pfp" src="https://a.espncdn.com/i/headshots/nfl/players/full/${p.espn}.png" alt="${p.name}" onerror="this.style.visibility='hidden'"/>
+      <div class="row-name-wrap">
+        <div class="row-name">${p.name}</div>
+        <div class="row-sub">
+          <span class="row-pos-pill ${p.pos}">${p.pos}${posRk(p)}</span>
+          <span class="sep">·</span>
+          <span>Bye ${(p.rk * 3) % 14 + 4}</span>
+          <span class="sep">·</span>
+          <span>${p.tier.replace('_',' ').toLowerCase()}</span>
+        </div>
+      </div>
+    </div>
+    <div class="row-team">
+      <img src="https://a.espncdn.com/i/teamlogos/nfl/500/${p.team.toLowerCase()}.png" alt="${p.team}" onerror="this.style.display='none'"/>
+      <span>${p.team}</span>
+      <span class="age">· ${p.age}y</span>
+    </div>
+    <div class="row-adp">
+      <div class="v">${p.adp}</div>
+      <span class="verdict ${verdict}">${vt}</span>
+    </div>
+    <div class="row-proj">
+      <div class="v">${p.pts.toFixed(0)}</div>
+      <div class="ppg">${p.ppg} ppg</div>
+    </div>
+    <div class="row-range">
+      <div class="nums"><span class="fl">${p.floor}</span><span class="ce">${p.ceil}</span></div>
+      <div class="bar">
+        <i style="left:${flPct}%;width:${ceWidth}%"></i>
+        <span class="marker" style="left:${projMarkerPct}%"></span>
+      </div>
+    </div>
+    <div class="row-tags">
+      ${tags.length ? tags.map(t => `<span class="row-tag ${t.k}">${t.l}</span>`).join('') : '<span style="opacity:0.4">—</span>'}
+    </div>
+    <div class="row-acts">
+      <button class="row-act team ${onTeam?'active':''}" data-act="team" data-rk="${p.rk}" title="Add to my team">★</button>
+      <button class="row-act drafted ${drafted?'active':''}" data-act="draft" data-rk="${p.rk}" title="Mark drafted">✓</button>
+      <button class="row-act open" data-act="open" data-rk="${p.rk}" title="Open profile">›</button>
+    </div>
+  </div>`;
+}
+
+/* ─── Filtering ─── */
+function visiblePlayers() {
+  const flexSet = new Set(['RB','WR','TE']);
+  return PLAYERS.filter(p => {
+    if (isDrafted(p.rk) || isOnTeam(p.rk)) return false;
+    if (activePos !== 'all') {
+      if (activePos === 'FLEX') { if (!flexSet.has(p.pos)) return false; }
+      else if (activePos === 'DST' || activePos === 'K') return false;
+      else if (p.pos !== activePos) return false;
+    }
+    if (activeQuery) {
+      const q = activeQuery.toLowerCase();
+      if (!p.name.toLowerCase().includes(q) && !p.team.toLowerCase().includes(q)) return false;
+    }
+    return true;
+  });
+}
+
+/* ─── Render rounds ─── */
+function renderList() {
+  const list = document.getElementById('list');
+  const visible = visiblePlayers();
+
+  if (!visible.length) {
+    list.innerHTML = `<div class="empty"><h3>No players match</h3>Try clearing filters or search.</div>`;
+    updateUI();
+    return;
+  }
+
+  const tpr = teamCount();
+  const groups = new Map();
+  PLAYERS.forEach(p => {
+    const r = Math.ceil(p.rk / tpr);
+    if (!groups.has(r)) groups.set(r, { all: [], visible: [] });
+    groups.get(r).all.push(p);
+  });
+  visible.forEach(p => {
+    const r = Math.ceil(p.rk / tpr);
+    groups.get(r).visible.push(p);
+  });
+
+  const collapsed = getList('bdgeCollapsedRounds');
+  let html = '';
+  Array.from(groups.keys()).sort((a,b)=>a-b).forEach(r => {
+    const g = groups.get(r);
+    const total = g.all.length;
+    const remaining = g.visible.length;
+    const taken = total - remaining;
+    const allGone = remaining === 0;
+    const startRk = g.all[0].rk;
+    const endRk = g.all[g.all.length-1].rk;
+    const isCollapsed = allGone || collapsed.includes(r);
+    const pctFilled = total > 0 ? (taken / total) * 100 : 0;
+    const cls = (isCollapsed ? 'collapsed ' : '') + (allGone ? 'all-drafted' : '');
+
+    html += `<section class="rg ${cls}" data-r="${r}">
+      <header class="rg-h" data-toggle="${r}">
+        <span class="caret">▼</span>
+        <span class="num">${r}</span>
+        <span class="label">
+          <span class="l1">Round ${r}</span>
+          <span class="l2">Picks ${startRk}–${endRk}</span>
+        </span>
+        <span class="progress">
+          ${allGone
+            ? `<span class="done-pill">All ${total} picks drafted ✓</span>`
+            : `<span class="t">${taken} / ${total} taken</span><span class="bar"><i style="width:${pctFilled}%"></i></span>`
+          }
+        </span>
+      </header>
+      <div class="rg-body">
+        ${g.visible.map(rowHtml).join('')}
+      </div>
+    </section>`;
+  });
+  list.innerHTML = html;
+  updateUI();
+}
+
+/* ─── UI counts + rail ─── */
+function updateUI() {
+  const cmpN = getList('bdgeCompare').length;
+  const teamN = getList('bdgeMyTeam').length;
+  const drftN = getList('bdgeDrafted').length;
+  document.getElementById('cmpCt').textContent = cmpN;
+  document.getElementById('myTeamCt').textContent = teamN;
+  document.getElementById('draftedCt').textContent = drftN;
+  document.getElementById('compareBtn').classList.toggle('has', cmpN > 0);
+  document.getElementById('myTeamBtn').classList.toggle('has', teamN > 0);
+  document.getElementById('draftedBtn').classList.toggle('has', drftN > 0);
+  renderRail();
+}
+
+function renderRail() {
+  // Suggested next: top remaining player
+  const sug = document.getElementById('railSuggest');
+  const v = visiblePlayers();
+  const top = v[0];
+  if (top) {
+    const t = tagsFor(top)[0];
+    sug.innerHTML = `<div class="suggest" data-rk="${top.rk}">
+      <img class="pfp" src="https://a.espncdn.com/i/headshots/nfl/players/full/${top.espn}.png" onerror="this.style.visibility='hidden'"/>
+      <div class="body">
+        <div class="eyebrow">★ Top remaining</div>
+        <div class="nm">${top.name}</div>
+        <div class="why">${top.pos}${posRk(top)} · ${top.team} · ADP ${top.adp} · ${t ? t.l : top.tier.replace('_',' ').toLowerCase()}</div>
+      </div>
+    </div>`;
+  } else {
+    sug.innerHTML = `<div class="rail-empty">Board exhausted.</div>`;
+  }
+
+  // Roster slots
+  const roster = document.getElementById('railRoster');
+  const teamN = getList('bdgeMyTeam').length;
+  document.getElementById('railTeamCt').textContent = teamN;
+  const SLOT_LAYOUT = ['QB','RB','RB','WR','WR','TE','FLEX','BN','BN']; // 9 slots
+  const teamPlayers = getList('bdgeMyTeam').map(rk => PLAYERS.find(x => x.rk === rk)).filter(Boolean);
+  const usedIdx = new Array(SLOT_LAYOUT.length).fill(null);
+  // Fill primary positions first, then FLEX, then BN
+  teamPlayers.forEach(p => {
+    let idx = SLOT_LAYOUT.findIndex((s, i) => s === p.pos && usedIdx[i] === null);
+    if (idx === -1) idx = SLOT_LAYOUT.findIndex((s, i) => s === 'FLEX' && usedIdx[i] === null && ['RB','WR','TE'].includes(p.pos));
+    if (idx === -1) idx = SLOT_LAYOUT.findIndex((s, i) => s === 'BN' && usedIdx[i] === null);
+    if (idx !== -1) usedIdx[idx] = p;
+  });
+  roster.innerHTML = SLOT_LAYOUT.map((slot, i) => {
+    const p = usedIdx[i];
+    if (p) {
+      const last = p.name.split(' ').slice(-1)[0];
+      return `<div class="slot filled" data-rk="${p.rk}"><div class="slot-l">${slot}</div><div class="slot-v">${last}</div></div>`;
+    }
+    return `<div class="slot"><div>${slot}</div></div>`;
+  }).join('');
+
+  // Compare mini
+  const mini = document.getElementById('railCompare');
+  document.getElementById('railCmpCt').textContent = getList('bdgeCompare').length;
+  const cmpRks = getList('bdgeCompare');
+  const cmpPs = cmpRks.map(rk => PLAYERS.find(x => x.rk === rk)).filter(Boolean);
+  if (cmpPs.length === 0) {
+    mini.innerHTML = `<div class="rail-empty">Tick checkboxes to add players</div>`;
+  } else {
+    const winnerIdx = computeWinnerCol(cmpPs);
+    mini.innerHTML = `<div class="cmp-mini-list">${cmpPs.map((p,i) => `
+      <div class="cmp-mini ${i === winnerIdx ? 'winner' : ''}">
+        <img class="pfp" src="https://a.espncdn.com/i/headshots/nfl/players/full/${p.espn}.png" onerror="this.style.visibility='hidden'"/>
+        <span class="nm">${p.name}</span>
+        <button class="rm" data-cmp-rm="${p.rk}">✕</button>
+      </div>
+    `).join('')}</div>`;
+  }
+  document.getElementById('railCmpOpen').disabled = cmpPs.length < 2;
+
+  // Drafted by others
+  const drft = document.getElementById('railDrafted');
+  document.getElementById('railDraftCt').textContent = getList('bdgeDrafted').length;
+  const drftRks = getList('bdgeDrafted');
+  if (drftRks.length === 0) {
+    drft.innerHTML = `<div class="rail-empty">No one drafted yet</div>`;
+  } else {
+    const drftPs = drftRks.map(rk => PLAYERS.find(x => x.rk === rk)).filter(Boolean).slice(0, 5);
+    drft.innerHTML = `<div class="cmp-mini-list">${drftPs.map(p => `
+      <div class="cmp-mini">
+        <img class="pfp" src="https://a.espncdn.com/i/headshots/nfl/players/full/${p.espn}.png" onerror="this.style.visibility='hidden'"/>
+        <span class="nm">${p.name}</span>
+        <button class="rm" data-list-remove="bdgeDrafted" data-rk="${p.rk}">✕</button>
+      </div>
+    `).join('')}${drftRks.length > 5 ? `<div class="rail-empty" style="font-size:11px">+${drftRks.length - 5} more</div>` : ''}</div>`;
+  }
+}
+
+/* ─── List event delegation ─── */
+document.getElementById('list').addEventListener('click', e => {
+  const tog = e.target.closest('[data-toggle]');
+  if (tog) {
+    const r = +tog.dataset.toggle;
+    const sec = document.querySelector(`.rg[data-r="${r}"]`);
+    if (sec.classList.contains('all-drafted')) return;
+    sec.classList.toggle('collapsed');
+    const arr = getList('bdgeCollapsedRounds');
+    const i = arr.indexOf(r);
+    if (sec.classList.contains('collapsed')) { if (i < 0) arr.push(r); } else { if (i >= 0) arr.splice(i, 1); }
+    setList('bdgeCollapsedRounds', arr);
+    return;
+  }
+  const chk = e.target.closest('input[data-act="cmp"]');
+  if (chk) {
+    e.stopPropagation();
+    toggleList('bdgeCompare', +chk.dataset.rk);
+    renderList();
+    return;
+  }
+  const btn = e.target.closest('[data-act]');
+  if (btn) {
+    e.stopPropagation();
+    const act = btn.dataset.act;
+    const rk = +btn.dataset.rk;
+    if (act === 'team')  { toggleList('bdgeMyTeam',  rk); renderList(); return; }
+    if (act === 'draft') { toggleList('bdgeDrafted', rk); renderList(); return; }
+    if (act === 'open')  { openDrawer(rk); return; }
+    return;
+  }
+  const row = e.target.closest('.row');
+  if (row) openDrawer(+row.dataset.rk);
+});
+
+/* ─── Rail event delegation ─── */
+document.getElementById('rail').addEventListener('click', e => {
+  const sug = e.target.closest('.suggest');
+  if (sug) { openDrawer(+sug.dataset.rk); return; }
+  const slot = e.target.closest('.slot.filled');
+  if (slot && slot.dataset.rk) { openDrawer(+slot.dataset.rk); return; }
+  const cmpRm = e.target.closest('[data-cmp-rm]');
+  if (cmpRm) { e.stopPropagation(); toggleList('bdgeCompare', +cmpRm.dataset.cmpRm); renderList(); return; }
+  const lstRm = e.target.closest('[data-list-remove]');
+  if (lstRm) { e.stopPropagation(); toggleList(lstRm.dataset.listRemove, +lstRm.dataset.rk); renderList(); return; }
+  if (e.target.id === 'railCmpOpen') { openCompare(); return; }
+  const mini = e.target.closest('.cmp-mini');
+  if (mini && !e.target.closest('button')) {
+    // open player drawer from mini card
+    const rm = mini.querySelector('[data-cmp-rm], [data-list-remove]');
+    if (rm) {
+      const rk = +rm.dataset.rk || +rm.dataset.cmpRm;
+      if (rk) openDrawer(rk);
+    }
+  }
+});
+
+/* ─── Drawer ─── */
+function openDrawer(rk) {
+  const p = PLAYERS.find(x => x.rk === rk);
+  if (!p) return;
+  const t = TEAM_DATA[p.team] || {};
+  const onTeam = isOnTeam(rk);
+  const drafted = isDrafted(rk);
+  const inCmp = isInCompare(rk);
+  document.getElementById('drwBody').innerHTML = `
+    <div class="drw-hero">
+      <img class="pfp" src="https://a.espncdn.com/i/headshots/nfl/players/full/${p.espn}.png" onerror="this.style.visibility='hidden'"/>
+      <h2>${p.name}</h2>
+      <div class="sub">
+        <span class="row-pos-pill ${p.pos}">${p.pos}${posRk(p)}</span>
+        <img src="https://a.espncdn.com/i/teamlogos/nfl/500/${p.team.toLowerCase()}.png" onerror="this.style.display='none'"/>
+        <span>${p.team} · Age ${p.age} · #${p.jersey}</span>
+      </div>
+    </div>
+    <div class="drw-stats">
+      <div class="drw-stat"><div class="l">BDGE rank</div><div class="v">${p.rk}</div></div>
+      <div class="drw-stat"><div class="l">ADP</div><div class="v">${p.adp}</div></div>
+      <div class="drw-stat"><div class="l">Projected points</div><div class="v">${p.pts}</div></div>
+      <div class="drw-stat"><div class="l">Points per game</div><div class="v">${p.ppg}</div></div>
+    </div>
+    <div class="drw-section">
+      <h3>Team context</h3>
+      <div class="drw-stat-row"><span class="l">Team win total</span><span class="v">${t.w ?? '—'}</span></div>
+      <div class="drw-stat-row"><span class="l">Offensive line rank</span><span class="v">${t.ol ?? '—'}</span></div>
+      <div class="drw-stat-row"><span class="l">Stadium</span><span class="v">${t.st ?? '—'}</span></div>
+      <div class="drw-stat-row"><span class="l">Strength of schedule</span><span class="v">${t.sos ?? '—'}</span></div>
+      <div class="drw-stat-row"><span class="l">Playoff SoS</span><span class="v">${t.psos ?? '—'}</span></div>
+    </div>
+    <div class="drw-section">
+      <h3>Projection range</h3>
+      <div class="drw-stat-row"><span class="l">Ceiling</span><span class="v">${p.ceil}</span></div>
+      <div class="drw-stat-row"><span class="l">Floor</span><span class="v">${p.floor}</span></div>
+      <div class="drw-stat-row"><span class="l">VBD</span><span class="v">${p.vbd > 0 ? '+' : ''}${p.vbd}</span></div>
+    </div>
+    <div class="drw-acts">
+      <button class="drw-act warn ${onTeam?'active':''}" data-drw="team" data-rk="${p.rk}">★ ${onTeam?'On my team':'Add to team'}</button>
+      <button class="drw-act pos ${drafted?'active':''}" data-drw="draft" data-rk="${p.rk}">✓ ${drafted?'Drafted':'Mark drafted'}</button>
+      <button class="drw-act ${inCmp?'active':''}" data-drw="cmp" data-rk="${p.rk}">☐ ${inCmp?'In compare':'Compare'}</button>
+    </div>`;
+  document.getElementById('drw').classList.add('open');
+  document.getElementById('drwOverlay').classList.add('open');
+}
+function closeDrawer() {
+  document.getElementById('drw').classList.remove('open');
+  document.getElementById('drwOverlay').classList.remove('open');
+}
+document.getElementById('drwClose').addEventListener('click', closeDrawer);
+document.getElementById('drwOverlay').addEventListener('click', closeDrawer);
+document.getElementById('drwBody').addEventListener('click', e => {
+  const b = e.target.closest('[data-drw]');
+  if (!b) return;
+  const rk = +b.dataset.rk;
+  const act = b.dataset.drw;
+  if (act === 'team')  toggleList('bdgeMyTeam',  rk);
+  if (act === 'draft') toggleList('bdgeDrafted', rk);
+  if (act === 'cmp')   toggleList('bdgeCompare', rk);
+  if (act === 'team' || act === 'draft') closeDrawer();
+  renderList();
+  if (act === 'cmp') openDrawer(rk);
+});
+
+/* ─── Position pills ─── */
+document.getElementById('posBar').addEventListener('click', e => {
+  const b = e.target.closest('button');
+  if (!b) return;
+  document.querySelectorAll('#posBar button').forEach(x => x.classList.toggle('active', x === b));
+  activePos = b.dataset.pos;
+  renderList();
+});
+
+/* ─── Search ─── */
+document.getElementById('search').addEventListener('input', e => {
+  activeQuery = e.target.value.trim();
+  renderList();
+});
+document.addEventListener('keydown', e => {
+  if (e.key === '/' && document.activeElement.tagName !== 'INPUT') {
+    e.preventDefault();
+    document.getElementById('search').focus();
+  }
+  if (e.key === 'Escape') {
+    closeDrawer();
+    document.getElementById('intro').classList.remove('open');
+    document.getElementById('cmpOverlay').classList.remove('open');
+  }
+});
+
+/* ─── Compare modal ─── */
+const CMP_CATS = [
+  { l:'ADP',                 ico:'◎', get:p => p.adp,                  lb:true,  fmt:v=>(+v).toFixed(1) },
+  { l:'BDGE positional rank', ico:'♟', get:p => posRk(p),              lb:true,  fmt:v=>'#'+v },
+  { l:'BDGE overall rank',    ico:'▲', get:p => p.rk,                  lb:true,  fmt:v=>'#'+v },
+  { l:'Projected points',     ico:'★', get:p => p.pts,                 lb:false, fmt:v=>(+v).toFixed(1) },
+  { l:'PPG',                  ico:'◷', get:p => p.ppg,                 lb:false, fmt:v=>(+v).toFixed(1) },
+  { l:'Ceiling',              ico:'⤴', get:p => p.ceil,                lb:false, fmt:v=>v },
+  { l:'Floor',                ico:'⤵', get:p => p.floor,               lb:false, fmt:v=>v },
+  { l:'Team win total',       ico:'⚏', get:p => (TEAM_DATA[p.team]||{}).w,  lb:false, fmt:v=>v ?? '—' },
+  { l:'Offensive line rank',  ico:'◧', get:p => (TEAM_DATA[p.team]||{}).ol, lb:true,  fmt:v=>v ?? '—' },
+  { l:'Strength of schedule', ico:'▦', get:p => (TEAM_DATA[p.team]||{}).sos,lb:true,  fmt:v=>v ?? '—' },
+  { l:'Playoff SoS',          ico:'▦', get:p => (TEAM_DATA[p.team]||{}).psos,lb:true, fmt:v=>v ?? '—' },
+  { l:'Stadium',              ico:'◉', get:p => (TEAM_DATA[p.team]||{}).st, lb:null,  fmt:v=>v ?? '—' },
+  { l:'Age',                  ico:'☉', get:p => p.age,                 lb:true,  fmt:v=>v },
+  { l:'VBD',                  ico:'⌬', get:p => p.vbd,                 lb:false, fmt:v=>(v>0?'+':'')+(+v).toFixed(1) },
+];
+
+function computeWinnerCol(players) {
+  if (!players.length) return -1;
+  const wins = new Array(players.length).fill(0);
+  CMP_CATS.forEach(cat => {
+    if (cat.lb === null) return;
+    const vals = players.map(p => cat.get(p)).map(v => v == null ? null : Number(v));
+    const filtered = vals.filter(v => v != null && !isNaN(v));
+    if (!filtered.length) return;
+    const best = cat.lb ? Math.min(...filtered) : Math.max(...filtered);
+    vals.forEach((v, i) => { if (v === best) wins[i]++; });
+  });
+  let best = -1, bi = 0;
+  wins.forEach((w, i) => { if (w > best) { best = w; bi = i; } });
+  return bi;
+}
+
+function openCompare() {
+  const ranks = getList('bdgeCompare');
+  if (!ranks.length) return;
+  const players = ranks.map(rk => PLAYERS.find(x => x.rk === rk)).filter(Boolean);
+  if (!players.length) return;
+  const winCol = computeWinnerCol(players);
+
+  const tilesEl = document.getElementById('cmpTiles');
+  tilesEl.style.gridTemplateColumns = `repeat(${players.length}, 1fr)`;
+  tilesEl.innerHTML = players.map((pl, i) => `
+    <div class="cmp-tile ${i === winCol ? 'winner' : ''}">
+      <button class="rm" data-cmp-rm="${pl.rk}">✕</button>
+      <img class="pfp" src="https://a.espncdn.com/i/headshots/nfl/players/full/${pl.espn}.png" onerror="this.style.visibility='hidden'"/>
+      <div class="nm">${pl.name}</div>
+      <div class="team-line">
+        <span class="row-pos-pill ${pl.pos}">${pl.pos}${posRk(pl)}</span>
+        <img src="https://a.espncdn.com/i/teamlogos/nfl/500/${pl.team.toLowerCase()}.png" onerror="this.style.display='none'"/>
+        <span>${pl.team}</span>
+      </div>
+    </div>`).join('');
+
+  const statsEl = document.getElementById('cmpStats');
+  const cols = `220px repeat(${players.length}, 1fr)`;
+  statsEl.innerHTML = CMP_CATS.map(cat => {
+    const vals = players.map(pl => cat.get(pl));
+    let winners = new Set();
+    if (cat.lb !== null) {
+      const numeric = vals.map(v => v == null ? null : Number(v));
+      const filtered = numeric.filter(v => v != null && !isNaN(v));
+      if (filtered.length) {
+        const best = cat.lb ? Math.min(...filtered) : Math.max(...filtered);
+        numeric.forEach((v, i) => { if (v === best) winners.add(i); });
+      }
+    }
+    const cells = players.map((pl, i) => {
+      const raw = cat.get(pl);
+      const txt = raw == null ? '—' : (cat.fmt ? cat.fmt(raw) : raw);
+      return `<div class="cmp-cell ${winners.has(i) ? 'winner' : ''}">${txt}</div>`;
+    }).join('');
+    return `<div class="cmp-row" style="grid-template-columns:${cols}">
+      <div class="label"><span class="ico">${cat.ico}</span>${cat.l}</div>
+      ${cells}
+    </div>`;
+  }).join('');
+
+  document.getElementById('cmpOverlay').classList.add('open');
+}
+
+document.getElementById('cmpClose').addEventListener('click', () => document.getElementById('cmpOverlay').classList.remove('open'));
+document.getElementById('cmpOverlay').addEventListener('click', e => { if (e.target.id === 'cmpOverlay') document.getElementById('cmpOverlay').classList.remove('open'); });
+document.getElementById('cmpTiles').addEventListener('click', e => {
+  const rm = e.target.closest('[data-cmp-rm]');
+  if (!rm) return;
+  toggleList('bdgeCompare', +rm.dataset.cmpRm);
+  const r = getList('bdgeCompare');
+  if (!r.length) document.getElementById('cmpOverlay').classList.remove('open');
+  else openCompare();
+  renderList();
+});
+document.getElementById('compareBtn').addEventListener('click', () => { if (getList('bdgeCompare').length) openCompare(); });
+document.getElementById('myTeamBtn').addEventListener('click', () => openListDrawer('My team', 'bdgeMyTeam'));
+document.getElementById('draftedBtn').addEventListener('click', () => openListDrawer('Drafted by others', 'bdgeDrafted'));
+
+function openListDrawer(title, key) {
+  const ranks = getList(key);
+  const players = ranks.map(rk => PLAYERS.find(x => x.rk === rk)).filter(Boolean);
+  document.getElementById('drwBody').innerHTML = `
+    <div class="drw-hero">
+      <h2>${title}</h2>
+      <div class="sub"><span>${players.length} ${players.length === 1 ? 'player' : 'players'}</span></div>
+    </div>
+    <div class="drw-section" style="padding-top:14px">
+      ${players.length === 0 ? `<div class="empty"><h3>Nothing here yet</h3>Add players using the ${key === 'bdgeMyTeam' ? '★ button' : '✓ button'} on each row.</div>` : ''}
+      ${players.map(pl => `
+        <div class="drw-stat-row" data-rk="${pl.rk}" style="cursor:pointer;align-items:center;gap:10px">
+          <img src="https://a.espncdn.com/i/headshots/nfl/players/full/${pl.espn}.png" style="width:28px;height:28px;border-radius:50%;border:1px solid var(--line)" onerror="this.style.visibility='hidden'"/>
+          <span class="l" style="flex:1">
+            <span style="font-family:Barlow;font-weight:700;color:var(--ink)">${pl.name}</span>
+            <span style="margin-left:8px" class="row-pos-pill ${pl.pos}">${pl.pos}${posRk(pl)}</span>
+          </span>
+          <button class="row-act" data-list-remove="${key}" data-rk="${pl.rk}" title="Remove">✕</button>
+        </div>`).join('')}
+    </div>`;
+  document.getElementById('drw').classList.add('open');
+  document.getElementById('drwOverlay').classList.add('open');
+}
+document.getElementById('drwBody').addEventListener('click', e => {
+  const rm = e.target.closest('[data-list-remove]');
+  if (rm) {
+    e.stopPropagation();
+    toggleList(rm.dataset.listRemove, +rm.dataset.rk);
+    renderList();
+    const title = rm.dataset.listRemove === 'bdgeMyTeam' ? 'My team' : 'Drafted by others';
+    openListDrawer(title, rm.dataset.listRemove);
+  }
+});
+
+/* ─── Theme ─── */
+document.querySelectorAll('.tb-theme button').forEach(b => b.addEventListener('click', () => {
+  document.querySelectorAll('.tb-theme button').forEach(x => x.classList.toggle('active', x === b));
+  document.documentElement.setAttribute('data-theme', b.dataset.theme);
+  try { localStorage.setItem('bdgeTheme', b.dataset.theme); } catch(e){}
+}));
+try {
+  const t = localStorage.getItem('bdgeTheme');
+  if (t) {
+    document.documentElement.setAttribute('data-theme', t);
+    document.querySelectorAll('.tb-theme button').forEach(b => b.classList.toggle('active', b.dataset.theme === t));
+  }
+} catch(e){}
+
+/* ─── Setup wizard ─── */
+const intro = document.getElementById('intro');
+const introNext = document.getElementById('introNext');
+const introBack = document.getElementById('introBack');
+const introSkip = document.getElementById('introSkip');
+const stepNum = document.getElementById('stepNum');
+const STEPS = ['step1','step2','step3','step4'];
+const PROGS = ['prog1','prog2','prog3','prog4'];
+const SETUP_KEYS = ['drafting','platform','teams','format'];
+let curStep = 0;
+let setupState = { drafting: null, platform: null, teams: null, format: null };
+
+function showIntro() { intro.classList.add('open'); }
+function closeIntro() { intro.classList.remove('open'); }
+function renderStep() {
+  STEPS.forEach((id, i) => document.getElementById(id).style.display = (i === curStep) ? '' : 'none');
+  PROGS.forEach((id, i) => document.getElementById(id).classList.toggle('done', i <= curStep));
+  stepNum.textContent = `Step ${curStep + 1} of ${STEPS.length}`;
+  introBack.disabled = curStep === 0;
+  const key = SETUP_KEYS[curStep];
+  introNext.disabled = !setupState[key];
+  introNext.textContent = (curStep === STEPS.length - 1) ? 'Done →' : 'Continue →';
+  document.querySelectorAll(`#${STEPS[curStep]} .intro-opt`).forEach(b => b.classList.toggle('selected', b.dataset.val === setupState[key]));
+}
+[0,1,2,3].forEach(i => document.querySelectorAll(`#${STEPS[i]} .intro-opt`).forEach(b => b.addEventListener('click', () => {
+  setupState[SETUP_KEYS[i]] = b.dataset.val;
+  renderStep();
+})));
+introNext.addEventListener('click', () => {
+  if (curStep < STEPS.length - 1) { curStep++; renderStep(); }
+  else finishIntro();
+});
+introBack.addEventListener('click', () => { if (curStep > 0) { curStep--; renderStep(); } });
+introSkip.addEventListener('click', finishIntro);
+function finishIntro() {
+  closeIntro();
+  try {
+    localStorage.setItem('bdgeIntroDone', '1');
+    if (setupState.platform) localStorage.setItem('bdgeComparePlatform', setupState.platform);
+    if (setupState.teams)    localStorage.setItem('bdgeTeamCount', setupState.teams);
+    if (setupState.format)   localStorage.setItem('bdgeRosterFormat', setupState.format);
+  } catch(e){}
+  renderList();
+}
+document.getElementById('setupBtn').addEventListener('click', () => { curStep = 0; setupState = { drafting:null, platform:null, teams:null, format:null }; renderStep(); showIntro(); });
+document.getElementById('helpBtn').addEventListener('click', () => { curStep = 0; setupState = { drafting:null, platform:null, teams:null, format:null }; renderStep(); showIntro(); });
+
+/* ─── First-visit fire ─── */
+try {
+  if (!localStorage.getItem('bdgeIntroDone')) {
+    renderStep();
+    setTimeout(showIntro, 250);
+  }
+} catch(e){}
+
+renderList();
+</script>
+</body>
+</html>

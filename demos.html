@@ -1,0 +1,1339 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>BDGE — DRAFT RANKINGS · LAYOUT DEMOS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@200;400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800;900&family=Bebas+Neue&family=Oswald:wght@400;500;600;700&family=Source+Serif+4:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<style>
+/* ─────────── COMMON ─────────── */
+:root {
+  --pos-qb:#5da8b5; --pos-rb:#4ea584; --pos-wr:#5a8fb8; --pos-te:#c69b3a;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  background: #000002;
+  color: #e0f3f4;
+  font-family: "Inter", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+.demo-chooser {
+  position: sticky; top: 0; z-index: 50;
+  background: #000002;
+  padding: 12px 24px;
+  border-bottom: 1px solid #1a1c20;
+  display: flex; align-items: center; gap: 8px;
+  flex-wrap: wrap;
+}
+.demo-chooser-l {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px; letter-spacing: 0.22em; font-weight: 800;
+  color: #98c8ca;
+  margin-right: 6px;
+}
+.demo-pick {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px; letter-spacing: 0.10em; font-weight: 600;
+  padding: 8px 14px;
+  background: transparent;
+  border: 1px solid #404246;
+  color: #e0f3f4;
+  cursor: pointer;
+  transition: all 160ms;
+}
+.demo-pick:hover { border-color: #00d1da; color: #00d1da; }
+.demo-pick.active {
+  background: #00d1da;
+  color: #001216;
+  border-color: #00d1da;
+}
+.demo-frame {
+  display: none;
+  min-height: 100vh;
+}
+.demo-frame.active { display: block; }
+.demo-meta {
+  padding: 10px 24px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px; letter-spacing: 0.18em;
+  color: #5e7c81;
+  border-bottom: 1px solid #1a1c20;
+}
+.demo-meta b { color: #00d1da; font-weight: 700; }
+
+/* ════════════════════════════════════════════════════════════
+   DEMO 1 — EDITORIAL  (Stratechery / NYT Sports / Wired)
+   Big serif title, generous whitespace, single-line rows,
+   subdued palette, "magazine" not "dashboard"
+   ════════════════════════════════════════════════════════════ */
+.demo-editorial {
+  background: #fafaf7;
+  color: #16110b;
+  font-family: "Source Serif 4", Georgia, serif;
+}
+.demo-editorial .ed-hero {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 56px 24px 32px;
+  border-bottom: 1px solid #1611111a;
+}
+.demo-editorial .ed-eyebrow {
+  font-family: "Inter", sans-serif;
+  font-size: 11px; letter-spacing: 0.32em; font-weight: 600;
+  color: #b32e1d;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+.demo-editorial .ed-title {
+  font-family: "Source Serif 4", serif;
+  font-size: 74px; font-weight: 900; line-height: 0.96;
+  letter-spacing: -0.025em;
+  margin: 0;
+}
+.demo-editorial .ed-title em {
+  font-style: italic;
+  font-weight: 400;
+  color: #b32e1d;
+}
+.demo-editorial .ed-dek {
+  font-family: "Source Serif 4", serif;
+  font-size: 19px; line-height: 1.5;
+  color: #16110b99;
+  margin-top: 18px;
+  max-width: 640px;
+}
+.demo-editorial .ed-meta {
+  font-family: "Inter", sans-serif;
+  font-size: 11px; letter-spacing: 0.10em;
+  color: #16110b66;
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid #1611111a;
+  display: flex; gap: 24px; flex-wrap: wrap;
+}
+.demo-editorial .ed-meta b { color: #16110b; font-weight: 600; }
+.demo-editorial .ed-board {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 24px;
+}
+.demo-editorial .ed-board-h {
+  font-family: "Inter", sans-serif;
+  font-size: 11px; letter-spacing: 0.32em; font-weight: 700;
+  color: #16110b66;
+  padding: 12px 0;
+  border-bottom: 1px solid #1611111a;
+  display: grid;
+  grid-template-columns: 50px 1fr 80px 80px 60px;
+  gap: 16px;
+}
+.demo-editorial .ed-row {
+  display: grid;
+  grid-template-columns: 50px 1fr 80px 80px 60px;
+  gap: 16px; align-items: center;
+  padding: 16px 0;
+  border-bottom: 1px solid #1611111a;
+  transition: background 200ms;
+}
+.demo-editorial .ed-row:hover { background: #16110b08; }
+.demo-editorial .ed-rk {
+  font-family: "Source Serif 4", serif;
+  font-size: 32px; font-weight: 900;
+  color: #b32e1d;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+.demo-editorial .ed-pl { display: flex; align-items: center; gap: 12px; }
+.demo-editorial .ed-pfp {
+  width: 44px; height: 44px;
+  background: #1611111a;
+  display: grid; place-items: center;
+  font-family: "Inter", sans-serif;
+  font-weight: 800;
+  color: #16110b66;
+  border-radius: 50%;
+  overflow: hidden;
+}
+.demo-editorial .ed-pfp img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+.demo-editorial .ed-name {
+  font-size: 19px; font-weight: 600; line-height: 1.2;
+}
+.demo-editorial .ed-sub {
+  font-family: "Inter", sans-serif;
+  font-size: 12px; color: #16110b66;
+  margin-top: 2px;
+}
+.demo-editorial .ed-num {
+  font-family: "Inter", sans-serif;
+  font-size: 14px; font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+.demo-editorial .ed-num small {
+  display: block;
+  font-size: 9px; letter-spacing: 0.18em;
+  color: #16110b66;
+  font-weight: 600;
+  margin-top: 2px;
+}
+.demo-editorial .ed-pos-pill {
+  display: inline-block;
+  padding: 2px 8px;
+  font-family: "Inter", sans-serif;
+  font-size: 10px; letter-spacing: 0.10em; font-weight: 700;
+  color: #fff;
+  text-align: center;
+  width: 38px;
+}
+.demo-editorial .ed-pos-pill.qb { background: #2563eb; }
+.demo-editorial .ed-pos-pill.rb { background: #047857; }
+.demo-editorial .ed-pos-pill.wr { background: #7c3aed; }
+.demo-editorial .ed-pos-pill.te { background: #d97706; }
+
+/* ════════════════════════════════════════════════════════════
+   DEMO 2 — BROADCAST  (ESPN / NFL Network / Sportscenter)
+   Bold rank cards, position-colored left bars, white on dark,
+   chunky typography, broadcast-graphic feel
+   ════════════════════════════════════════════════════════════ */
+.demo-broadcast {
+  background: #07090f;
+  color: #fff;
+  font-family: "Oswald", "Inter", sans-serif;
+}
+.demo-broadcast .bc-hero {
+  background: linear-gradient(135deg, #1e3a8a 0%, #be123c 50%, #d97706 100%);
+  padding: 32px 32px 28px;
+  position: relative;
+  overflow: hidden;
+}
+.demo-broadcast .bc-hero::after {
+  content: "";
+  position: absolute; right: -50px; top: -50px;
+  width: 300px; height: 300px;
+  background: radial-gradient(circle, rgba(255,255,255,0.18), transparent 60%);
+}
+.demo-broadcast .bc-hero-l {
+  position: relative; z-index: 2;
+  font-family: "Oswald", sans-serif;
+  font-size: 11px; letter-spacing: 0.35em; font-weight: 600;
+  color: rgba(255,255,255,0.85);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.demo-broadcast .bc-hero-h {
+  position: relative; z-index: 2;
+  font-family: "Oswald", sans-serif;
+  font-weight: 700;
+  font-size: 92px; line-height: 0.95;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  margin: 0;
+}
+.demo-broadcast .bc-hero-h span { color: #fff8d4; font-weight: 400; }
+.demo-broadcast .bc-hero-meta {
+  position: relative; z-index: 2;
+  display: flex; gap: 32px; margin-top: 16px;
+  font-family: "Oswald", sans-serif;
+  font-size: 12px; letter-spacing: 0.18em; font-weight: 500;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.85);
+}
+.demo-broadcast .bc-hero-meta b {
+  font-weight: 700; color: #fff;
+  font-size: 16px;
+  letter-spacing: 0.02em;
+}
+.demo-broadcast .bc-bar {
+  background: #07090f;
+  border-bottom: 3px solid #d97706;
+  padding: 0 32px;
+  display: flex; align-items: center; gap: 0;
+  height: 48px;
+}
+.demo-broadcast .bc-bar-pill {
+  font-family: "Oswald", sans-serif;
+  font-weight: 600;
+  font-size: 13px; letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0 18px; height: 100%;
+  display: inline-flex; align-items: center;
+  border-right: 1px solid rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.6);
+  cursor: pointer;
+}
+.demo-broadcast .bc-bar-pill.active { background: #d97706; color: #fff; }
+.demo-broadcast .bc-board { padding: 24px 32px; }
+.demo-broadcast .bc-row {
+  display: grid;
+  grid-template-columns: 60px 50px 60px 1fr 80px 50px;
+  gap: 16px; align-items: center;
+  background: #0c1018;
+  border-left: 4px solid var(--pos);
+  padding: 14px 18px;
+  margin-bottom: 4px;
+  transition: background 160ms;
+}
+.demo-broadcast .bc-row:hover { background: #131826; }
+.demo-broadcast .bc-rk {
+  font-family: "Oswald", sans-serif;
+  font-weight: 700;
+  font-size: 36px; line-height: 1;
+  color: #fff;
+  font-variant-numeric: tabular-nums;
+}
+.demo-broadcast .bc-pos-tag {
+  font-family: "Oswald", sans-serif;
+  font-weight: 700; font-size: 14px; letter-spacing: 0.1em;
+  padding: 5px 10px;
+  background: var(--pos);
+  color: #fff;
+  text-align: center;
+}
+.demo-broadcast .bc-pfp {
+  width: 56px; height: 56px;
+  background: #1a1f2b;
+  border-radius: 50%;
+  overflow: hidden;
+  display: grid; place-items: center;
+  color: #5e7c81;
+  font-family: "Oswald", sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+}
+.demo-broadcast .bc-pfp img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+.demo-broadcast .bc-name {
+  font-family: "Oswald", sans-serif;
+  font-weight: 600;
+  font-size: 22px; line-height: 1.1;
+  color: #fff;
+  text-transform: uppercase;
+}
+.demo-broadcast .bc-sub {
+  font-family: "Inter", sans-serif;
+  font-size: 11px; letter-spacing: 0.16em; font-weight: 500;
+  color: rgba(255,255,255,0.5);
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+.demo-broadcast .bc-num {
+  text-align: right;
+  font-family: "Oswald", sans-serif;
+  font-weight: 700;
+  font-size: 22px;
+  color: #fff8d4;
+  font-variant-numeric: tabular-nums;
+}
+.demo-broadcast .bc-num small {
+  display: block;
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  font-size: 9px; letter-spacing: 0.18em;
+  color: rgba(255,255,255,0.4);
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+.demo-broadcast .bc-arrow {
+  text-align: center;
+  color: rgba(255,255,255,0.3);
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* ════════════════════════════════════════════════════════════
+   DEMO 3 — SAAS CLEAN  (Linear / Notion / Stripe)
+   Light/clean, generous radius, soft accents, info-dense without feeling busy
+   ════════════════════════════════════════════════════════════ */
+.demo-saas {
+  background: #f7f8fa;
+  color: #18181b;
+  font-family: "Inter", system-ui, sans-serif;
+}
+.demo-saas .ss-hero {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 32px 24px 16px;
+}
+.demo-saas .ss-h1 {
+  font-size: 32px; font-weight: 700; letter-spacing: -0.02em;
+  margin: 0;
+  display: flex; align-items: center; gap: 12px;
+}
+.demo-saas .ss-h1 .em { color: #6366f1; }
+.demo-saas .ss-status {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 10px;
+  background: #ecfdf5;
+  border: 1px solid #6ee7b7;
+  border-radius: 999px;
+  color: #047857;
+  font-size: 12px; font-weight: 600;
+  margin-left: auto;
+}
+.demo-saas .ss-status::before {
+  content: "";
+  width: 6px; height: 6px;
+  background: #10b981;
+  border-radius: 50%;
+}
+.demo-saas .ss-h-row { display: flex; align-items: center; }
+.demo-saas .ss-cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-top: 20px;
+}
+.demo-saas .ss-card {
+  background: #fff;
+  border: 1px solid #e4e4e7;
+  border-radius: 10px;
+  padding: 16px;
+}
+.demo-saas .ss-card-l {
+  font-size: 12px; color: #71717a; font-weight: 500;
+  letter-spacing: 0;
+  margin-bottom: 4px;
+}
+.demo-saas .ss-card-v {
+  font-size: 24px; font-weight: 700;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+.demo-saas .ss-card-d { font-size: 11px; color: #a1a1aa; margin-top: 4px; }
+.demo-saas .ss-card-d.up { color: #059669; }
+.demo-saas .ss-controls {
+  max-width: 1180px;
+  margin: 24px auto 0;
+  padding: 0 24px;
+  display: flex; align-items: center; gap: 8px;
+}
+.demo-saas .ss-pill {
+  padding: 6px 12px;
+  background: #fff;
+  border: 1px solid #e4e4e7;
+  border-radius: 8px;
+  font-size: 13px; font-weight: 500;
+  color: #52525b;
+  cursor: pointer;
+}
+.demo-saas .ss-pill.active { background: #18181b; color: #fff; border-color: #18181b; }
+.demo-saas .ss-board {
+  max-width: 1180px;
+  margin: 16px auto 0;
+  padding: 0 24px 64px;
+}
+.demo-saas .ss-table-card {
+  background: #fff;
+  border: 1px solid #e4e4e7;
+  border-radius: 12px;
+  overflow: hidden;
+}
+.demo-saas .ss-table-h {
+  display: grid;
+  grid-template-columns: 60px 1fr 80px 80px 80px 80px 50px;
+  gap: 12px;
+  padding: 14px 20px;
+  background: #fafafa;
+  border-bottom: 1px solid #e4e4e7;
+  font-size: 11px; letter-spacing: 0.04em; font-weight: 600;
+  color: #71717a;
+  text-transform: uppercase;
+}
+.demo-saas .ss-row {
+  display: grid;
+  grid-template-columns: 60px 1fr 80px 80px 80px 80px 50px;
+  gap: 12px; align-items: center;
+  padding: 14px 20px;
+  border-bottom: 1px solid #f1f1f3;
+  transition: background 160ms;
+  font-size: 14px;
+}
+.demo-saas .ss-row:hover { background: #fafafa; }
+.demo-saas .ss-row:last-child { border-bottom: 0; }
+.demo-saas .ss-rk { font-weight: 700; color: #18181b; font-variant-numeric: tabular-nums; }
+.demo-saas .ss-pl { display: flex; align-items: center; gap: 10px; }
+.demo-saas .ss-pfp {
+  width: 36px; height: 36px;
+  background: #f4f4f5;
+  border-radius: 50%;
+  overflow: hidden;
+}
+.demo-saas .ss-pfp img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+.demo-saas .ss-name { font-weight: 600; }
+.demo-saas .ss-sub {
+  font-size: 11px; color: #71717a;
+  display: flex; align-items: center; gap: 6px;
+}
+.demo-saas .ss-pos-tag {
+  display: inline-block;
+  padding: 1px 6px;
+  font-size: 10px; font-weight: 600; letter-spacing: 0.04em;
+  border-radius: 4px;
+}
+.demo-saas .ss-pos-tag.qb { background: #dbeafe; color: #1e40af; }
+.demo-saas .ss-pos-tag.rb { background: #d1fae5; color: #065f46; }
+.demo-saas .ss-pos-tag.wr { background: #ede9fe; color: #5b21b6; }
+.demo-saas .ss-pos-tag.te { background: #fed7aa; color: #9a3412; }
+.demo-saas .ss-num { text-align: right; font-variant-numeric: tabular-nums; font-weight: 500; color: #18181b; }
+.demo-saas .ss-trend { color: #10b981; font-weight: 600; }
+.demo-saas .ss-trend.dn { color: #ef4444; }
+.demo-saas .ss-actions { text-align: right; }
+.demo-saas .ss-act {
+  background: transparent; border: 0;
+  color: #a1a1aa;
+  cursor: pointer;
+  padding: 4px;
+}
+
+/* ════════════════════════════════════════════════════════════
+   DEMO 4 — GRIDIRON POSTER  (Madden / NFL guide / fantasy mag)
+   Stadium-cream + navy + gold, jersey-style typography,
+   cards feel like Topps trading cards
+   ════════════════════════════════════════════════════════════ */
+.demo-gridiron {
+  background: #f9f5eb;
+  color: #082430;
+  font-family: "Bebas Neue", "Oswald", "Inter", sans-serif;
+  background-image:
+    repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(8,36,48,0.04) 39px, rgba(8,36,48,0.04) 40px);
+}
+.demo-gridiron .gr-hero {
+  position: relative;
+  padding: 48px 32px 36px;
+  overflow: hidden;
+}
+.demo-gridiron .gr-hero::before {
+  content: "DRAFT";
+  position: absolute;
+  top: 16px; right: -12px;
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 280px; font-weight: 400; line-height: 1;
+  color: rgba(8,36,48,0.05);
+  letter-spacing: -0.03em;
+  pointer-events: none;
+}
+.demo-gridiron .gr-eyebrow {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 16px; letter-spacing: 0.32em; font-weight: 400;
+  color: #fb637a;
+}
+.demo-gridiron .gr-h {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 110px; line-height: 0.92; font-weight: 400;
+  letter-spacing: -0.02em;
+  color: #082430;
+  margin: 6px 0 0;
+}
+.demo-gridiron .gr-h-stripe {
+  display: inline-block;
+  padding: 0 18px;
+  background: #fb637a;
+  color: #f9f5eb;
+  font-style: italic;
+}
+.demo-gridiron .gr-dek {
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  font-size: 14px; letter-spacing: 0.04em;
+  color: #082430cc;
+  max-width: 540px;
+  margin-top: 20px;
+  line-height: 1.5;
+}
+.demo-gridiron .gr-stats-strip {
+  position: relative;
+  display: flex; flex-wrap: wrap; gap: 0;
+  margin-top: 32px;
+  padding-top: 20px;
+  border-top: 4px double #082430;
+}
+.demo-gridiron .gr-stat {
+  flex: 1; min-width: 160px;
+  padding: 4px 18px 4px 0;
+  border-right: 1px solid #082430;
+}
+.demo-gridiron .gr-stat:last-child { border-right: 0; }
+.demo-gridiron .gr-stat-l {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 14px; letter-spacing: 0.18em;
+  color: #082430;
+}
+.demo-gridiron .gr-stat-v {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 38px; line-height: 1;
+  color: #259fd6;
+  margin-top: 2px;
+  font-variant-numeric: tabular-nums;
+}
+.demo-gridiron .gr-board {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 32px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+.demo-gridiron .gr-card {
+  background: #f9f5eb;
+  border: 2px solid #082430;
+  padding: 14px;
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  gap: 12px;
+  position: relative;
+  cursor: pointer;
+  transition: transform 200ms, box-shadow 200ms;
+}
+.demo-gridiron .gr-card:hover {
+  box-shadow: 6px 6px 0 #082430;
+  transform: translate(-2px,-2px);
+}
+.demo-gridiron .gr-card-rk {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 56px; line-height: 0.85;
+  color: #082430;
+  font-variant-numeric: tabular-nums;
+}
+.demo-gridiron .gr-card-rk small {
+  display: block;
+  font-size: 11px; letter-spacing: 0.18em;
+  color: #fb637a;
+  margin-top: 4px;
+}
+.demo-gridiron .gr-card-pl {
+  display: flex; flex-direction: column;
+  justify-content: space-between;
+}
+.demo-gridiron .gr-card-row {
+  display: flex; align-items: center; gap: 8px;
+}
+.demo-gridiron .gr-card-pfp {
+  width: 38px; height: 38px;
+  background: #08243010;
+  border: 1px solid #082430;
+  overflow: hidden;
+  border-radius: 50%;
+}
+.demo-gridiron .gr-card-pfp img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+.demo-gridiron .gr-card-name {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 22px; line-height: 1;
+  letter-spacing: 0.01em;
+  color: #082430;
+}
+.demo-gridiron .gr-card-sub {
+  font-family: "Inter", sans-serif;
+  font-size: 10px; letter-spacing: 0.10em; font-weight: 600;
+  color: #082430aa;
+  text-transform: uppercase;
+}
+.demo-gridiron .gr-card-foot {
+  display: flex; align-items: baseline; justify-content: space-between;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px dashed #08243033;
+}
+.demo-gridiron .gr-card-pos {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 13px; letter-spacing: 0.12em;
+  padding: 1px 8px;
+  background: #082430;
+  color: #f9f5eb;
+}
+.demo-gridiron .gr-card-pts {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 22px; line-height: 1;
+  color: #259fd6;
+  font-variant-numeric: tabular-nums;
+}
+.demo-gridiron .gr-card-pts small {
+  font-size: 10px; letter-spacing: 0.10em;
+  color: #082430aa;
+  margin-left: 2px;
+}
+
+/* ════════════════════════════════════════════════════════════
+   DEMO 5 — TERMINAL ELITE  (refined cyberpunk, lean version
+   of current — DraftBallr-direct competitor energy, less chrome)
+   ════════════════════════════════════════════════════════════ */
+.demo-terminal {
+  background: #000001;
+  color: #e0f3f4;
+  font-family: "JetBrains Mono", monospace;
+}
+.demo-terminal .tm-hero {
+  border-bottom: 1px solid #2a2c30;
+  padding: 24px 32px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 32px;
+  align-items: end;
+}
+.demo-terminal .tm-h1 {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 14px; letter-spacing: 0.10em; font-weight: 800;
+  color: #00d1da;
+  margin: 0;
+  text-transform: uppercase;
+}
+.demo-terminal .tm-h1 .br { color: #404246; font-weight: 400; }
+.demo-terminal .tm-h2 {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 56px; font-weight: 800; line-height: 1;
+  letter-spacing: -0.02em;
+  margin: 8px 0 0;
+  color: #fff;
+}
+.demo-terminal .tm-h2 .em { color: #00d1da; }
+.demo-terminal .tm-meta {
+  display: flex; gap: 18px;
+  font-size: 10px; letter-spacing: 0.18em; font-weight: 600;
+  color: #98c8ca;
+}
+.demo-terminal .tm-meta b { color: #fff; font-weight: 700; }
+.demo-terminal .tm-meta .dot { color: #00d690; animation: tmpulse 1.6s ease-in-out infinite; }
+@keyframes tmpulse { 0%,100% { opacity:1 } 50% { opacity: 0.4 } }
+.demo-terminal .tm-controls {
+  display: flex; align-items: center; gap: 6px;
+  padding: 12px 32px;
+  border-bottom: 1px solid #2a2c30;
+  font-size: 9px; letter-spacing: 0.16em; font-weight: 700;
+}
+.demo-terminal .tm-pill {
+  padding: 4px 10px;
+  background: transparent;
+  border: 1px solid #404246;
+  color: #98c8ca;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: inherit; letter-spacing: inherit; font-weight: inherit;
+}
+.demo-terminal .tm-pill.active {
+  background: rgba(0,209,218,0.14);
+  border-color: #00d1da;
+  color: #00d1da;
+}
+.demo-terminal .tm-board { padding: 0 16px; }
+.demo-terminal .tm-row {
+  display: grid;
+  grid-template-columns: 36px 38px 44px 1fr 70px 70px 70px 50px;
+  gap: 14px; align-items: center;
+  padding: 10px 14px;
+  border-bottom: 1px solid #1a1c20;
+  font-size: 11px;
+}
+.demo-terminal .tm-row:hover { background: rgba(0,209,218,0.04); }
+.demo-terminal .tm-rk {
+  font-weight: 800; color: #fff;
+  font-variant-numeric: tabular-nums;
+}
+.demo-terminal .tm-rk small {
+  display: block;
+  font-size: 8px; letter-spacing: 0.18em;
+  color: #5e7c81;
+  margin-top: 1px;
+}
+.demo-terminal .tm-pos {
+  font-size: 9px; letter-spacing: 0.10em; font-weight: 800;
+  padding: 3px 6px;
+  text-align: center;
+  color: var(--pos);
+  background: color-mix(in srgb, var(--pos) 14%, transparent);
+  border-left: 2px solid var(--pos);
+}
+.demo-terminal .tm-pfp {
+  width: 36px; height: 36px;
+  background: #070b14;
+  overflow: hidden;
+  border: 1px solid #2a2c30;
+}
+.demo-terminal .tm-pfp img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+.demo-terminal .tm-pl { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.demo-terminal .tm-name {
+  font-size: 13px; font-weight: 700;
+  color: #fff;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.demo-terminal .tm-sub {
+  font-size: 9px; letter-spacing: 0.10em;
+  color: #98c8ca;
+}
+.demo-terminal .tm-num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  color: #fff;
+  font-size: 13px;
+}
+.demo-terminal .tm-num small {
+  display: block;
+  font-size: 8px; letter-spacing: 0.18em;
+  color: #5e7c81;
+  font-weight: 500;
+  margin-top: 1px;
+}
+.demo-terminal .tm-spark {
+  width: 70px; height: 18px;
+}
+.demo-terminal .tm-spark path { fill: none; stroke: #00d1da; stroke-width: 1.4; }
+.demo-terminal .tm-act {
+  background: transparent; border: 0;
+  color: #5e7c81;
+  cursor: pointer;
+  font-size: 14px;
+}
+</style>
+</head>
+<body>
+
+<nav class="demo-chooser">
+  <span class="demo-chooser-l">// PICK_A_LOOK</span>
+  <button class="demo-pick active" data-d="editorial">1 · Editorial</button>
+  <button class="demo-pick" data-d="broadcast">2 · Broadcast</button>
+  <button class="demo-pick" data-d="saas">3 · SaaS Clean</button>
+  <button class="demo-pick" data-d="gridiron">4 · Gridiron</button>
+  <button class="demo-pick" data-d="terminal">5 · Terminal Elite</button>
+</nav>
+
+<!-- ─── DEMO 1: EDITORIAL ─────────────────────────────────── -->
+<div class="demo-frame demo-editorial active" data-d="editorial">
+  <div class="demo-meta" style="background:#fafaf7;color:#16110b66;border-color:#1611111a">
+    <b>1 · Editorial</b> — Stratechery / NYT Sports / Wired. Big serif title, generous whitespace, single-line rows, subdued palette. "Reading a magazine," not "using a dashboard."
+  </div>
+  <header class="ed-hero">
+    <div class="ed-eyebrow">2026 NFL · Fantasy Football · Vol. IV</div>
+    <h1 class="ed-title">The Draft <em>Rankings</em></h1>
+    <p class="ed-dek">300 players, fully ranked, updated every morning. Click any name for the full BDGE profile, comps, projection cone, and live scout reports.</p>
+    <div class="ed-meta">
+      <span><b>112</b> days to kickoff</span>
+      <span><b>v4.2</b> rankings pass</span>
+      <span><b>2 min</b> ago — last update</span>
+    </div>
+  </header>
+  <div class="ed-board">
+    <div class="ed-board-h">
+      <span></span><span>PLAYER</span><span style="text-align:right">PROJ</span><span style="text-align:right">ADP</span><span></span>
+    </div>
+    <div class="ed-row">
+      <div class="ed-rk">1</div>
+      <div class="ed-pl">
+        <div class="ed-pfp"><img src="https://a.espncdn.com/i/headshots/nfl/players/full/3117251.png" alt=""/></div>
+        <div><div class="ed-name">Christian McCaffrey</div><div class="ed-sub">San Francisco 49ers · #23 · Age 29</div></div>
+      </div>
+      <div class="ed-num">348.2<small>PROJ PTS</small></div>
+      <div class="ed-num">2.1<small>ADP</small></div>
+      <div><span class="ed-pos-pill rb">RB</span></div>
+    </div>
+    <div class="ed-row">
+      <div class="ed-rk">2</div>
+      <div class="ed-pl">
+        <div class="ed-pfp"><img src="https://a.espncdn.com/i/headshots/nfl/players/full/4430807.png" alt=""/></div>
+        <div><div class="ed-name">Bijan Robinson</div><div class="ed-sub">Atlanta Falcons · #7 · Age 24</div></div>
+      </div>
+      <div class="ed-num">336.8<small>PROJ PTS</small></div>
+      <div class="ed-num">1.8<small>ADP</small></div>
+      <div><span class="ed-pos-pill rb">RB</span></div>
+    </div>
+    <div class="ed-row">
+      <div class="ed-rk">3</div>
+      <div class="ed-pl">
+        <div class="ed-pfp"><img src="https://a.espncdn.com/i/headshots/nfl/players/full/4362628.png" alt=""/></div>
+        <div><div class="ed-name">Ja'Marr Chase</div><div class="ed-sub">Cincinnati Bengals · #1 · Age 26</div></div>
+      </div>
+      <div class="ed-num">336.4<small>PROJ PTS</small></div>
+      <div class="ed-num">3.4<small>ADP</small></div>
+      <div><span class="ed-pos-pill wr">WR</span></div>
+    </div>
+    <div class="ed-row">
+      <div class="ed-rk">4</div>
+      <div class="ed-pl">
+        <div class="ed-pfp"><img src="https://a.espncdn.com/i/headshots/nfl/players/full/4262921.png" alt=""/></div>
+        <div><div class="ed-name">Justin Jefferson</div><div class="ed-sub">Minnesota Vikings · #18 · Age 26</div></div>
+      </div>
+      <div class="ed-num">317.2<small>PROJ PTS</small></div>
+      <div class="ed-num">4.1<small>ADP</small></div>
+      <div><span class="ed-pos-pill wr">WR</span></div>
+    </div>
+    <div class="ed-row">
+      <div class="ed-rk">5</div>
+      <div class="ed-pl">
+        <div class="ed-pfp"><img src="https://a.espncdn.com/i/headshots/nfl/players/full/3116406.png" alt=""/></div>
+        <div><div class="ed-name">Tyreek Hill</div><div class="ed-sub">Miami Dolphins · #10 · Age 32</div></div>
+      </div>
+      <div class="ed-num">298.7<small>PROJ PTS</small></div>
+      <div class="ed-num">6.5<small>ADP</small></div>
+      <div><span class="ed-pos-pill wr">WR</span></div>
+    </div>
+    <div class="ed-row">
+      <div class="ed-rk">6</div>
+      <div class="ed-pl">
+        <div class="ed-pfp"><img src="https://a.espncdn.com/i/headshots/nfl/players/full/4241389.png" alt=""/></div>
+        <div><div class="ed-name">CeeDee Lamb</div><div class="ed-sub">Dallas Cowboys · #88 · Age 27</div></div>
+      </div>
+      <div class="ed-num">294.8<small>PROJ PTS</small></div>
+      <div class="ed-num">7.2<small>ADP</small></div>
+      <div><span class="ed-pos-pill wr">WR</span></div>
+    </div>
+    <div class="ed-row">
+      <div class="ed-rk">7</div>
+      <div class="ed-pl">
+        <div class="ed-pfp"><img src="https://a.espncdn.com/i/headshots/nfl/players/full/3929630.png" alt=""/></div>
+        <div><div class="ed-name">Saquon Barkley</div><div class="ed-sub">Philadelphia Eagles · #26 · Age 29</div></div>
+      </div>
+      <div class="ed-num">292.3<small>PROJ PTS</small></div>
+      <div class="ed-num">8.4<small>ADP</small></div>
+      <div><span class="ed-pos-pill rb">RB</span></div>
+    </div>
+    <div class="ed-row">
+      <div class="ed-rk">8</div>
+      <div class="ed-pl">
+        <div class="ed-pfp"><img src="https://a.espncdn.com/i/headshots/nfl/players/full/3139477.png" alt=""/></div>
+        <div><div class="ed-name">Patrick Mahomes</div><div class="ed-sub">Kansas City Chiefs · #15 · Age 30</div></div>
+      </div>
+      <div class="ed-num">388.0<small>PROJ PTS</small></div>
+      <div class="ed-num">38.0<small>ADP</small></div>
+      <div><span class="ed-pos-pill qb">QB</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── DEMO 2: BROADCAST ────────────────────────────────── -->
+<div class="demo-frame demo-broadcast" data-d="broadcast">
+  <div class="demo-meta" style="background:#07090f">
+    <b>2 · Broadcast</b> — ESPN / NFL Network / Sportscenter. Bold rank cards, position-colored bars, chunky uppercase typography, broadcast-graphic feel.
+  </div>
+  <header class="bc-hero">
+    <div class="bc-hero-l">2026 Fantasy Football · Draft Mode · Week 0</div>
+    <h1 class="bc-hero-h">DRAFT <span>RANKINGS</span></h1>
+    <div class="bc-hero-meta">
+      <span>DAYS TO KICKOFF · <b>112</b></span>
+      <span>RANKINGS PASS · <b>v4.2</b></span>
+      <span>LAST UPDATE · <b>2 MIN</b></span>
+    </div>
+  </header>
+  <div class="bc-bar">
+    <span class="bc-bar-pill active">ALL · 300</span>
+    <span class="bc-bar-pill">QB · 38</span>
+    <span class="bc-bar-pill">RB · 86</span>
+    <span class="bc-bar-pill">WR · 128</span>
+    <span class="bc-bar-pill">TE · 42</span>
+    <span style="flex:1"></span>
+    <span class="bc-bar-pill" style="border-right:0">PPR · HALF · STD</span>
+  </div>
+  <div class="bc-board">
+    <div class="bc-row" style="--pos:#047857">
+      <div class="bc-rk">01</div>
+      <div class="bc-pos-tag">RB</div>
+      <div class="bc-pfp"><img src="https://a.espncdn.com/i/headshots/nfl/players/full/3117251.png" alt=""/></div>
+      <div><div class="bc-name">Christian McCaffrey</div><div class="bc-sub">San Francisco · #23 · age 29</div></div>
+      <div class="bc-num">348.2<small>PROJ PTS</small></div>
+      <div class="bc-arrow">→</div>
+    </div>
+    <div class="bc-row" style="--pos:#047857">
+      <div class="bc-rk">02</div>
+      <div class="bc-pos-tag">RB</div>
+      <div class="bc-pfp"><img src="https://a.espncdn.com/i/headshots/nfl/players/full/4430807.png" alt=""/></div>
+      <div><div class="bc-name">Bijan Robinson</div><div class="bc-sub">Atlanta · #7 · age 24</div></div>
+      <div class="bc-num">336.8<small>PROJ PTS</small></div>
+      <div class="bc-arrow">→</div>
+    </div>
+    <div class="bc-row" style="--pos:#7c3aed">
+      <div class="bc-rk">03</div>
+      <div class="bc-pos-tag">WR</div>
+      <div class="bc-pfp"><img src="https://a.espncdn.com/i/headshots/nfl/players/full/4362628.png" alt=""/></div>
+      <div><div class="bc-name">Ja'Marr Chase</div><div class="bc-sub">Cincinnati · #1 · age 26</div></div>
+      <div class="bc-num">336.4<small>PROJ PTS</small></div>
+      <div class="bc-arrow">→</div>
+    </div>
+    <div class="bc-row" style="--pos:#7c3aed">
+      <div class="bc-rk">04</div>
+      <div class="bc-pos-tag">WR</div>
+      <div class="bc-pfp"><img src="https://a.espncdn.com/i/headshots/nfl/players/full/4262921.png" alt=""/></div>
+      <div><div class="bc-name">Justin Jefferson</div><div class="bc-sub">Minnesota · #18 · age 26</div></div>
+      <div class="bc-num">317.2<small>PROJ PTS</small></div>
+      <div class="bc-arrow">→</div>
+    </div>
+    <div class="bc-row" style="--pos:#7c3aed">
+      <div class="bc-rk">05</div>
+      <div class="bc-pos-tag">WR</div>
+      <div class="bc-pfp"><img src="https://a.espncdn.com/i/headshots/nfl/players/full/3116406.png" alt=""/></div>
+      <div><div class="bc-name">Tyreek Hill</div><div class="bc-sub">Miami · #10 · age 32</div></div>
+      <div class="bc-num">298.7<small>PROJ PTS</small></div>
+      <div class="bc-arrow">→</div>
+    </div>
+    <div class="bc-row" style="--pos:#7c3aed">
+      <div class="bc-rk">06</div>
+      <div class="bc-pos-tag">WR</div>
+      <div class="bc-pfp"><img src="https://a.espncdn.com/i/headshots/nfl/players/full/4241389.png" alt=""/></div>
+      <div><div class="bc-name">CeeDee Lamb</div><div class="bc-sub">Dallas · #88 · age 27</div></div>
+      <div class="bc-num">294.8<small>PROJ PTS</small></div>
+      <div class="bc-arrow">→</div>
+    </div>
+    <div class="bc-row" style="--pos:#047857">
+      <div class="bc-rk">07</div>
+      <div class="bc-pos-tag">RB</div>
+      <div class="bc-pfp"><img src="https://a.espncdn.com/i/headshots/nfl/players/full/3929630.png" alt=""/></div>
+      <div><div class="bc-name">Saquon Barkley</div><div class="bc-sub">Philadelphia · #26 · age 29</div></div>
+      <div class="bc-num">292.3<small>PROJ PTS</small></div>
+      <div class="bc-arrow">→</div>
+    </div>
+    <div class="bc-row" style="--pos:#2563eb">
+      <div class="bc-rk">08</div>
+      <div class="bc-pos-tag">QB</div>
+      <div class="bc-pfp"><img src="https://a.espncdn.com/i/headshots/nfl/players/full/3139477.png" alt=""/></div>
+      <div><div class="bc-name">Patrick Mahomes</div><div class="bc-sub">Kansas City · #15 · age 30</div></div>
+      <div class="bc-num">388.0<small>PROJ PTS</small></div>
+      <div class="bc-arrow">→</div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── DEMO 3: SAAS CLEAN ─────────────────────────────────── -->
+<div class="demo-frame demo-saas" data-d="saas">
+  <div class="demo-meta" style="background:#f7f8fa;color:#71717a;border-color:#e4e4e7">
+    <b>3 · SaaS Clean</b> — Linear / Notion / Stripe. Light theme, soft accents, compact info-dense rows. "Productivity tool" vibe.
+  </div>
+  <header class="ss-hero">
+    <div class="ss-h-row">
+      <h1 class="ss-h1">Draft Rankings <span class="em">2026</span></h1>
+      <span class="ss-status">Live · synced 2m ago</span>
+    </div>
+    <div class="ss-cards">
+      <div class="ss-card"><div class="ss-card-l">Players ranked</div><div class="ss-card-v">300</div><div class="ss-card-d up">+12 this week</div></div>
+      <div class="ss-card"><div class="ss-card-l">Days to kickoff</div><div class="ss-card-v">112</div><div class="ss-card-d">opening night Sep 5</div></div>
+      <div class="ss-card"><div class="ss-card-l">Rankings pass</div><div class="ss-card-v">v4.2</div><div class="ss-card-d">composite · 8 sources</div></div>
+      <div class="ss-card"><div class="ss-card-l">Watchlist</div><div class="ss-card-v">14</div><div class="ss-card-d">2 moved up today</div></div>
+    </div>
+  </header>
+  <div class="ss-controls">
+    <button class="ss-pill active">All · 300</button>
+    <button class="ss-pill">QB</button>
+    <button class="ss-pill">RB</button>
+    <button class="ss-pill">WR</button>
+    <button class="ss-pill">TE</button>
+    <span style="flex:1"></span>
+    <button class="ss-pill">PPR</button>
+    <button class="ss-pill">Half</button>
+    <button class="ss-pill">Standard</button>
+  </div>
+  <div class="ss-board">
+    <div class="ss-table-card">
+      <div class="ss-table-h">
+        <span>RK</span><span>Player</span><span style="text-align:right">PROJ</span><span style="text-align:right">ADP</span><span style="text-align:right">VBD</span><span style="text-align:right">ECR Δ</span><span></span>
+      </div>
+      <div class="ss-row">
+        <div class="ss-rk">1</div>
+        <div class="ss-pl">
+          <div class="ss-pfp"><img src="https://a.espncdn.com/i/headshots/nfl/players/full/3117251.png" alt=""/></div>
+          <div><div class="ss-name">Christian McCaffrey</div><div class="ss-sub"><span class="ss-pos-tag rb">RB</span> · SF · age 29</div></div>
+        </div>
+        <div class="ss-num">348.2</div><div class="ss-num">2.1</div><div class="ss-num">+62.4</div><div class="ss-num ss-trend">▲ 1</div>
+        <div class="ss-actions"><button class="ss-act">⋯</button></div>
+      </div>
+      <div class="ss-row">
+        <div class="ss-rk">2</div>
+        <div class="ss-pl">
+          <div class="ss-pfp"><img src="https://a.espncdn.com/i/headshots/nfl/players/full/4430807.png" alt=""/></div>
+          <div><div class="ss-name">Bijan Robinson</div><div class="ss-sub"><span class="ss-pos-tag rb">RB</span> · ATL · age 24</div></div>
+        </div>
+        <div class="ss-num">336.8</div><div class="ss-num">1.8</div><div class="ss-num">+58.2</div><div class="ss-num ss-trend">▲ 2</div>
+        <div class="ss-actions"><button class="ss-act">⋯</button></div>
+      </div>
+      <div class="ss-row">
+        <div class="ss-rk">3</div>
+        <div class="ss-pl">
+          <div class="ss-pfp"><img src="https://a.espncdn.com/i/headshots/nfl/players/full/4362628.png" alt=""/></div>
+          <div><div class="ss-name">Ja'Marr Chase</div><div class="ss-sub"><span class="ss-pos-tag wr">WR</span> · CIN · age 26</div></div>
+        </div>
+        <div class="ss-num">336.4</div><div class="ss-num">3.4</div><div class="ss-num">+63.5</div><div class="ss-num ss-trend dn">▼ 1</div>
+        <div class="ss-actions"><button class="ss-act">⋯</button></div>
+      </div>
+      <div class="ss-row">
+        <div class="ss-rk">4</div>
+        <div class="ss-pl">
+          <div class="ss-pfp"><img src="https://a.espncdn.com/i/headshots/nfl/players/full/4262921.png" alt=""/></div>
+          <div><div class="ss-name">Justin Jefferson</div><div class="ss-sub"><span class="ss-pos-tag wr">WR</span> · MIN · age 26</div></div>
+        </div>
+        <div class="ss-num">317.2</div><div class="ss-num">4.1</div><div class="ss-num">+52.0</div><div class="ss-num ss-trend">▲ 0</div>
+        <div class="ss-actions"><button class="ss-act">⋯</button></div>
+      </div>
+      <div class="ss-row">
+        <div class="ss-rk">5</div>
+        <div class="ss-pl">
+          <div class="ss-pfp"><img src="https://a.espncdn.com/i/headshots/nfl/players/full/3116406.png" alt=""/></div>
+          <div><div class="ss-name">Tyreek Hill</div><div class="ss-sub"><span class="ss-pos-tag wr">WR</span> · MIA · age 32</div></div>
+        </div>
+        <div class="ss-num">298.7</div><div class="ss-num">6.5</div><div class="ss-num">+43.1</div><div class="ss-num ss-trend dn">▼ 2</div>
+        <div class="ss-actions"><button class="ss-act">⋯</button></div>
+      </div>
+      <div class="ss-row">
+        <div class="ss-rk">6</div>
+        <div class="ss-pl">
+          <div class="ss-pfp"><img src="https://a.espncdn.com/i/headshots/nfl/players/full/4241389.png" alt=""/></div>
+          <div><div class="ss-name">CeeDee Lamb</div><div class="ss-sub"><span class="ss-pos-tag wr">WR</span> · DAL · age 27</div></div>
+        </div>
+        <div class="ss-num">294.8</div><div class="ss-num">7.2</div><div class="ss-num">+41.0</div><div class="ss-num ss-trend">▲ 1</div>
+        <div class="ss-actions"><button class="ss-act">⋯</button></div>
+      </div>
+      <div class="ss-row">
+        <div class="ss-rk">7</div>
+        <div class="ss-pl">
+          <div class="ss-pfp"><img src="https://a.espncdn.com/i/headshots/nfl/players/full/3929630.png" alt=""/></div>
+          <div><div class="ss-name">Saquon Barkley</div><div class="ss-sub"><span class="ss-pos-tag rb">RB</span> · PHI · age 29</div></div>
+        </div>
+        <div class="ss-num">292.3</div><div class="ss-num">8.4</div><div class="ss-num">+39.5</div><div class="ss-num ss-trend">▲ 0</div>
+        <div class="ss-actions"><button class="ss-act">⋯</button></div>
+      </div>
+      <div class="ss-row">
+        <div class="ss-rk">8</div>
+        <div class="ss-pl">
+          <div class="ss-pfp"><img src="https://a.espncdn.com/i/headshots/nfl/players/full/3139477.png" alt=""/></div>
+          <div><div class="ss-name">Patrick Mahomes</div><div class="ss-sub"><span class="ss-pos-tag qb">QB</span> · KC · age 30</div></div>
+        </div>
+        <div class="ss-num">388.0</div><div class="ss-num">38.0</div><div class="ss-num">+74.2</div><div class="ss-num ss-trend">▲ 0</div>
+        <div class="ss-actions"><button class="ss-act">⋯</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── DEMO 4: GRIDIRON ─────────────────────────────────── -->
+<div class="demo-frame demo-gridiron" data-d="gridiron">
+  <div class="demo-meta" style="background:#f9f5eb;color:#082430aa;border-color:#08243033">
+    <b>4 · Gridiron</b> — Madden / NFL preview / fantasy mag. Cream + navy + Cotton Pink, Bebas Neue stadium typography, players as Topps-style cards.
+  </div>
+  <header class="gr-hero">
+    <div class="gr-eyebrow">·  2026 Season  ·  Volume IV  ·</div>
+    <h1 class="gr-h">The <span class="gr-h-stripe">Big Board</span></h1>
+    <p class="gr-dek">Three hundred players, fully tiered. Swipe through, build your draft board, lock in your guys. Your league wins on Tuesday — every Tuesday.</p>
+    <div class="gr-stats-strip">
+      <div class="gr-stat"><div class="gr-stat-l">Players Tiered</div><div class="gr-stat-v">300</div></div>
+      <div class="gr-stat"><div class="gr-stat-l">Days to Kickoff</div><div class="gr-stat-v">112</div></div>
+      <div class="gr-stat"><div class="gr-stat-l">Rankings Pass</div><div class="gr-stat-v">v4.2</div></div>
+      <div class="gr-stat"><div class="gr-stat-l">Last Update</div><div class="gr-stat-v">2m</div></div>
+    </div>
+  </header>
+  <div class="gr-board">
+    <div class="gr-card">
+      <div class="gr-card-rk">01<small>OVR</small></div>
+      <div class="gr-card-pl">
+        <div class="gr-card-row">
+          <div class="gr-card-pfp"><img src="https://a.espncdn.com/i/headshots/nfl/players/full/3117251.png" alt=""/></div>
+          <div><div class="gr-card-name">CHRISTIAN MCCAFFREY</div><div class="gr-card-sub">SF · #23 · Age 29</div></div>
+        </div>
+        <div class="gr-card-foot"><span class="gr-card-pos">RB</span><span class="gr-card-pts">348.2<small>pts</small></span></div>
+      </div>
+    </div>
+    <div class="gr-card">
+      <div class="gr-card-rk">02<small>OVR</small></div>
+      <div class="gr-card-pl">
+        <div class="gr-card-row">
+          <div class="gr-card-pfp"><img src="https://a.espncdn.com/i/headshots/nfl/players/full/4430807.png" alt=""/></div>
+          <div><div class="gr-card-name">BIJAN ROBINSON</div><div class="gr-card-sub">ATL · #7 · Age 24</div></div>
+        </div>
+        <div class="gr-card-foot"><span class="gr-card-pos">RB</span><span class="gr-card-pts">336.8<small>pts</small></span></div>
+      </div>
+    </div>
+    <div class="gr-card">
+      <div class="gr-card-rk">03<small>OVR</small></div>
+      <div class="gr-card-pl">
+        <div class="gr-card-row">
+          <div class="gr-card-pfp"><img src="https://a.espncdn.com/i/headshots/nfl/players/full/4362628.png" alt=""/></div>
+          <div><div class="gr-card-name">JA'MARR CHASE</div><div class="gr-card-sub">CIN · #1 · Age 26</div></div>
+        </div>
+        <div class="gr-card-foot"><span class="gr-card-pos">WR</span><span class="gr-card-pts">336.4<small>pts</small></span></div>
+      </div>
+    </div>
+    <div class="gr-card">
+      <div class="gr-card-rk">04<small>OVR</small></div>
+      <div class="gr-card-pl">
+        <div class="gr-card-row">
+          <div class="gr-card-pfp"><img src="https://a.espncdn.com/i/headshots/nfl/players/full/4262921.png" alt=""/></div>
+          <div><div class="gr-card-name">JUSTIN JEFFERSON</div><div class="gr-card-sub">MIN · #18 · Age 26</div></div>
+        </div>
+        <div class="gr-card-foot"><span class="gr-card-pos">WR</span><span class="gr-card-pts">317.2<small>pts</small></span></div>
+      </div>
+    </div>
+    <div class="gr-card">
+      <div class="gr-card-rk">05<small>OVR</small></div>
+      <div class="gr-card-pl">
+        <div class="gr-card-row">
+          <div class="gr-card-pfp"><img src="https://a.espncdn.com/i/headshots/nfl/players/full/3116406.png" alt=""/></div>
+          <div><div class="gr-card-name">TYREEK HILL</div><div class="gr-card-sub">MIA · #10 · Age 32</div></div>
+        </div>
+        <div class="gr-card-foot"><span class="gr-card-pos">WR</span><span class="gr-card-pts">298.7<small>pts</small></span></div>
+      </div>
+    </div>
+    <div class="gr-card">
+      <div class="gr-card-rk">06<small>OVR</small></div>
+      <div class="gr-card-pl">
+        <div class="gr-card-row">
+          <div class="gr-card-pfp"><img src="https://a.espncdn.com/i/headshots/nfl/players/full/4241389.png" alt=""/></div>
+          <div><div class="gr-card-name">CEEDEE LAMB</div><div class="gr-card-sub">DAL · #88 · Age 27</div></div>
+        </div>
+        <div class="gr-card-foot"><span class="gr-card-pos">WR</span><span class="gr-card-pts">294.8<small>pts</small></span></div>
+      </div>
+    </div>
+    <div class="gr-card">
+      <div class="gr-card-rk">07<small>OVR</small></div>
+      <div class="gr-card-pl">
+        <div class="gr-card-row">
+          <div class="gr-card-pfp"><img src="https://a.espncdn.com/i/headshots/nfl/players/full/3929630.png" alt=""/></div>
+          <div><div class="gr-card-name">SAQUON BARKLEY</div><div class="gr-card-sub">PHI · #26 · Age 29</div></div>
+        </div>
+        <div class="gr-card-foot"><span class="gr-card-pos">RB</span><span class="gr-card-pts">292.3<small>pts</small></span></div>
+      </div>
+    </div>
+    <div class="gr-card">
+      <div class="gr-card-rk">08<small>OVR</small></div>
+      <div class="gr-card-pl">
+        <div class="gr-card-row">
+          <div class="gr-card-pfp"><img src="https://a.espncdn.com/i/headshots/nfl/players/full/3139477.png" alt=""/></div>
+          <div><div class="gr-card-name">PATRICK MAHOMES</div><div class="gr-card-sub">KC · #15 · Age 30</div></div>
+        </div>
+        <div class="gr-card-foot"><span class="gr-card-pos">QB</span><span class="gr-card-pts">388.0<small>pts</small></span></div>
+      </div>
+    </div>
+    <div class="gr-card">
+      <div class="gr-card-rk">09<small>OVR</small></div>
+      <div class="gr-card-pl">
+        <div class="gr-card-row">
+          <div class="gr-card-pfp"><img src="https://a.espncdn.com/i/headshots/nfl/players/full/4374302.png" alt=""/></div>
+          <div><div class="gr-card-name">AMON-RA ST. BROWN</div><div class="gr-card-sub">DET · #14 · Age 26</div></div>
+        </div>
+        <div class="gr-card-foot"><span class="gr-card-pos">WR</span><span class="gr-card-pts">281.6<small>pts</small></span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── DEMO 5: TERMINAL ELITE ───────────────────────────── -->
+<div class="demo-frame demo-terminal" data-d="terminal">
+  <div class="demo-meta" style="background:#000001">
+    <b>5 · Terminal Elite</b> — refined cyberpunk terminal. DraftBallr-direct competitor energy, leaner, more density per row.
+  </div>
+  <header class="tm-hero">
+    <div>
+      <h1 class="tm-h1"><span class="br">[</span>BDGE<span class="br">]</span> // DRAFT_RANKINGS<span class="br">_v4.2</span></h1>
+      <h2 class="tm-h2">300 <span class="em">/</span> Draft<span class="em">_</span>Board<span class="em">_</span>2026</h2>
+    </div>
+    <div class="tm-meta">
+      <span><span class="dot">●</span> LIVE</span>
+      <span>SYNC <b>2m</b></span>
+      <span>KICKOFF <b>112d</b></span>
+      <span>PASS <b>v4.2</b></span>
+    </div>
+  </header>
+  <div class="tm-controls">
+    <span style="color:#5e7c81;letter-spacing:0.22em;font-weight:700;margin-right:6px">FORMAT</span>
+    <button class="tm-pill active">PPR</button><button class="tm-pill">HALF</button><button class="tm-pill">STD</button>
+    <span style="color:#5e7c81;letter-spacing:0.22em;font-weight:700;margin:0 4px 0 14px">POS</span>
+    <button class="tm-pill active">ALL <span style="color:#5e7c81">300</span></button>
+    <button class="tm-pill" style="color:var(--pos-qb);border-color:var(--pos-qb)">QB</button>
+    <button class="tm-pill" style="color:var(--pos-rb);border-color:var(--pos-rb)">RB</button>
+    <button class="tm-pill" style="color:var(--pos-wr);border-color:var(--pos-wr)">WR</button>
+    <button class="tm-pill" style="color:var(--pos-te);border-color:var(--pos-te)">TE</button>
+    <span style="flex:1"></span>
+    <button class="tm-pill">SIMPLE</button><button class="tm-pill active">ADVANCED</button>
+  </div>
+  <div class="tm-board">
+    <div class="tm-row" style="--pos:var(--pos-rb)">
+      <div class="tm-rk">1<small>OVR</small></div>
+      <div class="tm-pos">RB1</div>
+      <div class="tm-pfp"><img src="https://a.espncdn.com/i/headshots/nfl/players/full/3117251.png" alt=""/></div>
+      <div class="tm-pl"><div class="tm-name">Christian McCaffrey</div><div class="tm-sub">SF · age 29 · bye 9</div></div>
+      <div class="tm-num">348.2<small>PROJ</small></div>
+      <div class="tm-num">2.1<small>ADP</small></div>
+      <svg class="tm-spark" viewBox="0 0 70 18"><path d="M0,14 L10,12 L20,11 L30,9 L40,8 L50,6 L60,4 L70,3"/></svg>
+      <button class="tm-act">★</button>
+    </div>
+    <div class="tm-row" style="--pos:var(--pos-rb)">
+      <div class="tm-rk">2<small>OVR</small></div>
+      <div class="tm-pos">RB2</div>
+      <div class="tm-pfp"><img src="https://a.espncdn.com/i/headshots/nfl/players/full/4430807.png" alt=""/></div>
+      <div class="tm-pl"><div class="tm-name">Bijan Robinson</div><div class="tm-sub">ATL · age 24 · bye 5</div></div>
+      <div class="tm-num">336.8<small>PROJ</small></div>
+      <div class="tm-num">1.8<small>ADP</small></div>
+      <svg class="tm-spark" viewBox="0 0 70 18"><path d="M0,12 L10,10 L20,8 L30,7 L40,5 L50,4 L60,3 L70,2"/></svg>
+      <button class="tm-act">★</button>
+    </div>
+    <div class="tm-row" style="--pos:var(--pos-wr)">
+      <div class="tm-rk">3<small>OVR</small></div>
+      <div class="tm-pos">WR1</div>
+      <div class="tm-pfp"><img src="https://a.espncdn.com/i/headshots/nfl/players/full/4362628.png" alt=""/></div>
+      <div class="tm-pl"><div class="tm-name">Ja'Marr Chase</div><div class="tm-sub">CIN · age 26 · bye 12</div></div>
+      <div class="tm-num">336.4<small>PROJ</small></div>
+      <div class="tm-num">3.4<small>ADP</small></div>
+      <svg class="tm-spark" viewBox="0 0 70 18"><path d="M0,10 L10,12 L20,9 L30,8 L40,7 L50,8 L60,5 L70,4"/></svg>
+      <button class="tm-act">★</button>
+    </div>
+    <div class="tm-row" style="--pos:var(--pos-wr)">
+      <div class="tm-rk">4<small>OVR</small></div>
+      <div class="tm-pos">WR2</div>
+      <div class="tm-pfp"><img src="https://a.espncdn.com/i/headshots/nfl/players/full/4262921.png" alt=""/></div>
+      <div class="tm-pl"><div class="tm-name">Justin Jefferson</div><div class="tm-sub">MIN · age 26 · bye 6</div></div>
+      <div class="tm-num">317.2<small>PROJ</small></div>
+      <div class="tm-num">4.1<small>ADP</small></div>
+      <svg class="tm-spark" viewBox="0 0 70 18"><path d="M0,12 L10,11 L20,10 L30,8 L40,9 L50,7 L60,6 L70,5"/></svg>
+      <button class="tm-act">★</button>
+    </div>
+    <div class="tm-row" style="--pos:var(--pos-wr)">
+      <div class="tm-rk">5<small>OVR</small></div>
+      <div class="tm-pos">WR3</div>
+      <div class="tm-pfp"><img src="https://a.espncdn.com/i/headshots/nfl/players/full/3116406.png" alt=""/></div>
+      <div class="tm-pl"><div class="tm-name">Tyreek Hill</div><div class="tm-sub">MIA · age 32 · bye 6</div></div>
+      <div class="tm-num">298.7<small>PROJ</small></div>
+      <div class="tm-num">6.5<small>ADP</small></div>
+      <svg class="tm-spark" viewBox="0 0 70 18"><path d="M0,5 L10,7 L20,6 L30,8 L40,9 L50,11 L60,10 L70,12"/></svg>
+      <button class="tm-act">★</button>
+    </div>
+    <div class="tm-row" style="--pos:var(--pos-wr)">
+      <div class="tm-rk">6<small>OVR</small></div>
+      <div class="tm-pos">WR4</div>
+      <div class="tm-pfp"><img src="https://a.espncdn.com/i/headshots/nfl/players/full/4241389.png" alt=""/></div>
+      <div class="tm-pl"><div class="tm-name">CeeDee Lamb</div><div class="tm-sub">DAL · age 27 · bye 7</div></div>
+      <div class="tm-num">294.8<small>PROJ</small></div>
+      <div class="tm-num">7.2<small>ADP</small></div>
+      <svg class="tm-spark" viewBox="0 0 70 18"><path d="M0,11 L10,10 L20,9 L30,8 L40,7 L50,7 L60,6 L70,5"/></svg>
+      <button class="tm-act">★</button>
+    </div>
+    <div class="tm-row" style="--pos:var(--pos-rb)">
+      <div class="tm-rk">7<small>OVR</small></div>
+      <div class="tm-pos">RB3</div>
+      <div class="tm-pfp"><img src="https://a.espncdn.com/i/headshots/nfl/players/full/3929630.png" alt=""/></div>
+      <div class="tm-pl"><div class="tm-name">Saquon Barkley</div><div class="tm-sub">PHI · age 29 · bye 9</div></div>
+      <div class="tm-num">292.3<small>PROJ</small></div>
+      <div class="tm-num">8.4<small>ADP</small></div>
+      <svg class="tm-spark" viewBox="0 0 70 18"><path d="M0,9 L10,8 L20,7 L30,9 L40,8 L50,6 L60,7 L70,5"/></svg>
+      <button class="tm-act">★</button>
+    </div>
+    <div class="tm-row" style="--pos:var(--pos-qb)">
+      <div class="tm-rk">8<small>OVR</small></div>
+      <div class="tm-pos">QB1</div>
+      <div class="tm-pfp"><img src="https://a.espncdn.com/i/headshots/nfl/players/full/3139477.png" alt=""/></div>
+      <div class="tm-pl"><div class="tm-name">Patrick Mahomes</div><div class="tm-sub">KC · age 30 · bye 10</div></div>
+      <div class="tm-num">388.0<small>PROJ</small></div>
+      <div class="tm-num">38.0<small>ADP</small></div>
+      <svg class="tm-spark" viewBox="0 0 70 18"><path d="M0,7 L10,6 L20,7 L30,5 L40,4 L50,5 L60,3 L70,2"/></svg>
+      <button class="tm-act">★</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  const picks = document.querySelectorAll('.demo-pick');
+  const frames = document.querySelectorAll('.demo-frame');
+  picks.forEach(p => p.addEventListener('click', () => {
+    const d = p.dataset.d;
+    picks.forEach(x => x.classList.toggle('active', x === p));
+    frames.forEach(f => f.classList.toggle('active', f.dataset.d === d));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }));
+})();
+</script>
+
+</body>
+</html>

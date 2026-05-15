@@ -1,0 +1,1070 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>BDGE — Player Card Concepts · 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#f9f5eb;
+  --bg-soft:#f3eedf;
+  --card:#ffffff;
+  --ink:#082430;
+  --ink-soft:#3f5765;
+  --ink-dim:#7d8c95;
+  --line:#082430;
+  --line-soft:#cdc9bc;
+  --accent:#fb637a;
+  --accent-2:#259fd6;
+  --gold:#d97706;
+  --green:#047857;
+  --red:#dc2626;
+}
+* { box-sizing: border-box; }
+html, body { margin:0; padding:0; background:var(--bg); color:var(--ink); font-family:"Inter",system-ui,sans-serif; }
+
+/* ─── Concept switcher ─── */
+.switcher {
+  position: sticky; top:0; z-index:50;
+  background: #082430;
+  color: #f9f5eb;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 24px;
+  border-bottom: 3px solid var(--accent);
+}
+.switcher-l { font-family:"Bebas Neue",sans-serif; letter-spacing:0.18em; font-size:18px; }
+.switcher-l b { color: var(--accent-2); font-weight: 400; }
+.switcher-tabs { display:flex; gap:4px; flex-wrap:wrap; }
+.switcher-tabs button {
+  font-family:"Bebas Neue",sans-serif;
+  font-size:13px; letter-spacing:0.14em;
+  padding: 8px 14px;
+  background: transparent;
+  border: 1.5px solid rgba(249,245,235,0.25);
+  color: rgba(249,245,235,0.7);
+  cursor: pointer;
+}
+.switcher-tabs button:hover { color: #f9f5eb; border-color: rgba(249,245,235,0.55); }
+.switcher-tabs button.active {
+  background: var(--accent); border-color: var(--accent); color: #fff;
+}
+
+.stage {
+  max-width: 1300px; margin: 0 auto;
+  padding: 32px 24px 80px;
+}
+.concept { display: none; }
+.concept.active { display: block; }
+.concept-meta {
+  display: flex; align-items: baseline; justify-content: space-between;
+  margin-bottom: 24px;
+  border-bottom: 2px solid var(--line);
+  padding-bottom: 12px;
+}
+.concept-meta h1 {
+  font-family:"Bebas Neue",sans-serif;
+  font-size: 38px; letter-spacing: 0.04em;
+  margin: 0;
+}
+.concept-meta .pitch {
+  font-size: 13px; color: var(--ink-soft);
+  max-width: 540px; text-align: right; line-height: 1.45;
+}
+
+/* ─── Shared widgets ─── */
+.tag-row { display:flex; gap:6px; flex-wrap:wrap; }
+.tag {
+  font-family:"Bebas Neue",sans-serif;
+  font-size: 11px; letter-spacing: 0.16em;
+  padding: 3px 9px;
+  border: 1.5px solid;
+  background: transparent;
+}
+.tag.elite { color: var(--accent); border-color: var(--accent); background: #fb637a14; }
+.tag.cy { color: var(--accent-2); border-color: var(--accent-2); background: #259fd614; }
+.tag.go { color: var(--gold); border-color: var(--gold); background: #d9770614; }
+.tag.gn { color: var(--green); border-color: var(--green); background: #04785714; }
+
+.kv { display: grid; grid-template-columns: auto auto; gap: 4px 16px; font-size: 12px; }
+.kv span { color: var(--ink-dim); letter-spacing: 0.10em; font-weight: 600; text-transform: uppercase; font-size: 10px; }
+.kv b { font-family:"Bebas Neue",sans-serif; font-size: 18px; color: var(--ink); font-weight: 400; font-variant-numeric: tabular-nums; }
+
+.statbox {
+  border: 1.5px solid var(--line);
+  background: var(--card);
+  padding: 14px 16px;
+}
+.statbox .k {
+  font-size: 9px; letter-spacing: 0.18em; font-weight: 700;
+  color: var(--ink-dim); text-transform: uppercase;
+  display: block;
+}
+.statbox .v {
+  font-family:"Bebas Neue",sans-serif;
+  font-size: 32px; line-height: 1;
+  margin-top: 4px;
+  font-variant-numeric: tabular-nums;
+}
+.statbox .v.cy { color: var(--accent-2); }
+.statbox .v.gn { color: var(--green); }
+.statbox .v.rd { color: var(--accent); }
+.statbox .v.go { color: var(--gold); }
+.statbox .d { font-size: 10px; color: var(--ink-dim); margin-top: 4px; }
+
+/* ─── Mini cone chart (shared) ─── */
+.mini-cone { width:100%; height:auto; border:1.5px solid var(--line); background: var(--bg-soft); display:block; }
+
+/* ════════════════════════════════════════════════════════════════════
+   CONCEPT 1: SCROLL — single-page profile, no tabs, anchor jump-nav
+   ════════════════════════════════════════════════════════════════════ */
+.c1 {
+  display: grid;
+  grid-template-columns: 280px minmax(0,1fr) 160px;
+  gap: 32px;
+  align-items: start;
+}
+.c1-l { position: sticky; top: 80px; display: flex; flex-direction: column; gap: 14px; }
+.c1-pfp {
+  aspect-ratio: 4/5;
+  background: var(--bg-soft);
+  border: 2px solid var(--line);
+  overflow: hidden;
+}
+.c1-pfp img { width:100%; height:100%; object-fit: cover; object-position: top; }
+.c1-name {
+  font-family:"Bebas Neue",sans-serif;
+  font-size: 48px; line-height: 0.9;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+.c1-sub {
+  font-size: 11px; letter-spacing: 0.14em; font-weight: 600;
+  color: var(--ink-soft); text-transform: uppercase;
+  margin-top: 4px;
+}
+.c1-jump { position: sticky; top: 80px; display: flex; flex-direction: column; gap: 0; }
+.c1-jump a {
+  font-family:"Bebas Neue",sans-serif;
+  font-size: 12px; letter-spacing: 0.14em;
+  color: var(--ink-soft);
+  padding: 6px 0 6px 14px;
+  border-left: 2px solid var(--line-soft);
+  text-decoration: none;
+}
+.c1-jump a:hover { color: var(--ink); border-left-color: var(--ink); }
+.c1-jump a.active { color: var(--accent); border-left-color: var(--accent); border-left-width: 3px; }
+
+.c1-r { display: flex; flex-direction: column; gap: 36px; min-width: 0; }
+.c1-section h2 {
+  font-family:"Bebas Neue",sans-serif;
+  font-size: 28px; letter-spacing: 0.04em;
+  margin: 0 0 12px;
+  border-bottom: 1.5px solid var(--line);
+  padding-bottom: 6px;
+  display: flex; justify-content: space-between; align-items: end;
+}
+.c1-section h2 small {
+  font-family:"Inter",sans-serif;
+  font-size: 10px; letter-spacing: 0.14em; font-weight: 500;
+  color: var(--ink-dim); text-transform: uppercase;
+}
+.c1-take {
+  font-size: 14px; line-height: 1.55;
+  padding: 10px 14px;
+  border-left: 3px solid var(--accent);
+  background: #fb637a0d;
+}
+.c1-strip { display: grid; grid-template-columns: repeat(5,1fr); gap: 0; border:1.5px solid var(--line); }
+.c1-strip > div { padding: 14px 16px; border-right: 1.5px solid var(--line); }
+.c1-strip > div:last-child { border-right: 0; }
+
+/* ════════════════════════════════════════════════════════════════════
+   CONCEPT 2: TRIO — 3 grouped tabs (Story / Stats / Community)
+   ════════════════════════════════════════════════════════════════════ */
+.c2-hero {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 28px;
+  padding: 24px;
+  background: var(--bg-soft);
+  border: 2px solid var(--line);
+  margin-bottom: 0;
+}
+.c2-pfp { aspect-ratio: 1; border: 2px solid var(--line); overflow: hidden; }
+.c2-pfp img { width:100%; height:100%; object-fit: cover; object-position: top; }
+.c2-hr { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.c2-rank {
+  display: inline-flex; align-items: baseline; gap: 8px;
+  font-family:"Bebas Neue",sans-serif;
+}
+.c2-rank .n { font-size: 56px; line-height: 1; color: var(--accent); }
+.c2-rank .l { font-size: 16px; letter-spacing: 0.18em; color: var(--ink-soft); }
+.c2-name {
+  font-family:"Bebas Neue",sans-serif;
+  font-size: 64px; line-height: 0.9; margin: 0;
+  letter-spacing: -0.01em;
+}
+.c2-meta { font-size: 13px; color: var(--ink-soft); letter-spacing: 0.04em; }
+.c2-meta b { color: var(--ink); font-weight: 700; }
+.c2-vitals { display: grid; grid-template-columns: repeat(6, 1fr); gap: 0; border: 1.5px solid var(--line); }
+.c2-vitals > div { padding: 12px; border-right: 1.5px solid var(--line); }
+.c2-vitals > div:last-child { border-right: 0; }
+
+.c2-tabs {
+  display: flex; gap: 0;
+  border: 2px solid var(--line);
+  border-top: 0;
+  background: var(--card);
+}
+.c2-tab {
+  flex: 1;
+  font-family:"Bebas Neue",sans-serif;
+  font-size: 16px; letter-spacing: 0.18em;
+  padding: 18px 24px;
+  background: transparent;
+  border: 0;
+  border-right: 2px solid var(--line);
+  color: var(--ink-soft);
+  cursor: pointer;
+  text-align: left;
+  display: flex; flex-direction: column; gap: 4px;
+}
+.c2-tab:last-child { border-right: 0; }
+.c2-tab:hover { background: var(--bg-soft); color: var(--ink); }
+.c2-tab.active { background: var(--ink); color: var(--bg); }
+.c2-tab small {
+  font-family:"Inter",sans-serif;
+  font-size: 10px; letter-spacing: 0.10em; font-weight: 500;
+  text-transform: none; color: inherit; opacity: 0.65;
+}
+.c2-pane { padding: 28px; border: 2px solid var(--line); border-top: 0; min-height: 400px; }
+.c2-pane > * + * { margin-top: 22px; }
+.c2-pane h3 {
+  font-family:"Bebas Neue",sans-serif;
+  font-size: 22px; letter-spacing: 0.04em;
+  margin: 0 0 10px;
+  border-bottom: 1.5px solid var(--line-soft);
+  padding-bottom: 6px;
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   CONCEPT 3: BENTO — dashboard grid, no tabs, all visible
+   ════════════════════════════════════════════════════════════════════ */
+.c3 {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-auto-rows: minmax(80px, auto);
+  gap: 12px;
+}
+.c3-cell {
+  background: var(--card);
+  border: 1.5px solid var(--line);
+  padding: 16px;
+  display: flex; flex-direction: column;
+  min-width: 0;
+}
+.c3-cell.feat { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.c3-cell.feat .k { color: rgba(249,245,235,0.55); }
+.c3-cell.accent { background: var(--accent); color: #fff; border-color: var(--accent); }
+.c3-cell.accent .k { color: rgba(255,255,255,0.7); }
+.c3-cell h3 {
+  font-family:"Bebas Neue",sans-serif;
+  font-size: 14px; letter-spacing: 0.16em;
+  margin: 0 0 8px;
+  color: var(--ink-soft);
+  text-transform: uppercase;
+}
+.c3-cell.feat h3, .c3-cell.accent h3 { color: rgba(255,255,255,0.7); }
+.c3-cell .v {
+  font-family:"Bebas Neue",sans-serif;
+  font-size: 38px; line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.c3-cell .d {
+  font-size: 11px; color: var(--ink-dim);
+  margin-top: 6px;
+  letter-spacing: 0.04em;
+}
+.c3-cell.feat .d, .c3-cell.accent .d { color: rgba(255,255,255,0.7); }
+.c3-cell.identity { grid-column: span 4; grid-row: span 3; padding: 0; overflow: hidden; }
+.c3-cell.identity .id-img { aspect-ratio: 1; background: var(--bg-soft); overflow: hidden; }
+.c3-cell.identity img { width:100%; height:100%; object-fit: cover; object-position: top; display:block; }
+.c3-cell.identity .id-info { padding: 14px 16px; }
+.c3-cell.headline { grid-column: span 8; grid-row: span 1; padding: 18px 22px; display:flex; justify-content:space-between; align-items:center; }
+.c3-cell.headline .name { font-family:"Bebas Neue",sans-serif; font-size: 56px; line-height: 0.9; margin:0; }
+.c3-cell.headline .rank { font-family:"Bebas Neue",sans-serif; font-size: 96px; line-height: 0.85; color: var(--accent); }
+.c3-cell.numbers-strip { grid-column: span 8; grid-row: span 1; }
+.c3-cell.proj { grid-column: span 8; grid-row: span 2; }
+.c3-cell.video { grid-column: span 6; grid-row: span 2; padding: 0; overflow:hidden; position: relative; }
+.c3-cell.video img { width:100%; height:100%; object-fit: cover; display:block; }
+.c3-cell.video .play-overlay {
+  position: absolute; inset: 0; display:grid; place-items:center;
+  background: linear-gradient(to top, rgba(8,36,48,0.6), rgba(8,36,48,0.1));
+}
+.c3-cell.video .play-overlay div {
+  border: 2px solid #fff; color: #fff;
+  padding: 10px 22px;
+  font-family:"Bebas Neue",sans-serif; font-size: 16px; letter-spacing: 0.20em;
+  background: rgba(8,36,48,0.55);
+}
+.c3-cell.vegas { grid-column: span 6; grid-row: span 2; }
+.c3-cell.vegas .vrow { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid var(--line-soft); font-size: 13px; }
+.c3-cell.vegas .vrow:last-child { border-bottom: 0; }
+.c3-cell.vegas .vrow b { font-family:"Bebas Neue",sans-serif; font-size: 17px; }
+.c3-cell.tags-cell { grid-column: span 4; grid-row: span 1; }
+.c3-cell.bdge { grid-column: span 3; }
+.c3-cell.adp { grid-column: span 3; }
+.c3-cell.epa { grid-column: span 3; }
+.c3-cell.usage { grid-column: span 3; }
+.c3-cell.tier-cell .v { color: var(--accent); }
+
+/* ════════════════════════════════════════════════════════════════════
+   CONCEPT 4: SIDEBAR — left rail nav with icons
+   ════════════════════════════════════════════════════════════════════ */
+.c4 {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 0;
+  border: 2px solid var(--line);
+  background: var(--card);
+}
+.c4-nav {
+  background: var(--ink);
+  color: var(--bg);
+  display: flex; flex-direction: column;
+  padding: 20px 0;
+}
+.c4-nav-h {
+  padding: 0 18px 14px;
+  border-bottom: 1.5px solid rgba(249,245,235,0.15);
+  font-family:"Bebas Neue",sans-serif;
+  font-size: 14px; letter-spacing: 0.18em;
+  color: rgba(249,245,235,0.55);
+}
+.c4-nav-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 18px;
+  font-family:"Bebas Neue",sans-serif;
+  font-size: 14px; letter-spacing: 0.16em;
+  color: rgba(249,245,235,0.7);
+  cursor: pointer;
+  border-left: 3px solid transparent;
+  background: transparent;
+  border-top: 0; border-right: 0; border-bottom: 0;
+  text-align: left; width: 100%;
+}
+.c4-nav-item:hover { color: var(--bg); background: rgba(249,245,235,0.05); }
+.c4-nav-item.active {
+  color: var(--bg); background: rgba(251,99,122,0.18);
+  border-left-color: var(--accent);
+}
+.c4-nav-item .ic {
+  width: 22px; height: 22px;
+  border: 1.5px solid currentColor;
+  display: grid; place-items: center;
+  font-size: 11px; font-family:"Inter",sans-serif; font-weight: 700;
+}
+.c4-nav-grp {
+  padding: 20px 18px 8px;
+  font-family:"Inter",sans-serif;
+  font-size: 9px; letter-spacing: 0.20em; font-weight: 700;
+  color: rgba(249,245,235,0.4);
+  text-transform: uppercase;
+}
+.c4-content { padding: 28px; min-width: 0; }
+.c4-content > * + * { margin-top: 22px; }
+.c4-h {
+  display: flex; align-items: center; gap: 18px;
+  border-bottom: 2px solid var(--line);
+  padding-bottom: 14px;
+}
+.c4-h .pfp { width: 64px; height: 64px; border: 2px solid var(--line); overflow: hidden; flex-shrink: 0; }
+.c4-h .pfp img { width:100%; height:100%; object-fit: cover; object-position: top; }
+.c4-h .name { font-family:"Bebas Neue",sans-serif; font-size: 32px; line-height: 1; margin: 0; }
+.c4-h .sub { font-size: 12px; color: var(--ink-soft); letter-spacing: 0.10em; margin-top: 4px; }
+.c4-h .rank { font-family:"Bebas Neue",sans-serif; font-size: 48px; color: var(--accent); margin-left: auto; }
+.c4-h .rank small { font-size: 12px; letter-spacing: 0.18em; color: var(--ink-soft); display:block; font-family:"Inter",sans-serif; font-weight: 700; }
+.c4-section h3 {
+  font-family:"Bebas Neue",sans-serif;
+  font-size: 22px; letter-spacing: 0.04em;
+  margin: 0 0 10px;
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   CONCEPT 5: MAGAZINE — editorial / feature article layout
+   ════════════════════════════════════════════════════════════════════ */
+.c5 { background: var(--card); border: 2px solid var(--line); }
+.c5-cover {
+  position: relative;
+  aspect-ratio: 16/7;
+  background: linear-gradient(135deg, #082430 0%, #0d3a4f 100%);
+  overflow: hidden;
+  border-bottom: 4px solid var(--accent);
+}
+.c5-cover .bg-img {
+  position: absolute; inset: 0;
+  background-size: cover; background-position: center top;
+  opacity: 0.35;
+  filter: saturate(0.7);
+}
+.c5-cover .grid-overlay {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(249,245,235,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(249,245,235,0.05) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+.c5-cover-inner {
+  position: relative; z-index: 2;
+  height: 100%;
+  padding: 32px 48px;
+  display: flex; flex-direction: column; justify-content: space-between;
+  color: #f9f5eb;
+}
+.c5-issue {
+  font-family:"Inter",sans-serif;
+  font-size: 11px; letter-spacing: 0.30em; font-weight: 700;
+  color: var(--accent-2);
+  text-transform: uppercase;
+}
+.c5-title {
+  font-family:"Bebas Neue",sans-serif;
+  font-size: 110px; line-height: 0.85;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+.c5-title .pos {
+  display: inline-block;
+  background: var(--accent);
+  color: #fff;
+  padding: 0 12px;
+  margin-right: 8px;
+}
+.c5-deck {
+  font-family:"Inter",sans-serif;
+  font-size: 16px; line-height: 1.45; max-width: 640px;
+  color: rgba(249,245,235,0.85);
+  font-weight: 500;
+}
+.c5-byline {
+  display: flex; gap: 18px; align-items: baseline;
+  font-size: 11px; letter-spacing: 0.16em; font-weight: 600;
+  color: rgba(249,245,235,0.7);
+  text-transform: uppercase;
+}
+.c5-byline b { color: #f9f5eb; font-weight: 700; }
+.c5-rail {
+  position: sticky; top: 60px;
+  background: var(--ink);
+  color: var(--bg);
+  display: flex;
+  z-index: 5;
+  border-bottom: 2px solid var(--line);
+}
+.c5-rail a {
+  flex: 1;
+  text-align: center;
+  padding: 14px 8px;
+  font-family:"Bebas Neue",sans-serif;
+  font-size: 12px; letter-spacing: 0.18em;
+  color: rgba(249,245,235,0.65);
+  text-decoration: none;
+  border-right: 1px solid rgba(249,245,235,0.12);
+}
+.c5-rail a:last-child { border-right: 0; }
+.c5-rail a:hover, .c5-rail a.active { color: var(--bg); background: rgba(251,99,122,0.18); }
+
+.c5-body {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 48px;
+  padding: 48px;
+}
+.c5-article > * + * { margin-top: 28px; }
+.c5-dropcap p:first-of-type::first-letter {
+  font-family:"Bebas Neue",sans-serif;
+  font-size: 88px;
+  float: left;
+  line-height: 0.85;
+  padding: 4px 12px 0 0;
+  color: var(--accent);
+}
+.c5-article p { font-size: 16px; line-height: 1.65; color: var(--ink); margin: 0 0 14px; }
+.c5-article h2 {
+  font-family:"Bebas Neue",sans-serif;
+  font-size: 32px; letter-spacing: 0.02em;
+  margin: 36px 0 14px;
+  border-top: 4px double var(--line);
+  padding-top: 18px;
+}
+.c5-pull {
+  font-family:"Bebas Neue",sans-serif;
+  font-size: 36px; line-height: 1.05;
+  letter-spacing: 0.01em;
+  color: var(--accent);
+  border-left: 5px solid var(--accent);
+  padding: 8px 0 8px 24px;
+  margin: 28px 0;
+}
+.c5-pull cite {
+  display: block;
+  font-family:"Inter",sans-serif;
+  font-size: 11px; font-style: normal; font-weight: 700; letter-spacing: 0.16em;
+  color: var(--ink-dim);
+  margin-top: 8px;
+  text-transform: uppercase;
+}
+.c5-aside { display: flex; flex-direction: column; gap: 22px; }
+.c5-aside-block {
+  border: 1.5px solid var(--line);
+  padding: 18px;
+  background: var(--bg-soft);
+}
+.c5-aside-block h4 {
+  font-family:"Bebas Neue",sans-serif;
+  font-size: 14px; letter-spacing: 0.18em;
+  margin: 0 0 12px;
+  padding-bottom: 8px;
+  border-bottom: 1.5px solid var(--line);
+}
+.c5-numbers { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px 18px; }
+.c5-numbers > div .k { font-size: 9px; letter-spacing: 0.18em; font-weight: 700; color: var(--ink-dim); text-transform: uppercase; display: block; }
+.c5-numbers > div .v { font-family:"Bebas Neue",sans-serif; font-size: 28px; line-height: 1; margin-top: 4px; font-variant-numeric: tabular-nums; display: block; }
+
+@media (max-width: 920px) {
+  .c1 { grid-template-columns: 1fr; }
+  .c1-l, .c1-jump { position: static; }
+  .c4 { grid-template-columns: 1fr; }
+  .c5-body { grid-template-columns: 1fr; padding: 24px; }
+  .c5-cover-inner { padding: 24px; }
+  .c5-title { font-size: 64px; }
+  .c2-hero { grid-template-columns: 1fr; }
+  .c2-tabs { flex-direction: column; }
+  .c2-tab { border-right: 0; border-bottom: 2px solid var(--line); }
+}
+</style>
+</head>
+<body>
+
+<!-- Concept switcher -->
+<div class="switcher">
+  <div class="switcher-l">BDGE <b>// Player Card Concepts</b></div>
+  <div class="switcher-tabs" id="switcher">
+    <button class="active" data-concept="c1">1 · Scroll</button>
+    <button data-concept="c2">2 · Trio</button>
+    <button data-concept="c3">3 · Bento</button>
+    <button data-concept="c4">4 · Sidebar</button>
+    <button data-concept="c5">5 · Magazine</button>
+  </div>
+</div>
+
+<div class="stage">
+
+<!-- ────────────────── CONCEPT 1: SCROLL ────────────────── -->
+<section class="concept active" data-concept="c1">
+  <div class="concept-meta">
+    <h1>1 · Scroll</h1>
+    <div class="pitch">No tabs. Single-page profile with sticky avatar + sticky right-side jump nav. Skim or scan; everything is one scroll away. Best when each section is short.</div>
+  </div>
+
+  <div class="c1">
+    <div class="c1-l">
+      <div class="c1-pfp"><img src="https://a.espncdn.com/combiner/i?img=/i/headshots/nfl/players/full/3117251.png&w=350&h=254" alt=""/></div>
+      <div>
+        <div class="tag-row" style="margin-bottom:8px"><span class="tag elite">// ELITE</span><span class="tag cy">BYE WK 6</span></div>
+        <h2 class="c1-name">CHRISTIAN<br/>MCCAFFREY</h2>
+        <div class="c1-sub">RB · 49ERS · #23 · AGE 29</div>
+      </div>
+      <div class="kv" style="border-top:1.5px solid var(--line); padding-top:10px">
+        <span>HT</span><b>5'11"</b>
+        <span>WT</span><b>201</b>
+        <span>EXP</span><b>9 YR</b>
+        <span>ESPN</span><b>3117251</b>
+      </div>
+    </div>
+
+    <div class="c1-r">
+      <div class="c1-section" id="s-story">
+        <h2>Season Outlook<small>// AI v4.2 · 78% conf</small></h2>
+        <div class="c1-take">Workhorse RB1 with no concrete handcuff threat — <em>still the alpha</em>. Ceiling caps the room and the floor is among the highest at the position.</div>
+        <p style="margin:14px 0 0; font-size:14px; line-height:1.6">Volume risk attached to durability profile. Floor-driven CEO who hits ceiling more reliably than any back since Faulk. The 49ers' offense funnels every meaningful touch through him; backup Jordan Mason has shown spike weeks but no path to a 3-down role.</p>
+      </div>
+
+      <div class="c1-section" id="s-numbers">
+        <h2>The Numbers<small>// 2026 projection</small></h2>
+        <div class="c1-strip">
+          <div class="statbox"><span class="k">Proj Pts</span><span class="v cy">348.2</span><span class="d">PPG 21.8</span></div>
+          <div class="statbox"><span class="k">Ceiling</span><span class="v gn">412</span><span class="d">90th pct</span></div>
+          <div class="statbox"><span class="k">Floor</span><span class="v rd">268</span><span class="d">10th pct</span></div>
+          <div class="statbox"><span class="k">VBD</span><span class="v go">+62.4</span><span class="d">vs replacement</span></div>
+          <div class="statbox"><span class="k">ADP</span><span class="v">2.1</span><span class="d">consensus</span></div>
+        </div>
+      </div>
+
+      <div class="c1-section" id="s-proj">
+        <h2>Weekly Projection · Cone<small>18-wk · proj · ceil · floor</small></h2>
+        <svg class="mini-cone" viewBox="0 0 620 160">
+          <path d="M28,72 L62,68 L96,58 L130,52 L164,58 L198,68 L232,82 L266,98 L300,110 L334,112 L368,102 L402,88 L436,76 L470,68 L504,62 L538,60 L572,58 L592,58 L592,128 L572,128 L538,130 L504,132 L470,138 L436,148 L402,158 L368,170 L334,182 L300,180 L266,168 L232,152 L198,138 L164,128 L130,122 L96,128 L62,138 L28,142 Z" fill="#259fd6" fill-opacity="0.12"/>
+          <path d="M28,90 L62,82 L96,72 L130,68 L164,76 L198,90 L232,108 L266,128 L300,140 L334,144 L368,128 L402,108 L436,90 L470,80 L504,72 L538,70 L572,72 L592,72" fill="none" stroke="#259fd6" stroke-width="2"/>
+          <text x="62" y="156" text-anchor="middle" fill="#7d8c95" font-size="9" font-family="Inter" font-weight="600">WK 1</text>
+          <text x="198" y="156" text-anchor="middle" fill="#7d8c95" font-size="9" font-family="Inter" font-weight="600">WK 5</text>
+          <text x="334" y="156" text-anchor="middle" fill="#7d8c95" font-size="9" font-family="Inter" font-weight="600">WK 9</text>
+          <text x="470" y="156" text-anchor="middle" fill="#7d8c95" font-size="9" font-family="Inter" font-weight="600">WK 13</text>
+          <text x="572" y="156" text-anchor="middle" fill="#7d8c95" font-size="9" font-family="Inter" font-weight="600">WK 17</text>
+        </svg>
+      </div>
+
+      <div class="c1-section" id="s-vegas">
+        <h2>Vegas + Highlight<small>Wk 1 vs ARI</small></h2>
+        <div style="display:grid; grid-template-columns:1.2fr 1fr; gap:18px">
+          <div style="aspect-ratio:16/9; background:#082430 url('https://i.ytimg.com/vi/z1BU0cIz7BQ/hqdefault.jpg') center/cover; position:relative; border:1.5px solid var(--line); display:grid; place-items:center">
+            <div style="position:absolute; inset:0; background:linear-gradient(to top, rgba(8,36,48,0.55), transparent)"></div>
+            <div style="position:relative; z-index:2; border:2px solid #fff; color:#fff; padding:10px 22px; font-family:'Bebas Neue',sans-serif; letter-spacing:0.20em; font-size:16px; background:rgba(8,36,48,0.55)">▶ HIGHLIGHT REEL</div>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:6px">
+            <div style="display:flex; justify-content:space-between; padding:8px 12px; background:var(--bg-soft); border-left:2px solid var(--line); font-size:12px"><span style="color:var(--ink-soft); letter-spacing:0.10em; font-weight:600">TEAM IMPLIED</span><b style="font-family:'Bebas Neue',sans-serif; font-size:18px">26.5</b></div>
+            <div style="display:flex; justify-content:space-between; padding:8px 12px; background:var(--bg-soft); border-left:2px solid var(--line); font-size:12px"><span style="color:var(--ink-soft); letter-spacing:0.10em; font-weight:600">O/U</span><b style="font-family:'Bebas Neue',sans-serif; font-size:18px">48.0</b></div>
+            <div style="display:flex; justify-content:space-between; padding:8px 12px; background:var(--bg-soft); border-left:2px solid var(--line); font-size:12px"><span style="color:var(--ink-soft); letter-spacing:0.10em; font-weight:600">SPREAD</span><b style="font-family:'Bebas Neue',sans-serif; font-size:18px; color:var(--green)">−4.5</b></div>
+            <div style="display:flex; justify-content:space-between; padding:8px 12px; background:var(--bg-soft); border-left:2px solid var(--line); font-size:12px"><span style="color:var(--ink-soft); letter-spacing:0.10em; font-weight:600">RUSH YDS PROP</span><b style="font-family:'Bebas Neue',sans-serif; font-size:18px">94.5</b></div>
+            <div style="display:flex; justify-content:space-between; padding:8px 12px; background:var(--bg-soft); border-left:2px solid var(--line); font-size:12px; border-top:1.5px solid var(--line); margin-top:4px; padding-top:10px"><span style="color:var(--ink-soft); letter-spacing:0.10em; font-weight:600">WK 1 STATUS</span><b style="font-family:'Bebas Neue',sans-serif; font-size:14px; color:var(--green)">FULL · NO RESTRICTIONS</b></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="c1-section" id="s-impact">
+        <h2>Impact Components<small>// age-adjusted · NFLverse + PFF</small></h2>
+        <div style="border:1.5px solid var(--line); background:var(--bg-soft); padding:18px; display:grid; grid-template-columns:repeat(3,1fr); gap:14px">
+          <div><span style="font-size:9px; letter-spacing:0.18em; font-weight:700; color:var(--ink-dim); text-transform:uppercase">EPA / Play</span><div style="font-family:'Bebas Neue',sans-serif; font-size:30px; margin-top:3px">+0.21</div><div style="font-size:10px; color:var(--ink-dim)">86th pct</div></div>
+          <div><span style="font-size:9px; letter-spacing:0.18em; font-weight:700; color:var(--ink-dim); text-transform:uppercase">Success Rate</span><div style="font-family:'Bebas Neue',sans-serif; font-size:30px; margin-top:3px">52%</div><div style="font-size:10px; color:var(--ink-dim)">78th pct</div></div>
+          <div><span style="font-size:9px; letter-spacing:0.18em; font-weight:700; color:var(--ink-dim); text-transform:uppercase">True YPC</span><div style="font-family:'Bebas Neue',sans-serif; font-size:30px; margin-top:3px">2.05</div><div style="font-size:10px; color:var(--ink-dim)">84th pct</div></div>
+          <div><span style="font-size:9px; letter-spacing:0.18em; font-weight:700; color:var(--ink-dim); text-transform:uppercase">YAC over Exp</span><div style="font-family:'Bebas Neue',sans-serif; font-size:30px; margin-top:3px">+0.61</div><div style="font-size:10px; color:var(--ink-dim)">81st pct</div></div>
+          <div><span style="font-size:9px; letter-spacing:0.18em; font-weight:700; color:var(--ink-dim); text-transform:uppercase">Tgt Share</span><div style="font-family:'Bebas Neue',sans-serif; font-size:30px; margin-top:3px">23%</div><div style="font-size:10px; color:var(--ink-dim)">76th pct</div></div>
+          <div><span style="font-size:9px; letter-spacing:0.18em; font-weight:700; color:var(--ink-dim); text-transform:uppercase">BDGE+</span><div style="font-family:'Bebas Neue',sans-serif; font-size:30px; margin-top:3px; color:var(--accent-2)">88</div><div style="font-size:10px; color:var(--ink-dim)">overall</div></div>
+        </div>
+      </div>
+
+      <div class="c1-section" id="s-comps">
+        <h2>Comps & Discussion<small>3 closest historical comps</small></h2>
+        <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:12px">
+          <div style="border:1.5px solid var(--line); padding:14px; background:var(--card)"><div style="font-family:'Bebas Neue',sans-serif; font-size:18px">LADAINIAN TOMLINSON '06</div><div style="font-size:11px; color:var(--ink-dim); letter-spacing:0.10em; margin-top:4px">88% MATCH · WORKHORSE PROFILE</div></div>
+          <div style="border:1.5px solid var(--line); padding:14px; background:var(--card)"><div style="font-family:'Bebas Neue',sans-serif; font-size:18px">MARSHALL FAULK '00</div><div style="font-size:11px; color:var(--ink-dim); letter-spacing:0.10em; margin-top:4px">84% MATCH · DUAL-THREAT</div></div>
+          <div style="border:1.5px solid var(--line); padding:14px; background:var(--card)"><div style="font-family:'Bebas Neue',sans-serif; font-size:18px">ARIAN FOSTER '12</div><div style="font-size:11px; color:var(--ink-dim); letter-spacing:0.10em; margin-top:4px">79% MATCH · VOLUME-DRIVEN</div></div>
+        </div>
+      </div>
+    </div>
+
+    <nav class="c1-jump">
+      <a href="#s-story" class="active">Story</a>
+      <a href="#s-numbers">Numbers</a>
+      <a href="#s-proj">Projection</a>
+      <a href="#s-vegas">Vegas</a>
+      <a href="#s-impact">Impact</a>
+      <a href="#s-comps">Comps</a>
+    </nav>
+  </div>
+</section>
+
+<!-- ────────────────── CONCEPT 2: TRIO ────────────────── -->
+<section class="concept" data-concept="c2">
+  <div class="concept-meta">
+    <h1>2 · Trio</h1>
+    <div class="pitch">10 sections collapse into 3 grouped tabs (Story · Stats · Community). Loud header carries the identity; tabs act as chapter dividers, not nav primitives. Two clicks max.</div>
+  </div>
+
+  <div class="c2-hero">
+    <div class="c2-pfp"><img src="https://a.espncdn.com/combiner/i?img=/i/headshots/nfl/players/full/3117251.png&w=350&h=254" alt=""/></div>
+    <div class="c2-hr">
+      <div class="c2-rank"><span class="n">01</span><span class="l">// OVERALL · RB1</span></div>
+      <h2 class="c2-name">CHRISTIAN MCCAFFREY</h2>
+      <div class="c2-meta"><b>49ers</b> · #23 · Age 29 · Bye Wk 6 · Tier <b>Elite</b></div>
+      <div class="tag-row"><span class="tag elite">CEILING_GOD</span><span class="tag cy">VOLUME_DEMON</span><span class="tag go">BELL_COW</span></div>
+      <div class="c2-vitals">
+        <div class="statbox" style="border:0; padding:0"><span class="k">Pts</span><span class="v cy">348.2</span></div>
+        <div class="statbox" style="border:0; padding:0"><span class="k">Ceil</span><span class="v gn">412</span></div>
+        <div class="statbox" style="border:0; padding:0"><span class="k">Floor</span><span class="v rd">268</span></div>
+        <div class="statbox" style="border:0; padding:0"><span class="k">VBD</span><span class="v go">+62.4</span></div>
+        <div class="statbox" style="border:0; padding:0"><span class="k">ADP</span><span class="v">2.1</span></div>
+        <div class="statbox" style="border:0; padding:0"><span class="k">PPG</span><span class="v">21.8</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="c2-tabs" id="c2tabs">
+    <button class="c2-tab active" data-pane="story">STORY <small>Outlook · Cone · Highlight · Vegas</small></button>
+    <button class="c2-tab" data-pane="stats">DEEP STATS <small>Impact · Field · Usage · ADP · Reports</small></button>
+    <button class="c2-tab" data-pane="community">COMMUNITY <small>Comps · Buckets · Discussion</small></button>
+  </div>
+
+  <div class="c2-pane" id="c2-pane-story">
+    <h3>Season Outlook</h3>
+    <div class="c1-take">Workhorse RB1 with no concrete handcuff threat — <em>still the alpha</em>. Ceiling caps the room and the floor is among the highest at the position.</div>
+
+    <div>
+      <h3>Weekly Projection · Cone</h3>
+      <svg class="mini-cone" viewBox="0 0 800 180">
+        <path d="M28,90 L102,82 L176,72 L250,68 L324,76 L398,90 L472,108 L546,128 L620,140 L694,144 L768,128 L768,160 L694,164 L620,168 L546,170 L472,168 L398,160 L324,150 L250,138 L176,126 L102,118 L28,114 Z" fill="#259fd6" fill-opacity="0.14"/>
+        <path d="M28,80 L102,72 L176,62 L250,58 L324,68 L398,82 L472,100 L546,120 L620,134 L694,138 L768,122" fill="none" stroke="#259fd6" stroke-width="2.5"/>
+      </svg>
+    </div>
+
+    <div style="display:grid; grid-template-columns:1.2fr 1fr; gap:24px">
+      <div>
+        <h3>Highlight Reel</h3>
+        <div style="aspect-ratio:16/9; background:#082430 url('https://i.ytimg.com/vi/z1BU0cIz7BQ/hqdefault.jpg') center/cover; position:relative; border:1.5px solid var(--line); display:grid; place-items:center">
+          <div style="position:absolute; inset:0; background:linear-gradient(to top, rgba(8,36,48,0.55), transparent)"></div>
+          <div style="position:relative; z-index:2; border:2px solid #fff; color:#fff; padding:10px 22px; font-family:'Bebas Neue',sans-serif; letter-spacing:0.20em; font-size:16px; background:rgba(8,36,48,0.55)">▶ PLAY</div>
+        </div>
+      </div>
+      <div>
+        <h3>Vegas · Wk 1 vs ARI</h3>
+        <div style="display:flex; flex-direction:column; gap:6px">
+          <div style="display:flex; justify-content:space-between; padding:8px 12px; background:var(--bg-soft); border-left:2px solid var(--line); font-size:12px"><span style="color:var(--ink-soft); letter-spacing:0.10em; font-weight:600">TEAM IMPLIED</span><b style="font-family:'Bebas Neue',sans-serif; font-size:18px">26.5</b></div>
+          <div style="display:flex; justify-content:space-between; padding:8px 12px; background:var(--bg-soft); border-left:2px solid var(--line); font-size:12px"><span style="color:var(--ink-soft); letter-spacing:0.10em; font-weight:600">O/U</span><b style="font-family:'Bebas Neue',sans-serif; font-size:18px">48.0</b></div>
+          <div style="display:flex; justify-content:space-between; padding:8px 12px; background:var(--bg-soft); border-left:2px solid var(--line); font-size:12px"><span style="color:var(--ink-soft); letter-spacing:0.10em; font-weight:600">SPREAD</span><b style="font-family:'Bebas Neue',sans-serif; font-size:18px; color:var(--green)">−4.5</b></div>
+          <div style="display:flex; justify-content:space-between; padding:8px 12px; background:var(--bg-soft); border-left:2px solid var(--line); font-size:12px"><span style="color:var(--ink-soft); letter-spacing:0.10em; font-weight:600">RUSH PROP</span><b style="font-family:'Bebas Neue',sans-serif; font-size:18px">94.5</b></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="c2-pane" id="c2-pane-stats" style="display:none">
+    <h3>Composite Impact</h3>
+    <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:0; border:1.5px solid var(--line)">
+      <div style="padding:14px 16px; border-right:1.5px solid var(--line); border-left:3px solid var(--accent-2)"><span class="k" style="font-size:9px; letter-spacing:0.18em; font-weight:700; color:var(--ink-dim); text-transform:uppercase">BDGE+</span><div style="font-family:'Bebas Neue',sans-serif; font-size:32px; color:var(--accent-2); margin-top:4px">88</div><div style="font-size:10px; color:var(--ink-dim)">overall, age-adj</div></div>
+      <div style="padding:14px 16px; border-right:1.5px solid var(--line)"><span style="font-size:9px; letter-spacing:0.18em; font-weight:700; color:var(--ink-dim); text-transform:uppercase">Off EPA+</span><div style="font-family:'Bebas Neue',sans-serif; font-size:32px; color:var(--green); margin-top:4px">+0.27</div><div style="font-size:10px; color:var(--ink-dim)">vs replacement</div></div>
+      <div style="padding:14px 16px; border-right:1.5px solid var(--line)"><span style="font-size:9px; letter-spacing:0.18em; font-weight:700; color:var(--ink-dim); text-transform:uppercase">Raw EPA</span><div style="font-family:'Bebas Neue',sans-serif; font-size:32px; margin-top:4px">+0.21</div><div style="font-size:10px; color:var(--ink-dim)">unadjusted</div></div>
+      <div style="padding:14px 16px"><span style="font-size:9px; letter-spacing:0.18em; font-weight:700; color:var(--ink-dim); text-transform:uppercase">Age Bump</span><div style="font-family:'Bebas Neue',sans-serif; font-size:32px; color:var(--gold); margin-top:4px">+1.6</div><div style="font-size:10px; color:var(--ink-dim)">@ age 29</div></div>
+    </div>
+
+    <h3>Field & Usage</h3>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:18px">
+      <div style="aspect-ratio:1.4; background:radial-gradient(ellipse at 30% 60%, rgba(37,159,214,0.5), transparent 50%), radial-gradient(ellipse at 70% 40%, rgba(251,99,122,0.4), transparent 50%), var(--bg-soft); border:2px solid var(--line); display:grid; place-items:center; color:var(--ink-dim); letter-spacing:0.18em; font-size:11px">[ field heat map · target zones ]</div>
+      <div style="display:flex; flex-direction:column; gap:8px">
+        <div style="padding:10px 14px; background:var(--bg-soft); border-left:3px solid var(--accent-2); display:flex; justify-content:space-between"><span style="font-size:11px; letter-spacing:0.10em; color:var(--ink-soft); font-weight:600">SNAP %</span><b style="font-family:'Bebas Neue',sans-serif; font-size:20px">82</b></div>
+        <div style="padding:10px 14px; background:var(--bg-soft); border-left:3px solid var(--accent-2); display:flex; justify-content:space-between"><span style="font-size:11px; letter-spacing:0.10em; color:var(--ink-soft); font-weight:600">CARRIES / GAME</span><b style="font-family:'Bebas Neue',sans-serif; font-size:20px">18.4</b></div>
+        <div style="padding:10px 14px; background:var(--bg-soft); border-left:3px solid var(--accent-2); display:flex; justify-content:space-between"><span style="font-size:11px; letter-spacing:0.10em; color:var(--ink-soft); font-weight:600">TARGETS / GAME</span><b style="font-family:'Bebas Neue',sans-serif; font-size:20px">5.8</b></div>
+        <div style="padding:10px 14px; background:var(--bg-soft); border-left:3px solid var(--accent-2); display:flex; justify-content:space-between"><span style="font-size:11px; letter-spacing:0.10em; color:var(--ink-soft); font-weight:600">RZ TOUCH SHARE</span><b style="font-family:'Bebas Neue',sans-serif; font-size:20px">68%</b></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="c2-pane" id="c2-pane-community" style="display:none">
+    <h3>Closest Historical Comps</h3>
+    <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:12px">
+      <div style="border:1.5px solid var(--line); padding:18px; background:var(--card)"><div style="font-family:'Bebas Neue',sans-serif; font-size:22px">LT '06</div><div style="font-size:11px; color:var(--ink-dim); letter-spacing:0.10em; margin-top:4px; text-transform:uppercase">88% match · workhorse profile</div><div style="margin-top:10px; font-size:13px; line-height:1.5">Same volume CEO archetype. LT had a higher TD spike but McCaffrey carries more receiving floor.</div></div>
+      <div style="border:1.5px solid var(--line); padding:18px; background:var(--card)"><div style="font-family:'Bebas Neue',sans-serif; font-size:22px">FAULK '00</div><div style="font-size:11px; color:var(--ink-dim); letter-spacing:0.10em; margin-top:4px; text-transform:uppercase">84% match · dual-threat</div><div style="margin-top:10px; font-size:13px; line-height:1.5">Pass-game DNA matches. Faulk's age-29 season set the historical RB1 ceiling at 365 PPR points.</div></div>
+      <div style="border:1.5px solid var(--line); padding:18px; background:var(--card)"><div style="font-family:'Bebas Neue',sans-serif; font-size:22px">FOSTER '12</div><div style="font-size:11px; color:var(--ink-dim); letter-spacing:0.10em; margin-top:4px; text-transform:uppercase">79% match · volume-driven</div><div style="margin-top:10px; font-size:13px; line-height:1.5">Foster's age-26 workload mirrors current usage. Risk-comp: cliff at 27 was injury-driven, not skill.</div></div>
+    </div>
+
+    <h3>Bucket Tagging</h3>
+    <div style="display:flex; gap:8px; flex-wrap:wrap">
+      <button class="tag elite" style="cursor:pointer; padding:8px 14px; font-size:13px">+ MY GUYS</button>
+      <button class="tag cy" style="cursor:pointer; padding:8px 14px; font-size:13px">+ NICK'S PICK</button>
+      <button class="tag go" style="cursor:pointer; padding:8px 14px; font-size:13px">+ MO'S MUST-HAVE</button>
+      <button class="tag" style="cursor:pointer; padding:8px 14px; font-size:13px; color:var(--ink-soft); border-color:var(--line-soft)">+ SLEEPER</button>
+      <button class="tag" style="cursor:pointer; padding:8px 14px; font-size:13px; color:var(--ink-soft); border-color:var(--line-soft)">+ AVOID</button>
+    </div>
+  </div>
+</section>
+
+<!-- ────────────────── CONCEPT 3: BENTO ────────────────── -->
+<section class="concept" data-concept="c3">
+  <div class="concept-meta">
+    <h1>3 · Bento</h1>
+    <div class="pitch">No tabs. Every section is a tile in a 12-column grid; the user scans visually instead of clicking. Best for fast triage between players. Trades depth-per-section for breadth-at-once.</div>
+  </div>
+
+  <div class="c3">
+    <div class="c3-cell identity">
+      <div class="id-img"><img src="https://a.espncdn.com/combiner/i?img=/i/headshots/nfl/players/full/3117251.png&w=350&h=254" alt=""/></div>
+      <div class="id-info">
+        <div class="tag-row" style="margin-bottom:6px"><span class="tag elite">// ELITE</span></div>
+        <div style="font-family:'Bebas Neue',sans-serif; font-size:24px; line-height:1">CHRISTIAN MCCAFFREY</div>
+        <div style="font-size:11px; color:var(--ink-soft); letter-spacing:0.10em; margin-top:4px">RB · 49ERS · #23 · AGE 29 · BYE WK 6</div>
+      </div>
+    </div>
+
+    <div class="c3-cell headline">
+      <div>
+        <div style="font-size:11px; letter-spacing:0.18em; color:var(--ink-dim); font-weight:700; text-transform:uppercase">// 2026 BIG BOARD</div>
+        <div class="name">CHRISTIAN MCCAFFREY</div>
+      </div>
+      <div class="rank">01</div>
+    </div>
+
+    <div class="c3-cell numbers-strip">
+      <div style="display:grid; grid-template-columns:repeat(5,1fr); gap:24px">
+        <div><div class="k" style="font-size:9px; letter-spacing:0.18em; font-weight:700; color:var(--ink-dim); text-transform:uppercase">Proj Pts</div><div class="v" style="color:var(--accent-2)">348.2</div><div class="d">PPG 21.8</div></div>
+        <div><div class="k" style="font-size:9px; letter-spacing:0.18em; font-weight:700; color:var(--ink-dim); text-transform:uppercase">Ceiling</div><div class="v" style="color:var(--green)">412</div><div class="d">90th pct</div></div>
+        <div><div class="k" style="font-size:9px; letter-spacing:0.18em; font-weight:700; color:var(--ink-dim); text-transform:uppercase">Floor</div><div class="v" style="color:var(--accent)">268</div><div class="d">10th pct</div></div>
+        <div><div class="k" style="font-size:9px; letter-spacing:0.18em; font-weight:700; color:var(--ink-dim); text-transform:uppercase">VBD</div><div class="v" style="color:var(--gold)">+62.4</div><div class="d">vs repl</div></div>
+        <div><div class="k" style="font-size:9px; letter-spacing:0.18em; font-weight:700; color:var(--ink-dim); text-transform:uppercase">ADP</div><div class="v">2.1</div><div class="d">consensus</div></div>
+      </div>
+    </div>
+
+    <div class="c3-cell proj">
+      <h3>Weekly Projection · Cone</h3>
+      <svg viewBox="0 0 800 160" style="width:100%; height:auto; display:block; margin-top:auto">
+        <path d="M28,90 L102,82 L176,72 L250,68 L324,76 L398,90 L472,108 L546,128 L620,134 L694,138 L768,128 L768,150 L694,154 L620,158 L546,160 L472,158 L398,150 L324,140 L250,128 L176,116 L102,108 L28,104 Z" fill="#259fd6" fill-opacity="0.16"/>
+        <path d="M28,76 L102,68 L176,58 L250,54 L324,64 L398,78 L472,96 L546,116 L620,128 L694,132 L768,116" fill="none" stroke="#259fd6" stroke-width="2.5"/>
+      </svg>
+    </div>
+
+    <div class="c3-cell video">
+      <img src="https://i.ytimg.com/vi/z1BU0cIz7BQ/hqdefault.jpg" alt=""/>
+      <div class="play-overlay"><div>▶ HIGHLIGHT REEL</div></div>
+    </div>
+
+    <div class="c3-cell vegas">
+      <h3>Vegas · Wk 1</h3>
+      <div class="vrow"><span style="color:var(--ink-soft)">Team Implied</span><b>26.5</b></div>
+      <div class="vrow"><span style="color:var(--ink-soft)">O/U</span><b>48.0</b></div>
+      <div class="vrow"><span style="color:var(--ink-soft)">Spread</span><b style="color:var(--green)">−4.5</b></div>
+      <div class="vrow"><span style="color:var(--ink-soft)">Rush Yds Prop</span><b>94.5</b></div>
+      <div class="vrow"><span style="color:var(--ink-soft)">Status</span><b style="color:var(--green); font-size:13px">FULL</b></div>
+    </div>
+
+    <div class="c3-cell tags-cell">
+      <h3>Archetype</h3>
+      <div class="tag-row"><span class="tag elite">CEILING_GOD</span><span class="tag cy">VOLUME_DEMON</span><span class="tag go">BELL_COW</span><span class="tag gn">DURABLE_24M</span></div>
+    </div>
+
+    <div class="c3-cell bdge accent">
+      <h3>BDGE+</h3>
+      <div class="v">88</div>
+      <div class="d">age-adj overall</div>
+    </div>
+
+    <div class="c3-cell adp feat">
+      <h3>ADP</h3>
+      <div class="v">2.1</div>
+      <div class="d">consensus · 1.2 - 4.0 range</div>
+    </div>
+
+    <div class="c3-cell epa">
+      <h3>EPA / Play</h3>
+      <div class="v" style="color:var(--green)">+0.21</div>
+      <div class="d">86th percentile</div>
+    </div>
+
+    <div class="c3-cell usage">
+      <h3>Snap %</h3>
+      <div class="v">82%</div>
+      <div class="d">2024 regular season</div>
+    </div>
+  </div>
+</section>
+
+<!-- ────────────────── CONCEPT 4: SIDEBAR ────────────────── -->
+<section class="concept" data-concept="c4">
+  <div class="concept-meta">
+    <h1>4 · Sidebar</h1>
+    <div class="pitch">Left rail nav with full text + icon. Trades horizontal real estate for legibility. Each item has room to breathe; grouped by Story / Stats / Community. Best when section count grows.</div>
+  </div>
+
+  <div class="c4">
+    <nav class="c4-nav">
+      <div class="c4-nav-h">// PROFILE</div>
+      <div class="c4-nav-grp">Story</div>
+      <button class="c4-nav-item active"><span class="ic">★</span>Overview</button>
+      <button class="c4-nav-item"><span class="ic">▶</span>Highlight</button>
+      <button class="c4-nav-item"><span class="ic">$</span>Vegas</button>
+      <div class="c4-nav-grp">Deep Stats</div>
+      <button class="c4-nav-item"><span class="ic">+</span>Impact</button>
+      <button class="c4-nav-item"><span class="ic">⌗</span>Stats</button>
+      <button class="c4-nav-item"><span class="ic">▦</span>Field</button>
+      <button class="c4-nav-item"><span class="ic">%</span>Usage</button>
+      <button class="c4-nav-item"><span class="ic">∿</span>ADP</button>
+      <div class="c4-nav-grp">Community</div>
+      <button class="c4-nav-item"><span class="ic">≡</span>Reports</button>
+      <button class="c4-nav-item"><span class="ic">≈</span>Comps</button>
+      <button class="c4-nav-item"><span class="ic">@</span>Discussion</button>
+    </nav>
+
+    <div class="c4-content">
+      <div class="c4-h">
+        <div class="pfp"><img src="https://a.espncdn.com/combiner/i?img=/i/headshots/nfl/players/full/3117251.png&w=350&h=254" alt=""/></div>
+        <div>
+          <h2 class="name">CHRISTIAN MCCAFFREY</h2>
+          <div class="sub">RB · 49ERS · #23 · AGE 29 · BYE WK 6</div>
+        </div>
+        <div class="rank"><small>OVERALL</small>01</div>
+      </div>
+
+      <div class="c4-section">
+        <h3>Season Outlook</h3>
+        <div class="c1-take">Workhorse RB1 with no concrete handcuff threat — <em>still the alpha</em>. Ceiling caps the room and the floor is among the highest at the position.</div>
+      </div>
+
+      <div class="c4-section">
+        <h3>The Numbers</h3>
+        <div class="c1-strip">
+          <div class="statbox"><span class="k">Proj Pts</span><span class="v cy">348.2</span><span class="d">PPG 21.8</span></div>
+          <div class="statbox"><span class="k">Ceiling</span><span class="v gn">412</span><span class="d">90th pct</span></div>
+          <div class="statbox"><span class="k">Floor</span><span class="v rd">268</span><span class="d">10th pct</span></div>
+          <div class="statbox"><span class="k">VBD</span><span class="v go">+62.4</span><span class="d">vs repl</span></div>
+          <div class="statbox"><span class="k">ADP</span><span class="v">2.1</span><span class="d">consensus</span></div>
+        </div>
+      </div>
+
+      <div class="c4-section">
+        <h3>Weekly Projection · Cone</h3>
+        <svg class="mini-cone" viewBox="0 0 800 160">
+          <path d="M28,90 L102,82 L176,72 L250,68 L324,76 L398,90 L472,108 L546,128 L620,134 L694,138 L768,128 L768,150 L694,154 L620,158 L546,160 L472,158 L398,150 L324,140 L250,128 L176,116 L102,108 L28,104 Z" fill="#259fd6" fill-opacity="0.14"/>
+          <path d="M28,76 L102,68 L176,58 L250,54 L324,64 L398,78 L472,96 L546,116 L620,128 L694,132 L768,116" fill="none" stroke="#259fd6" stroke-width="2.5"/>
+        </svg>
+      </div>
+
+      <div class="c4-section">
+        <h3>Archetype</h3>
+        <div class="tag-row"><span class="tag elite">CEILING_GOD</span><span class="tag cy">VOLUME_DEMON</span><span class="tag go">BELL_COW</span><span class="tag gn">DURABLE_24M</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ────────────────── CONCEPT 5: MAGAZINE ────────────────── -->
+<section class="concept" data-concept="c5">
+  <div class="concept-meta">
+    <h1>5 · Magazine</h1>
+    <div class="pitch">Editorial / feature article treatment. Big cover, deck, drop cap, pull quote, sticky chapter rail. Treats every player profile as a piece of content rather than a dashboard. Highest design-craft ceiling, longest to read.</div>
+  </div>
+
+  <div class="c5">
+    <div class="c5-cover">
+      <div class="bg-img" style="background-image:url('https://a.espncdn.com/combiner/i?img=/i/headshots/nfl/players/full/3117251.png&w=350&h=254')"></div>
+      <div class="grid-overlay"></div>
+      <div class="c5-cover-inner">
+        <div class="c5-issue">// BDGE Big Board · Issue 04 · 2026 Season</div>
+        <div>
+          <h2 class="c5-title"><span class="pos">RB1</span><br/>CHRISTIAN<br/>MCCAFFREY</h2>
+        </div>
+        <div>
+          <div class="c5-deck">The 49ers' workhorse enters his ninth year as the only true CEO at his position. Volume isn't a question. Durability is.</div>
+          <div class="c5-byline" style="margin-top:14px">
+            <span><b>BY</b> The BDGE Desk</span>
+            <span><b>UPDATED</b> 2 minutes ago</span>
+            <span><b>RANK</b> 01 / 300</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <nav class="c5-rail">
+      <a href="#" class="active">Story</a>
+      <a href="#">Numbers</a>
+      <a href="#">Projection</a>
+      <a href="#">Vegas</a>
+      <a href="#">Impact</a>
+      <a href="#">Field</a>
+      <a href="#">Comps</a>
+      <a href="#">Community</a>
+    </nav>
+
+    <div class="c5-body">
+      <article class="c5-article c5-dropcap">
+        <p>Workhorse RB1 with no concrete handcuff threat — still the alpha of the 49ers' offense. Ceiling caps the room and the floor is among the highest at the position. Volume risk attached to durability profile, but the 24-month injury record now reads cleaner than it has at any point since his rookie deal.</p>
+
+        <p>Backup Jordan Mason has flashed spike weeks but no path to a 3-down role. Kyle Shanahan funnels every meaningful touch through McCaffrey when he's available, and the 2026 cap structure says he's available all year.</p>
+
+        <div class="c5-pull">
+          "Floor-driven CEO who hits ceiling more reliably than any back since Faulk."
+          <cite>— BDGE Desk · Outlook v4.2 · 78% confidence</cite>
+        </div>
+
+        <h2>The Numbers</h2>
+        <p>Projection model returns <b>348.2 PPR points</b> at the median, with a 90th-percentile ceiling of <b>412</b> and a 10th-percentile floor of <b>268</b>. VBD versus replacement back is <b>+62.4</b>, the highest at the position by a 14-point margin. Consensus ADP sits at <b>2.1 overall</b>, which is the cheapest he has been since 2022.</p>
+
+        <h2>The Risk</h2>
+        <p>Age 29 is the historical RB cliff. Comps say the cliff is real, but the 24-month load profile and the 2024 receiving-game reset suggest a softer landing than the position average. The bet is on durability holding for one more year — and on the 49ers' offense staying near the league's top five in scripted touch volume.</p>
+      </article>
+
+      <aside class="c5-aside">
+        <div class="c5-aside-block">
+          <h4>By the Numbers</h4>
+          <div class="c5-numbers">
+            <div><span class="k">Proj Pts</span><span class="v" style="color:var(--accent-2)">348.2</span></div>
+            <div><span class="k">Ceiling</span><span class="v" style="color:var(--green)">412</span></div>
+            <div><span class="k">Floor</span><span class="v" style="color:var(--accent)">268</span></div>
+            <div><span class="k">VBD</span><span class="v" style="color:var(--gold)">+62.4</span></div>
+            <div><span class="k">ADP</span><span class="v">2.1</span></div>
+            <div><span class="k">PPG</span><span class="v">21.8</span></div>
+          </div>
+        </div>
+
+        <div class="c5-aside-block">
+          <h4>Vegas · Wk 1</h4>
+          <div style="display:flex; flex-direction:column; gap:6px; font-size:13px">
+            <div style="display:flex; justify-content:space-between"><span style="color:var(--ink-soft)">Team Implied</span><b style="font-family:'Bebas Neue',sans-serif; font-size:18px">26.5</b></div>
+            <div style="display:flex; justify-content:space-between"><span style="color:var(--ink-soft)">Spread</span><b style="font-family:'Bebas Neue',sans-serif; font-size:18px; color:var(--green)">−4.5</b></div>
+            <div style="display:flex; justify-content:space-between"><span style="color:var(--ink-soft)">O/U</span><b style="font-family:'Bebas Neue',sans-serif; font-size:18px">48.0</b></div>
+            <div style="display:flex; justify-content:space-between"><span style="color:var(--ink-soft)">Rush Prop</span><b style="font-family:'Bebas Neue',sans-serif; font-size:18px">94.5</b></div>
+          </div>
+        </div>
+
+        <div class="c5-aside-block">
+          <h4>Closest Comps</h4>
+          <div style="display:flex; flex-direction:column; gap:10px; font-size:13px">
+            <div><b style="font-family:'Bebas Neue',sans-serif; font-size:18px">LT '06</b> · 88% match</div>
+            <div><b style="font-family:'Bebas Neue',sans-serif; font-size:18px">FAULK '00</b> · 84% match</div>
+            <div><b style="font-family:'Bebas Neue',sans-serif; font-size:18px">FOSTER '12</b> · 79% match</div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+</div>
+
+<script>
+// Concept switcher
+document.querySelectorAll('#switcher button').forEach(b => {
+  b.addEventListener('click', () => {
+    const target = b.dataset.concept;
+    document.querySelectorAll('#switcher button').forEach(x => x.classList.toggle('active', x === b));
+    document.querySelectorAll('.concept').forEach(c => c.classList.toggle('active', c.dataset.concept === target));
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  });
+});
+
+// Concept 2 — pane switcher
+document.querySelectorAll('#c2tabs button').forEach(b => {
+  b.addEventListener('click', () => {
+    const pane = b.dataset.pane;
+    document.querySelectorAll('#c2tabs button').forEach(x => x.classList.toggle('active', x === b));
+    ['story','stats','community'].forEach(p => {
+      document.getElementById('c2-pane-'+p).style.display = (p === pane) ? '' : 'none';
+    });
+  });
+});
+
+// Concept 1 — jump nav active state on scroll
+const c1Sections = ['s-story','s-numbers','s-proj','s-vegas','s-impact','s-comps'];
+function updateC1Jump() {
+  if (!document.querySelector('[data-concept="c1"].active')) return;
+  let active = c1Sections[0];
+  for (const id of c1Sections) {
+    const el = document.getElementById(id);
+    if (el && el.getBoundingClientRect().top <= 120) active = id;
+  }
+  document.querySelectorAll('.c1-jump a').forEach(a => {
+    a.classList.toggle('active', a.getAttribute('href') === '#' + active);
+  });
+}
+document.addEventListener('scroll', updateC1Jump);
+updateC1Jump();
+
+// Concept 4 — sidebar nav active state
+document.querySelectorAll('.c4-nav-item').forEach(b => {
+  b.addEventListener('click', () => {
+    document.querySelectorAll('.c4-nav-item').forEach(x => x.classList.remove('active'));
+    b.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>

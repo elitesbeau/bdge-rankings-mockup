@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>V2 — Rounds Grid · BDGE Big Board</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Oswald:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #f9f5eb;
+    --bg-soft: #f1ecdf;
+    --card: #fffaf0;
+    --ink: #082430;
+    --ink-soft: #3a4f5a;
+    --ink-dim: #6c7c87;
+    --line: #082430;
+    --line-soft: rgba(8, 36, 48, 0.14);
+    --pink: #fb637a;
+    --blue: #259fd6;
+    --green: #16a34a;
+    --amber: #d97706;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Inter", sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+  }
+  .tb {
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px 32px;
+    border-bottom: 1.5px solid var(--line);
+  }
+  .tb .brand { font-family: "Oswald", sans-serif; font-size: 22px; letter-spacing: 0.06em; font-weight: 700; }
+  .tb .crumb { color: var(--ink-dim); font-size: 13px; }
+  .tb .v { margin-left: auto; font-family: "JetBrains Mono", monospace; font-size: 11px; color: var(--ink-dim); }
+
+  .hero { padding: 32px 32px 16px; }
+  .hero h1 {
+    font-family: "Oswald", sans-serif; font-weight: 700;
+    font-size: 56px; line-height: 1; letter-spacing: 0.01em;
+    margin: 0;
+  }
+  .hero h1 em {
+    background: var(--pink); color: #fff;
+    padding: 2px 14px; font-style: italic; margin-left: 6px;
+  }
+  .hero .sub {
+    color: var(--ink-soft); font-size: 13px; margin-top: 10px;
+    max-width: 660px; line-height: 1.55;
+  }
+
+  .fbar {
+    display: flex; align-items: center; gap: 10px;
+    padding: 14px 32px;
+    border-top: 1.5px solid var(--line-soft);
+    border-bottom: 1.5px solid var(--line-soft);
+    flex-wrap: wrap;
+    position: sticky; top: 0;
+    background: var(--bg);
+    z-index: 10;
+  }
+  .fbar-l { font-family: "Oswald", sans-serif; font-size: 13px; letter-spacing: 0.18em; color: var(--ink-dim); font-weight: 600; }
+  .pill {
+    padding: 5px 12px;
+    border: 1.5px solid var(--line-soft);
+    background: transparent;
+    color: var(--ink);
+    font-size: 12px; font-weight: 600;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+  .pill.active { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+
+  /* Rounds grid */
+  main {
+    padding: 24px 32px 60px;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 18px;
+  }
+  /* Force exactly 4 columns on huge screens for a "draft board" feel */
+  @media (min-width: 1500px) { .grid { grid-template-columns: repeat(4, 1fr); } }
+  @media (min-width: 1900px) { .grid { grid-template-columns: repeat(5, 1fr); } }
+
+  .round {
+    display: flex; flex-direction: column;
+    background: var(--card);
+    border: 1.5px solid var(--line);
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 3px 3px 0 var(--ink);
+  }
+  .round-h {
+    display: flex; align-items: center; gap: 10px;
+    padding: 14px 16px;
+    border-bottom: 1.5px solid var(--ink);
+    background: var(--bg);
+  }
+  .round-h .tag {
+    background: var(--ink); color: var(--bg);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px; font-weight: 700; letter-spacing: 0.10em;
+    padding: 3px 8px; border-radius: 2px;
+  }
+  .round-h .ttl {
+    font-family: "Oswald", sans-serif;
+    font-size: 22px; letter-spacing: 0.02em;
+    font-weight: 700;
+  }
+  .round-h .meta {
+    margin-left: auto;
+    font-size: 10px; letter-spacing: 0.10em;
+    color: var(--ink-dim); font-weight: 700;
+  }
+
+  .pick {
+    display: grid;
+    grid-template-columns: 32px 36px 1fr 28px;
+    gap: 10px;
+    align-items: center;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--line-soft);
+    cursor: pointer;
+    transition: background 120ms;
+  }
+  .pick:last-child { border-bottom: 0; }
+  .pick:hover { background: var(--bg); }
+  .pick .rk {
+    font-family: "Oswald", sans-serif;
+    font-size: 17px;
+    color: var(--ink);
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+  }
+  .pick .pfp {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: var(--bg-soft);
+    border: 1.5px solid var(--line);
+    overflow: hidden;
+    object-fit: cover; object-position: top;
+  }
+  .pick .body { min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+  .pick .nm {
+    font-family: "Oswald", sans-serif;
+    font-size: 15px; line-height: 1;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .pick .meta {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 10px; letter-spacing: 0.06em;
+    color: var(--ink-dim); font-weight: 600;
+  }
+  .pos {
+    display: inline-grid; place-items: center;
+    height: 16px; min-width: 26px; padding: 0 5px;
+    font-family: "Oswald", sans-serif;
+    font-size: 9.5px; letter-spacing: 0.04em;
+    border-radius: 2px;
+  }
+  .pos.RB { background: rgba(22,163,74,0.16); color: #15803d; }
+  .pos.WR { background: rgba(37,159,214,0.16); color: #1e6f9c; }
+  .pos.QB { background: rgba(251,99,122,0.18); color: #b91c1c; }
+  .pos.TE { background: rgba(217,119,6,0.16); color: #92560a; }
+  .pick .delta {
+    text-align: center;
+    font-size: 11px; font-weight: 700;
+    font-family: "JetBrains Mono", monospace;
+  }
+  .delta.up   { color: var(--green); }
+  .delta.down { color: var(--pink); }
+  .delta.flat { color: var(--ink-dim); }
+
+  /* Hover-over preview pill */
+  .stadium {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-size: 9px; letter-spacing: 0.04em;
+    color: var(--ink-dim);
+  }
+
+  .foot { padding: 32px 0 0; font-size: 11px; color: var(--ink-dim); text-align: center; letter-spacing: 0.08em; }
+  .foot a { color: var(--ink); }
+</style>
+</head>
+<body>
+
+<header class="tb">
+  <span class="brand">BDGE</span>
+  <span class="crumb">/ Big Board / Draft Rankings 2026</span>
+  <span class="v">V2 · ROUNDS GRID</span>
+</header>
+
+<section class="hero">
+  <h1>The BDGE <em>Big Board</em></h1>
+  <div class="sub">Rounds laid out side-by-side. Scan two, three, or four rounds at once without scrolling — the board fills the canvas instead of leaving dead gutters.</div>
+</section>
+
+<div class="fbar">
+  <span class="fbar-l">Position</span>
+  <button class="pill active">All</button>
+  <button class="pill">QB</button>
+  <button class="pill">RB</button>
+  <button class="pill">WR</button>
+  <button class="pill">TE</button>
+  <span class="fbar-l" style="margin-left:20px">Density</span>
+  <button class="pill active">Compact</button>
+  <button class="pill">Comfortable</button>
+</div>
+
+<main>
+  <div class="grid">
+
+    <!-- Round 1 -->
+    <div class="round">
+      <div class="round-h">
+        <span class="tag">R1</span>
+        <span class="ttl">Round One</span>
+        <span class="meta">1–10</span>
+      </div>
+      <div class="pick"><div class="rk">1</div><img class="pfp" src="https://a.espncdn.com/i/headshots/nfl/players/full/3117251.png" /><div class="body"><span class="nm">C. McCaffrey</span><span class="meta"><span class="pos RB">RB1</span>SF · ADP 2.1</span></div><div class="delta up">▲1</div></div>
+      <div class="pick"><div class="rk">2</div><img class="pfp" src="https://a.espncdn.com/i/headshots/nfl/players/full/4430807.png" /><div class="body"><span class="nm">B. Robinson</span><span class="meta"><span class="pos RB">RB2</span>ATL · ADP 1.8</span></div><div class="delta flat">●</div></div>
+      <div class="pick"><div class="rk">3</div><img class="pfp" src="https://a.espncdn.com/i/headshots/nfl/players/full/4362628.png" /><div class="body"><span class="nm">J. Chase</span><span class="meta"><span class="pos WR">WR1</span>CIN · ADP 3.4</span></div><div class="delta flat">●</div></div>
+      <div class="pick"><div class="rk">4</div><img class="pfp" src="https://a.espncdn.com/i/headshots/nfl/players/full/4262921.png" /><div class="body"><span class="nm">J. Jefferson</span><span class="meta"><span class="pos WR">WR2</span>MIN · ADP 4.1</span></div><div class="delta flat">●</div></div>
+      <div class="pick"><div class="rk">5</div><img class="pfp" src="https://a.espncdn.com/i/headshots/nfl/players/full/3116406.png" /><div class="body"><span class="nm">T. Hill</span><span class="meta"><span class="pos WR">WR3</span>MIA · ADP 6.5</span></div><div class="delta up">▲2</div></div>
+      <div class="pick"><div class="rk">6</div><img class="pfp" src="https://a.espncdn.com/i/headshots/nfl/players/full/4241389.png" /><div class="body"><span class="nm">C. Lamb</span><span class="meta"><span class="pos WR">WR4</span>DAL · ADP 7.2</span></div><div class="delta up">▲1</div></div>
+      <div class="pick"><div class="rk">7</div><img class="pfp" src="https://a.espncdn.com/i/headshots/nfl/players/full/3929630.png" /><div class="body"><span class="nm">S. Barkley</span><span class="meta"><span class="pos RB">RB3</span>PHI · ADP 8.4</span></div><div class="delta up">▲1</div></div>
+      <div class="pick"><div class="rk">8</div><img class="pfp" src="https://a.espncdn.com/i/headshots/nfl/players/full/3139477.png" /><div class="body"><span class="nm">P. Mahomes</span><span class="meta"><span class="pos QB">QB1</span>KC · ADP 38.0</span></div><div class="delta up">▲30</div></div>
+      <div class="pick"><div class="rk">9</div><img class="pfp" src="https://a.espncdn.com/i/headshots/nfl/players/full/4374302.png" /><div class="body"><span class="nm">Amon-Ra St. Brown</span><span class="meta"><span class="pos WR">WR5</span>DET · ADP 9.6</span></div><div class="delta flat">●</div></div>
+      <div class="pick"><div class="rk">10</div><img class="pfp" src="https://a.espncdn.com/i/headshots/nfl/players/full/4426515.png" /><div class="body"><span class="nm">P. Nacua</span><span class="meta"><span class="pos WR">WR6</span>LAR · ADP 11.8</span></div><div class="delta up">▲2</div></div>
+    </div>
+
+    <!-- Round 2 -->
+    <div class="round">
+      <div class="round-h">
+        <span class="tag">R2</span>
+        <span class="ttl">Round Two</span>
+        <span class="meta">11–20</span>
+      </div>
+      <div class="pick"><div class="rk">11</div><img class="pfp" src="https://a.espncdn.com/i/headshots/nfl/players/full/4427366.png" /><div class="body"><span class="nm">B. Hall</span><span class="meta"><span class="pos RB">RB4</span>NYJ · ADP 13.2</span></div><div class="delta up">▲2</div></div>
+      <div class="pick"><div class="rk">12</div><img class="pfp" src="https://a.espncdn.com/i/headshots/nfl/players/full/4047646.png" /><div class="body"><span class="nm">A.J. Brown</span><span class="meta"><span class="pos WR">WR7</span>PHI · ADP 14.8</span></div><div class="delta up">▲3</div></div>
+      <div class="pick"><div class="rk">13</div><img class="pfp" src="https://a.espncdn.com/i/headshots/nfl/players/full/4569618.png" /><div class="body"><span class="nm">G. Wilson</span><span class="meta"><span class="pos WR">WR8</span>NYJ · ADP 15.6</span></div><div class="delta up">▲3</div></div>
+      <div class="pick"><div class="rk">14</div><img class="pfp" src="https://a.espncdn.com/i/headshots/nfl/players/full/4242335.png" /><div class="body"><span class="nm">J. Taylor</span><span class="meta"><span class="pos RB">RB5</span>IND · ADP 18.4</span></div><div class="delta up">▲4</div></div>
+      <div class="pick"><div class="rk">15</div><img class="pfp" src="https://a.espncdn.com/i/headshots/nfl/players/full/4426502.png" /><div class="body"><span class="nm">D. London</span><span class="meta"><span class="pos WR">WR9</span>ATL · ADP 19.2</span></div><div class="delta up">▲4</div></div>
+      <div class="pick"><div class="rk">16</div><img class="pfp" src="https://a.espncdn.com/i/headshots/nfl/players/full/4432708.png" /><div class="body"><span class="nm">M. Harrison Jr.</span><span class="meta"><span class="pos WR">WR10</span>ARI · ADP 21.0</span></div><div class="delta up">▲5</div></div>
+      <div class="pick"><div class="rk">17</div><img class="pfp" src="https://a.espncdn.com/i/headshots/nfl/players/full/4430027.png" /><div class="body"><span class="nm">S. LaPorta</span><span class="meta"><span class="pos TE">TE1</span>DET · ADP 34.2</span></div><div class="delta up">▲17</div></div>
+      <div class="pick"><div class="rk">18</div><img class="pfp" src="https://a.espncdn.com/i/headshots/nfl/players/full/4426348.png" /><div class="body"><span class="nm">J. Daniels</span><span class="meta"><span class="pos QB">QB2</span>WSH · ADP 42.0</span></div><div class="delta up">▲24</div></div>
+      <div class="pick"><div class="rk">19</div><img class="pfp" src="https://a.espncdn.com/i/headshots/nfl/players/full/4430737.png" /><div class="body"><span class="nm">K. Williams</span><span class="meta"><span class="pos RB">RB6</span>LAR · ADP 23.4</span></div><div class="delta up">▲4</div></div>
+      <div class="pick"><div class="rk">20</div><img class="pfp" src="https://a.espncdn.com/i/headshots/nfl/players/full/3043078.png" /><div class="body"><span class="nm">D. Henry</span><span class="meta"><span class="pos RB">RB7</span>BAL · ADP 24.8</span></div><div class="delta up">▲5</div></div>
+    </div>
+
+    <!-- Round 3 -->
+    <div class="round">
+      <div class="round-h">
+        <span class="tag">R3</span>
+        <span class="ttl">Round Three</span>
+        <span class="meta">21–30</span>
+      </div>
+      <div class="pick"><div class="rk">21</div><img class="pfp" src="https://a.espncdn.com/i/headshots/nfl/players/full/3916148.png" /><div class="body"><span class="nm">T. Pollard</span><span class="meta"><span class="pos RB">RB8</span>TEN · ADP 30.4</span></div><div class="delta up">▲9</div></div>
+      <div class="pick"><div class="rk">22</div><img class="pfp" src="https://a.espncdn.com/i/headshots/nfl/players/full/16737.png" /><div class="body"><span class="nm">M. Evans</span><span class="meta"><span class="pos WR">WR11</span>TB · ADP 26.6</span></div><div class="delta up">▲4</div></div>
+      <div class="pick"><div class="rk">23</div><img class="pfp" src="https://a.espncdn.com/i/headshots/nfl/players/full/4426338.png" /><div class="body"><span class="nm">B. Nix</span><span class="meta"><span class="pos QB">QB3</span>DEN · ADP 48.2</span></div><div class="delta up">▲25</div></div>
+      <div class="pick"><div class="rk">24</div><img class="pfp" src="https://a.espncdn.com/i/headshots/nfl/players/full/4431299.png" /><div class="body"><span class="nm">R. Odunze</span><span class="meta"><span class="pos WR">WR12</span>CHI · ADP 32.8</span></div><div class="delta up">▲8</div></div>
+      <div class="pick"><div class="rk">25</div><img class="pfp" src="https://a.espncdn.com/i/headshots/nfl/players/full/4432665.png" /><div class="body"><span class="nm">B. Bowers</span><span class="meta"><span class="pos TE">TE2</span>LV · ADP 36.0</span></div><div class="delta up">▲11</div></div>
+      <div class="pick"><div class="rk">26</div><img class="pfp" src="https://a.espncdn.com/i/headshots/nfl/players/full/4685702.png" /><div class="body"><span class="nm">D. Achane</span><span class="meta"><span class="pos RB">RB9</span>MIA · ADP 35.4</span></div><div class="delta up">▲9</div></div>
+      <div class="pick"><div class="rk">27</div><img class="pfp" src="https://a.espncdn.com/i/headshots/nfl/players/full/4241981.png" /><div class="body"><span class="nm">D. Smith</span><span class="meta"><span class="pos WR">WR13</span>PHI · ADP 39.6</span></div><div class="delta up">▲12</div></div>
+      <div class="pick"><div class="rk">28</div><img class="pfp" src="https://a.espncdn.com/i/headshots/nfl/players/full/4239996.png" /><div class="body"><span class="nm">T. Etienne</span><span class="meta"><span class="pos RB">RB10</span>JAX · ADP 42.2</span></div><div class="delta up">▲14</div></div>
+      <div class="pick"><div class="rk">29</div><img class="pfp" src="https://a.espncdn.com/i/headshots/nfl/players/full/16800.png" /><div class="body"><span class="nm">D. Adams</span><span class="meta"><span class="pos WR">WR14</span>NYJ · ADP 44.6</span></div><div class="delta up">▲15</div></div>
+      <div class="pick"><div class="rk">30</div><img class="pfp" src="https://a.espncdn.com/i/headshots/nfl/players/full/4426338.png" /><div class="body"><span class="nm">J. Allen</span><span class="meta"><span class="pos QB">QB4</span>BUF · ADP 52.0</span></div><div class="delta up">▲22</div></div>
+    </div>
+
+    <!-- Round 4 -->
+    <div class="round">
+      <div class="round-h">
+        <span class="tag">R4</span>
+        <span class="ttl">Round Four</span>
+        <span class="meta">31–40</span>
+      </div>
+      <div class="pick"><div class="rk">31</div><img class="pfp" src="" /><div class="body"><span class="nm">T. Etienne</span><span class="meta"><span class="pos RB">RB11</span>JAX · ADP 45.2</span></div><div class="delta up">▲14</div></div>
+      <div class="pick"><div class="rk">32</div><img class="pfp" src="" /><div class="body"><span class="nm">D. Goedert</span><span class="meta"><span class="pos TE">TE3</span>PHI · ADP 64.0</span></div><div class="delta up">▲32</div></div>
+      <div class="pick"><div class="rk">33</div><img class="pfp" src="" /><div class="body"><span class="nm">D. Smith</span><span class="meta"><span class="pos WR">WR15</span>PHI · ADP 46.8</span></div><div class="delta up">▲14</div></div>
+      <div class="pick"><div class="rk">34</div><img class="pfp" src="" /><div class="body"><span class="nm">J. Conner</span><span class="meta"><span class="pos RB">RB12</span>ARI · ADP 50.4</span></div><div class="delta up">▲16</div></div>
+      <div class="pick"><div class="rk">35</div><img class="pfp" src="" /><div class="body"><span class="nm">G. Pickens</span><span class="meta"><span class="pos WR">WR16</span>PIT · ADP 52.6</span></div><div class="delta up">▲17</div></div>
+      <div class="pick"><div class="rk">36</div><img class="pfp" src="" /><div class="body"><span class="nm">D. Adams</span><span class="meta"><span class="pos WR">WR17</span>NYJ · ADP 56.0</span></div><div class="delta up">▲20</div></div>
+      <div class="pick"><div class="rk">37</div><img class="pfp" src="" /><div class="body"><span class="nm">T. Tagovailoa</span><span class="meta"><span class="pos QB">QB5</span>MIA · ADP 70.4</span></div><div class="delta up">▲33</div></div>
+      <div class="pick"><div class="rk">38</div><img class="pfp" src="" /><div class="body"><span class="nm">J. Mixon</span><span class="meta"><span class="pos RB">RB13</span>HOU · ADP 58.2</span></div><div class="delta up">▲20</div></div>
+      <div class="pick"><div class="rk">39</div><img class="pfp" src="" /><div class="body"><span class="nm">B. Aiyuk</span><span class="meta"><span class="pos WR">WR18</span>SF · ADP 60.6</span></div><div class="delta up">▲21</div></div>
+      <div class="pick"><div class="rk">40</div><img class="pfp" src="" /><div class="body"><span class="nm">N. Collins</span><span class="meta"><span class="pos WR">WR19</span>HOU · ADP 62.0</span></div><div class="delta up">▲22</div></div>
+    </div>
+
+  </div>
+  <p class="foot">V2 · ROUNDS GRID · <a href="index.html">← Back to layout picker</a></p>
+</main>
+
+</body>
+</html>

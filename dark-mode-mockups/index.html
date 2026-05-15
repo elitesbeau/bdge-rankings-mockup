@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Dark Mode · 3 Mockups</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  *{box-sizing:border-box}
+  html,body{margin:0;background:#f9f5eb;color:#082430;font-family:Inter,sans-serif}
+  .wrap{max-width:1100px;margin:0 auto;padding:48px 32px 80px}
+  .head{display:flex;align-items:flex-end;gap:18px;border-bottom:2px solid #082430;padding-bottom:18px;margin-bottom:32px}
+  .badge{background:#082430;color:#f9f5eb;font-family:"Bebas Neue",sans-serif;font-size:36px;line-height:1;letter-spacing:.03em;padding:10px 16px 6px}
+  h1{font-family:"Bebas Neue",sans-serif;font-size:60px;line-height:.95;letter-spacing:.01em;margin:0;font-weight:400}
+  h1 .ac{color:#fb637a}
+  .sub{font-size:13px;text-transform:uppercase;letter-spacing:.18em;color:#1c3543}
+  .intro{font-size:14px;line-height:1.55;color:#1c3543;margin:0 0 32px;max-width:680px}
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  @media(max-width:900px){.grid{grid-template-columns:1fr}}
+  .tile{background:#fff;border:2px solid #082430;text-decoration:none;color:inherit;display:block;transition:all 160ms;box-shadow:4px 4px 0 #082430;overflow:hidden}
+  .tile:hover{transform:translate(-2px,-2px);box-shadow:8px 8px 0 #082430}
+  .swatch{height:100px;display:flex;border-bottom:2px solid #082430;position:relative}
+  .swatch span{flex:1}
+  .body{padding:18px 20px}
+  .body .tag{font-family:"Bebas Neue",sans-serif;font-size:12px;letter-spacing:.18em;color:#1c3543;margin-bottom:4px}
+  .body h2{font-family:"Bebas Neue",sans-serif;font-size:30px;line-height:1;letter-spacing:.02em;margin:0 0 8px}
+  .body p{font-size:13px;line-height:1.5;color:#1c3543;margin:0}
+  .palette{display:flex;gap:6px;margin-top:14px;font-size:10px;color:#1c3543;letter-spacing:.06em;font-weight:600}
+  .chip{display:flex;flex-direction:column;align-items:center;gap:3px}
+  .chip i{display:block;width:24px;height:24px;border:1px solid #082430}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head">
+    <div class="badge">DM</div>
+    <div>
+      <h1>Dark <span class="ac">Mode</span></h1>
+      <div class="sub">3 directions · pick the easiest on the eyes</div>
+    </div>
+  </div>
+  <p class="intro">
+    The current dark mode pairs a near-black background with bright cyan borders — it reads like neon outlines and strains the eyes after a few minutes.
+    Three alternatives below; each one shows the same big-board slice with a different palette so you can flip between them.
+  </p>
+
+  <div class="grid">
+
+    <a class="tile" href="1-soft-navy.html">
+      <div class="swatch">
+        <span style="background:#0f1820"></span>
+        <span style="background:#14202a"></span>
+        <span style="background:#fb637a"></span>
+        <span style="background:#3a6377"></span>
+      </div>
+      <div class="body">
+        <div class="tag">Mockup 1</div>
+        <h2>Soft Navy</h2>
+        <p>Same family as today, just lifted and desaturated. Lifted background, slate-blue borders instead of cyan, warm-cream text. Subtle cousin of the current look.</p>
+        <div class="palette">
+          <span class="chip"><i style="background:#0f1820"></i>BG</span>
+          <span class="chip"><i style="background:#14202a"></i>CARD</span>
+          <span class="chip"><i style="background:#3a6377"></i>LINE</span>
+          <span class="chip"><i style="background:#fb637a"></i>PINK</span>
+          <span class="chip"><i style="background:#e2dccd"></i>TEXT</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="tile" href="2-slate-paper.html">
+      <div class="swatch">
+        <span style="background:#1c1c1f"></span>
+        <span style="background:#25252a"></span>
+        <span style="background:#fb637a"></span>
+        <span style="background:#3a3a3f"></span>
+      </div>
+      <div class="body">
+        <div class="tag">Mockup 2</div>
+        <h2>Slate Paper</h2>
+        <p>Warm neutral dark — no blue tint at all. Like reading on aged paper in a low-lit room. Cream text, neutral charcoal borders, pink + sky-blue accents on key elements only.</p>
+        <div class="palette">
+          <span class="chip"><i style="background:#1c1c1f"></i>BG</span>
+          <span class="chip"><i style="background:#25252a"></i>CARD</span>
+          <span class="chip"><i style="background:#3a3a3f"></i>LINE</span>
+          <span class="chip"><i style="background:#fb637a"></i>PINK</span>
+          <span class="chip"><i style="background:#e8e3d6"></i>TEXT</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="tile" href="3-midnight-cinema.html">
+      <div class="swatch">
+        <span style="background:#131720"></span>
+        <span style="background:#1a1f2c"></span>
+        <span style="background:#fb637a"></span>
+        <span style="background:#f5a623"></span>
+      </div>
+      <div class="body">
+        <div class="tag">Mockup 3</div>
+        <h2>Midnight Cinema</h2>
+        <p>Deep navy with gold replacing cyan. Cinematic, slightly dramatic. Pink stays primary, gold highlights the key actions and rank pills. More like a stadium at twilight than a screen.</p>
+        <div class="palette">
+          <span class="chip"><i style="background:#131720"></i>BG</span>
+          <span class="chip"><i style="background:#1a1f2c"></i>CARD</span>
+          <span class="chip"><i style="background:#2d3447"></i>LINE</span>
+          <span class="chip"><i style="background:#f5a623"></i>GOLD</span>
+          <span class="chip"><i style="background:#fb637a"></i>PINK</span>
+        </div>
+      </div>
+    </a>
+
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Big Board — G1 Spacing Iterations (G1.A / G1.B / G1.C)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f9f5eb;
+  --card: #f4ede0;
+  --bg-soft: #efe6d4;
+  --ink: #082430;
+  --ink-soft: #54616a;
+  --ink-dim: #8a949b;
+  --ink-faint: #c1c8cd;
+  --line: #082430;
+  --line-soft: #d8d0bd;
+  --accent: #259fd6;
+  --accent-2: #fb637a;
+  --steal: #15803d;
+  --steal-bg: rgba(34,197,94,0.14);
+  --reach: #b91c1c;
+  --reach-bg: rgba(251,99,122,0.14);
+  --even:  #54616a;
+  --even-bg: rgba(138,148,155,0.10);
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--ink);
+  font-family: "Inter", sans-serif; }
+body { padding: 28px 28px 80px; max-width: 1240px; margin: 0 auto; }
+
+.page-h { font-family: "Oswald", sans-serif; font-size: 36px; margin: 0 0 6px; }
+.page-sub { font-size: 13px; color: var(--ink-soft); margin: 0 0 28px;
+  line-height: 1.5; max-width: 860px; }
+.page-sub b { color: var(--ink); }
+.page-sub code { background: var(--card); padding: 1px 5px; border-radius: 2px;
+  font-family: "JetBrains Mono", monospace; font-size: 11px; }
+
+.mock { margin-bottom: 48px; background: var(--bg);
+  border: 2px solid var(--line); padding: 22px; }
+.mock-h { display: flex; align-items: baseline; gap: 14px; margin: 0 0 4px; }
+.mock-tag { font-family: "JetBrains Mono", monospace;
+  font-size: 11px; letter-spacing: 0.24em; color: var(--accent-2); }
+.mock-name { font-family: "Oswald", sans-serif; font-size: 26px; }
+.mock-blurb { font-size: 12px; color: var(--ink-soft); margin: 0 0 16px;
+  line-height: 1.5; max-width: 860px; }
+.mock-blurb b { color: var(--ink); }
+
+/* shared bits */
+.pos { display: inline-grid; place-items: center;
+  min-width: 32px; height: 18px; padding: 0 6px;
+  font-family: "Oswald", sans-serif; font-size: 11px;
+  letter-spacing: 0.04em; border-radius: 3px;
+  font-variant-numeric: tabular-nums; flex-shrink: 0;
+}
+.pos.QB { background: rgba(251,99,122,0.18); color: #b91c1c; }
+.pos.RB { background: rgba(34,197,94,0.18);  color: var(--steal); }
+.pos.WR { background: rgba(37,159,214,0.18); color: #1e6f9c; }
+.pos.TE { background: rgba(217,119,6,0.18);  color: #92560a; }
+.chk { width: 20px; height: 20px;
+  border: 1.5px solid var(--line-soft); border-radius: 3px;
+  display: inline-grid; place-items: center;
+  background: var(--bg); font-size: 12px; color: var(--ink-soft);
+  flex-shrink: 0;
+}
+.chk.on { background: var(--accent); border-color: var(--accent); color: #fff; }
+.round-h { display: flex; align-items: center; justify-content: space-between;
+  margin: 8px 0 8px; padding: 6px 0;
+  border-bottom: 1.5px solid var(--line);
+}
+.round-h .l { display: flex; align-items: center; gap: 12px;
+  font-family: "Oswald", sans-serif; font-size: 20px; }
+.round-h .l .num { font-family: "JetBrains Mono", monospace;
+  font-size: 11px; letter-spacing: 0.18em;
+  background: var(--ink); color: var(--bg); padding: 3px 7px; }
+.round-h .r { font-size: 11px; font-weight: 600; letter-spacing: 0.10em;
+  color: var(--ink-dim); }
+/* Verdict is now a quiet annotation — colored text, no pill, no fill */
+.verdict { font-family: "Inter", sans-serif;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.06em;
+  white-space: nowrap; flex-shrink: 0;
+  min-width: 64px; text-align: right;
+}
+.verdict .delta {
+  font-family: "Oswald", sans-serif;
+  font-size: 12px; margin-left: 3px; letter-spacing: 0;
+  font-variant-numeric: tabular-nums;
+}
+.verdict.steal { color: var(--steal); }
+.verdict.even  { color: var(--ink-dim); font-weight: 600; }
+.verdict.reach { color: var(--reach); }
+
+/* ──────────────────────────────────────────
+   G1.A · TIGHT TWO-CLUSTER (flex space-between)
+   Two anchored clusters. Inside each cluster
+   everything is AUTO-SIZED and tight. Negative
+   space sits in the middle deliberately.
+   ────────────────────────────────────────── */
+.A .row {
+  display: flex; align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 7px 14px;
+  background: var(--card);
+  border: 1.5px solid var(--line-soft);
+  border-radius: 8px;
+  margin-bottom: 4px;
+  cursor: pointer;
+  min-height: 52px;
+  transition: border-color 120ms, transform 120ms, box-shadow 120ms;
+}
+.A .row:hover { border-color: var(--accent); transform: translateX(2px);
+  box-shadow: 0 2px 8px rgba(8,36,48,0.06); }
+.A .left {
+  display: flex; align-items: center; gap: 12px;
+  min-width: 0; flex: 1 1 auto;
+}
+.A .rk {
+  font-family: "Oswald", sans-serif;
+  font-size: 15px;
+  background: var(--bg);
+  border: 1.5px solid var(--line-soft);
+  padding: 4px 10px; border-radius: 4px;
+  font-variant-numeric: tabular-nums;
+  min-width: 36px; text-align: center;
+}
+.A .pfp { width: 38px; height: 38px; border-radius: 50%; overflow: hidden;
+  border: 1.5px solid var(--line); background: var(--bg-soft); flex-shrink: 0; }
+.A .pfp img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+.A .nm {
+  font-family: "Oswald", sans-serif;
+  font-size: 17px; line-height: 1.05;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  min-width: 0;
+}
+.A .right {
+  display: flex; align-items: center; gap: 14px;
+  flex-shrink: 0;
+}
+.A .team {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12px; font-weight: 800; letter-spacing: 0.06em;
+  color: var(--ink-soft);
+}
+.A .team-logo { width: 22px; height: 22px; display: inline-grid; place-items: center; }
+.A .team-logo img { width: 100%; height: 100%; object-fit: contain; }
+.A .adp {
+  font-family: "Oswald", sans-serif;
+  font-size: 18px; line-height: 1;
+  font-variant-numeric: tabular-nums;
+  min-width: 36px; text-align: right;
+}
+.A .chev { color: var(--accent); font-size: 16px; font-weight: 700; }
+
+/* ──────────────────────────────────────────
+   G1.B · STATS BLOCK RIGHT-ANCHORED
+   The right cluster becomes a visually-distinct
+   "scoreboard" block — slightly different bg,
+   bordered, pill-shaped. The negative space
+   between LEFT cluster and RIGHT BLOCK reads
+   as intentional design (left content / right
+   verdict), not waste.
+   ────────────────────────────────────────── */
+.B .row {
+  display: flex; align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 6px 6px 6px 14px;
+  background: var(--card);
+  border: 1.5px solid var(--line-soft);
+  border-radius: 8px;
+  margin-bottom: 4px;
+  cursor: pointer;
+  min-height: 56px;
+  transition: border-color 120ms, transform 120ms, box-shadow 120ms;
+}
+.B .row:hover { border-color: var(--accent); transform: translateX(2px);
+  box-shadow: 0 2px 8px rgba(8,36,48,0.06); }
+.B .left {
+  display: flex; align-items: center; gap: 12px;
+  min-width: 0; flex: 1 1 auto;
+}
+.B .rk {
+  font-family: "Oswald", sans-serif;
+  font-size: 15px;
+  background: var(--bg);
+  border: 1.5px solid var(--line-soft);
+  padding: 4px 10px; border-radius: 4px;
+  font-variant-numeric: tabular-nums;
+  min-width: 36px; text-align: center;
+}
+.B .pfp { width: 38px; height: 38px; border-radius: 50%; overflow: hidden;
+  border: 1.5px solid var(--line); background: var(--bg-soft); flex-shrink: 0; }
+.B .pfp img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+.B .nm {
+  font-family: "Oswald", sans-serif;
+  font-size: 17px; line-height: 1.05;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  min-width: 0;
+}
+.B .scorebox {
+  display: inline-flex; align-items: stretch;
+  background: var(--bg);
+  border: 1.5px solid var(--line-soft);
+  border-radius: 6px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.B .sb-cell {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 12px;
+  border-right: 1px solid var(--line-soft);
+}
+.B .sb-cell:last-child { border-right: 0; }
+.B .sb-team {
+  font-family: "Inter", sans-serif;
+  font-size: 12px; font-weight: 800; letter-spacing: 0.06em;
+  color: var(--ink);
+}
+.B .sb-team .team-logo { width: 20px; height: 20px; display: inline-grid; place-items: center; }
+.B .sb-team .team-logo img { width: 100%; height: 100%; object-fit: contain; }
+.B .sb-adp {
+  font-family: "Oswald", sans-serif;
+  font-size: 16px; line-height: 1;
+  font-variant-numeric: tabular-nums;
+  display: inline-flex; flex-direction: column; align-items: center; gap: 1px;
+}
+.B .sb-adp .lbl {
+  font-family: "Inter", sans-serif;
+  font-size: 8px; font-weight: 800; letter-spacing: 0.16em;
+  color: var(--ink-dim);
+}
+.B .sb-verdict {
+  font-family: "Oswald", sans-serif;
+  font-size: 12px; letter-spacing: 0.04em;
+}
+.B .sb-verdict.steal { color: var(--steal); }
+.B .sb-verdict.even  { color: var(--ink-soft); }
+.B .sb-verdict.reach { color: var(--reach); }
+.B .chev {
+  color: var(--accent); font-size: 16px; font-weight: 700;
+  padding: 0 10px 0 4px;
+}
+
+/* ──────────────────────────────────────────
+   G1.C · INLINE TIGHT CASCADE
+   Everything sits left-to-right with NO flex-grow.
+   No internal gaps. The chevron sits at the far
+   right after the verdict. The row reads like a
+   single sentence ending in a chevron.
+   To use the residual width, the player's name
+   gets a thin dotted leader line connecting it
+   visually to the team block (like an old-school
+   index). Eliminates "void in the middle."
+   ────────────────────────────────────────── */
+.C .row {
+  display: flex; align-items: center;
+  gap: 12px;
+  padding: 7px 14px;
+  background: var(--card);
+  border: 1.5px solid var(--line-soft);
+  border-radius: 8px;
+  margin-bottom: 4px;
+  cursor: pointer;
+  min-height: 52px;
+  transition: border-color 120ms, transform 120ms, box-shadow 120ms;
+}
+.C .row:hover { border-color: var(--accent); transform: translateX(2px);
+  box-shadow: 0 2px 8px rgba(8,36,48,0.06); }
+.C .rk {
+  font-family: "Oswald", sans-serif;
+  font-size: 15px;
+  background: var(--bg);
+  border: 1.5px solid var(--line-soft);
+  padding: 4px 10px; border-radius: 4px;
+  font-variant-numeric: tabular-nums;
+  min-width: 36px; text-align: center;
+  flex-shrink: 0;
+}
+.C .pfp { width: 38px; height: 38px; border-radius: 50%; overflow: hidden;
+  border: 1.5px solid var(--line); background: var(--bg-soft); flex-shrink: 0; }
+.C .pfp img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+.C .nm {
+  font-family: "Oswald", sans-serif;
+  font-size: 17px; line-height: 1.05;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  flex-shrink: 0;
+}
+/* Dotted leader fills whatever space is left between name and stats */
+.C .leader {
+  flex: 1 1 auto;
+  height: 1.5px;
+  background-image: radial-gradient(circle, var(--line-soft) 1px, transparent 1.4px);
+  background-size: 6px 1.5px;
+  background-repeat: repeat-x;
+  background-position: center;
+  align-self: center;
+  opacity: 0.7;
+  min-width: 24px;
+}
+.C .team {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12px; font-weight: 800; letter-spacing: 0.06em;
+  color: var(--ink-soft); flex-shrink: 0;
+}
+.C .team-logo { width: 22px; height: 22px; display: inline-grid; place-items: center; }
+.C .team-logo img { width: 100%; height: 100%; object-fit: contain; }
+.C .adp {
+  font-family: "Oswald", sans-serif;
+  font-size: 18px; line-height: 1;
+  font-variant-numeric: tabular-nums;
+  min-width: 36px; text-align: right; flex-shrink: 0;
+}
+.C .chev { color: var(--accent); font-size: 16px; font-weight: 700; flex-shrink: 0; }
+
+.scorecard {
+  margin-top: 16px;
+  padding: 16px 20px;
+  background: var(--bg-soft);
+  border: 1.5px solid var(--line);
+  font-size: 12px; line-height: 1.6;
+}
+.scorecard .lab { font-family: "JetBrains Mono", monospace;
+  font-size: 10px; letter-spacing: 0.20em; color: var(--accent-2);
+  min-width: 36px; display: inline-block; }
+</style>
+</head>
+<body>
+
+<h1 class="page-h">G1 — Spacing Iterations</h1>
+<p class="page-sub">
+  Three takes on G1's spacing. The original used a fixed-column grid that left awkward gaps because content didn't fill its column.
+  All three below switch to <b>auto-sized layouts</b> so content lives tight to itself.
+  Each handles the leftover width differently: <b>A</b> distributes via flex-between, <b>B</b> packs it into a single "scoreboard" block on the right, <b>C</b> connects the two ends with a dotted leader line.
+</p>
+
+<!-- ═══════════ G1.A ═══════════ -->
+<section class="mock A">
+  <div class="mock-h">
+    <span class="mock-tag">// G1.A</span>
+    <span class="mock-name">Tight Two-Cluster</span>
+  </div>
+  <p class="mock-blurb">
+    Each row is a <b>flex container with <code>space-between</code></b>. The left cluster (chk · rank · pfp · name · pos)
+    and the right cluster (team · ADP · verdict · ›) auto-size to their content. Inside each cluster, everything is tight (no gaps).
+    The leftover space is one clean balanced gap in the middle — intentional negative space, not multiple awkward voids.
+  </p>
+  <div class="round-h">
+    <div class="l"><span class="num">R1</span> Round One</div>
+    <div class="r">Picks 1 – 10</div>
+  </div>
+  <div id="A-rows"></div>
+</section>
+
+<!-- ═══════════ G1.B ═══════════ -->
+<section class="mock B">
+  <div class="mock-h">
+    <span class="mock-tag">// G1.B</span>
+    <span class="mock-name">Scoreboard Block</span>
+  </div>
+  <p class="mock-blurb">
+    The right side becomes a <b>visually distinct "scoreboard" block</b> — a darker pill containing team · ADP · verdict, divided by thin lines.
+    The left cluster (player info) and the right scoreboard now look like <em>two design elements</em> with intentional space between, not two halves of a stretched row.
+    Eye knows: "stats live in the right block."
+  </p>
+  <div class="round-h">
+    <div class="l"><span class="num">R1</span> Round One</div>
+    <div class="r">Picks 1 – 10</div>
+  </div>
+  <div id="B-rows"></div>
+</section>
+
+<!-- ═══════════ G1.C ═══════════ -->
+<section class="mock C">
+  <div class="mock-h">
+    <span class="mock-tag">// G1.C</span>
+    <span class="mock-name">Dotted Leader</span>
+  </div>
+  <p class="mock-blurb">
+    Everything sits inline tight — chk · rank · pfp · name · then a <b>dotted leader line</b> bridging the gap to team · ADP · verdict · ›.
+    Inspired by old yearbook/sports-almanac index layouts. The leader turns "void" into "visual connection," so the row feels resolved rather than gapped.
+    Most compact, most editorial.
+  </p>
+  <div class="round-h">
+    <div class="l"><span class="num">R1</span> Round One</div>
+    <div class="r">Picks 1 – 10</div>
+  </div>
+  <div id="C-rows"></div>
+</section>
+
+<div class="scorecard">
+  <div><span class="lab">G1.A</span> Two anchored clusters. Cleanest, most modern. Leftover space = one balanced gap.</div>
+  <div><span class="lab">G1.B</span> Right side is a unified "scoreboard" block. Reads as two designed pieces, not a stretched table.</div>
+  <div><span class="lab">G1.C</span> Old-school dotted-leader connects name to stats. No void — the leader IS the bridge.</div>
+</div>
+
+<script>
+const P = [
+  { rk:1,  name:"Christian McCaffrey", team:"SF",  pos:"RB", espn:"3117251", adp:2.1,  posRk:1 },
+  { rk:2,  name:"Bijan Robinson",      team:"ATL", pos:"RB", espn:"4430807", adp:1.8,  posRk:2 },
+  { rk:3,  name:"Ja'Marr Chase",       team:"CIN", pos:"WR", espn:"4362628", adp:3.4,  posRk:1 },
+  { rk:4,  name:"Justin Jefferson",    team:"MIN", pos:"WR", espn:"4262921", adp:4.1,  posRk:2 },
+  { rk:5,  name:"Tyreek Hill",         team:"MIA", pos:"WR", espn:"3116406", adp:6.5,  posRk:3 },
+  { rk:6,  name:"CeeDee Lamb",         team:"DAL", pos:"WR", espn:"4241389", adp:7.2,  posRk:4 },
+  { rk:7,  name:"Saquon Barkley",      team:"PHI", pos:"RB", espn:"3929630", adp:8.4,  posRk:3 },
+  { rk:8,  name:"Patrick Mahomes",     team:"KC",  pos:"QB", espn:"3139477", adp:38.0, posRk:1 },
+  { rk:9,  name:"Amon-Ra St. Brown",   team:"DET", pos:"WR", espn:"4374302", adp:9.6,  posRk:5 },
+  { rk:10, name:"Puka Nacua",          team:"LAR", pos:"WR", espn:"4426338", adp:11.8, posRk:6 },
+];
+
+function verdict(p) {
+  const d = p.adp - p.rk;
+  if (d > 0.5)  return { cls: 'steal', word: 'Steal', delta: `+${d.toFixed(1)}` };
+  if (d < -0.5) return { cls: 'reach', word: 'Reach', delta: d.toFixed(1) };
+  return         { cls: 'even',  word: 'Even',  delta: '' };
+}
+function verdictHTML(v) {
+  return `<span class="verdict ${v.cls}">${v.word}${v.delta ? ` <span class="delta">${v.delta}</span>` : ''}</span>`;
+}
+function img(p) {
+  return `<img src="https://a.espncdn.com/i/headshots/nfl/players/full/${p.espn}.png" alt="${p.name}" onerror="this.style.opacity=.15">`;
+}
+function teamLogo(p) {
+  return `<span class="team-logo"><img src="https://a.espncdn.com/i/teamlogos/nfl/500/${p.team.toLowerCase()}.png" alt="${p.team}" onerror="this.style.display='none'"></span>`;
+}
+
+// G1.A — Tight Two-Cluster
+document.getElementById('A-rows').innerHTML = P.map((p, i) => {
+  const v = verdict(p);
+  return `<div class="row">
+    <div class="left">
+      <span class="chk ${i === 0 ? 'on' : ''}">${i === 0 ? '✓' : ''}</span>
+      <div class="rk">${p.rk}</div>
+      <div class="pfp">${img(p)}</div>
+      <div class="nm">${p.name}</div>
+      <span class="pos ${p.pos}">${p.pos}${p.posRk}</span>
+    </div>
+    <div class="right">
+      <div class="team">${teamLogo(p)}${p.team}</div>
+      <div class="adp">${p.adp.toFixed(1)}</div>
+      ${verdictHTML(v)}
+      <div class="chev">›</div>
+    </div>
+  </div>`;
+}).join('');
+
+// G1.B — Scoreboard Block
+document.getElementById('B-rows').innerHTML = P.map((p, i) => {
+  const v = verdict(p);
+  return `<div class="row">
+    <div class="left">
+      <span class="chk ${i === 0 ? 'on' : ''}">${i === 0 ? '✓' : ''}</span>
+      <div class="rk">${p.rk}</div>
+      <div class="pfp">${img(p)}</div>
+      <div class="nm">${p.name}</div>
+      <span class="pos ${p.pos}">${p.pos}${p.posRk}</span>
+    </div>
+    <div class="scorebox">
+      <div class="sb-cell sb-team">${teamLogo(p)}<span>${p.team}</span></div>
+      <div class="sb-cell sb-adp">
+        <span class="lbl">ADP</span>
+        <span>${p.adp.toFixed(1)}</span>
+      </div>
+      <div class="sb-cell sb-verdict ${v.cls}">${v.word}${v.delta ? ` ${v.delta}` : ''}</div>
+    </div>
+    <div class="chev">›</div>
+  </div>`;
+}).join('');
+
+// G1.C — Dotted Leader
+document.getElementById('C-rows').innerHTML = P.map((p, i) => {
+  const v = verdict(p);
+  return `<div class="row">
+    <span class="chk ${i === 0 ? 'on' : ''}">${i === 0 ? '✓' : ''}</span>
+    <div class="rk">${p.rk}</div>
+    <div class="pfp">${img(p)}</div>
+    <div class="nm">${p.name}</div>
+    <span class="pos ${p.pos}">${p.pos}${p.posRk}</span>
+    <div class="leader"></div>
+    <div class="team">${teamLogo(p)}${p.team}</div>
+    <div class="adp">${p.adp.toFixed(1)}</div>
+    ${verdictHTML(v)}
+    <div class="chev">›</div>
+  </div>`;
+}).join('');
+</script>
+
+</body>
+</html>

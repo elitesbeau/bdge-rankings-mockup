@@ -1,0 +1,871 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>BDGE — Christian McCaffrey · Big Board Profile</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ─── Big Board tokens (matched to bigboard.html exactly) ─── */
+:root {
+  --bg:#f9f5eb;
+  --bg-soft:#f3eedf;
+  --card:#ffffff;
+  --ink:#082430;
+  --ink-soft:#3f5765;
+  --ink-dim:#7d8c95;
+  --ink-faint:#b9b6ab;
+  --line:#082430;
+  --line-soft:#cdc9bc;
+  --accent:#fb637a;
+  --accent-2:#259fd6;
+  --gold:#d97706;
+  --green:#047857;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--ink); font-family: "Inter", system-ui, sans-serif; }
+
+/* ─── Top utility bar (mirrors bigboard.html) ─── */
+.utbar {
+  border-bottom: 1.5px solid var(--line);
+  padding: 14px 32px;
+  display: flex; align-items: center; justify-content: space-between;
+  font-family: "Bebas Neue", sans-serif;
+  letter-spacing: 0.18em;
+  font-size: 13px;
+}
+.utbar a { color: var(--ink); text-decoration: none; }
+.utbar .crumb { color: var(--ink-soft); }
+.utbar .crumb b { color: var(--ink); }
+.utbar .crumb .accent { color: var(--accent); }
+.utbar-r { display: flex; gap: 24px; align-items: center; color: var(--ink-soft); }
+
+/* ─── Hero (mirrors "THE [BIG BOARD]" treatment) ─── */
+.hero {
+  padding: 32px 32px 0;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 32px;
+  align-items: end;
+}
+.hero-l {
+  font-family: "Bebas Neue", sans-serif;
+  letter-spacing: -0.01em;
+}
+.hero-issue {
+  font-family: "Inter", sans-serif;
+  font-size: 11px; letter-spacing: 0.30em; font-weight: 700;
+  color: var(--ink-soft);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.hero-title {
+  font-size: 124px; line-height: 0.85;
+  margin: 0;
+}
+.hero-title .stripe {
+  display: inline-block;
+  background: var(--accent);
+  color: #fff;
+  padding: 0 16px;
+  margin-right: 4px;
+}
+.hero-deck {
+  font-family: "Inter", sans-serif;
+  font-size: 14px; line-height: 1.5;
+  color: var(--ink-soft);
+  max-width: 580px;
+  margin-top: 16px;
+  font-weight: 500;
+}
+.hero-deck b { color: var(--ink); font-weight: 700; }
+
+.hero-r {
+  font-family: "Bebas Neue", sans-serif;
+  letter-spacing: -0.02em;
+  text-align: right;
+  color: var(--ink-faint);
+  font-size: 124px; line-height: 0.85;
+  user-select: none;
+}
+
+/* ─── Stats strip (mirrors PLAYERS TIERED / DAYS TO KICKOFF / etc) ─── */
+.statstrip {
+  margin: 28px 32px 0;
+  border-top: 1.5px solid var(--line);
+  border-bottom: 1.5px solid var(--line);
+  padding: 18px 0;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+}
+.statstrip > div { padding: 0 22px; border-right: 1px solid var(--line-soft); }
+.statstrip > div:last-child { border-right: 0; }
+.statstrip .k {
+  font-family: "Inter", sans-serif;
+  font-size: 10px; letter-spacing: 0.20em; font-weight: 800;
+  color: var(--ink-soft);
+  text-transform: uppercase;
+}
+.statstrip .v {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 36px; line-height: 1;
+  margin-top: 4px;
+  font-variant-numeric: tabular-nums;
+}
+.statstrip .v.cy { color: var(--accent-2); }
+.statstrip .v.em { color: var(--green); }
+.statstrip .v.go { color: var(--gold); }
+.statstrip .v.rd { color: var(--accent); }
+.statstrip .d { font-size: 10px; color: var(--ink-dim); margin-top: 2px; letter-spacing: 0.04em; }
+
+/* ─── Filter / quick-jump strip (mirrors FORMAT/PPR/HALF/STD bar) ─── */
+.qjump {
+  margin: 0 32px;
+  border-bottom: 1.5px solid var(--line);
+  padding: 14px 0;
+  display: flex; gap: 0;
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 13px; letter-spacing: 0.16em;
+}
+.qjump a {
+  padding: 6px 18px;
+  text-decoration: none;
+  color: var(--ink-soft);
+  border-right: 1px solid var(--line-soft);
+}
+.qjump a:first-child { padding-left: 0; }
+.qjump a:last-child { border-right: 0; }
+.qjump a:hover, .qjump a.active { color: var(--ink); }
+.qjump a.active b { color: var(--accent); }
+
+/* ─── Section bands (REUSE the round-header treatment from Big Board) ─── */
+.band {
+  margin: 36px 32px 18px;
+  padding: 14px 0;
+  border-top: 4px double var(--line);
+  display: grid;
+  grid-template-columns: 64px 1fr auto;
+  gap: 16px;
+  align-items: baseline;
+}
+.band-tag {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 18px; letter-spacing: 0.10em;
+  color: #fff;
+  background: var(--ink);
+  padding: 4px 10px;
+  text-align: center;
+  align-self: center;
+}
+.band-l {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 28px; letter-spacing: 0.04em;
+  color: var(--ink);
+}
+.band-r {
+  font-family: "Inter", sans-serif;
+  font-size: 11px; letter-spacing: 0.16em; font-weight: 600;
+  color: var(--ink-dim);
+  text-transform: uppercase;
+}
+
+.section { margin: 0 32px 24px; }
+
+/* ─── Featured-card hero (REUSE bigboard.html .featured chrome verbatim, scaled up) ─── */
+.fcard {
+  background: var(--card);
+  border: 3px solid var(--line);
+  padding: 28px;
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 28px;
+}
+.fcard-l { display: flex; flex-direction: column; gap: 14px; }
+.fcard-pfp {
+  aspect-ratio: 1/1;
+  background: var(--bg-soft);
+  border: 2px solid var(--line);
+  overflow: hidden;
+}
+.fcard-pfp img { width:100%; height:100%; object-fit: cover; object-position: top; display: block; }
+.fcard-rk {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 80px; line-height: 0.85;
+  letter-spacing: -0.02em;
+  text-align: center;
+}
+.fcard-rk small {
+  display: block; font-size: 11px; letter-spacing: 0.22em; font-weight: 400;
+  color: var(--accent); margin-top: 6px;
+  font-family: "Bebas Neue", sans-serif;
+}
+.fcard-r { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.fcard-tag-row { display: flex; flex-wrap: wrap; gap: 6px; }
+.tag-tier {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 5px 12px;
+  background: var(--accent);
+  color: #fff;
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 13px; letter-spacing: 0.20em;
+}
+.tag {
+  padding: 3px 9px;
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 11px; letter-spacing: 0.16em;
+  border: 1.5px solid var(--line);
+  color: var(--ink);
+}
+.tag.gold { color: var(--gold); border-color: var(--gold); background: #d9770614; }
+.tag.cyan { color: var(--accent-2); border-color: var(--accent-2); background: #259fd614; }
+.tag.emerald { color: var(--green); border-color: var(--green); background: #04785714; }
+.fcard-name {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 56px; line-height: 0.95;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+.fcard-sub {
+  font-family: "Inter", sans-serif;
+  font-size: 12px; letter-spacing: 0.12em; font-weight: 600;
+  color: var(--ink-soft);
+  text-transform: uppercase;
+}
+.fcard-stats {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0;
+  border-top: 1.5px solid var(--line);
+  border-bottom: 1.5px solid var(--line);
+  padding: 12px 0;
+}
+.fcard-stat { padding: 0 12px; border-right: 1px solid var(--line-soft); }
+.fcard-stat:last-child { border-right: 0; }
+.fcard-stat .k {
+  display: block;
+  font-family: "Inter", sans-serif;
+  font-size: 9px; letter-spacing: 0.20em; font-weight: 800;
+  color: var(--ink-dim); text-transform: uppercase;
+}
+.fcard-stat .v {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 30px; line-height: 1;
+  font-variant-numeric: tabular-nums;
+  margin-top: 4px;
+}
+.fcard-stat .v.cy { color: var(--accent-2); }
+.fcard-stat .v.em { color: var(--green); }
+.fcard-stat .v.go { color: var(--gold); }
+.fcard-stat .v.rd { color: var(--accent); }
+.fcard-news {
+  font-family: "Inter", sans-serif;
+  font-size: 13px; line-height: 1.5;
+  padding: 10px 14px;
+  background: color-mix(in srgb, var(--accent-2) 7%, transparent);
+  border-left: 3px solid var(--accent-2);
+}
+.fcard-news b { color: var(--accent-2); }
+.fcard-foot {
+  display: flex; align-items: center; gap: 16px;
+  font-family: "Inter", sans-serif;
+  font-size: 10px; letter-spacing: 0.14em; font-weight: 700;
+  color: var(--ink-soft);
+  text-transform: uppercase;
+}
+.fcard-foot .age-curve { display: inline-flex; gap: 3px; }
+.fcard-foot .age-curve i {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--ink-faint);
+}
+.fcard-foot .age-curve i.on { background: var(--green); }
+.fcard-foot .age-curve i.warn { background: var(--gold); }
+.fcard-foot .age-curve i.dim { background: var(--ink-dim); }
+.fcard-spark {
+  flex: 1; height: 28px;
+}
+.fcard-spark path { fill: none; stroke: var(--accent-2); stroke-width: 1.6; }
+.fcard-spark .ar { fill: var(--accent-2); fill-opacity: 0.18; stroke: none; }
+
+/* ─── Outlook section: take + cone chart side-by-side ─── */
+.outlook {
+  display: grid;
+  grid-template-columns: 1fr 1.3fr;
+  gap: 18px;
+}
+.take-card {
+  background: var(--card);
+  border: 3px solid var(--line);
+  padding: 22px;
+}
+.take-card h3 {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 22px; letter-spacing: 0.04em;
+  margin: 0 0 10px;
+  color: var(--ink);
+}
+.take-card p { font-size: 14px; line-height: 1.6; margin: 0 0 10px; }
+.take-card p:last-child { margin-bottom: 0; }
+.take-pull {
+  border-left: 3px solid var(--accent);
+  padding: 10px 14px;
+  background: #fb637a0d;
+  font-family: "Inter", sans-serif;
+  font-size: 14px; line-height: 1.5;
+  margin: 12px 0;
+}
+.cone-card {
+  background: var(--card);
+  border: 3px solid var(--line);
+  padding: 22px;
+  display: flex; flex-direction: column;
+}
+.cone-card h3 {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 22px; letter-spacing: 0.04em;
+  margin: 0 0 10px;
+  display: flex; justify-content: space-between; align-items: end;
+  border-bottom: 1.5px solid var(--line-soft);
+  padding-bottom: 8px;
+}
+.cone-card h3 small {
+  font-family: "Inter", sans-serif;
+  font-size: 10px; letter-spacing: 0.14em; font-weight: 600;
+  color: var(--ink-dim);
+  text-transform: uppercase;
+}
+.cone-card svg { width: 100%; height: auto; flex: 1; }
+.cone-legend {
+  display: flex; gap: 16px; margin-top: 10px;
+  font-family: "Inter", sans-serif;
+  font-size: 10px; letter-spacing: 0.10em; font-weight: 700;
+  color: var(--ink-soft);
+  text-transform: uppercase;
+}
+.cone-legend i {
+  display: inline-block; width: 14px; height: 2px; vertical-align: middle;
+  margin-right: 6px;
+}
+.cone-legend .proj i { background: var(--accent-2); height: 2px; }
+.cone-legend .ceil i { background: var(--green); height: 2px; opacity: 0.7; }
+.cone-legend .floor i { background: var(--accent); height: 2px; opacity: 0.7; }
+
+/* ─── Field section: video + vegas + usage ─── */
+.fieldgrid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr;
+  gap: 18px;
+}
+.video-card {
+  background: var(--card);
+  border: 3px solid var(--line);
+  padding: 0; overflow: hidden;
+  position: relative;
+  aspect-ratio: 16/10;
+  cursor: pointer;
+}
+.video-card img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.video-card .vshade {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(8,36,48,0.7), rgba(8,36,48,0.15) 50%, transparent);
+}
+.video-card .vplay {
+  position: absolute; left: 24px; bottom: 24px;
+  border: 2.5px solid #fff;
+  color: #fff;
+  padding: 10px 22px;
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 16px; letter-spacing: 0.20em;
+  background: rgba(8,36,48,0.55);
+}
+.video-card .vlbl {
+  position: absolute; left: 24px; top: 24px;
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 12px; letter-spacing: 0.20em;
+  color: rgba(249,245,235,0.85);
+}
+.field-block {
+  background: var(--card);
+  border: 3px solid var(--line);
+  padding: 18px;
+  display: flex; flex-direction: column;
+}
+.field-block h3 {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 18px; letter-spacing: 0.10em;
+  margin: 0 0 12px;
+  border-bottom: 1.5px solid var(--line-soft);
+  padding-bottom: 6px;
+  display: flex; justify-content: space-between; align-items: end;
+}
+.field-block h3 small {
+  font-family: "Inter", sans-serif;
+  font-size: 10px; letter-spacing: 0.10em; font-weight: 600;
+  color: var(--ink-dim);
+  text-transform: uppercase;
+}
+.vrow {
+  display: flex; justify-content: space-between; align-items: baseline;
+  padding: 7px 0;
+  border-bottom: 1px solid var(--line-soft);
+  font-size: 12px;
+}
+.vrow:last-child { border-bottom: 0; }
+.vrow span { color: var(--ink-soft); letter-spacing: 0.08em; font-weight: 600; text-transform: uppercase; font-size: 10px; }
+.vrow b {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 22px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ─── Comps section: 3 mini player-cards (REUSE picks-grid look) ─── */
+.compgrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+.compcard {
+  background: var(--card);
+  border: 2.5px solid var(--line);
+  padding: 16px;
+  display: grid;
+  grid-template-columns: 60px 1fr;
+  gap: 14px;
+  cursor: pointer;
+  transition: transform 200ms, box-shadow 200ms;
+  align-items: center;
+}
+.compcard:hover {
+  transform: translate(-3px, -3px);
+  box-shadow: 6px 6px 0 var(--line);
+}
+.compcard-rk {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 36px; line-height: 0.85;
+  text-align: center;
+  letter-spacing: -0.02em;
+}
+.compcard-rk small {
+  display: block; font-size: 9px; letter-spacing: 0.20em;
+  color: var(--accent); margin-top: 4px;
+  font-family: "Bebas Neue", sans-serif;
+}
+.compcard-r { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.compcard-name {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 18px; line-height: 1;
+}
+.compcard-meta {
+  font-size: 10px; letter-spacing: 0.10em; color: var(--ink-soft);
+  text-transform: uppercase; font-weight: 600;
+}
+.compcard-line {
+  display: flex; gap: 12px; padding-top: 6px; border-top: 1px solid var(--line-soft);
+  font-family: "Inter", sans-serif; font-size: 11px;
+}
+.compcard-line span { color: var(--ink-soft); font-weight: 600; }
+.compcard-line b { font-family: "Bebas Neue", sans-serif; font-size: 14px; }
+
+/* ─── News timeline section: stacked .fcard-news boxes ─── */
+.news-list { display: flex; flex-direction: column; gap: 10px; }
+.news-item {
+  background: var(--card);
+  border: 2.5px solid var(--line);
+  padding: 14px 18px;
+  display: grid;
+  grid-template-columns: 90px 1fr auto;
+  gap: 16px;
+  align-items: center;
+}
+.news-time {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 14px; letter-spacing: 0.12em;
+  color: var(--ink-soft);
+}
+.news-body { font-size: 13px; line-height: 1.45; }
+.news-body b { color: var(--accent-2); font-weight: 700; }
+.news-source {
+  font-family: "Inter", sans-serif;
+  font-size: 10px; letter-spacing: 0.16em; font-weight: 700;
+  color: var(--ink-dim);
+  text-transform: uppercase;
+}
+
+/* ─── Bucket section ─── */
+.bucket-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
+}
+.bucket-chip {
+  background: var(--card);
+  border: 2.5px solid var(--line);
+  padding: 16px 18px;
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 16px; letter-spacing: 0.16em;
+  cursor: pointer;
+  display: flex; align-items: center; gap: 12px;
+  transition: transform 200ms, box-shadow 200ms;
+}
+.bucket-chip:hover {
+  transform: translate(-3px, -3px);
+  box-shadow: 6px 6px 0 var(--line);
+}
+.bucket-chip .ic {
+  width: 28px; height: 28px;
+  border: 2px solid currentColor;
+  display: grid; place-items: center;
+  font-family: "Inter", sans-serif;
+  font-size: 14px; font-weight: 700;
+}
+.bucket-chip.tagged {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+.bucket-chip.tagged .ic { border-color: #fff; }
+.bucket-chip small {
+  font-family: "Inter", sans-serif;
+  font-size: 9px; letter-spacing: 0.20em; font-weight: 700;
+  color: var(--ink-dim);
+  text-transform: uppercase;
+  display: block;
+  margin-top: 2px;
+}
+.bucket-chip.tagged small { color: rgba(255,255,255,0.8); }
+
+/* ─── Foot ─── */
+.foot {
+  margin: 48px 32px 32px;
+  padding: 18px 0;
+  border-top: 4px double var(--line);
+  display: flex; justify-content: space-between;
+  font-family: "Inter", sans-serif;
+  font-size: 11px; letter-spacing: 0.16em; font-weight: 600;
+  color: var(--ink-dim);
+  text-transform: uppercase;
+}
+
+@media (max-width: 1000px) {
+  .hero { grid-template-columns: 1fr; }
+  .hero-r { display: none; }
+  .hero-title { font-size: 80px; }
+  .statstrip { grid-template-columns: repeat(3, 1fr); }
+  .statstrip > div { padding: 12px 14px; border-bottom: 1px solid var(--line-soft); }
+  .fcard { grid-template-columns: 1fr; }
+  .outlook, .fieldgrid, .compgrid { grid-template-columns: 1fr; }
+  .bucket-grid { grid-template-columns: repeat(2, 1fr); }
+}
+</style>
+</head>
+<body>
+
+<!-- ─── Top bar ─── -->
+<div class="utbar">
+  <div class="crumb"><a href="bigboard.html">← THE <b>BIG BOARD</b></a> <span style="color:var(--ink-faint); margin: 0 12px">/</span> <span class="accent">R1 · PICK 01</span></div>
+  <div class="utbar-r">
+    <span>RANKINGS PASS V4.2</span>
+    <span>UPDATED 2M AGO</span>
+  </div>
+</div>
+
+<!-- ─── Hero ─── -->
+<section class="hero">
+  <div class="hero-l">
+    <div class="hero-issue">// 2026 SEASON · VOLUME IV · RB1 · OVERALL 01</div>
+    <h1 class="hero-title">CHRISTIAN<br/><span class="stripe">MCCAFFREY</span></h1>
+    <p class="hero-deck"><b>49ers · #23 · Age 29 · Bye Wk 6.</b> Workhorse RB1 with no concrete handcuff threat — still the alpha. Ceiling caps the room and the floor is among the highest at the position. The bet is on durability holding for one more year.</p>
+  </div>
+  <div class="hero-r">RB1</div>
+</section>
+
+<!-- ─── Stats strip (mirrors home stats strip) ─── -->
+<div class="statstrip">
+  <div><div class="k">Proj Pts</div><div class="v cy">348.2</div><div class="d">PPG 21.8</div></div>
+  <div><div class="k">Ceiling</div><div class="v em">412</div><div class="d">90th pct</div></div>
+  <div><div class="k">Floor</div><div class="v rd">268</div><div class="d">10th pct</div></div>
+  <div><div class="k">VBD</div><div class="v go">+62.4</div><div class="d">vs replacement</div></div>
+  <div><div class="k">ADP</div><div class="v">2.1</div><div class="d">consensus</div></div>
+  <div><div class="k">BDGE+</div><div class="v">88</div><div class="d">age-adj overall</div></div>
+</div>
+
+<!-- ─── Quick jump (mirrors home format/PPR/HALF/STD bar) ─── -->
+<nav class="qjump">
+  <a href="#card" class="active"><b>//</b> CARD</a>
+  <a href="#outlook">OUTLOOK</a>
+  <a href="#field">ON FIELD</a>
+  <a href="#impact">IMPACT</a>
+  <a href="#comps">COMPS</a>
+  <a href="#news">NEWS</a>
+  <a href="#buckets">BUCKETS</a>
+</nav>
+
+<!-- ═══ CARD — featured-card hero ═══ -->
+<div class="band" id="card">
+  <div class="band-tag">C1</div>
+  <div class="band-l">THE CARD</div>
+  <div class="band-r">FULLY-LOADED · CLICKABLE</div>
+</div>
+<section class="section">
+  <article class="fcard">
+    <div class="fcard-l">
+      <div class="fcard-pfp"><img src="https://a.espncdn.com/combiner/i?img=/i/headshots/nfl/players/full/3117251.png&w=350&h=254" alt=""/></div>
+      <div class="fcard-rk">01<small>RB1 · OVERALL</small></div>
+    </div>
+    <div class="fcard-r">
+      <div class="fcard-tag-row">
+        <span class="tag-tier">// ELITE · BYE WK 6</span>
+        <span class="tag gold">CEILING_GOD</span>
+        <span class="tag cyan">VOLUME_DEMON</span>
+        <span class="tag emerald">BELL_COW</span>
+        <span class="tag">DURABLE_24M</span>
+      </div>
+      <h2 class="fcard-name">CHRISTIAN MCCAFFREY</h2>
+      <div class="fcard-sub">RB · 49ERS · #23 · AGE 29 · 5'11" 201 LB · 9 YR · ESPN 3117251</div>
+      <div class="fcard-stats">
+        <div class="fcard-stat"><span class="k">Proj Pts</span><span class="v cy">348.2</span></div>
+        <div class="fcard-stat"><span class="k">Ceiling</span><span class="v em">412</span></div>
+        <div class="fcard-stat"><span class="k">Floor</span><span class="v rd">268</span></div>
+        <div class="fcard-stat"><span class="k">VBD</span><span class="v go">+62.4</span></div>
+        <div class="fcard-stat"><span class="k">ADP</span><span class="v">2.1</span></div>
+        <div class="fcard-stat"><span class="k">PPG</span><span class="v">21.8</span></div>
+      </div>
+      <div class="fcard-news">
+        <b>Wk 1 vs ARI:</b> Christian upgraded to FULL practice — full snap count expected Sunday. Mason listed as RB2; no committee usage signal from Shanahan presser.
+      </div>
+      <div class="fcard-foot">
+        <span>ADP 2.1</span>
+        <span>PPG 21.8</span>
+        <span>AGE CURVE</span>
+        <span class="age-curve">
+          <i class="on"></i><i class="on"></i><i class="on"></i><i class="warn"></i><i class="dim"></i>
+        </span>
+        <svg class="fcard-spark" viewBox="0 0 200 28" preserveAspectRatio="none">
+          <path class="ar" d="M0,20 L20,16 L40,12 L60,14 L80,10 L100,8 L120,11 L140,7 L160,9 L180,6 L200,5 L200,28 L0,28 Z"/>
+          <path d="M0,20 L20,16 L40,12 L60,14 L80,10 L100,8 L120,11 L140,7 L160,9 L180,6 L200,5"/>
+        </svg>
+      </div>
+    </div>
+  </article>
+</section>
+
+<!-- ═══ OUTLOOK ═══ -->
+<div class="band" id="outlook">
+  <div class="band-tag">C2</div>
+  <div class="band-l">OUTLOOK · WEEKLY CONE</div>
+  <div class="band-r">AI v4.2 · 78% conf · 18-wk projection</div>
+</div>
+<section class="section">
+  <div class="outlook">
+    <div class="take-card">
+      <h3>The Take</h3>
+      <p>Workhorse RB1 with no concrete handcuff threat — <em>still the alpha</em>. The 49ers funnel every meaningful touch through him and the 2026 cap structure says he's available all year.</p>
+      <div class="take-pull">"Floor-driven CEO who hits ceiling more reliably than any back since Faulk."</div>
+      <p>Backup Jordan Mason has flashed spike weeks but no path to a 3-down role. Age 29 is the historical RB cliff, but the 24-month load profile and the 2024 receiving-game reset suggest a softer landing than the position average.</p>
+    </div>
+
+    <div class="cone-card">
+      <h3>Weekly Projection · Cone<small>18-wk · proj · ceil · floor</small></h3>
+      <svg viewBox="0 0 800 220" preserveAspectRatio="none">
+        <defs>
+          <pattern id="grid" width="44" height="22" patternUnits="userSpaceOnUse">
+            <path d="M 44 0 L 0 0 0 22" fill="none" stroke="#cdc9bc" stroke-width="0.5"/>
+          </pattern>
+        </defs>
+        <rect width="800" height="220" fill="url(#grid)"/>
+        <!-- floor area -->
+        <path d="M28,150 L70,142 L112,128 L154,118 L196,124 L238,138 L280,150 L322,162 L364,166 L406,158 L448,148 L490,134 L532,126 L574,122 L616,118 L658,116 L700,114 L744,112 L772,108 L772,200 L744,202 L700,204 L658,206 L616,208 L574,206 L532,202 L490,196 L448,190 L406,194 L364,200 L322,202 L280,196 L238,186 L196,176 L154,170 L112,168 L70,176 L28,182 Z" fill="#259fd6" fill-opacity="0.13"/>
+        <!-- ceiling -->
+        <path d="M28,90 L70,80 L112,68 L154,58 L196,64 L238,76 L280,88 L322,98 L364,100 L406,92 L448,82 L490,68 L532,60 L574,56 L616,52 L658,48 L700,44 L744,40 L772,36" fill="none" stroke="#047857" stroke-width="1.4" stroke-dasharray="4 3" opacity="0.7"/>
+        <!-- floor -->
+        <path d="M28,182 L70,176 L112,168 L154,170 L196,176 L238,186 L280,196 L322,202 L364,200 L406,194 L448,190 L490,196 L532,202 L574,206 L616,208 L658,206 L700,204 L744,202 L772,200" fill="none" stroke="#fb637a" stroke-width="1.4" stroke-dasharray="4 3" opacity="0.7"/>
+        <!-- proj line -->
+        <path d="M28,150 L70,142 L112,128 L154,118 L196,124 L238,138 L280,150 L322,162 L364,166 L406,158 L448,148 L490,134 L532,126 L574,122 L616,118 L658,116 L700,114 L744,112 L772,108" fill="none" stroke="#259fd6" stroke-width="2.5"/>
+        <!-- proj dots -->
+        <g fill="#259fd6">
+          <circle cx="28" cy="150" r="3"/><circle cx="154" cy="118" r="3"/><circle cx="280" cy="150" r="3"/><circle cx="406" cy="158" r="3"/><circle cx="532" cy="126" r="3"/><circle cx="658" cy="116" r="3"/><circle cx="772" cy="108" r="3"/>
+        </g>
+        <!-- week labels -->
+        <g fill="#7d8c95" font-family="Inter" font-size="10" font-weight="700" text-anchor="middle">
+          <text x="28" y="216">WK 1</text><text x="196" y="216">WK 5</text><text x="364" y="216">WK 9</text><text x="532" y="216">WK 13</text><text x="700" y="216">WK 17</text>
+        </g>
+      </svg>
+      <div class="cone-legend">
+        <span class="proj"><i></i>Median Proj</span>
+        <span class="ceil"><i></i>Ceiling (90th)</span>
+        <span class="floor"><i></i>Floor (10th)</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ ON FIELD ═══ -->
+<div class="band" id="field">
+  <div class="band-tag">C3</div>
+  <div class="band-l">ON FIELD · VEGAS · USAGE</div>
+  <div class="band-r">Wk 1 vs ARI · 2024 reg-season splits</div>
+</div>
+<section class="section">
+  <div class="fieldgrid">
+    <div class="video-card">
+      <img src="https://i.ytimg.com/vi/z1BU0cIz7BQ/hqdefault.jpg" alt=""/>
+      <div class="vshade"></div>
+      <div class="vlbl">// HIGHLIGHT REEL · 2024</div>
+      <div class="vplay">▶ PLAY</div>
+    </div>
+    <div class="field-block">
+      <h3>Vegas <small>Wk 1 vs ARI</small></h3>
+      <div class="vrow"><span>Team Implied</span><b>26.5</b></div>
+      <div class="vrow"><span>O/U</span><b>48.0</b></div>
+      <div class="vrow"><span>Spread</span><b style="color:var(--green)">−4.5</b></div>
+      <div class="vrow"><span>Rush Yds Prop</span><b>94.5</b></div>
+      <div class="vrow"><span>Anytime TD</span><b>−250</b></div>
+      <div class="vrow"><span>Status</span><b style="color:var(--green); font-size:14px">FULL · NO REST.</b></div>
+    </div>
+    <div class="field-block">
+      <h3>Usage <small>2024 reg-season</small></h3>
+      <div class="vrow"><span>Snap %</span><b>82</b></div>
+      <div class="vrow"><span>Carries / Game</span><b>18.4</b></div>
+      <div class="vrow"><span>Targets / Game</span><b>5.8</b></div>
+      <div class="vrow"><span>RZ Touch Share</span><b>68%</b></div>
+      <div class="vrow"><span>Goal-Line Share</span><b>74%</b></div>
+      <div class="vrow"><span>Route Run %</span><b>58</b></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ IMPACT ═══ -->
+<div class="band" id="impact">
+  <div class="band-tag">C4</div>
+  <div class="band-l">IMPACT · COMPOSITE</div>
+  <div class="band-r">age-adjusted · NFLverse + PFF · 2024</div>
+</div>
+<section class="section">
+  <div class="statstrip" style="margin: 0; border-color: var(--line); border-width: 3px;">
+    <div><div class="k">EPA / Play</div><div class="v em">+0.21</div><div class="d">86th percentile</div></div>
+    <div><div class="k">Success Rate</div><div class="v">52%</div><div class="d">78th percentile</div></div>
+    <div><div class="k">True YPC</div><div class="v">2.05</div><div class="d">84th percentile</div></div>
+    <div><div class="k">YAC over Exp</div><div class="v go">+0.61</div><div class="d">81st percentile</div></div>
+    <div><div class="k">Tgt Share</div><div class="v">23%</div><div class="d">76th percentile</div></div>
+    <div><div class="k">Off EPA+</div><div class="v cy">+0.27</div><div class="d">vs replacement</div></div>
+  </div>
+</section>
+
+<!-- ═══ COMPS — uses the same picks-grid look as a round ═══ -->
+<div class="band" id="comps">
+  <div class="band-tag">C5</div>
+  <div class="band-l">CLOSEST HISTORICAL COMPS</div>
+  <div class="band-r">// 3 closest matches by usage + age + production</div>
+</div>
+<section class="section">
+  <div class="compgrid">
+    <article class="compcard">
+      <div class="compcard-rk">88<small>% MATCH</small></div>
+      <div class="compcard-r">
+        <div class="compcard-name">LADAINIAN TOMLINSON</div>
+        <div class="compcard-meta">SD · 2006 · AGE 27</div>
+        <div class="compcard-line"><span>Pts</span><b>425.4</b><span>YDS</span><b>1,815</b><span>TD</span><b>31</b></div>
+      </div>
+    </article>
+    <article class="compcard">
+      <div class="compcard-rk">84<small>% MATCH</small></div>
+      <div class="compcard-r">
+        <div class="compcard-name">MARSHALL FAULK</div>
+        <div class="compcard-meta">STL · 2000 · AGE 27</div>
+        <div class="compcard-line"><span>Pts</span><b>391.2</b><span>YDS</span><b>2,189</b><span>TD</span><b>26</b></div>
+      </div>
+    </article>
+    <article class="compcard">
+      <div class="compcard-rk">79<small>% MATCH</small></div>
+      <div class="compcard-r">
+        <div class="compcard-name">ARIAN FOSTER</div>
+        <div class="compcard-meta">HOU · 2012 · AGE 26</div>
+        <div class="compcard-line"><span>Pts</span><b>308.6</b><span>YDS</span><b>1,704</b><span>TD</span><b>17</b></div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- ═══ NEWS ═══ -->
+<div class="band" id="news">
+  <div class="band-tag">C6</div>
+  <div class="band-l">RECENT NEWS · TIMELINE</div>
+  <div class="band-r">// Last 14 days · Rotoworld + beats</div>
+</div>
+<section class="section">
+  <div class="news-list">
+    <div class="news-item">
+      <div class="news-time">2H AGO</div>
+      <div class="news-body">Christian <b>upgraded to FULL practice</b> — full snap count expected Sunday vs ARI. Shanahan: "He'll get whatever he wants."</div>
+      <div class="news-source">SF Chronicle</div>
+    </div>
+    <div class="news-item">
+      <div class="news-time">YESTERDAY</div>
+      <div class="news-body">Mason listed as <b>RB2</b> on Friday's depth chart. Beat reporters say no committee usage signal from Shanahan presser.</div>
+      <div class="news-source">The Athletic</div>
+    </div>
+    <div class="news-item">
+      <div class="news-time">3D AGO</div>
+      <div class="news-body">McCaffrey limited Wednesday with <b>knee soreness</b> — listed as precaution. No structural concerns per team source.</div>
+      <div class="news-source">NFL Network</div>
+    </div>
+    <div class="news-item">
+      <div class="news-time">5D AGO</div>
+      <div class="news-body">49ers OL ranked <b>#3 in PFF preseason grades</b> — interior run-blocking projects as a top-5 unit. Direct positive for CMC's rush-prop ceiling.</div>
+      <div class="news-source">PFF</div>
+    </div>
+    <div class="news-item">
+      <div class="news-time">12D AGO</div>
+      <div class="news-body">Contract restructure clears $11.3M cap — locks McCaffrey through <b>2027</b>. Removes any "trade chip" speculation.</div>
+      <div class="news-source">Spotrac</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ BUCKETS ═══ -->
+<div class="band" id="buckets">
+  <div class="band-tag">C7</div>
+  <div class="band-l">ASSIGN TO BUCKET</div>
+  <div class="band-r">// Personal tags · synced to your draft kit</div>
+</div>
+<section class="section">
+  <div class="bucket-grid">
+    <button class="bucket-chip tagged"><span class="ic">★</span><span>MY GUYS<small>Already assigned</small></span></button>
+    <button class="bucket-chip"><span class="ic">N</span><span>NICK'S PICK<small>Tag for Nick's list</small></span></button>
+    <button class="bucket-chip"><span class="ic">G</span><span>GUT'S GUYS<small>Tag for Gut's list</small></span></button>
+    <button class="bucket-chip"><span class="ic">M</span><span>MO'S MUST-HAVE<small>Tag for Mo's list</small></span></button>
+    <button class="bucket-chip"><span class="ic">S</span><span>SLEEPER<small>Late-round upside</small></span></button>
+    <button class="bucket-chip"><span class="ic">A</span><span>AVOID<small>Personal red flag</small></span></button>
+    <button class="bucket-chip"><span class="ic">H</span><span>HANDCUFF<small>Pair with starter</small></span></button>
+    <button class="bucket-chip"><span class="ic">B</span><span>BUST<small>Predict regression</small></span></button>
+  </div>
+</section>
+
+<!-- ─── Foot ─── -->
+<div class="foot">
+  <span>// BDGE · BIG BOARD · 2026 · VOLUME IV</span>
+  <span><a href="bigboard.html" style="color:var(--accent); text-decoration:none">← BACK TO BOARD</a></span>
+</div>
+
+<script>
+// Bucket toggle
+document.querySelectorAll('.bucket-chip').forEach(b => {
+  b.addEventListener('click', () => b.classList.toggle('tagged'));
+});
+
+// Quick-jump active state
+const sections = ['card','outlook','field','impact','comps','news','buckets'];
+function updateJump() {
+  let active = sections[0];
+  for (const id of sections) {
+    const el = document.getElementById(id);
+    if (el && el.getBoundingClientRect().top <= 80) active = id;
+  }
+  document.querySelectorAll('.qjump a').forEach(a => {
+    a.classList.toggle('active', a.getAttribute('href') === '#' + active);
+  });
+}
+document.addEventListener('scroll', updateJump);
+updateJump();
+</script>
+</body>
+</html>

@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Mockup 2 · Tale of the Tape</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root{--bg:#0a1620;--ink:#082430;--cream:#f9f5eb;--blue:#259fd6;--pink:#fb637a;--gold:#febe02;--green:#16a34a;--gray:#94a3b8}
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--cream);font-family:Inter,sans-serif}
+  .nav{display:flex;align-items:center;justify-content:space-between;padding:14px 24px;background:#000;border-bottom:1px solid rgba(255,255,255,.1)}
+  .nav a{color:var(--cream);text-decoration:none;font-size:12px;text-transform:uppercase;letter-spacing:.18em;opacity:.75}
+  .nav .num{font-family:"Bebas Neue",sans-serif;font-size:18px;letter-spacing:.06em}
+
+  .wrap{max-width:1100px;margin:0 auto;padding:24px 24px 60px}
+
+  /* ─── Pre-fight poster ─── */
+  .poster{position:relative;background:linear-gradient(135deg,#000 0%,#0a1620 50%,#000 100%);border:2px solid var(--cream);padding:36px 40px;overflow:hidden}
+  .poster::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(135deg,transparent 0 18px,rgba(255,255,255,.03) 18px 19px);pointer-events:none}
+  .poster::after{content:"";position:absolute;top:50%;left:50%;width:520px;height:520px;border:1px solid rgba(255,255,255,.08);border-radius:50%;transform:translate(-50%,-50%);pointer-events:none}
+  .marquee{font-family:"Bebas Neue",sans-serif;letter-spacing:.22em;font-size:13px;color:var(--pink);text-align:center;margin-bottom:8px}
+  .title{font-family:"Bebas Neue",sans-serif;text-align:center;font-size:22px;letter-spacing:.18em;color:var(--cream);opacity:.7}
+
+  .tape{display:grid;grid-template-columns:1fr auto 1fr;gap:24px;align-items:center;margin-top:32px;position:relative;z-index:1}
+  .fighter{text-align:center}
+  .fighter img{width:200px;height:200px;border-radius:50%;border:3px solid var(--cream);background:#1a2a36;object-fit:cover;object-position:top;filter:drop-shadow(0 6px 18px rgba(0,0,0,.5))}
+  .fighter .name{font-family:"Bebas Neue",sans-serif;font-size:54px;line-height:.95;letter-spacing:.02em;margin-top:14px;color:var(--cream)}
+  .fighter .meta{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--cream);opacity:.7;margin-top:4px}
+  .fighter.left .name{color:#9fdcff}
+  .fighter.right .name{color:#ffb1bf}
+  .fighter.left img{border-color:var(--blue)}
+  .fighter.right img{border-color:var(--pink)}
+
+  .composite{font-family:"Bebas Neue",sans-serif;font-size:108px;line-height:.85;letter-spacing:.02em;margin-top:8px}
+  .fighter.left .composite{color:var(--blue)}
+  .fighter.right .composite{color:var(--pink)}
+  .composite-label{font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--cream);opacity:.55;margin-top:2px}
+
+  .vs{font-family:"Bebas Neue",sans-serif;font-size:120px;line-height:.85;letter-spacing:.02em;color:var(--gold);text-shadow:0 0 24px rgba(254,190,2,.5)}
+
+  /* ─── Round-by-round scorecard ─── */
+  .rounds{margin-top:48px}
+  .rounds-h{font-family:"Bebas Neue",sans-serif;letter-spacing:.18em;font-size:18px;color:var(--gold);text-align:center;margin-bottom:18px}
+  .rounds-h::before,.rounds-h::after{content:"━━━";opacity:.5;margin:0 14px}
+  .round{display:grid;grid-template-columns:1fr 22% 90px 22% 1fr;gap:14px;align-items:center;padding:14px 18px;border:1px solid rgba(249,245,235,.18);margin-bottom:8px;background:rgba(255,255,255,.02)}
+  .round .l-side{text-align:right;display:flex;align-items:center;justify-content:flex-end;gap:10px}
+  .round .r-side{text-align:left;display:flex;align-items:center;justify-content:flex-start;gap:10px}
+  .stat{font-family:"Bebas Neue",sans-serif;font-size:32px;line-height:1;letter-spacing:.02em;color:var(--cream);opacity:.85}
+  .stat.win{color:var(--green);opacity:1}
+  .check{display:inline-block;width:28px;height:28px;border-radius:50%;background:var(--green);color:#fff;font-size:14px;text-align:center;line-height:28px;font-weight:700;flex-shrink:0}
+  .check.hide{visibility:hidden}
+  .round-label{text-align:center;font-family:"Bebas Neue",sans-serif;letter-spacing:.18em;font-size:13px;color:var(--cream);opacity:.6}
+  .round-num{display:block;font-size:11px;color:var(--gold);letter-spacing:.22em;margin-bottom:3px}
+  .sub{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--cream);opacity:.5;font-family:Inter,sans-serif}
+
+  /* ─── Final card ─── */
+  .final{margin-top:36px;display:grid;grid-template-columns:1fr auto 1fr;gap:24px;align-items:stretch;border:2px solid var(--cream);background:#000;padding:28px 32px}
+  .final-side{text-align:center}
+  .final-side .who{font-family:"Bebas Neue",sans-serif;font-size:34px;letter-spacing:.04em;line-height:1}
+  .final-side .score{font-family:"Bebas Neue",sans-serif;font-size:96px;line-height:.85;letter-spacing:.02em;margin-top:8px}
+  .final-side.left .score{color:var(--blue)}
+  .final-side.right .score{color:var(--pink)}
+  .final-side .label{font-size:10px;letter-spacing:.22em;text-transform:uppercase;opacity:.55;margin-top:4px}
+  .final-side.win .who::after{content:" ✓";color:var(--green)}
+
+  .verdict-strip{display:flex;flex-direction:column;justify-content:center;align-items:center;border-left:1px solid rgba(255,255,255,.18);border-right:1px solid rgba(255,255,255,.18);padding:0 28px;min-width:160px}
+  .verdict-strip .ver{font-family:"Bebas Neue",sans-serif;font-size:18px;letter-spacing:.18em;color:var(--gold)}
+  .verdict-strip .pick{font-family:"Bebas Neue",sans-serif;font-size:48px;line-height:.95;letter-spacing:.02em;margin-top:8px;color:var(--green)}
+  .verdict-strip .pick small{display:block;font-size:11px;letter-spacing:.22em;color:var(--cream);opacity:.5;margin-top:6px;font-family:Inter,sans-serif;font-weight:500}
+
+  .draftbtn{display:block;width:100%;margin-top:24px;padding:20px;border:2px solid var(--green);background:transparent;color:var(--green);font-family:"Bebas Neue",sans-serif;font-size:26px;letter-spacing:.12em;text-align:center;cursor:pointer;transition:background 160ms,color 160ms}
+  .draftbtn:hover{background:var(--green);color:#000}
+</style>
+</head>
+<body>
+<div class="nav">
+  <a href="1-verdict.html">← Prev</a>
+  <span class="num">02 / 05 · Tale of the Tape</span>
+  <a href="3-radar.html">Next →</a>
+</div>
+
+<div class="wrap">
+  <div class="poster">
+    <div class="marquee">★  PRE-DRAFT MAIN EVENT  ★  ROUND 1, PICK 5  ★</div>
+    <div class="title">YOU'RE ON THE CLOCK</div>
+
+    <div class="tape">
+      <div class="fighter left">
+        <img src="https://a.espncdn.com/i/headshots/nfl/players/full/4430807.png" alt="Bijan" />
+        <div class="name">BIJAN<br/>ROBINSON</div>
+        <div class="meta">ATL · RB · AGE 24 · 6'0" · 215</div>
+        <div class="composite">87.4</div>
+        <div class="composite-label">BDGE Composite</div>
+      </div>
+      <div class="vs">VS</div>
+      <div class="fighter right">
+        <img src="https://a.espncdn.com/i/headshots/nfl/players/full/4429795.png" alt="Gibbs" />
+        <div class="name">JAHMYR<br/>GIBBS</div>
+        <div class="meta">DET · RB · AGE 24 · 5'9" · 199</div>
+        <div class="composite">84.2</div>
+        <div class="composite-label">BDGE Composite</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="rounds">
+    <div class="rounds-h">ROUND-BY-ROUND SCORECARD</div>
+
+    <div class="round">
+      <div class="l-side"><span class="stat win">336.8</span><div class="check">✓</div></div>
+      <div></div>
+      <div class="round-label"><span class="round-num">R1</span>VOLUME<div class="sub">proj. points</div></div>
+      <div></div>
+      <div class="r-side"><div class="check hide">✓</div><span class="stat">312.4</span></div>
+    </div>
+
+    <div class="round">
+      <div class="l-side"><span class="stat win">251</span><div class="check">✓</div></div>
+      <div></div>
+      <div class="round-label"><span class="round-num">R2</span>FLOOR<div class="sub">5th-pct sim</div></div>
+      <div></div>
+      <div class="r-side"><div class="check hide">✓</div><span class="stat">232</span></div>
+    </div>
+
+    <div class="round">
+      <div class="l-side"><span class="stat">398</span><div class="check hide">✓</div></div>
+      <div></div>
+      <div class="round-label"><span class="round-num">R3</span>CEILING<div class="sub">95th-pct sim</div></div>
+      <div></div>
+      <div class="r-side"><div class="check">✓</div><span class="stat win">414</span></div>
+    </div>
+
+    <div class="round">
+      <div class="l-side"><span class="stat">19th</span><div class="check hide">✓</div></div>
+      <div></div>
+      <div class="round-label"><span class="round-num">R4</span>SCHEDULE<div class="sub">SoS, lower = easier</div></div>
+      <div></div>
+      <div class="r-side"><div class="check">✓</div><span class="stat win">7th</span></div>
+    </div>
+
+    <div class="round">
+      <div class="l-side"><span class="stat win">92%</span><div class="check">✓</div></div>
+      <div></div>
+      <div class="round-label"><span class="round-num">R5</span>HEALTH<div class="sub">3-yr snap rate</div></div>
+      <div></div>
+      <div class="r-side"><div class="check hide">✓</div><span class="stat">84%</span></div>
+    </div>
+  </div>
+
+  <div class="final">
+    <div class="final-side left win">
+      <div class="who">BIJAN</div>
+      <div class="score">3</div>
+      <div class="label">Rounds Won</div>
+    </div>
+    <div class="verdict-strip">
+      <div class="ver">DECISION</div>
+      <div class="pick">UD</div>
+      <div class="pick" style="font-size:22px;color:var(--cream);margin-top:8px">UNANIMOUS<small>by margin of 3.2 pts</small></div>
+    </div>
+    <div class="final-side right">
+      <div class="who">GIBBS</div>
+      <div class="score">2</div>
+      <div class="label">Rounds Won</div>
+    </div>
+  </div>
+
+  <button class="draftbtn">★ DRAFT BIJAN ROBINSON ★</button>
+</div>
+
+<script>
+  document.addEventListener('keydown',e=>{
+    if(e.key==='ArrowRight') location.href='3-radar.html';
+    if(e.key==='ArrowLeft')  location.href='1-verdict.html';
+  });
+</script>
+</body>
+</html>

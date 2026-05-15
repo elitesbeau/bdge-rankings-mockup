@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Card Mockups · 3 Variations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  *{box-sizing:border-box}
+  html,body{margin:0;background:#1c1c1f;color:#e8e3d6;font-family:Inter,sans-serif;min-height:100vh}
+  .wrap{max-width:1100px;margin:0 auto;padding:48px 32px 80px}
+  .head{display:flex;align-items:flex-end;gap:18px;border-bottom:2px solid #3a3a3f;padding-bottom:18px;margin-bottom:32px}
+  .badge{background:#fb637a;color:#fff;font-family:"Bebas Neue",sans-serif;font-size:36px;line-height:1;letter-spacing:.03em;padding:10px 16px 6px}
+  h1{font-family:"Bebas Neue",sans-serif;font-size:60px;line-height:.95;letter-spacing:.01em;margin:0;font-weight:400}
+  h1 .ac{color:#fb637a}
+  .sub{font-size:13px;text-transform:uppercase;letter-spacing:.18em;color:#e8e3d6cc;margin-top:6px}
+  .intro{font-size:14px;line-height:1.55;color:#e8e3d6cc;margin:0 0 32px;max-width:680px}
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  @media(max-width:900px){.grid{grid-template-columns:1fr}}
+  .tile{background:#25252a;border:2px solid #3a3a3f;text-decoration:none;color:inherit;display:block;transition:all 160ms;overflow:hidden}
+  .tile:hover{transform:translate(-2px,-2px);box-shadow:8px 8px 0 #3a3a3f}
+  .swatch{height:80px;background:linear-gradient(135deg,#25252a 0%,#1c1c1f 100%);display:flex;align-items:center;justify-content:center;font-family:"Bebas Neue",sans-serif;font-size:36px;letter-spacing:.04em;color:#fb637a;border-bottom:2px solid #3a3a3f}
+  .body{padding:16px 18px}
+  .body .tag{font-family:"Bebas Neue",sans-serif;font-size:12px;letter-spacing:.18em;color:#e8e3d688;margin-bottom:4px}
+  .body h2{font-family:"Bebas Neue",sans-serif;font-size:26px;line-height:1;letter-spacing:.02em;margin:0 0 8px;color:#e8e3d6}
+  .body p{font-size:13px;line-height:1.5;color:#e8e3d6cc;margin:0}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head">
+    <div class="badge">CARDS</div>
+    <div>
+      <h1>Player Card <span class="ac">Variations</span></h1>
+      <div class="sub">3 ideas to fill the empty space</div>
+    </div>
+  </div>
+  <p class="intro">
+    Today's player cards feel under-filled — the middle column is a name + a small position pill, and the rest of the height is dead space. Three different ways to add useful info without making the card feel cluttered.
+  </p>
+
+  <div class="grid">
+    <a class="tile" href="1-data-strip.html">
+      <div class="swatch">DATA STRIP</div>
+      <div class="body">
+        <div class="tag">Variation 1</div>
+        <h2>Data Strip</h2>
+        <p>Smallest change. Add a single horizontal strip of compact stats below the name: <b>PROJ · PPG · BYE · AGE</b>. Subtle, dense, no new layout.</p>
+      </div>
+    </a>
+
+    <a class="tile" href="2-tier-poster.html">
+      <div class="swatch">TIER POSTER</div>
+      <div class="body">
+        <div class="tag">Variation 2</div>
+        <h2>Tier Poster</h2>
+        <p>Bigger PFP with team-tinted background, tier ribbon (<b>ELITE / ALL-PRO / STARTER</b>) on top-left, prominent name. Card reads as a poster.</p>
+      </div>
+    </a>
+
+    <a class="tile" href="3-stat-pills.html">
+      <div class="swatch">STAT PILLS</div>
+      <div class="body">
+        <div class="tag">Variation 3</div>
+        <h2>Stat Pills</h2>
+        <p>Keep the existing card; add a row of colored stat chips at the bottom: <b>PROJ 336 · FLR 251 · CEIL 398 · VBD +62</b>. Scan-friendly.</p>
+      </div>
+    </a>
+  </div>
+</div>
+</body>
+</html>

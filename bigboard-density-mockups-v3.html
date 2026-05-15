@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Big Board — Density Mockups v3 (G / H / I / J / K)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f9f5eb;
+  --card: #f4ede0;
+  --bg-soft: #efe6d4;
+  --ink: #082430;
+  --ink-soft: #54616a;
+  --ink-dim: #8a949b;
+  --ink-faint: #c1c8cd;
+  --line: #082430;
+  --line-soft: #d8d0bd;
+  --accent: #259fd6;
+  --accent-2: #fb637a;
+  --steal: #15803d;
+  --steal-bg: rgba(34,197,94,0.16);
+  --reach: #b91c1c;
+  --reach-bg: rgba(251,99,122,0.16);
+  --even:  #54616a;
+  --even-bg: rgba(138,148,155,0.16);
+
+  --tier1: #15803d;
+  --tier2: #259fd6;
+  --tier3: #d97706;
+  --tier4: #8a949b;
+}
+* { box-sizing: border-box; }
+html, body {
+  margin: 0; padding: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: "Inter", sans-serif;
+}
+body { padding: 28px 28px 80px; max-width: 1400px; margin: 0 auto; }
+
+.page-h { font-family: "Oswald", sans-serif; font-size: 36px; margin: 0 0 6px; }
+.page-sub {
+  font-size: 13px; color: var(--ink-soft);
+  margin: 0 0 28px; line-height: 1.5; max-width: 880px;
+}
+.page-sub b { color: var(--ink); }
+.page-sub code { background: var(--card); padding: 1px 5px; border-radius: 2px;
+  font-family: "JetBrains Mono", monospace; font-size: 11px; }
+
+.mock { margin-bottom: 56px; background: var(--bg);
+  border: 2px solid var(--line); padding: 22px; }
+.mock-h { display: flex; align-items: baseline; gap: 14px; margin: 0 0 4px; }
+.mock-tag { font-family: "JetBrains Mono", monospace;
+  font-size: 11px; letter-spacing: 0.24em; color: var(--accent-2); }
+.mock-name { font-family: "Oswald", sans-serif; font-size: 26px; }
+.mock-blurb { font-size: 12px; color: var(--ink-soft); margin: 0 0 18px;
+  line-height: 1.5; max-width: 880px; }
+.mock-blurb b { color: var(--ink); }
+
+/* shared bits */
+.pos { display: inline-grid; place-items: center;
+  min-width: 26px; height: 17px; padding: 0 5px;
+  font-family: "Oswald", sans-serif; font-size: 11px;
+  letter-spacing: 0.05em; border-radius: 3px;
+}
+.pos.QB { background: rgba(251,99,122,0.18); color: #b91c1c; }
+.pos.RB { background: rgba(34,197,94,0.18);  color: var(--steal); }
+.pos.WR { background: rgba(37,159,214,0.18); color: #1e6f9c; }
+.pos.TE { background: rgba(217,119,6,0.18);  color: #92560a; }
+.chk {
+  width: 20px; height: 20px;
+  border: 1.5px solid var(--line-soft);
+  border-radius: 3px;
+  display: inline-grid; place-items: center;
+  background: var(--bg); font-size: 12px; color: var(--ink-soft);
+  flex-shrink: 0;
+}
+.chk.on { background: var(--accent); border-color: var(--accent); color: #fff; }
+.round-h {
+  display: flex; align-items: center; justify-content: space-between;
+  margin: 8px 0 4px;
+  padding: 6px 0;
+  border-bottom: 1.5px solid var(--line);
+}
+.round-h .l {
+  display: flex; align-items: center; gap: 12px;
+  font-family: "Oswald", sans-serif; font-size: 20px;
+}
+.round-h .l .num {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px; letter-spacing: 0.18em;
+  background: var(--ink); color: var(--bg); padding: 3px 7px;
+}
+.round-h .r {
+  font-family: "Inter", sans-serif;
+  font-size: 11px; font-weight: 600; letter-spacing: 0.10em;
+  color: var(--ink-dim);
+}
+
+/* ──────────────────────────────────────────
+   G · BDGE PILL — literal density of bdge.co
+   ────────────────────────────────────────── */
+.G .row {
+  display: grid;
+  grid-template-columns: 22px 32px 36px 1fr 50px 70px 1fr 16px;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 14px;
+  background: var(--card);
+  border: 1.5px solid var(--line-soft);
+  border-radius: 8px;
+  margin-bottom: 4px;
+  cursor: pointer;
+  min-height: 46px;
+  transition: border-color 120ms, transform 120ms;
+}
+.G .row:hover { border-color: var(--accent); transform: translateX(2px); }
+.G .rk {
+  font-family: "Oswald", sans-serif;
+  font-size: 15px;
+  background: var(--bg);
+  border: 1.5px solid var(--line-soft);
+  padding: 4px 0; text-align: center; border-radius: 4px;
+  font-variant-numeric: tabular-nums;
+}
+.G .pfp { width: 36px; height: 36px; border-radius: 50%; overflow: hidden;
+  border: 1.5px solid var(--line); background: var(--bg-soft); }
+.G .pfp img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+.G .who { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.G .nm { font-family: "Oswald", sans-serif; font-size: 17px; line-height: 1;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.G .pos { font-size: 10px; flex-shrink: 0; }
+.G .team {
+  font-family: "Inter", sans-serif;
+  font-size: 11px; font-weight: 800; letter-spacing: 0.06em;
+  text-align: center; color: var(--ink-soft);
+}
+.G .adp {
+  font-family: "Oswald", sans-serif;
+  font-size: 16px; text-align: center; line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+.G .adp .sub {
+  font-family: "Inter", sans-serif;
+  font-size: 10px; color: var(--ink-dim); font-weight: 500;
+}
+.G .props {
+  font-family: "Inter", sans-serif;
+  font-style: italic; font-size: 12px;
+  color: var(--ink-dim);
+}
+.G .chev { color: var(--accent); font-size: 14px; text-align: right; }
+.G .header {
+  display: grid; grid-template-columns: 22px 32px 36px 1fr 50px 70px 1fr 16px;
+  gap: 12px; padding: 6px 14px; margin-bottom: 4px;
+  font-family: "Inter", sans-serif;
+  font-size: 10px; font-weight: 800; letter-spacing: 0.14em;
+  color: var(--ink-dim);
+}
+.G .header > * { text-align: center; }
+.G .header .nm-h { text-align: left; padding-left: 0; }
+
+/* ──────────────────────────────────────────
+   H · TWO-PANE — table + functional right rail
+   ────────────────────────────────────────── */
+.H .layout {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 16px;
+}
+.H .col-main {
+  background: var(--card);
+  border: 1.5px solid var(--line-soft);
+  border-radius: 8px;
+  padding: 6px;
+}
+.H .row {
+  display: grid;
+  grid-template-columns: 22px 32px 36px 1fr 70px 16px;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 12px;
+  border-bottom: 1px solid var(--line-soft);
+  cursor: pointer;
+  min-height: 44px;
+}
+.H .row:last-child { border-bottom: 0; }
+.H .row:hover { background: color-mix(in srgb, var(--accent) 4%, var(--card)); }
+.H .rk { font-family: "Oswald", sans-serif; font-size: 16px; text-align: center;
+  font-variant-numeric: tabular-nums; }
+.H .pfp { width: 36px; height: 36px; border-radius: 50%; overflow: hidden;
+  border: 1.5px solid var(--line); background: var(--bg-soft); }
+.H .pfp img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+.H .who { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.H .nm { font-family: "Oswald", sans-serif; font-size: 17px; line-height: 1;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.H .adp { font-family: "Oswald", sans-serif; font-size: 16px; text-align: center;
+  font-variant-numeric: tabular-nums; }
+.H .chev { color: var(--accent); text-align: right; }
+
+.H .col-rail { display: flex; flex-direction: column; gap: 14px; }
+.H .panel {
+  background: var(--card);
+  border: 1.5px solid var(--line-soft);
+  border-radius: 8px;
+  padding: 14px;
+}
+.H .panel h3 {
+  margin: 0 0 10px;
+  font-family: "Oswald", sans-serif;
+  font-size: 14px; letter-spacing: 0.14em;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.H .panel h3 .ct {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px; color: var(--ink-dim); letter-spacing: 0.18em;
+  background: var(--bg-soft); padding: 2px 7px; border-radius: 2px;
+}
+.H .panel .slot-row, .H .panel .pick-row, .H .panel .value-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 6px 0;
+  font-size: 12px;
+  border-bottom: 1px dashed var(--line-soft);
+}
+.H .panel .slot-row:last-child,
+.H .panel .pick-row:last-child,
+.H .panel .value-row:last-child { border-bottom: 0; }
+.H .slot-lbl {
+  font-family: "Oswald", sans-serif;
+  font-size: 12px;
+  background: var(--bg); padding: 2px 8px;
+  border: 1px solid var(--line-soft); min-width: 38px; text-align: center;
+}
+.H .slot-name { font-weight: 600; color: var(--ink-soft); flex: 1; }
+.H .slot-name.empty { font-style: italic; color: var(--ink-faint); }
+.H .pick-rk {
+  font-family: "Oswald", sans-serif;
+  font-size: 14px;
+  width: 24px; text-align: center;
+}
+.H .pick-name { flex: 1; font-weight: 600; min-width: 0;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.H .pick-by {
+  font-size: 10px; color: var(--ink-dim); font-weight: 500;
+}
+.H .value-name { flex: 1; font-weight: 600; }
+.H .value-delta { font-family: "Oswald", sans-serif;
+  font-size: 13px; color: var(--steal); }
+
+/* ──────────────────────────────────────────
+   I · TIER BANDS — full-width tier sections
+   ────────────────────────────────────────── */
+.I .band {
+  margin-bottom: 16px;
+  border: 1.5px solid var(--line);
+  position: relative;
+  overflow: hidden;
+}
+.I .band-h {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 16px;
+  font-family: "Oswald", sans-serif;
+  font-size: 18px; letter-spacing: 0.06em;
+  color: #fff;
+}
+.I .band-h .why {
+  font-family: "Inter", sans-serif; font-style: italic;
+  font-size: 12px; opacity: 0.85; font-weight: 500;
+}
+.I .band.t1 .band-h { background: var(--tier1); }
+.I .band.t2 .band-h { background: var(--tier2); }
+.I .band.t3 .band-h { background: var(--tier3); }
+.I .band.t4 .band-h { background: var(--tier4); }
+.I .band-body { background: var(--card); }
+.I .row {
+  display: grid;
+  grid-template-columns: 22px 32px 36px 1fr 60px 80px 16px;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 16px;
+  border-bottom: 1px solid var(--line-soft);
+  cursor: pointer;
+  min-height: 46px;
+}
+.I .row:last-child { border-bottom: 0; }
+.I .row:hover { background: color-mix(in srgb, var(--ink) 4%, var(--card)); }
+.I .rk {
+  font-family: "Oswald", sans-serif;
+  font-size: 16px; text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+.I .pfp { width: 36px; height: 36px; border-radius: 50%; overflow: hidden;
+  border: 1.5px solid var(--line); background: var(--bg-soft); }
+.I .pfp img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+.I .who { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.I .nm { font-family: "Oswald", sans-serif; font-size: 17px; line-height: 1;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.I .posrk {
+  font-family: "Oswald", sans-serif;
+  font-size: 13px; text-align: center;
+  color: var(--ink);
+}
+.I .adp {
+  font-family: "Oswald", sans-serif;
+  font-size: 16px; text-align: center; line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+.I .adp .verdict {
+  display: block;
+  font-family: "Inter", sans-serif;
+  font-size: 9px; font-weight: 700; letter-spacing: 0.10em;
+  margin-top: 1px;
+}
+.I .adp .verdict.steal { color: var(--steal); }
+.I .adp .verdict.even  { color: var(--ink-dim); }
+.I .adp .verdict.reach { color: var(--reach); }
+.I .chev { color: var(--accent); text-align: right; }
+
+/* ──────────────────────────────────────────
+   J · DELTA BAR — visual diverging anchor
+   ────────────────────────────────────────── */
+.J .row {
+  display: grid;
+  grid-template-columns: 22px 32px 36px minmax(160px, 0.9fr) 1.4fr 70px 14px;
+  align-items: center;
+  gap: 14px;
+  padding: 6px 14px;
+  border-bottom: 1px solid var(--line-soft);
+  background: var(--card);
+  cursor: pointer;
+  min-height: 48px;
+}
+.J .row:hover { background: color-mix(in srgb, var(--accent) 4%, var(--card)); }
+.J .rk { font-family: "Oswald", sans-serif; font-size: 16px; text-align: center;
+  font-variant-numeric: tabular-nums; }
+.J .pfp { width: 36px; height: 36px; border-radius: 50%; overflow: hidden;
+  border: 1.5px solid var(--line); background: var(--bg-soft); }
+.J .pfp img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+.J .who { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.J .nm { font-family: "Oswald", sans-serif; font-size: 17px; line-height: 1;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.J .meta { display: inline-flex; gap: 6px; align-items: center;
+  font-size: 11px; font-weight: 700; color: var(--ink-soft); }
+
+/* Delta bar — diverging from center, points toward STEAL (left/green) or REACH (right/red) */
+.J .delta {
+  position: relative;
+  height: 30px;
+  display: flex; align-items: center;
+}
+.J .delta-axis {
+  position: absolute; left: 0; right: 0; top: 50%;
+  height: 1px; background: var(--line-soft);
+}
+.J .delta-zero {
+  position: absolute; left: 50%; top: 4px; bottom: 4px;
+  width: 1.5px; background: var(--ink);
+}
+.J .delta-bar {
+  position: absolute; top: 6px; bottom: 6px;
+  border-radius: 2px;
+}
+.J .delta-bar.steal { background: var(--steal); right: 50%; }
+.J .delta-bar.reach { background: var(--reach); left: 50%; }
+.J .delta-bar.even  { background: var(--ink-dim); left: 50%; }
+.J .delta-cap {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  font-family: "Oswald", sans-serif;
+  font-size: 13px;
+}
+.J .delta-cap.steal { left: 4px; color: var(--steal); }
+.J .delta-cap.reach { right: 4px; color: var(--reach); }
+.J .delta-cap.even  { left: calc(50% + 8px); color: var(--ink-dim); }
+.J .delta-edge {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  font-family: "Inter", sans-serif;
+  font-size: 9px; font-weight: 700;
+  color: var(--ink-faint);
+  letter-spacing: 0.10em;
+}
+.J .delta-edge.l { left: 0; }
+.J .delta-edge.r { right: 0; }
+.J .adp { font-family: "Oswald", sans-serif; font-size: 16px; text-align: center;
+  font-variant-numeric: tabular-nums; }
+.J .chev { color: var(--accent); text-align: right; }
+
+/* ──────────────────────────────────────────
+   K · TAG STRIP — packed left-aligned chips
+   ────────────────────────────────────────── */
+.K .row {
+  display: grid;
+  grid-template-columns: 22px 32px 36px minmax(150px, 0.7fr) 1.8fr 70px 14px;
+  align-items: center;
+  gap: 12px;
+  padding: 7px 14px;
+  border-bottom: 1px solid var(--line-soft);
+  background: var(--card);
+  cursor: pointer;
+  min-height: 50px;
+}
+.K .row:hover { background: color-mix(in srgb, var(--accent) 4%, var(--card)); }
+.K .rk { font-family: "Oswald", sans-serif; font-size: 16px; text-align: center;
+  font-variant-numeric: tabular-nums; }
+.K .pfp { width: 36px; height: 36px; border-radius: 50%; overflow: hidden;
+  border: 1.5px solid var(--line); background: var(--bg-soft); }
+.K .pfp img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+.K .who { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.K .nm { font-family: "Oswald", sans-serif; font-size: 17px; line-height: 1;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.K .meta { display: inline-flex; gap: 6px; align-items: center;
+  font-size: 11px; font-weight: 700; color: var(--ink-soft); }
+.K .tags {
+  display: flex; flex-wrap: nowrap; gap: 6px;
+  align-items: center;
+  overflow: hidden;
+}
+.K .chip {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 4px 9px;
+  border-radius: 14px;
+  font-family: "Inter", sans-serif;
+  font-size: 11px; font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
+}
+.K .chip.tier1 { background: rgba(34,197,94,0.16);  color: var(--steal); }
+.K .chip.tier2 { background: rgba(37,159,214,0.16); color: #1e6f9c; }
+.K .chip.tier3 { background: rgba(217,119,6,0.16);  color: #92560a; }
+.K .chip.posrk { background: var(--bg-soft); color: var(--ink); border: 1px solid var(--line-soft); }
+.K .chip.trend.up   { background: var(--steal-bg); color: var(--steal); }
+.K .chip.trend.dn   { background: var(--reach-bg); color: var(--reach); }
+.K .chip.trend.flat { background: var(--bg-soft);  color: var(--ink-soft); }
+.K .chip.verdict.steal { background: var(--steal-bg); color: var(--steal); }
+.K .chip.verdict.even  { background: var(--bg-soft);  color: var(--ink-soft); }
+.K .chip.verdict.reach { background: var(--reach-bg); color: var(--reach); }
+.K .adp { font-family: "Oswald", sans-serif; font-size: 16px; text-align: center;
+  font-variant-numeric: tabular-nums; }
+.K .chev { color: var(--accent); text-align: right; }
+
+.scorecard {
+  margin-top: 16px;
+  padding: 16px 20px;
+  background: var(--bg-soft);
+  border: 1.5px solid var(--line);
+  font-size: 12px; line-height: 1.5;
+}
+.scorecard b { font-family: "Oswald", sans-serif; font-size: 14px; letter-spacing: 0.04em; }
+.scorecard .row-sc { display: flex; gap: 18px; align-items: baseline; margin-bottom: 4px; }
+.scorecard .row-sc:last-child { margin-bottom: 0; }
+.scorecard .lab { font-family: "JetBrains Mono", monospace;
+  font-size: 10px; letter-spacing: 0.20em; color: var(--accent-2);
+  min-width: 28px;
+}
+</style>
+</head>
+<body>
+
+<h1 class="page-h">Big Board — Density Mockups v3</h1>
+<p class="page-sub">
+  Five new directions. All compressed like BDGE.co's rows but each <b>uses the full content width</b> — no horizontal dead space.
+  No side-by-side player cards. <code>bigboard.html</code> still untouched.
+</p>
+
+<!-- ═══════════════════════════════════════
+     G · BDGE PILL
+     ═══════════════════════════════════════ -->
+<section class="mock G">
+  <div class="mock-h">
+    <span class="mock-tag">// MOCKUP G</span>
+    <span class="mock-name">BDGE Pill — Their Density, Our Skin</span>
+  </div>
+  <p class="mock-blurb">
+    Literal replication of BDGE.co's row anatomy: <b>chk · rank-square · pfp · name+pos · team · ADP(sub) · Props · ›</b>.
+    Each row is its own rounded pill with a subtle border. Hovers translate right 2px. Header strip labels each column so the eye knows what's where. 46px rows.
+  </p>
+  <div class="round-h">
+    <div class="l"><span class="num">R1</span> Round One</div>
+    <div class="r">Picks 1 – 10</div>
+  </div>
+  <div class="header">
+    <span></span><span>Rank</span><span></span>
+    <span class="nm-h">Player</span><span>Team</span><span>ADP</span>
+    <span style="text-align:left">Props</span><span></span>
+  </div>
+  <div id="G-rows"></div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     H · TWO-PANE
+     ═══════════════════════════════════════ -->
+<section class="mock H">
+  <div class="mock-h">
+    <span class="mock-tag">// MOCKUP H</span>
+    <span class="mock-name">Two-Pane — Board + Live Right Rail</span>
+  </div>
+  <p class="mock-blurb">
+    BDGE.co's rows compressed to their natural width on the left, and the "dead space" on the right turned into a <b>functional sidebar</b>:
+    <em>My Team</em> roster slots that fill as you draft, <em>Recent Picks</em> from the room, <em>Value Watch</em> for the best steals still on the board.
+    Same density as BDGE.co but every pixel of the page works.
+  </p>
+  <div class="round-h">
+    <div class="l"><span class="num">R1</span> Round One</div>
+    <div class="r">Picks 1 – 10</div>
+  </div>
+  <div class="layout">
+    <div class="col-main" id="H-rows"></div>
+    <div class="col-rail">
+      <div class="panel">
+        <h3>My Team <span class="ct">3 / 16</span></h3>
+        <div class="slot-row"><span class="slot-lbl">QB</span><span class="slot-name empty">— open —</span></div>
+        <div class="slot-row"><span class="slot-lbl">RB</span><span class="slot-name">Bijan Robinson</span></div>
+        <div class="slot-row"><span class="slot-lbl">RB</span><span class="slot-name">Saquon Barkley</span></div>
+        <div class="slot-row"><span class="slot-lbl">WR</span><span class="slot-name">CeeDee Lamb</span></div>
+        <div class="slot-row"><span class="slot-lbl">WR</span><span class="slot-name empty">— open —</span></div>
+        <div class="slot-row"><span class="slot-lbl">TE</span><span class="slot-name empty">— open —</span></div>
+        <div class="slot-row"><span class="slot-lbl">FLEX</span><span class="slot-name empty">— open —</span></div>
+      </div>
+      <div class="panel">
+        <h3>Recent Picks <span class="ct">LIVE</span></h3>
+        <div class="pick-row"><span class="pick-rk">1.04</span><span class="pick-name">Justin Jefferson</span><span class="pick-by">Nick</span></div>
+        <div class="pick-row"><span class="pick-rk">1.03</span><span class="pick-name">Ja'Marr Chase</span><span class="pick-by">Austin</span></div>
+        <div class="pick-row"><span class="pick-rk">1.02</span><span class="pick-name">Bijan Robinson</span><span class="pick-by">You</span></div>
+        <div class="pick-row"><span class="pick-rk">1.01</span><span class="pick-name">McCaffrey</span><span class="pick-by">Justin</span></div>
+      </div>
+      <div class="panel">
+        <h3>Value Watch <span class="ct">STEALS</span></h3>
+        <div class="value-row"><span class="value-name">Mahomes</span><span class="value-delta">+30.0</span></div>
+        <div class="value-row"><span class="value-name">Hill</span><span class="value-delta">+1.5</span></div>
+        <div class="value-row"><span class="value-name">Saquon</span><span class="value-delta">+1.4</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     I · TIER BANDS
+     ═══════════════════════════════════════ -->
+<section class="mock I">
+  <div class="mock-h">
+    <span class="mock-tag">// MOCKUP I</span>
+    <span class="mock-name">Tier Bands</span>
+  </div>
+  <p class="mock-blurb">
+    Players are grouped into <b>tier-colored full-width bands</b> — Tier 1 is green-headed, Tier 2 is blue, etc.
+    Each band header has a one-line tier description (<em>"locked-in elite — draft regardless of value"</em>) so users know what the tier means.
+    Inside, rows are dense like BDGE.co. The colored band headers give the whole page vertical rhythm without any dead space.
+  </p>
+  <div id="I-bands"></div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     J · DELTA BAR
+     ═══════════════════════════════════════ -->
+<section class="mock J">
+  <div class="mock-h">
+    <span class="mock-tag">// MOCKUP J</span>
+    <span class="mock-name">Delta Bar — Visual ADP vs BDGE</span>
+  </div>
+  <p class="mock-blurb">
+    The middle of each row is a <b>diverging bar chart</b>. Center line = even. Bars going LEFT (green) = BDGE values them higher than market = STEAL. Bars going RIGHT (red) = REACH.
+    The bar length encodes <em>how much</em>. One glance down the page tells you every steal and every reach without reading a single number.
+  </p>
+  <div class="round-h">
+    <div class="l"><span class="num">R1</span> Round One</div>
+    <div class="r">Picks 1 – 10</div>
+  </div>
+  <div id="J-rows"></div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     K · TAG STRIP
+     ═══════════════════════════════════════ -->
+<section class="mock K">
+  <div class="mock-h">
+    <span class="mock-tag">// MOCKUP K</span>
+    <span class="mock-name">Tag Strip — Packed Chips</span>
+  </div>
+  <p class="mock-blurb">
+    The middle is a packed strip of <b>colored chips</b>: tier, positional rank, trend (rising / falling / flat), verdict.
+    Like glancing at a baseball card. Chips are left-anchored so the row never has a void — the eye moves continuously from name to chips to ADP.
+  </p>
+  <div class="round-h">
+    <div class="l"><span class="num">R1</span> Round One</div>
+    <div class="r">Picks 1 – 10</div>
+  </div>
+  <div id="K-rows"></div>
+</section>
+
+<div class="scorecard">
+  <div class="row-sc"><span class="lab">G</span> BDGE.co exact density. Solves rows. Doesn't solve outer dead space.</div>
+  <div class="row-sc"><span class="lab">H</span> Compact rows + live right rail (team / picks / value). Repurposes the dead space.</div>
+  <div class="row-sc"><span class="lab">I</span> Tier-colored bands group players. Page rhythm without empty pixels.</div>
+  <div class="row-sc"><span class="lab">J</span> Visual diverging bar IS the anchor. Scan-without-reading.</div>
+  <div class="row-sc"><span class="lab">K</span> Chip-packed left-anchored middle. Baseball-card scan.</div>
+</div>
+
+<script>
+// Same 10 players with extra data for tiers / trend / sparkline
+const P = [
+  { rk:1,  name:"Christian McCaffrey", team:"SF",  pos:"RB", espn:"3117251", adp:2.1,  tier:1, posRk:1, posTot:32, trend:'up',   why:"the ceiling vote" },
+  { rk:2,  name:"Bijan Robinson",      team:"ATL", pos:"RB", espn:"4430807", adp:1.8,  tier:1, posRk:2, posTot:32, trend:'up',   why:"the floor vote" },
+  { rk:3,  name:"Ja'Marr Chase",       team:"CIN", pos:"WR", espn:"4362628", adp:3.4,  tier:1, posRk:1, posTot:64, trend:'flat', why:"safest WR pick" },
+  { rk:4,  name:"Justin Jefferson",    team:"MIN", pos:"WR", espn:"4262921", adp:4.1,  tier:1, posRk:2, posTot:64, trend:'flat', why:"target share insulated" },
+  { rk:5,  name:"Tyreek Hill",         team:"MIA", pos:"WR", espn:"3116406", adp:6.5,  tier:2, posRk:3, posTot:64, trend:'dn',   why:"value at the turn" },
+  { rk:6,  name:"CeeDee Lamb",         team:"DAL", pos:"WR", espn:"4241389", adp:7.2,  tier:2, posRk:4, posTot:64, trend:'dn',   why:"alpha if Dak healthy" },
+  { rk:7,  name:"Saquon Barkley",      team:"PHI", pos:"RB", espn:"3929630", adp:8.4,  tier:2, posRk:3, posTot:32, trend:'up',   why:"O-line cheat code" },
+  { rk:8,  name:"Patrick Mahomes",     team:"KC",  pos:"QB", espn:"3139477", adp:38.0, tier:1, posRk:1, posTot:24, trend:'flat', why:"late-round elite QB" },
+  { rk:9,  name:"Amon-Ra St. Brown",   team:"DET", pos:"WR", espn:"4374302", adp:9.6,  tier:2, posRk:5, posTot:64, trend:'flat', why:"boring WR1 floor" },
+  { rk:10, name:"Puka Nacua",          team:"LAR", pos:"WR", espn:"4426338", adp:11.8, tier:2, posRk:6, posTot:64, trend:'up',   why:"target share locked" },
+];
+
+const TIER_LABELS = {
+  1: { name: "Tier 1 — Locked-In Elite",   why: "draft regardless of value." },
+  2: { name: "Tier 2 — Foundation Picks",  why: "the safe core of any roster." },
+  3: { name: "Tier 3 — Upside / Risk",     why: "boom-bust gambles." },
+};
+
+function verdict(p) {
+  const d = p.adp - p.rk;
+  if (d > 0.5)  return ['steal', `Steal +${d.toFixed(1)}`, d];
+  if (d < -0.5) return ['reach', `Reach ${d.toFixed(1)}`, d];
+  return         ['even',  `Even`, d];
+}
+function img(p) {
+  return `<img src="https://a.espncdn.com/i/headshots/nfl/players/full/${p.espn}.png" alt="${p.name}" onerror="this.style.opacity=.15">`;
+}
+
+// ─── G — BDGE Pill
+document.getElementById('G-rows').innerHTML = P.map((p, i) => `
+  <div class="row">
+    <span class="chk ${i === 0 ? 'on' : ''}">${i === 0 ? '✓' : ''}</span>
+    <div class="rk">${p.rk}</div>
+    <div class="pfp">${img(p)}</div>
+    <div class="who">
+      <div class="nm">${p.name}</div>
+      <span class="pos ${p.pos}">${p.pos}${p.posRk}</span>
+    </div>
+    <div class="team">${p.team}</div>
+    <div class="adp">${p.adp.toFixed(0)}<span class="sub">(${p.adp.toFixed(2)})</span></div>
+    <div class="props">Coming Soon</div>
+    <div class="chev">›</div>
+  </div>
+`).join('');
+
+// ─── H — Two-Pane
+document.getElementById('H-rows').innerHTML = P.map((p, i) => `
+  <div class="row">
+    <span class="chk ${i === 0 ? 'on' : ''}">${i === 0 ? '✓' : ''}</span>
+    <div class="rk">${p.rk}</div>
+    <div class="pfp">${img(p)}</div>
+    <div class="who">
+      <div class="nm">${p.name}</div>
+      <span class="pos ${p.pos}">${p.pos}</span>
+    </div>
+    <div class="adp">${p.adp.toFixed(1)}</div>
+    <div class="chev">›</div>
+  </div>
+`).join('');
+
+// ─── I — Tier Bands (group + render)
+const byTier = {};
+P.forEach(p => { (byTier[p.tier] = byTier[p.tier] || []).push(p); });
+document.getElementById('I-bands').innerHTML = Object.keys(byTier).map(t => {
+  const tier = TIER_LABELS[t] || { name: `Tier ${t}`, why: "" };
+  return `<div class="band t${t}">
+    <div class="band-h">
+      <span>${tier.name}</span>
+      <span class="why">${tier.why}</span>
+    </div>
+    <div class="band-body">
+      ${byTier[t].map((p, i) => {
+        const [vk, vl] = verdict(p);
+        return `<div class="row">
+          <span class="chk ${i === 0 && t === '1' ? 'on' : ''}">${i === 0 && t === '1' ? '✓' : ''}</span>
+          <div class="rk">${p.rk}</div>
+          <div class="pfp">${img(p)}</div>
+          <div class="who">
+            <div class="nm">${p.name}</div>
+            <span class="pos ${p.pos}">${p.pos}</span>
+          </div>
+          <div class="posrk">${p.pos}${p.posRk}</div>
+          <div class="adp">
+            ${p.adp.toFixed(1)}
+            <span class="verdict ${vk}">${vk === 'even' ? 'Even' : vk === 'steal' ? 'Steal' : 'Reach'}</span>
+          </div>
+          <div class="chev">›</div>
+        </div>`;
+      }).join('')}
+    </div>
+  </div>`;
+}).join('');
+
+// ─── J — Delta Bar
+document.getElementById('J-rows').innerHTML = P.map((p, i) => {
+  const d = p.adp - p.rk;
+  const abs = Math.abs(d);
+  // Scale: 30 max delta clamps to 48% width (so the bar is bounded inside its half)
+  const pct = Math.min(48, (abs / 30) * 48 + (abs > 0.1 ? 4 : 0));
+  let vk = 'even', bar = '', cap = `<span class="delta-cap even">Even</span>`;
+  if (d > 0.5) {
+    vk = 'steal';
+    bar = `<div class="delta-bar steal" style="width:${pct}%"></div>`;
+    cap = `<span class="delta-cap steal">+${d.toFixed(1)} Steal</span>`;
+  } else if (d < -0.5) {
+    vk = 'reach';
+    bar = `<div class="delta-bar reach" style="width:${pct}%"></div>`;
+    cap = `<span class="delta-cap reach">${d.toFixed(1)} Reach</span>`;
+  }
+  return `<div class="row">
+    <span class="chk ${i === 0 ? 'on' : ''}">${i === 0 ? '✓' : ''}</span>
+    <div class="rk">${p.rk}</div>
+    <div class="pfp">${img(p)}</div>
+    <div class="who">
+      <div class="nm">${p.name}</div>
+      <div class="meta">
+        <span class="pos ${p.pos}">${p.pos}</span><span>${p.team}</span>
+      </div>
+    </div>
+    <div class="delta">
+      <div class="delta-edge l">STEAL</div>
+      <div class="delta-edge r">REACH</div>
+      <div class="delta-axis"></div>
+      <div class="delta-zero"></div>
+      ${bar}
+      ${cap}
+    </div>
+    <div class="adp">${p.adp.toFixed(1)}</div>
+    <div class="chev">›</div>
+  </div>`;
+}).join('');
+
+// ─── K — Tag Strip
+document.getElementById('K-rows').innerHTML = P.map((p, i) => {
+  const [vk, vl] = verdict(p);
+  const trendCls = p.trend; // 'up' / 'dn' / 'flat'
+  const trendTxt = p.trend === 'up' ? '↑ Rising'
+                 : p.trend === 'dn' ? '↓ Falling'
+                 : '— Stable';
+  return `<div class="row">
+    <span class="chk ${i === 0 ? 'on' : ''}">${i === 0 ? '✓' : ''}</span>
+    <div class="rk">${p.rk}</div>
+    <div class="pfp">${img(p)}</div>
+    <div class="who">
+      <div class="nm">${p.name}</div>
+      <div class="meta">
+        <span class="pos ${p.pos}">${p.pos}</span><span>${p.team}</span>
+      </div>
+    </div>
+    <div class="tags">
+      <span class="chip tier${p.tier}">Tier ${p.tier}</span>
+      <span class="chip posrk">${p.pos}${p.posRk} of ${p.posTot}</span>
+      <span class="chip trend ${trendCls}">${trendTxt}</span>
+      <span class="chip verdict ${vk}">${vl}</span>
+    </div>
+    <div class="adp">${p.adp.toFixed(1)}</div>
+    <div class="chev">›</div>
+  </div>`;
+}).join('');
+</script>
+
+</body>
+</html>

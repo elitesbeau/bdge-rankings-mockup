@@ -1,0 +1,443 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Compare Dock · Pip Grid</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --cream:#f9f5eb;--ink:#082430;--ink2:#051820;--ink-soft:#1c3543;--line:#dad3c0;
+    --blue:#259fd6;--pink:#fb637a;--gold:#febe02;--green:#16a34a;
+    --pos-qb:#e11d48;--pos-rb:#16a34a;--pos-wr:#2563eb;--pos-te:#d97706;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--cream);color:var(--ink);font-family:Inter,sans-serif;height:100vh;overflow:hidden}
+
+  .nav{display:flex;align-items:center;justify-content:space-between;padding:10px 18px;background:#fff;border-bottom:2px solid var(--ink);height:46px}
+  .nav a{color:var(--ink);text-decoration:none;font-size:11px;text-transform:uppercase;letter-spacing:.18em}
+  .nav .num{font-family:"Bebas Neue",sans-serif;font-size:16px;letter-spacing:.06em}
+  .pickers{display:flex;gap:0;font-size:10px;border:2px solid var(--ink)}
+  .pickers a{padding:5px 12px;background:#fff;letter-spacing:.18em;font-family:"Bebas Neue",sans-serif;font-size:13px;border-right:1px solid var(--ink)}
+  .pickers a:last-child{border-right:0}
+  .pickers a.on{background:var(--ink);color:var(--cream)}
+
+  .board{position:absolute;left:0;right:0;top:46px;bottom:380px;overflow:auto;background:var(--cream)}
+  .board-h{position:sticky;top:0;background:var(--cream);z-index:5;padding:14px 22px 10px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:18px}
+  .board-h .title{font-family:"Bebas Neue",sans-serif;font-size:30px;letter-spacing:.02em;line-height:1}
+  .board-h .pickbox{background:var(--ink);color:var(--cream);font-family:"Bebas Neue",sans-serif;letter-spacing:.06em;padding:6px 12px 4px}
+  .board-h .pickbox .pk{font-size:11px;letter-spacing:.22em;opacity:.7}
+  .board-h .pickbox .pn{font-size:22px;line-height:1;margin-top:1px}
+  .board-h .filters{display:flex;gap:6px;margin-left:auto}
+  .board-h .filt{font-family:"Bebas Neue",sans-serif;font-size:12px;letter-spacing:.16em;padding:5px 12px;background:#fff;border:2px solid var(--ink);cursor:pointer}
+  .board-h .filt.on{background:var(--ink);color:var(--cream)}
+  .board-h .filt[data-pos="QB"].on{background:var(--pos-qb);border-color:var(--pos-qb)}
+  .board-h .filt[data-pos="RB"].on{background:var(--pos-rb);border-color:var(--pos-rb)}
+  .board-h .filt[data-pos="WR"].on{background:var(--pos-wr);border-color:var(--pos-wr)}
+  .board-h .filt[data-pos="TE"].on{background:var(--pos-te);border-color:var(--pos-te)}
+
+  .board-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(196px,1fr));gap:10px;padding:14px 22px 22px}
+
+  .chip{position:relative;background:#fff;border:2px solid var(--ink);padding:10px 12px 10px 14px;cursor:pointer;transition:transform 140ms,box-shadow 140ms;text-align:left;display:flex;align-items:center;gap:10px;overflow:hidden}
+  .chip:hover{transform:translate(-2px,-2px);box-shadow:4px 4px 0 var(--ink)}
+  .chip::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px}
+  .chip[data-pos="QB"]::before{background:var(--pos-qb)}
+  .chip[data-pos="RB"]::before{background:var(--pos-rb)}
+  .chip[data-pos="WR"]::before{background:var(--pos-wr)}
+  .chip[data-pos="TE"]::before{background:var(--pos-te)}
+  .chip .rk{font-family:"Bebas Neue",sans-serif;font-size:24px;letter-spacing:.04em;line-height:.9;color:var(--ink);min-width:30px;text-align:center}
+  .chip img{width:42px;height:42px;border-radius:50%;background:var(--cream);object-fit:cover;object-position:top center;border:2px solid var(--ink);flex-shrink:0}
+  .chip .info{flex:1;min-width:0}
+  .chip .nm{font-family:"Bebas Neue",sans-serif;font-size:15px;letter-spacing:.02em;line-height:1;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .chip .meta{font-size:10px;color:var(--ink-soft);letter-spacing:.1em;margin-top:3px;text-transform:uppercase;font-weight:500}
+  .chip .meta .pos{font-family:"Bebas Neue",sans-serif;font-size:11px;letter-spacing:.08em;padding:1px 5px;background:var(--ink);color:var(--cream);margin-right:6px}
+  .chip[data-pos="QB"] .meta .pos{background:var(--pos-qb)}
+  .chip[data-pos="RB"] .meta .pos{background:var(--pos-rb)}
+  .chip[data-pos="WR"] .meta .pos{background:var(--pos-wr)}
+  .chip[data-pos="TE"] .meta .pos{background:var(--pos-te)}
+  .chip .badge{position:absolute;top:0;right:0;font-family:"Bebas Neue",sans-serif;font-size:11px;letter-spacing:.18em;padding:2px 8px;background:var(--ink);color:#fff;display:none}
+  .chip.in-A{border-color:var(--blue);box-shadow:inset 0 0 0 1px var(--blue)}
+  .chip.in-A::before{background:var(--blue);width:7px}
+  .chip.in-A .badge{display:block;background:var(--blue)}
+  .chip.in-B{border-color:var(--pink);box-shadow:inset 0 0 0 1px var(--pink)}
+  .chip.in-B::before{background:var(--pink);width:7px}
+  .chip.in-B .badge{display:block;background:var(--pink)}
+  .chip.dim{opacity:0.32;pointer-events:none}
+
+  .dock{position:absolute;left:0;right:0;bottom:0;height:380px;background:linear-gradient(180deg,#0a1d28 0%,#051820 100%);color:var(--cream);border-top:3px solid var(--ink);box-shadow:0 -6px 0 rgba(0,0,0,.18);padding:18px 22px;display:flex;flex-direction:column;gap:14px;overflow:hidden}
+  .dock::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(135deg,transparent 0 18px,rgba(255,255,255,.018) 18px 19px);pointer-events:none}
+
+  .row1{display:grid;grid-template-columns:300px 1fr 300px;gap:24px;align-items:center;position:relative;z-index:1}
+
+  .head{display:flex;align-items:center;gap:14px;background:rgba(255,255,255,.04);border:2px solid rgba(255,255,255,.18);padding:12px 14px;cursor:pointer;transition:border-color 160ms;position:relative}
+  .head.A{border-left:5px solid var(--blue)}
+  .head.B{border-right:5px solid var(--pink);flex-direction:row-reverse;text-align:right}
+  .head.active{border-color:var(--gold);box-shadow:0 0 0 2px rgba(254,190,2,.3),inset 0 0 22px rgba(254,190,2,.08)}
+  .head.active::after{content:"ACTIVE";position:absolute;top:-9px;left:50%;transform:translateX(-50%);font-family:"Bebas Neue",sans-serif;font-size:10px;letter-spacing:.22em;background:var(--gold);color:var(--ink);padding:1px 10px}
+  .head img{width:64px;height:64px;border-radius:50%;background:#1a2a36;object-fit:cover;object-position:top center;border:2px solid;flex-shrink:0}
+  .head.A img{border-color:var(--blue)}
+  .head.B img{border-color:var(--pink)}
+  .head .info{flex:1;min-width:0}
+  .head .nm{font-family:"Bebas Neue",sans-serif;font-size:22px;letter-spacing:.02em;line-height:.95;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .head.A .nm{color:#9fdcff}
+  .head.B .nm{color:#ffb1bf}
+  .head .meta{font-size:10px;color:rgba(249,245,235,.7);letter-spacing:.14em;margin-top:4px;text-transform:uppercase}
+  .head .score{font-family:"Bebas Neue",sans-serif;font-size:28px;letter-spacing:.02em;line-height:1;margin-top:6px}
+  .head.A .score{color:#9fdcff}
+  .head.B .score{color:#ffb1bf}
+  .head .score small{font-family:Inter,sans-serif;font-size:9px;letter-spacing:.18em;font-weight:500;color:rgba(249,245,235,.5);display:block;margin-top:2px}
+  .head .rmv{position:absolute;top:6px;right:6px;background:transparent;border:0;color:rgba(249,245,235,.4);cursor:pointer;font-size:13px;padding:0 4px;line-height:1}
+  .head.B .rmv{right:auto;left:6px}
+  .head .rmv:hover{color:#fff}
+  .head.empty{justify-content:center;text-align:center;color:rgba(249,245,235,.45)}
+  .head.empty .info{text-align:center}
+  .head.empty .placeholder{font-family:"Bebas Neue",sans-serif;letter-spacing:.18em;font-size:13px}
+  .head.empty .hint{font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:rgba(249,245,235,.35);margin-top:6px}
+
+  /* ─── Pip hero (rounds-won scoreboard) ─── */
+  .pip-wrap{display:flex;flex-direction:column;align-items:stretch;gap:8px}
+  .pip-eye{display:flex;align-items:center;justify-content:space-between;font-family:"Bebas Neue",sans-serif;letter-spacing:.18em;font-size:11px;color:rgba(249,245,235,.6)}
+  .pip-eye .swap{background:transparent;color:var(--gold);border:1px solid rgba(254,190,2,.5);font-family:"Bebas Neue",sans-serif;font-size:13px;letter-spacing:.18em;padding:3px 10px;cursor:pointer}
+  .pip-eye .swap:hover{background:var(--gold);color:var(--ink);border-color:var(--gold)}
+  .pip-eye .verdict-pill{background:var(--gold);color:var(--ink);font-family:"Bebas Neue",sans-serif;font-size:14px;letter-spacing:.16em;padding:3px 12px}
+  .pip-eye .verdict-pill.A{background:var(--blue);color:#fff}
+  .pip-eye .verdict-pill.B{background:var(--pink);color:#fff}
+
+  .total-board{display:grid;grid-template-columns:1fr auto 1fr;gap:14px;align-items:center;padding:10px 14px;background:rgba(0,0,0,.32);border:2px solid #000;box-shadow:inset 0 1px 0 rgba(255,255,255,.06)}
+  .total-side{display:flex;align-items:center;gap:10px}
+  .total-side.B{flex-direction:row-reverse}
+  .total-pips{display:flex;gap:6px}
+  .big-pip{width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,.08);border:2px solid rgba(255,255,255,.18);transition:all 240ms}
+  .big-pip.A{background:var(--blue);border-color:#fff;box-shadow:0 0 14px rgba(37,159,214,.7)}
+  .big-pip.B{background:var(--pink);border-color:#fff;box-shadow:0 0 14px rgba(251,99,122,.7)}
+  .total-num{font-family:"Bebas Neue",sans-serif;font-size:36px;line-height:.9;letter-spacing:.02em}
+  .total-num.A{color:#9fdcff}
+  .total-num.B{color:#ffb1bf}
+  .total-divider{font-family:"Bebas Neue",sans-serif;font-size:30px;letter-spacing:.06em;color:rgba(249,245,235,.5)}
+  .pip-meta{display:flex;justify-content:space-between;font-size:10px;letter-spacing:.18em;color:rgba(249,245,235,.55);text-transform:uppercase;font-weight:500}
+
+  /* ─── Stats grid (5 pip rows inline) ─── */
+  .stats{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;position:relative;z-index:1}
+  .stat{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.1);padding:8px 10px;display:flex;flex-direction:column;gap:6px}
+  .stat.win-A{background:rgba(37,159,214,.07);border-color:rgba(37,159,214,.4)}
+  .stat.win-B{background:rgba(251,99,122,.07);border-color:rgba(251,99,122,.4)}
+  .stat-h{display:flex;justify-content:space-between;align-items:baseline}
+  .stat-h .lab{font-family:"Bebas Neue",sans-serif;letter-spacing:.18em;font-size:11px;color:rgba(249,245,235,.6)}
+  .stat-h .winner{font-family:"Bebas Neue",sans-serif;letter-spacing:.12em;font-size:10px;padding:1px 5px;color:#fff}
+  .stat-h .winner.A{background:var(--blue)}
+  .stat-h .winner.B{background:var(--pink)}
+  .stat-h .winner.tie{background:rgba(255,255,255,.18);color:rgba(249,245,235,.7)}
+  .stat-vals{display:flex;justify-content:space-between;align-items:center;gap:6px;font-family:"Bebas Neue",sans-serif;font-size:18px;letter-spacing:.02em;line-height:1}
+  .stat-vals .a{color:#9fdcff}
+  .stat-vals .b{color:#ffb1bf}
+  .stat-vals .vs{font-size:9px;letter-spacing:.18em;color:rgba(249,245,235,.4);font-family:Inter,sans-serif}
+  .pips-row{display:flex;gap:6px;align-items:center;justify-content:space-between}
+  .pips{display:flex;gap:3px}
+  .pip{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);transition:all 240ms}
+  .pip.A{background:var(--blue);border-color:var(--blue);box-shadow:0 0 6px rgba(37,159,214,.6)}
+  .pip.B{background:var(--pink);border-color:var(--pink);box-shadow:0 0 6px rgba(251,99,122,.6)}
+  .pip.peak{transform:scale(1.25)}
+  .pips-row .vs{font-size:9px;letter-spacing:.18em;color:rgba(249,245,235,.4);font-family:Inter,sans-serif}
+
+  .stat-w{display:flex;align-items:center;gap:6px;margin-top:2px}
+  .stat-w .wlab{font-size:9px;letter-spacing:.16em;color:rgba(249,245,235,.45);text-transform:uppercase;flex-shrink:0}
+  .stat-w input[type=range]{flex:1;-webkit-appearance:none;appearance:none;background:transparent;height:14px;margin:0;padding:0}
+  .stat-w input[type=range]::-webkit-slider-runnable-track{height:3px;background:rgba(255,255,255,.18);border-radius:2px}
+  .stat-w input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:12px;height:12px;background:var(--gold);margin-top:-4.5px;cursor:pointer;border-radius:50%}
+  .stat-w input[type=range]::-moz-range-track{height:3px;background:rgba(255,255,255,.18);border-radius:2px}
+  .stat-w input[type=range]::-moz-range-thumb{width:12px;height:12px;background:var(--gold);border:0;cursor:pointer;border-radius:50%}
+  .stat-w .wnum{font-family:"Bebas Neue",sans-serif;font-size:13px;color:var(--gold);min-width:22px;text-align:right}
+
+  .row3{display:flex;justify-content:space-between;align-items:stretch;gap:12px;position:relative;z-index:1}
+  .presets{display:flex;gap:0;border:2px solid rgba(255,255,255,.18)}
+  .presets button{background:transparent;color:rgba(249,245,235,.7);border:0;border-right:1px solid rgba(255,255,255,.18);font-family:"Bebas Neue",sans-serif;font-size:13px;letter-spacing:.14em;padding:8px 14px;cursor:pointer;line-height:1}
+  .presets button:last-child{border-right:0}
+  .presets button:hover{background:rgba(255,255,255,.06);color:#fff}
+  .presets button.on{background:var(--gold);color:var(--ink)}
+  .draftbtn{display:flex;align-items:center;gap:10px;padding:10px 24px;background:var(--green);border:0;color:#fff;font-family:"Bebas Neue",sans-serif;font-size:22px;letter-spacing:.06em;cursor:pointer;transition:transform 160ms,box-shadow 160ms;box-shadow:4px 4px 0 #000;line-height:1}
+  .draftbtn:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 #000}
+  .draftbtn .star{font-size:18px}
+  .draftbtn:disabled{background:rgba(255,255,255,.1);color:rgba(255,255,255,.4);cursor:not-allowed;box-shadow:none}
+  .draftbtn:disabled:hover{transform:none}
+  .draftbtn.A{background:var(--blue)}
+  .draftbtn.B{background:var(--pink)}
+</style>
+</head>
+<body>
+<div class="nav">
+  <a href="index.html">← All mockups</a>
+  <span class="num">DOCK · PIP GRID</span>
+  <span class="pickers">
+    <a href="dock-tug.html">TUG</a>
+    <a href="dock-plinko.html">PLINKO</a>
+    <a class="on" href="dock-pip.html">PIP</a>
+  </span>
+</div>
+
+<div class="board">
+  <div class="board-h">
+    <div class="pickbox"><div class="pk">PICK 1.05</div><div class="pn">YOU'RE UP</div></div>
+    <div class="title">BIG BOARD</div>
+    <div class="filters">
+      <button class="filt on" data-pos="ALL">ALL</button>
+      <button class="filt" data-pos="QB">QB</button>
+      <button class="filt" data-pos="RB">RB</button>
+      <button class="filt" data-pos="WR">WR</button>
+      <button class="filt" data-pos="TE">TE</button>
+    </div>
+  </div>
+  <div class="board-grid" id="boardGrid"></div>
+</div>
+
+<div class="dock">
+  <div class="row1">
+    <div class="head A active" id="slotA"></div>
+
+    <div class="pip-wrap">
+      <div class="pip-eye">
+        <span>ROUNDS WON</span>
+        <button class="swap" id="swapBtn">⇄ SWAP</button>
+        <span id="verdictPill" class="verdict-pill">EVEN</span>
+        <span>WEIGHTS DIM ROWS</span>
+      </div>
+      <div class="total-board">
+        <div class="total-side A">
+          <span class="total-num A" id="totalNumA">0</span>
+          <span class="total-pips" id="totalPipsA"></span>
+        </div>
+        <span class="total-divider">—</span>
+        <div class="total-side B">
+          <span class="total-num B" id="totalNumB">0</span>
+          <span class="total-pips" id="totalPipsB"></span>
+        </div>
+      </div>
+      <div class="pip-meta"><span>BIG PIP = ROW WIN</span><span>SMALL PIPS = MARGIN</span></div>
+    </div>
+
+    <div class="head B" id="slotB"></div>
+  </div>
+
+  <div class="stats" id="stats"></div>
+
+  <div class="row3">
+    <div class="presets">
+      <button data-preset="balanced" class="on">BALANCED</button>
+      <button data-preset="floor">FLOOR</button>
+      <button data-preset="ceiling">CEILING</button>
+      <button data-preset="bestball">BEST-BALL</button>
+    </div>
+    <button class="draftbtn A" id="draftBtn"><span class="star">★</span> DRAFT BIJAN ROBINSON</button>
+  </div>
+</div>
+
+<script>
+  const AXES = ['volume','floor','ceiling','schedule','health'];
+  const AXIS_LABELS = { volume:'VOLUME', floor:'FLOOR', ceiling:'CEILING', schedule:'SCHED', health:'HEALTH' };
+  const PIPS_PER_ROW = 5;
+  const PLAYERS = [
+    { rk:1,  name:"Christian McCaffrey", team:"SF",  pos:"RB", espn:"3117251", adp:2.1, axes:{volume:96,floor:84,ceiling:92,schedule:64,health:60}},
+    { rk:2,  name:"Bijan Robinson",      team:"ATL", pos:"RB", espn:"4430807", adp:1.8, axes:{volume:92,floor:88,ceiling:84,schedule:64,health:94}},
+    { rk:3,  name:"Ja'Marr Chase",       team:"CIN", pos:"WR", espn:"4362628", adp:3.4, axes:{volume:90,floor:80,ceiling:96,schedule:74,health:84}},
+    { rk:4,  name:"Justin Jefferson",    team:"MIN", pos:"WR", espn:"4262921", adp:4.1, axes:{volume:88,floor:78,ceiling:94,schedule:68,health:74}},
+    { rk:5,  name:"Jahmyr Gibbs",        team:"DET", pos:"RB", espn:"4429795", adp:2.1, axes:{volume:78,floor:74,ceiling:90,schedule:86,health:82}},
+    { rk:6,  name:"CeeDee Lamb",         team:"DAL", pos:"WR", espn:"4241389", adp:7.2, axes:{volume:84,floor:74,ceiling:88,schedule:72,health:88}},
+    { rk:7,  name:"Saquon Barkley",      team:"PHI", pos:"RB", espn:"3929630", adp:8.4, axes:{volume:90,floor:78,ceiling:84,schedule:80,health:64}},
+    { rk:8,  name:"Patrick Mahomes",     team:"KC",  pos:"QB", espn:"3139477", adp:38.0,axes:{volume:96,floor:90,ceiling:92,schedule:74,health:88}},
+    { rk:9,  name:"Amon-Ra St. Brown",   team:"DET", pos:"WR", espn:"4374302", adp:9.6, axes:{volume:86,floor:80,ceiling:84,schedule:86,health:82}},
+    { rk:10, name:"Puka Nacua",          team:"LAR", pos:"WR", espn:"4426515", adp:11.8,axes:{volume:78,floor:70,ceiling:90,schedule:70,health:72}},
+    { rk:11, name:"Breece Hall",         team:"NYJ", pos:"RB", espn:"4427366", adp:13.2,axes:{volume:78,floor:68,ceiling:88,schedule:64,health:70}},
+    { rk:12, name:"A.J. Brown",          team:"PHI", pos:"WR", espn:"4047646", adp:14.8,axes:{volume:80,floor:74,ceiling:86,schedule:80,health:76}},
+    { rk:13, name:"Garrett Wilson",      team:"NYJ", pos:"WR", espn:"4569618", adp:15.6,axes:{volume:84,floor:72,ceiling:84,schedule:64,health:84}},
+    { rk:14, name:"Jonathan Taylor",     team:"IND", pos:"RB", espn:"4242335", adp:18.4,axes:{volume:84,floor:76,ceiling:80,schedule:72,health:68}},
+    { rk:15, name:"Drake London",        team:"ATL", pos:"WR", espn:"4426502", adp:19.2,axes:{volume:80,floor:70,ceiling:82,schedule:60,health:86}},
+    { rk:16, name:"Marvin Harrison Jr.", team:"ARI", pos:"WR", espn:"4432708", adp:21.0,axes:{volume:74,floor:62,ceiling:88,schedule:78,health:88}},
+    { rk:17, name:"Sam LaPorta",         team:"DET", pos:"TE", espn:"4430027", adp:34.2,axes:{volume:78,floor:74,ceiling:80,schedule:86,health:86}},
+    { rk:18, name:"Jayden Daniels",      team:"WSH", pos:"QB", espn:"4426348", adp:42.0,axes:{volume:90,floor:82,ceiling:90,schedule:72,health:78}}
+  ];
+
+  const slots = { A: PLAYERS[1], B: PLAYERS[4] };
+  let activeSlot = 'A';
+  let posFilter = 'ALL';
+  const weights = { volume:1, floor:1, ceiling:1, schedule:1, health:1 };
+
+  function renderBoard() {
+    const grid = document.getElementById('boardGrid');
+    grid.innerHTML = PLAYERS.map(p => {
+      const cls = (slots.A === p) ? 'in-A' : (slots.B === p) ? 'in-B' : '';
+      const dim = (posFilter !== 'ALL' && p.pos !== posFilter) ? 'dim' : '';
+      const badge = (slots.A === p) ? 'A' : (slots.B === p) ? 'B' : '';
+      return `<button class="chip ${cls} ${dim}" data-rk="${p.rk}" data-pos="${p.pos}">
+        <span class="badge">${badge}</span>
+        <span class="rk">${p.rk}</span>
+        <img src="https://a.espncdn.com/i/headshots/nfl/players/full/${p.espn}.png" alt="${p.name}" onerror="this.style.opacity=.2"/>
+        <span class="info">
+          <span class="nm">${p.name}</span>
+          <span class="meta"><span class="pos">${p.pos}</span>${p.team} · ADP ${p.adp}</span>
+        </span>
+      </button>`;
+    }).join('');
+    grid.querySelectorAll('.chip').forEach(c => c.addEventListener('click', () => {
+      const p = PLAYERS.find(x => x.rk === +c.dataset.rk);
+      if (slots.A === p) { activeSlot='A'; renderDock(); return; }
+      if (slots.B === p) { activeSlot='B'; renderDock(); return; }
+      slots[activeSlot] = p;
+      activeSlot = activeSlot === 'A' ? 'B' : 'A';
+      renderBoard(); renderDock();
+    }));
+  }
+
+  function renderHead(which) {
+    const p = slots[which];
+    const el = document.getElementById('slot'+which);
+    el.classList.toggle('active', activeSlot === which);
+    el.classList.toggle('empty', !p);
+    if (!p) {
+      el.innerHTML = `<div class="info"><div class="placeholder">${which === 'A' ? '◀ SLOT A' : 'SLOT B ▶'}</div><div class="hint">Tap a chip above</div></div>`;
+      return;
+    }
+    el.innerHTML = `
+      <img src="https://a.espncdn.com/i/headshots/nfl/players/full/${p.espn}.png" alt="${p.name}" onerror="this.style.opacity=.2"/>
+      <div class="info">
+        <div class="nm">${p.name}</div>
+        <div class="meta">${p.pos} · ${p.team} · #${p.rk} · ADP ${p.adp}</div>
+        <div class="score" id="headScore${which}">— <small>WEIGHTED COMPOSITE</small></div>
+      </div>
+      <button class="rmv" data-rmv="${which}" title="Clear">✕</button>
+    `;
+  }
+
+  function pipsForValue(v) { return Math.round(v / 100 * PIPS_PER_ROW); }
+
+  function compute() {
+    const a = slots.A, b = slots.B;
+    if (!a || !b) return { rows: [], aggA: 0, aggB: 0, leader: null, marginPts: 0, rowWinsA: 0, rowWinsB: 0 };
+    let totalW = 0, sumA = 0, sumB = 0, rowWinsA = 0, rowWinsB = 0;
+    const rows = AXES.map(ax => {
+      const w = weights[ax];
+      const va = a.axes[ax], vb = b.axes[ax];
+      sumA += va * w; sumB += vb * w; totalW += w;
+      const winner = va > vb ? 'A' : (vb > va ? 'B' : null);
+      // weighted row win counts only if w > 0
+      if (w > 0) { if (winner === 'A') rowWinsA++; else if (winner === 'B') rowWinsB++; }
+      return { axis: ax, label: AXIS_LABELS[ax], a: va, b: vb, w, pa: pipsForValue(va), pb: pipsForValue(vb), winner };
+    });
+    const aggA = sumA / Math.max(1, totalW), aggB = sumB / Math.max(1, totalW);
+    return { rows, aggA, aggB, marginPts: aggA - aggB, leader: aggA > aggB ? 'A' : aggA < aggB ? 'B' : null, rowWinsA, rowWinsB };
+  }
+
+  function pipHtml(count, side, weight) {
+    const dim = weight === 0 ? 0.25 : 1;
+    const peakIdx = weight >= 2 ? count - 1 : -1;
+    let out = '';
+    for (let i = 0; i < PIPS_PER_ROW; i++) {
+      const lit = i < count;
+      const peak = i === peakIdx;
+      out += `<span class="pip ${lit ? side : ''} ${peak ? 'peak' : ''}" style="opacity:${lit ? dim : (weight === 0 ? 0.18 : 0.4)}"></span>`;
+    }
+    return out;
+  }
+
+  function renderDock() {
+    renderHead('A'); renderHead('B');
+    const { rows, aggA, aggB, leader, marginPts, rowWinsA, rowWinsB } = compute();
+    const a = slots.A, b = slots.B;
+
+    document.getElementById('totalNumA').textContent = a && b ? rowWinsA : '—';
+    document.getElementById('totalNumB').textContent = a && b ? rowWinsB : '—';
+    let pA = '', pB = '';
+    for (let i = 0; i < rowWinsA; i++) pA += '<span class="big-pip A"></span>';
+    for (let i = 0; i < rowWinsB; i++) pB += '<span class="big-pip B"></span>';
+    document.getElementById('totalPipsA').innerHTML = pA;
+    document.getElementById('totalPipsB').innerHTML = pB;
+
+    const verdictPill = document.getElementById('verdictPill');
+    verdictPill.classList.remove('A','B');
+    if (!a || !b) verdictPill.textContent = '—';
+    else if (Math.abs(marginPts) < 0.4 || rowWinsA === rowWinsB) { verdictPill.textContent = 'TOSS-UP'; }
+    else { verdictPill.classList.add(leader); verdictPill.textContent = `${slots[leader].name.split(' ').pop().toUpperCase()} ${rowWinsA}-${rowWinsB}`; }
+
+    const hsA = document.getElementById('headScoreA');
+    const hsB = document.getElementById('headScoreB');
+    if (hsA) hsA.innerHTML = `${a ? aggA.toFixed(1) : '—'} <small>WEIGHTED COMPOSITE</small>`;
+    if (hsB) hsB.innerHTML = `${b ? aggB.toFixed(1) : '—'} <small>WEIGHTED COMPOSITE</small>`;
+
+    const statsEl = document.getElementById('stats');
+    if (!a || !b) {
+      statsEl.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:24px;color:rgba(249,245,235,.4);font-family:'Bebas Neue';letter-spacing:.18em">Pick two players to compare.</div>`;
+    } else {
+      statsEl.innerHTML = rows.map(r => {
+        const winnerCls = r.leader === 'A' ? 'A' : r.leader === 'B' ? 'B' : 'tie';
+        const winnerLab = r.leader === 'A' ? '▲ A' : r.leader === 'B' ? '▲ B' : '— TIE';
+        const cardWin = r.w > 0 && r.leader ? `win-${r.leader}` : '';
+        return `<div class="stat ${cardWin}">
+          <div class="stat-h"><span class="lab">${r.label}</span><span class="winner ${winnerCls}">${winnerLab}</span></div>
+          <div class="stat-vals"><span class="a">${r.a}</span><span class="vs">VS</span><span class="b">${r.b}</span></div>
+          <div class="pips-row">
+            <span class="pips">${pipHtml(r.pa, 'A', r.w)}</span>
+            <span class="vs">vs</span>
+            <span class="pips">${pipHtml(r.pb, 'B', r.w)}</span>
+          </div>
+          <div class="stat-w">
+            <span class="wlab">WT</span>
+            <input type="range" min="0" max="3" step="0.5" value="${r.w}" data-axis="${r.axis}" />
+            <span class="wnum">${r.w.toFixed(1)}×</span>
+          </div>
+        </div>`;
+      }).join('');
+      statsEl.querySelectorAll('input').forEach(i => i.addEventListener('input', () => {
+        weights[i.dataset.axis] = +i.value;
+        document.querySelectorAll('.presets button').forEach(b => b.classList.remove('on'));
+        renderDock();
+      }));
+    }
+
+    const draftBtn = document.getElementById('draftBtn');
+    draftBtn.classList.remove('A','B');
+    if (!a || !b) { draftBtn.innerHTML = `DRAFT — pick two players`; draftBtn.disabled = true; }
+    else {
+      const winner = leader ? slots[leader] : a;
+      draftBtn.innerHTML = `<span class="star">★</span> DRAFT ${winner.name.toUpperCase()}`;
+      draftBtn.disabled = false;
+      if (leader) draftBtn.classList.add(leader);
+    }
+  }
+
+  document.getElementById('slotA').addEventListener('click', e => {
+    if (e.target.dataset.rmv === 'A') { slots.A = null; renderBoard(); renderDock(); return; }
+    activeSlot = 'A'; renderDock();
+  });
+  document.getElementById('slotB').addEventListener('click', e => {
+    if (e.target.dataset.rmv === 'B') { slots.B = null; renderBoard(); renderDock(); return; }
+    activeSlot = 'B'; renderDock();
+  });
+  document.getElementById('swapBtn').addEventListener('click', () => {
+    [slots.A, slots.B] = [slots.B, slots.A];
+    renderBoard(); renderDock();
+  });
+
+  document.querySelectorAll('.filt').forEach(b => b.addEventListener('click', () => {
+    document.querySelectorAll('.filt').forEach(x => x.classList.remove('on'));
+    b.classList.add('on');
+    posFilter = b.dataset.pos;
+    renderBoard();
+  }));
+
+  const PRESETS = {
+    balanced: {volume:1,floor:1,ceiling:1,schedule:1,health:1},
+    floor:    {volume:1,floor:2.5,ceiling:0.5,schedule:1,health:2},
+    ceiling:  {volume:1,floor:0.5,ceiling:2.5,schedule:1.5,health:0.5},
+    bestball: {volume:1,floor:0,ceiling:3,schedule:1,health:0.5}
+  };
+  document.querySelectorAll('.presets button').forEach(b => b.addEventListener('click', () => {
+    document.querySelectorAll('.presets button').forEach(x => x.classList.remove('on'));
+    b.classList.add('on');
+    Object.assign(weights, PRESETS[b.dataset.preset]);
+    renderDock();
+  }));
+
+  renderBoard(); renderDock();
+</script>
+</body>
+</html>

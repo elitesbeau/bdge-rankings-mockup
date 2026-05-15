@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Big Board — Distributed Spacing (M1 / M2 / M3)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f9f5eb;
+  --card: #f4ede0;
+  --bg-soft: #efe6d4;
+  --ink: #082430;
+  --ink-soft: #54616a;
+  --ink-dim: #8a949b;
+  --ink-faint: #c1c8cd;
+  --line: #082430;
+  --line-soft: #d8d0bd;
+  --accent: #259fd6;
+  --accent-2: #fb637a;
+  --steal: #15803d;
+  --steal-bg: rgba(34,197,94,0.14);
+  --reach: #b91c1c;
+  --reach-bg: rgba(251,99,122,0.14);
+  --even:  #54616a;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--ink);
+  font-family: "Inter", sans-serif; }
+body { padding: 28px 28px 80px; max-width: 1280px; margin: 0 auto; }
+
+.page-h { font-family: "Oswald", sans-serif; font-size: 36px; margin: 0 0 6px; }
+.page-sub { font-size: 13px; color: var(--ink-soft); margin: 0 0 28px;
+  line-height: 1.5; max-width: 860px; }
+.page-sub b { color: var(--ink); }
+.page-sub code { background: var(--card); padding: 1px 5px; border-radius: 2px;
+  font-family: "JetBrains Mono", monospace; font-size: 11px; }
+
+.mock { margin-bottom: 48px; background: var(--bg);
+  border: 2px solid var(--line); padding: 22px; }
+.mock-h { display: flex; align-items: baseline; gap: 14px; margin: 0 0 4px; }
+.mock-tag { font-family: "JetBrains Mono", monospace;
+  font-size: 11px; letter-spacing: 0.24em; color: var(--accent-2); }
+.mock-name { font-family: "Oswald", sans-serif; font-size: 26px; }
+.mock-blurb { font-size: 12px; color: var(--ink-soft); margin: 0 0 16px;
+  line-height: 1.5; max-width: 860px; }
+.mock-blurb b { color: var(--ink); }
+
+/* shared bits */
+.pos { display: inline-grid; place-items: center;
+  min-width: 32px; height: 18px; padding: 0 6px;
+  font-family: "Oswald", sans-serif; font-size: 11px;
+  letter-spacing: 0.04em; border-radius: 3px;
+  font-variant-numeric: tabular-nums; flex-shrink: 0;
+}
+.pos.QB { background: rgba(251,99,122,0.18); color: #b91c1c; }
+.pos.RB { background: rgba(34,197,94,0.18);  color: var(--steal); }
+.pos.WR { background: rgba(37,159,214,0.18); color: #1e6f9c; }
+.pos.TE { background: rgba(217,119,6,0.18);  color: #92560a; }
+.chk { width: 20px; height: 20px;
+  border: 1.5px solid var(--line-soft); border-radius: 3px;
+  display: inline-grid; place-items: center;
+  background: var(--bg); font-size: 12px; color: var(--ink-soft);
+  flex-shrink: 0;
+}
+.chk.on { background: var(--accent); border-color: var(--accent); color: #fff; }
+.round-h { display: flex; align-items: center; justify-content: space-between;
+  margin: 8px 0 6px; padding: 6px 0;
+  border-bottom: 1.5px solid var(--line);
+}
+.round-h .l { display: flex; align-items: center; gap: 12px;
+  font-family: "Oswald", sans-serif; font-size: 20px; }
+.round-h .l .num { font-family: "JetBrains Mono", monospace;
+  font-size: 11px; letter-spacing: 0.18em;
+  background: var(--ink); color: var(--bg); padding: 3px 7px; }
+.round-h .r { font-size: 11px; font-weight: 600; letter-spacing: 0.10em;
+  color: var(--ink-dim); }
+
+/* shared verdict — quiet colored text */
+.v-text {
+  font-family: "Inter", sans-serif;
+  font-size: 12px; font-weight: 700; letter-spacing: 0.04em;
+  font-variant-numeric: tabular-nums;
+}
+.v-text.steal { color: var(--steal); }
+.v-text.even  { color: var(--ink-dim); font-weight: 600; }
+.v-text.reach { color: var(--reach); }
+
+/* ──────────────────────────────────────────
+   M1 · DASHBOARD CELLS
+   The row is 7 stat cells of equal width,
+   separated by thin vertical dividers.
+   Each cell has a tiny label above and a value
+   below. Player cell is slightly wider for the
+   name. Even rhythm across the row.
+   ────────────────────────────────────────── */
+.M1 .row {
+  display: grid;
+  grid-template-columns: 24px 1.6fr 1fr 1fr 1fr 1fr 1fr 1fr 16px;
+  align-items: stretch;
+  padding: 0;
+  background: var(--card);
+  border: 1.5px solid var(--line-soft);
+  border-radius: 8px;
+  margin-bottom: 4px;
+  cursor: pointer;
+  min-height: 58px;
+  transition: border-color 120ms, transform 120ms, box-shadow 120ms;
+  overflow: hidden;
+}
+.M1 .row:hover { border-color: var(--accent); transform: translateX(2px);
+  box-shadow: 0 2px 8px rgba(8,36,48,0.06); }
+.M1 .cell {
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  gap: 2px;
+  padding: 8px 10px;
+  border-right: 1px solid var(--line-soft);
+  min-width: 0;
+}
+.M1 .cell:last-child { border-right: 0; }
+.M1 .cell-lbl {
+  font-family: "Inter", sans-serif;
+  font-size: 9px; font-weight: 800; letter-spacing: 0.14em;
+  color: var(--ink-dim);
+}
+.M1 .cell-val {
+  font-family: "Oswald", sans-serif;
+  font-size: 16px; line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+}
+.M1 .chk-cell { padding: 0; align-items: center; justify-content: center; border-right: 0; }
+.M1 .chk-cell .chk { margin: 0 0 0 4px; }
+.M1 .player-cell {
+  align-items: flex-start; flex-direction: row; gap: 10px;
+  padding: 8px 12px;
+}
+.M1 .player-cell .rk-pfp { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+.M1 .player-cell .rk {
+  font-family: "Oswald", sans-serif;
+  font-size: 15px;
+  background: var(--bg);
+  border: 1.5px solid var(--line-soft);
+  padding: 3px 8px; border-radius: 4px;
+  font-variant-numeric: tabular-nums;
+  min-width: 30px; text-align: center;
+}
+.M1 .player-cell .pfp { width: 36px; height: 36px; border-radius: 50%; overflow: hidden;
+  border: 1.5px solid var(--line); background: var(--bg-soft); }
+.M1 .player-cell .pfp img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+.M1 .player-cell .who { display: flex; flex-direction: column; gap: 3px; min-width: 0; align-self: center; }
+.M1 .player-cell .nm {
+  font-family: "Oswald", sans-serif;
+  font-size: 16px; line-height: 1;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.M1 .player-cell .sub {
+  display: inline-flex; gap: 6px; align-items: center;
+  font-size: 10px; font-weight: 700; color: var(--ink-soft);
+}
+.M1 .team-cell { gap: 4px; }
+.M1 .team-cell .team-logo { width: 22px; height: 22px; display: inline-grid; place-items: center; }
+.M1 .team-cell .team-logo img { width: 100%; height: 100%; object-fit: contain; }
+.M1 .team-cell .team-abbr {
+  font-family: "Inter", sans-serif;
+  font-size: 11px; font-weight: 800; letter-spacing: 0.06em;
+  color: var(--ink-soft);
+}
+.M1 .tier-cell .cell-val { letter-spacing: 0.04em; }
+.M1 .tier-cell.t1 .cell-val { color: var(--steal); }
+.M1 .tier-cell.t2 .cell-val { color: #1e6f9c; }
+.M1 .tier-cell.t3 .cell-val { color: #92560a; }
+.M1 .trend-cell .cell-val.up   { color: var(--steal); }
+.M1 .trend-cell .cell-val.dn   { color: var(--reach); }
+.M1 .trend-cell .cell-val.flat { color: var(--ink-soft); }
+.M1 .chev {
+  display: flex; align-items: center; justify-content: center;
+  color: var(--accent); font-size: 16px; font-weight: 700;
+}
+
+/* ──────────────────────────────────────────
+   M2 · INLINE RHYTHM
+   Single flex row with chips inserted between
+   core elements at regular intervals. The eye
+   moves left-to-right with consistent rhythm —
+   no big gaps.
+   ────────────────────────────────────────── */
+.M2 .row {
+  display: flex; align-items: center;
+  gap: 14px;
+  padding: 8px 14px;
+  background: var(--card);
+  border: 1.5px solid var(--line-soft);
+  border-radius: 8px;
+  margin-bottom: 4px;
+  cursor: pointer;
+  min-height: 54px;
+  transition: border-color 120ms, transform 120ms, box-shadow 120ms;
+}
+.M2 .row:hover { border-color: var(--accent); transform: translateX(2px);
+  box-shadow: 0 2px 8px rgba(8,36,48,0.06); }
+.M2 .rk {
+  font-family: "Oswald", sans-serif;
+  font-size: 15px;
+  background: var(--bg);
+  border: 1.5px solid var(--line-soft);
+  padding: 4px 10px; border-radius: 4px;
+  font-variant-numeric: tabular-nums;
+  min-width: 36px; text-align: center;
+  flex-shrink: 0;
+}
+.M2 .pfp { width: 38px; height: 38px; border-radius: 50%; overflow: hidden;
+  border: 1.5px solid var(--line); background: var(--bg-soft); flex-shrink: 0; }
+.M2 .pfp img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+.M2 .nm {
+  font-family: "Oswald", sans-serif;
+  font-size: 17px; line-height: 1.05;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  flex: 1 1 auto;
+  min-width: 80px;
+}
+.M2 .chip {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 4px 10px;
+  background: var(--bg);
+  border: 1px solid var(--line-soft);
+  border-radius: 14px;
+  font-family: "Inter", sans-serif;
+  font-size: 11px; font-weight: 700; line-height: 1.2;
+  white-space: nowrap; flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
+}
+.M2 .chip.tier1 { background: rgba(34,197,94,0.10); border-color: rgba(34,197,94,0.30); color: var(--steal); }
+.M2 .chip.tier2 { background: rgba(37,159,214,0.10); border-color: rgba(37,159,214,0.30); color: #1e6f9c; }
+.M2 .chip.tier3 { background: rgba(217,119,6,0.10); border-color: rgba(217,119,6,0.30); color: #92560a; }
+.M2 .chip.trend.up   { color: var(--steal); }
+.M2 .chip.trend.dn   { color: var(--reach); }
+.M2 .chip.trend.flat { color: var(--ink-soft); }
+.M2 .chip.team { padding: 3px 8px 3px 4px; }
+.M2 .chip.team .team-logo { width: 18px; height: 18px; display: inline-grid; place-items: center; }
+.M2 .chip.team .team-logo img { width: 100%; height: 100%; object-fit: contain; }
+.M2 .stat {
+  display: inline-flex; flex-direction: column; align-items: center; gap: 1px;
+  font-family: "Oswald", sans-serif;
+  font-size: 16px; line-height: 1;
+  font-variant-numeric: tabular-nums;
+  flex-shrink: 0;
+  min-width: 50px;
+}
+.M2 .stat-lbl {
+  font-family: "Inter", sans-serif;
+  font-size: 9px; font-weight: 800; letter-spacing: 0.14em;
+  color: var(--ink-dim);
+}
+.M2 .v-text { flex-shrink: 0; min-width: 70px; text-align: right; }
+.M2 .chev { color: var(--accent); font-size: 16px; font-weight: 700; flex-shrink: 0; }
+
+/* ──────────────────────────────────────────
+   M3 · EVEN GRID COLUMNS (spreadsheet)
+   Pure CSS grid where every data column is 1fr.
+   Headers above the rows label each column.
+   Thin column dividers between cells.
+   Reads like a stat table — every column equal.
+   ────────────────────────────────────────── */
+.M3 .header,
+.M3 .row {
+  display: grid;
+  grid-template-columns: 24px 36px 42px 1.4fr 1fr 1fr 1fr 1fr 1fr 1fr 16px;
+  align-items: center;
+  gap: 0;
+}
+.M3 .header {
+  padding: 4px 0 8px;
+  font-family: "Inter", sans-serif;
+  font-size: 9px; font-weight: 800; letter-spacing: 0.16em;
+  color: var(--ink-dim);
+}
+.M3 .header > * {
+  padding: 0 12px;
+  text-align: center;
+  border-right: 1px solid transparent;
+}
+.M3 .header .l { text-align: left; }
+.M3 .row {
+  padding: 8px 0;
+  background: var(--card);
+  border: 1.5px solid var(--line-soft);
+  border-radius: 8px;
+  margin-bottom: 4px;
+  cursor: pointer;
+  min-height: 54px;
+  transition: border-color 120ms, transform 120ms, box-shadow 120ms;
+}
+.M3 .row:hover { border-color: var(--accent); transform: translateX(2px);
+  box-shadow: 0 2px 8px rgba(8,36,48,0.06); }
+.M3 .row > * {
+  padding: 0 12px;
+  text-align: center;
+  border-right: 1px solid var(--line-soft);
+  font-family: "Oswald", sans-serif;
+  font-size: 16px;
+  font-variant-numeric: tabular-nums;
+  min-width: 0;
+}
+.M3 .row > *:last-child,
+.M3 .row > .no-divider { border-right: 0; }
+.M3 .chk-cell { padding: 0 0 0 12px; }
+.M3 .row .rk {
+  font-family: "Oswald", sans-serif;
+  font-size: 15px;
+  background: var(--bg);
+  border: 1.5px solid var(--line-soft);
+  padding: 3px 6px; border-radius: 4px;
+  margin: 0 6px;
+}
+.M3 .row .pfp-cell { padding: 0; }
+.M3 .row .pfp-cell .pfp { width: 38px; height: 38px; border-radius: 50%; overflow: hidden;
+  border: 1.5px solid var(--line); background: var(--bg-soft); margin: 0 auto; }
+.M3 .row .pfp-cell .pfp img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+.M3 .row .player-cell {
+  text-align: left;
+  display: flex; flex-direction: column; gap: 3px;
+  min-width: 0;
+}
+.M3 .row .nm {
+  font-family: "Oswald", sans-serif;
+  font-size: 16px; line-height: 1;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.M3 .row .sub {
+  display: inline-flex; gap: 5px; align-items: center;
+  font-family: "Inter", sans-serif;
+  font-size: 10px; font-weight: 700;
+  color: var(--ink-soft);
+  letter-spacing: 0.02em;
+}
+.M3 .row .team-cell {
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  font-family: "Inter", sans-serif;
+  font-size: 12px; font-weight: 800; letter-spacing: 0.06em;
+  color: var(--ink-soft);
+}
+.M3 .row .team-cell .team-logo { width: 22px; height: 22px; display: inline-grid; place-items: center; }
+.M3 .row .team-cell .team-logo img { width: 100%; height: 100%; object-fit: contain; }
+.M3 .row .tier { letter-spacing: 0.04em; }
+.M3 .row .tier.t1 { color: var(--steal); }
+.M3 .row .tier.t2 { color: #1e6f9c; }
+.M3 .row .tier.t3 { color: #92560a; }
+.M3 .row .trend.up   { color: var(--steal); }
+.M3 .row .trend.dn   { color: var(--reach); }
+.M3 .row .trend.flat { color: var(--ink-soft); }
+.M3 .row .verdict-cell {
+  font-family: "Inter", sans-serif;
+  font-size: 12px; font-weight: 700; letter-spacing: 0.04em;
+}
+.M3 .row .verdict-cell.steal { color: var(--steal); }
+.M3 .row .verdict-cell.even  { color: var(--ink-dim); font-weight: 600; }
+.M3 .row .verdict-cell.reach { color: var(--reach); }
+.M3 .row .chev { color: var(--accent); font-size: 16px; font-weight: 700; padding: 0 12px; }
+
+.scorecard {
+  margin-top: 16px;
+  padding: 16px 20px;
+  background: var(--bg-soft);
+  border: 1.5px solid var(--line);
+  font-size: 12px; line-height: 1.6;
+}
+.scorecard .lab { font-family: "JetBrains Mono", monospace;
+  font-size: 10px; letter-spacing: 0.20em; color: var(--accent-2);
+  min-width: 32px; display: inline-block; }
+</style>
+</head>
+<body>
+
+<h1 class="page-h">Big Board — Distributed Spacing</h1>
+<p class="page-sub">
+  Different problem: info should feel <b>evenly spread across the full width</b>, not anchored to the sides with a void.
+  Solution: <em>more content in equal-weight sections</em> — tier, positional rank, trend, team, ADP, verdict — each in their own labeled column or chip slot.
+  Three executions below, same data in each.
+</p>
+
+<!-- ═══════════ M1 ═══════════ -->
+<section class="mock M1">
+  <div class="mock-h">
+    <span class="mock-tag">// M1</span>
+    <span class="mock-name">Dashboard Cells</span>
+  </div>
+  <p class="mock-blurb">
+    The row is a series of <b>labeled stat cells</b> separated by thin vertical dividers — like a sports broadcast scoreboard.
+    Each cell: tiny eyebrow label above, value below. Cells are equal width so the row has consistent rhythm.
+    The player cell is slightly wider to accommodate names; everything else (Team / Tier / Pos / Trend / ADP / Verdict) is 1fr.
+  </p>
+  <div class="round-h">
+    <div class="l"><span class="num">R1</span> Round One</div>
+    <div class="r">Picks 1 – 10</div>
+  </div>
+  <div id="M1-rows"></div>
+</section>
+
+<!-- ═══════════ M2 ═══════════ -->
+<section class="mock M2">
+  <div class="mock-h">
+    <span class="mock-tag">// M2</span>
+    <span class="mock-name">Inline Rhythm — Chip Cadence</span>
+  </div>
+  <p class="mock-blurb">
+    Single flex row with <b>chips inserted at regular intervals</b>. Every element is its own pill — name → tier chip → trend chip → pos-rank chip → team chip → ADP stat → verdict → ›.
+    With consistent 14px gaps between every pill, the row has a heartbeat — no long voids anywhere. Most pill-forward, least table-like.
+  </p>
+  <div class="round-h">
+    <div class="l"><span class="num">R1</span> Round One</div>
+    <div class="r">Picks 1 – 10</div>
+  </div>
+  <div id="M2-rows"></div>
+</section>
+
+<!-- ═══════════ M3 ═══════════ -->
+<section class="mock M3">
+  <div class="mock-h">
+    <span class="mock-tag">// M3</span>
+    <span class="mock-name">Even Grid Columns — Stat Table</span>
+  </div>
+  <p class="mock-blurb">
+    True <b>grid with every data column at 1fr</b> — Team, Tier, Pos Rank, Trend, ADP, Verdict each get equal real estate.
+    Headers above the table label every column. Subtle column dividers. Reads like a clean stats table — every player's data lines up vertically across rows so you can compare down the column.
+  </p>
+  <div class="round-h">
+    <div class="l"><span class="num">R1</span> Round One</div>
+    <div class="r">Picks 1 – 10</div>
+  </div>
+  <div class="header">
+    <span></span>
+    <span>Rank</span>
+    <span></span>
+    <span class="l">Player</span>
+    <span>Team</span>
+    <span>Tier</span>
+    <span>Pos Rk</span>
+    <span>Trend</span>
+    <span>ADP</span>
+    <span>Verdict</span>
+    <span></span>
+  </div>
+  <div id="M3-rows"></div>
+</section>
+
+<div class="scorecard">
+  <div><span class="lab">M1</span> Dashboard cells with eyebrow labels. Most "broadcast scoreboard" feel.</div>
+  <div><span class="lab">M2</span> Inline chip cadence, no table structure. Most pill-forward / modern.</div>
+  <div><span class="lab">M3</span> True equal-column grid with column headers. Most table-native, most scannable across rows.</div>
+</div>
+
+<script>
+const P = [
+  { rk:1,  name:"Christian McCaffrey", team:"SF",  pos:"RB", espn:"3117251", adp:2.1,  tier:1, posRk:1, posTot:32, trend:'up'   },
+  { rk:2,  name:"Bijan Robinson",      team:"ATL", pos:"RB", espn:"4430807", adp:1.8,  tier:1, posRk:2, posTot:32, trend:'up'   },
+  { rk:3,  name:"Ja'Marr Chase",       team:"CIN", pos:"WR", espn:"4362628", adp:3.4,  tier:1, posRk:1, posTot:64, trend:'flat' },
+  { rk:4,  name:"Justin Jefferson",    team:"MIN", pos:"WR", espn:"4262921", adp:4.1,  tier:1, posRk:2, posTot:64, trend:'flat' },
+  { rk:5,  name:"Tyreek Hill",         team:"MIA", pos:"WR", espn:"3116406", adp:6.5,  tier:2, posRk:3, posTot:64, trend:'dn'   },
+  { rk:6,  name:"CeeDee Lamb",         team:"DAL", pos:"WR", espn:"4241389", adp:7.2,  tier:2, posRk:4, posTot:64, trend:'dn'   },
+  { rk:7,  name:"Saquon Barkley",      team:"PHI", pos:"RB", espn:"3929630", adp:8.4,  tier:2, posRk:3, posTot:32, trend:'up'   },
+  { rk:8,  name:"Patrick Mahomes",     team:"KC",  pos:"QB", espn:"3139477", adp:38.0, tier:1, posRk:1, posTot:24, trend:'flat' },
+  { rk:9,  name:"Amon-Ra St. Brown",   team:"DET", pos:"WR", espn:"4374302", adp:9.6,  tier:2, posRk:5, posTot:64, trend:'flat' },
+  { rk:10, name:"Puka Nacua",          team:"LAR", pos:"WR", espn:"4426338", adp:11.8, tier:2, posRk:6, posTot:64, trend:'up'   },
+];
+
+function verdict(p) {
+  const d = p.adp - p.rk;
+  if (d > 0.5)  return { cls:'steal', word:'Steal', delta:`+${d.toFixed(1)}` };
+  if (d < -0.5) return { cls:'reach', word:'Reach', delta:d.toFixed(1) };
+  return { cls:'even',  word:'Even',  delta:'' };
+}
+function trendLabel(t) {
+  if (t === 'up')   return { cls: 'up',   txt: '↑ Rising' };
+  if (t === 'dn')   return { cls: 'dn',   txt: '↓ Falling' };
+  return            { cls: 'flat', txt: '— Stable' };
+}
+function img(p) {
+  return `<img src="https://a.espncdn.com/i/headshots/nfl/players/full/${p.espn}.png" alt="${p.name}" onerror="this.style.opacity=.15">`;
+}
+function teamLogo(p, cls='team-logo') {
+  return `<span class="${cls}"><img src="https://a.espncdn.com/i/teamlogos/nfl/500/${p.team.toLowerCase()}.png" alt="${p.team}" onerror="this.style.display='none'"></span>`;
+}
+
+// M1 — Dashboard Cells
+document.getElementById('M1-rows').innerHTML = P.map((p, i) => {
+  const v = verdict(p);
+  const tr = trendLabel(p.trend);
+  return `<div class="row">
+    <div class="cell chk-cell">
+      <span class="chk ${i === 0 ? 'on' : ''}">${i === 0 ? '✓' : ''}</span>
+    </div>
+    <div class="cell player-cell">
+      <div class="rk-pfp">
+        <div class="rk">${p.rk}</div>
+        <div class="pfp">${img(p)}</div>
+      </div>
+      <div class="who">
+        <div class="nm">${p.name}</div>
+        <div class="sub">
+          <span class="pos ${p.pos}">${p.pos}</span>
+        </div>
+      </div>
+    </div>
+    <div class="cell team-cell">
+      <span class="cell-lbl">Team</span>
+      ${teamLogo(p)}
+      <span class="team-abbr">${p.team}</span>
+    </div>
+    <div class="cell tier-cell t${p.tier}">
+      <span class="cell-lbl">Tier</span>
+      <span class="cell-val">T${p.tier}</span>
+    </div>
+    <div class="cell">
+      <span class="cell-lbl">Pos Rk</span>
+      <span class="cell-val">${p.pos}${p.posRk}</span>
+    </div>
+    <div class="cell trend-cell">
+      <span class="cell-lbl">Trend</span>
+      <span class="cell-val ${tr.cls}">${tr.txt}</span>
+    </div>
+    <div class="cell">
+      <span class="cell-lbl">ADP</span>
+      <span class="cell-val">${p.adp.toFixed(1)}</span>
+    </div>
+    <div class="cell">
+      <span class="cell-lbl">Verdict</span>
+      <span class="v-text ${v.cls}">${v.word}${v.delta ? ' ' + v.delta : ''}</span>
+    </div>
+    <div class="chev">›</div>
+  </div>`;
+}).join('');
+
+// M2 — Inline Rhythm
+document.getElementById('M2-rows').innerHTML = P.map((p, i) => {
+  const v = verdict(p);
+  const tr = trendLabel(p.trend);
+  return `<div class="row">
+    <span class="chk ${i === 0 ? 'on' : ''}">${i === 0 ? '✓' : ''}</span>
+    <div class="rk">${p.rk}</div>
+    <div class="pfp">${img(p)}</div>
+    <div class="nm">${p.name}</div>
+    <span class="chip tier${p.tier}">Tier ${p.tier}</span>
+    <span class="chip">${p.pos}${p.posRk} <span style="color:var(--ink-dim);font-weight:500">of ${p.posTot}</span></span>
+    <span class="chip trend ${tr.cls}">${tr.txt}</span>
+    <span class="chip team">${teamLogo(p)}${p.team}</span>
+    <div class="stat">
+      <span class="stat-lbl">ADP</span>
+      <span>${p.adp.toFixed(1)}</span>
+    </div>
+    <span class="v-text ${v.cls}">${v.word}${v.delta ? ' ' + v.delta : ''}</span>
+    <div class="chev">›</div>
+  </div>`;
+}).join('');
+
+// M3 — Even Grid Columns
+document.getElementById('M3-rows').innerHTML = P.map((p, i) => {
+  const v = verdict(p);
+  const tr = trendLabel(p.trend);
+  return `<div class="row">
+    <div class="chk-cell"><span class="chk ${i === 0 ? 'on' : ''}">${i === 0 ? '✓' : ''}</span></div>
+    <div><span class="rk">${p.rk}</span></div>
+    <div class="pfp-cell"><div class="pfp">${img(p)}</div></div>
+    <div class="player-cell">
+      <div class="nm">${p.name}</div>
+      <div class="sub">
+        <span class="pos ${p.pos}">${p.pos}${p.posRk}</span>
+        <span>${p.team}</span>
+      </div>
+    </div>
+    <div class="team-cell">${teamLogo(p)}<span>${p.team}</span></div>
+    <div class="tier t${p.tier}">T${p.tier}</div>
+    <div>${p.pos}${p.posRk}</div>
+    <div class="trend ${tr.cls}">${tr.txt}</div>
+    <div>${p.adp.toFixed(1)}</div>
+    <div class="verdict-cell ${v.cls}">${v.word}${v.delta ? ' ' + v.delta : ''}</div>
+    <div class="chev no-divider">›</div>
+  </div>`;
+}).join('');
+</script>
+
+</body>
+</html>

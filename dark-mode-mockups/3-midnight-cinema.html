@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Dark · Midnight Cinema</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    /* MIDNIGHT CINEMA — deep navy + gold accents replace cyan. Cinematic, slightly dramatic. */
+    --bg:#131720;
+    --bg-soft:#1a1f2c;
+    --ink:#ece8d6;
+    --ink-soft:#ece8d6cc;
+    --ink-dim:#ece8d688;
+    --ink-faint:#ece8d622;
+    --accent:#fb637a;
+    --accent-2:#f5a623;
+    --line:#2d3447;
+    --line-soft:#2d3447aa;
+    --card:#1a1f2c;
+    --card-2:#222a3a;
+    --shadow: 6px 6px 0 #2d3447;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,sans-serif;min-height:100vh}
+  body{
+    background-image: repeating-linear-gradient(0deg, transparent, transparent 39px, color-mix(in srgb, var(--ink) 3%, transparent) 39px, color-mix(in srgb, var(--ink) 3%, transparent) 40px);
+  }
+  .nav{display:flex;align-items:center;justify-content:space-between;padding:12px 24px;background:var(--bg);border-bottom:2px solid var(--line)}
+  .nav .back{color:var(--ink);text-decoration:none;font-size:11px;text-transform:uppercase;letter-spacing:.18em}
+  .nav .pickers{display:flex;border:1.5px solid var(--line);font-size:11px;font-family:"Bebas Neue",sans-serif;letter-spacing:.16em}
+  .nav .pickers a{padding:5px 14px;color:var(--ink);text-decoration:none;border-right:1px solid var(--line-soft)}
+  .nav .pickers a:last-child{border-right:0}
+  .nav .pickers a.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+
+  .tb{display:flex;align-items:center;justify-content:space-between;padding:10px 28px;border-bottom:4px double var(--line);background:var(--bg)}
+  .tb-brand{font-family:"Bebas Neue",sans-serif;font-size:22px;letter-spacing:.06em;color:var(--ink)}
+  .tb-actions{display:flex;gap:8px;align-items:center}
+  .tb-icon{width:28px;height:28px;display:grid;place-items:center;border:1.5px solid var(--line);background:var(--bg-soft);color:var(--ink);font-size:12px;cursor:pointer}
+  .tb-cta{background:var(--accent);color:#fff;border:1.5px solid var(--accent);font-family:"Bebas Neue",sans-serif;font-size:13px;letter-spacing:.16em;padding:5px 14px;cursor:pointer}
+
+  .hero{position:relative;padding:50px 32px 32px;border-bottom:2px solid var(--line);overflow:hidden}
+  .hero::after{content:"DRAFT";position:absolute;right:32px;top:50%;transform:translateY(-50%);font-family:"Bebas Neue",sans-serif;font-size:140px;letter-spacing:.05em;color:var(--ink-faint);pointer-events:none;line-height:.85}
+  .hero h1{font-family:"Bebas Neue",sans-serif;font-size:74px;line-height:.92;letter-spacing:.02em;margin:0;font-weight:400;color:var(--ink)}
+  .hero h1 .pill{display:inline-block;background:var(--accent);color:#fff;padding:0 14px;margin-left:6px}
+  .hero .sub{font-family:"Bebas Neue",sans-serif;font-size:14px;letter-spacing:.22em;color:var(--accent-2);margin-top:8px;display:inline-block;padding:4px 12px;border:1.5px solid var(--accent-2)}
+
+  .fbar{display:flex;align-items:center;gap:8px;padding:14px 28px;background:var(--bg-soft);border-bottom:1.5px solid var(--line-soft);flex-wrap:wrap}
+  .fbar-l{font-family:"Bebas Neue",sans-serif;font-size:12px;letter-spacing:.18em;color:var(--ink-dim);text-transform:uppercase;margin-right:4px}
+  .fbar-pill{background:var(--card);border:1.5px solid var(--line-soft);font-family:"Bebas Neue",sans-serif;font-size:12px;letter-spacing:.14em;padding:5px 12px;color:var(--ink-soft);cursor:pointer}
+  .fbar-pill.active{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+  .fbar-pill.accent.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .fbar-pill.action{background:var(--card);color:var(--ink);border:1.5px solid var(--line-soft);display:inline-flex;align-items:center;gap:6px;padding:5px 14px}
+
+  .round-h{padding:24px 32px 14px;display:flex;align-items:flex-end;justify-content:space-between}
+  .round-h .num{display:inline-block;font-family:"Bebas Neue",sans-serif;font-size:22px;background:var(--accent-2);color:var(--bg);padding:4px 12px 2px;letter-spacing:.06em;margin-right:10px;vertical-align:6px}
+  .round-h .label{font-family:"Bebas Neue",sans-serif;font-size:32px;letter-spacing:.04em;color:var(--ink)}
+  .round-h .right{font-family:"Bebas Neue",sans-serif;font-size:13px;letter-spacing:.18em;color:var(--ink-dim)}
+
+  .board{padding:0 32px 32px;display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+  @media(max-width:1280px){.board{grid-template-columns:repeat(2,1fr)}}
+  .card{background:var(--card);border:2.5px solid var(--line);padding:12px 14px;display:grid;grid-template-columns:38px 56px 1fr auto;align-items:center;gap:12px;min-height:88px;cursor:pointer;transition:all 200ms;position:relative}
+  .card:hover{transform:translate(-3px,-3px);box-shadow:var(--shadow)}
+  .card-rk{font-family:"Bebas Neue",sans-serif;font-size:30px;letter-spacing:-.02em;text-align:center;color:var(--accent-2)}
+  .card-pfp{width:56px;height:56px;border-radius:50%;border:1.5px solid var(--line);background:var(--bg-soft);overflow:hidden}
+  .card-pfp img{width:100%;height:100%;object-fit:cover;object-position:top}
+  .card-name{font-family:"Bebas Neue",sans-serif;font-size:20px;letter-spacing:.01em;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .card-meta{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600;color:var(--ink-soft);margin-top:5px}
+  .card-pos{display:inline-grid;place-items:center;min-width:28px;height:19px;padding:0 6px;font-family:"Bebas Neue",sans-serif;font-size:12px;letter-spacing:.06em;border-radius:3px}
+  .card[data-pos="QB"] .card-pos{background:rgba(251,99,122,.18);color:#fb7185}
+  .card[data-pos="RB"] .card-pos{background:rgba(74,222,128,.16);color:#4ade80}
+  .card[data-pos="WR"] .card-pos{background:rgba(245,166,35,.18);color:var(--accent-2)}
+  .card[data-pos="TE"] .card-pos{background:rgba(245,158,11,.16);color:#f59e0b}
+  .card-team{font-weight:700;letter-spacing:.04em;color:var(--ink)}
+  .card-tags{display:flex;gap:4px;margin-top:6px;flex-wrap:wrap}
+  .tbk-tag{display:inline-flex;font-size:10px;font-weight:700;letter-spacing:.06em;padding:2px 7px;border-radius:3px;text-transform:uppercase}
+  .tbk-tag.must{background:rgba(245,166,35,.18);color:var(--accent-2)}
+  .tbk-tag.boom{background:rgba(245,158,11,.14);color:#f59e0b}
+  .tbk-tag.fade{background:rgba(251,99,122,.14);color:#fb7185}
+  .tbk-tag.rookie{background:rgba(74,222,128,.16);color:#4ade80}
+  .card-r{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+  .card-cmp{padding:5px 9px 6px;border:1.5px solid var(--line-soft);border-radius:4px;min-width:76px;background:var(--bg);text-align:center}
+  .card-cmp .lbl{font-size:9px;letter-spacing:.16em;font-weight:800;color:var(--ink-dim);text-transform:uppercase}
+  .card-cmp .val{font-family:"Bebas Neue",sans-serif;font-size:18px;color:var(--ink);margin-top:1px}
+  .card-cmp .delta{display:inline-block;margin-top:5px;font-size:10px;font-weight:800;letter-spacing:.08em;padding:2px 7px;border-radius:2px}
+  .card-cmp .delta.up{background:rgba(245,166,35,.22);color:var(--accent-2)}
+  .card-cmp .delta.down{background:rgba(251,99,122,.18);color:#fb7185}
+  .card-cmp .delta.flat{background:rgba(236,232,214,.08);color:var(--ink-soft)}
+  .card-act{display:flex;gap:4px}
+  .card-act button{display:inline-flex;align-items:center;gap:4px;padding:4px 8px;background:var(--card);border:1.5px solid var(--line-soft);font-family:"Inter",sans-serif;font-size:11px;font-weight:700;color:var(--ink-soft);cursor:pointer;border-radius:4px}
+  .card-act button.on.team{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .card-act button.on.draft{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+
+  .vs-strip{margin:32px;background:var(--card);border:2.5px solid var(--line);box-shadow:var(--shadow);padding:0;font-family:Inter,sans-serif;max-width:calc(100% - 64px)}
+  .vs-strip-h{display:flex;align-items:center;gap:14px;padding:8px 14px;background:var(--bg-soft);border-bottom:1.5px solid var(--line-soft)}
+  .vs-strip-h .eye{font-family:"Bebas Neue",sans-serif;font-size:16px;letter-spacing:.16em;color:var(--ink);display:inline-flex;align-items:center;gap:8px}
+  .vs-strip-h .ico{display:inline-grid;place-items:center;width:22px;height:22px;background:var(--accent-2);color:var(--bg);font-size:11px}
+  .vs-strip-h .count{display:inline-grid;place-items:center;min-width:22px;height:22px;padding:0 6px;background:var(--accent-2);color:var(--bg);font-family:"Bebas Neue",sans-serif;font-size:13px;margin-left:6px}
+  .vs-strip-h .stats-btn{margin-left:8px;background:var(--accent);color:#fff;border:1.5px solid var(--accent);font-family:"Bebas Neue",sans-serif;font-size:14px;letter-spacing:.16em;padding:6px 14px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;box-shadow:2px 2px 0 var(--ink)}
+  .vs-strip-h .stats-btn .chev{display:inline-grid;place-items:center;width:18px;height:18px;background:rgba(255,255,255,.22);font-size:10px}
+  .vs-strip-h .ctrl{margin-left:auto}
+  .vs-strip-h .ctrl button{background:var(--card);border:1.5px solid var(--line);font-family:"Bebas Neue",sans-serif;font-size:12px;letter-spacing:.16em;padding:3px 10px;color:var(--ink);cursor:pointer}
+  .vs-winner{display:flex;align-items:center;gap:10px;padding:9px 14px;background:linear-gradient(90deg,color-mix(in srgb,var(--accent-2) 22%,var(--card)) 0%,color-mix(in srgb,var(--accent-2) 10%,var(--card)) 60%,var(--card) 100%);border-bottom:1.5px solid color-mix(in srgb,var(--accent-2) 40%,var(--line-soft));font-size:12px;font-weight:600;color:var(--accent-2);letter-spacing:.02em;flex-wrap:wrap}
+  .vs-winner .trophy{display:inline-grid;place-items:center;width:26px;height:26px;background:var(--accent-2);color:var(--bg);font-size:14px;border-radius:50%}
+  .vs-winner .label{font-family:"Bebas Neue",sans-serif;font-size:12px;letter-spacing:.18em;color:var(--accent-2);opacity:.9}
+  .vs-winner .name{font-family:"Bebas Neue",sans-serif;font-size:18px;color:var(--ink);margin-right:4px}
+  .vs-winner .why b{color:var(--ink);font-weight:700;margin:0 2px}
+  .vs-winner .ratio{margin-left:auto;padding:3px 10px;background:var(--accent-2);color:var(--bg);font-family:"Bebas Neue",sans-serif;font-size:13px;letter-spacing:.08em}
+  .vs-strip-compact{display:flex;align-items:stretch;gap:10px;padding:16px 14px 14px;background:var(--bg-soft);border-top:1.5px solid var(--line-soft)}
+  .vs-mini{display:flex;align-items:center;gap:12px;padding:10px 14px 10px 12px;background:var(--card);border:1.5px solid var(--line-soft);border-top:4px solid var(--line);position:relative;flex:1;min-width:0;min-height:64px}
+  .vs-mini[data-pos="RB"]{border-top-color:#4ade80}
+  .vs-mini[data-pos="WR"]{border-top-color:var(--accent-2)}
+  .vs-mini.winner{outline:2px solid var(--accent-2);outline-offset:-1px;box-shadow:0 0 0 4px color-mix(in srgb,var(--accent-2) 22%,transparent)}
+  .vs-rank-badge{position:absolute;top:-11px;left:10px;display:inline-grid;place-items:center;min-width:40px;height:20px;padding:0 8px;font-family:"Bebas Neue",sans-serif;font-size:12px;letter-spacing:.16em;color:#fff;background:var(--ink-soft);border-radius:2px;z-index:2;white-space:nowrap}
+  .vs-rank-badge[data-r="1"]{background:var(--accent-2);color:var(--bg)}
+  .vs-rank-badge[data-r="2"]{background:#475569}
+  .vs-rank-badge[data-r="3"]{background:#b45309}
+  .vs-rank-badge[data-r="4"]{background:var(--ink);color:var(--bg)}
+  .vs-mini img{width:36px;height:36px;border-radius:50%;border:1.5px solid var(--line);background:var(--bg-soft);object-fit:cover;object-position:top}
+  .vs-mini .info{flex:1;min-width:0}
+  .vs-mini .nm{font-family:"Bebas Neue",sans-serif;font-size:15px;letter-spacing:.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--ink)}
+  .vs-mini .meta{font-size:10px;font-weight:700;letter-spacing:.08em;color:var(--ink-soft);margin-top:2px;text-transform:uppercase;display:flex;align-items:center;gap:5px}
+  .vs-mini .meta .pos{display:inline-grid;place-items:center;min-width:22px;height:14px;padding:0 4px;font-family:"Bebas Neue",sans-serif;font-size:10px;letter-spacing:.06em;border-radius:2px}
+  .vs-mini[data-pos="RB"] .meta .pos{background:rgba(74,222,128,.16);color:#4ade80}
+  .vs-mini[data-pos="WR"] .meta .pos{background:rgba(245,166,35,.18);color:var(--accent-2)}
+  .vs-mini .winrow{font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--ink-soft);margin-top:5px}
+  .vs-mini .winrow b{font-family:"Bebas Neue",sans-serif;font-size:13px;color:var(--ink)}
+  .vs-mini.winner .winrow b{color:var(--accent-2)}
+</style>
+</head>
+<body>
+<div class="nav">
+  <a class="back" href="index.html">← All mockups</a>
+  <span class="pickers">
+    <a href="1-soft-navy.html">SOFT NAVY</a>
+    <a href="2-slate-paper.html">SLATE PAPER</a>
+    <a class="on" href="3-midnight-cinema.html">CINEMA</a>
+  </span>
+</div>
+
+<header class="tb">
+  <a class="tb-brand">⬢ BDGE</a>
+  <div class="tb-actions">
+    <button class="tb-icon" title="Theme">◐</button>
+    <button class="tb-icon" title="Setup">⚙</button>
+    <button class="tb-cta">★ DECK</button>
+  </div>
+</header>
+
+<section class="hero">
+  <h1>THE BDGE <span class="pill">BIG BOARD</span></h1>
+  <span class="sub">DRAFT RANKINGS · 2026</span>
+</section>
+
+<div class="fbar">
+  <span class="fbar-l">Position</span>
+  <button class="fbar-pill active">All</button>
+  <button class="fbar-pill">QB</button>
+  <button class="fbar-pill">RB</button>
+  <button class="fbar-pill">WR</button>
+  <button class="fbar-pill">TE</button>
+  <span style="flex:1"></span>
+  <button class="fbar-pill action">✓ DRAFTED 0</button>
+  <button class="fbar-pill action">★ MY TEAM 0</button>
+</div>
+
+<div class="round-h">
+  <div><span class="num">R1</span><span class="label">ROUND ONE</span></div>
+  <div class="right">PICKS 1–12</div>
+</div>
+
+<div class="board">
+  <div class="card" data-pos="RB">
+    <div class="card-rk">1</div>
+    <div class="card-pfp"><img src="https://a.espncdn.com/i/headshots/nfl/players/full/3117251.png" alt="CMC"/></div>
+    <div>
+      <div class="card-name">CHRISTIAN MCCAFFREY</div>
+      <div class="card-meta"><span class="card-pos">RB</span><span class="card-team">SF</span></div>
+      <div class="card-tags"><span class="tbk-tag must">MUST DRAFT</span><span class="tbk-tag fade">INJURY RISK</span></div>
+    </div>
+    <div class="card-r">
+      <div class="card-cmp"><div class="lbl">ADP</div><div class="val">2.1</div><span class="delta up">▲ STEAL +1.1</span></div>
+      <div class="card-act"><button>★ TEAM</button><button>✓ DRAFTED</button></div>
+    </div>
+  </div>
+
+  <div class="card" data-pos="RB">
+    <div class="card-rk">2</div>
+    <div class="card-pfp"><img src="https://a.espncdn.com/i/headshots/nfl/players/full/4430807.png" alt="Bijan"/></div>
+    <div>
+      <div class="card-name">BIJAN ROBINSON</div>
+      <div class="card-meta"><span class="card-pos">RB</span><span class="card-team">ATL</span></div>
+      <div class="card-tags"><span class="tbk-tag must">MUST DRAFT</span></div>
+    </div>
+    <div class="card-r">
+      <div class="card-cmp"><div class="lbl">ADP</div><div class="val">1.8</div><span class="delta flat">● EVEN</span></div>
+      <div class="card-act"><button class="on team">★ TEAM</button><button>✓ DRAFTED</button></div>
+    </div>
+  </div>
+
+  <div class="card" data-pos="WR">
+    <div class="card-rk">3</div>
+    <div class="card-pfp"><img src="https://a.espncdn.com/i/headshots/nfl/players/full/4362628.png" alt="Chase"/></div>
+    <div>
+      <div class="card-name">JA'MARR CHASE</div>
+      <div class="card-meta"><span class="card-pos">WR</span><span class="card-team">CIN</span></div>
+      <div class="card-tags"><span class="tbk-tag boom">BOOM</span><span class="tbk-tag must">MUST DRAFT</span></div>
+    </div>
+    <div class="card-r">
+      <div class="card-cmp"><div class="lbl">ADP</div><div class="val">3.4</div><span class="delta flat">● EVEN</span></div>
+      <div class="card-act"><button>★ TEAM</button><button>✓ DRAFTED</button></div>
+    </div>
+  </div>
+
+  <div class="card" data-pos="WR">
+    <div class="card-rk">4</div>
+    <div class="card-pfp"><img src="https://a.espncdn.com/i/headshots/nfl/players/full/4262921.png" alt="JJ"/></div>
+    <div>
+      <div class="card-name">JUSTIN JEFFERSON</div>
+      <div class="card-meta"><span class="card-pos">WR</span><span class="card-team">MIN</span></div>
+      <div class="card-tags"><span class="tbk-tag must">MUST DRAFT</span></div>
+    </div>
+    <div class="card-r">
+      <div class="card-cmp"><div class="lbl">ADP</div><div class="val">4.1</div><span class="delta flat">● EVEN</span></div>
+      <div class="card-act"><button>★ TEAM</button><button>✓ DRAFTED</button></div>
+    </div>
+  </div>
+</div>
+
+<aside class="vs-strip">
+  <div class="vs-strip-h">
+    <span class="eye"><span class="ico">⚖</span>COMPARE<span class="count">3</span></span>
+    <button class="stats-btn"><span class="chev">▼</span>VIEW FULL STATS</button>
+    <span class="ctrl"><button>✕ CLEAR ALL</button></span>
+  </div>
+  <div class="vs-winner">
+    <span class="trophy">★</span>
+    <span class="label">THE BDGE PICK</span>
+    <span class="name">CHRISTIAN MCCAFFREY</span>
+    <span class="why">wins on <b>Overall · Vegas Wins · O-Line</b></span>
+    <span class="ratio">5/12 CATEGORIES</span>
+  </div>
+  <div class="vs-strip-compact">
+    <div class="vs-mini winner" data-pos="RB">
+      <span class="vs-rank-badge" data-r="1">1ST PICK</span>
+      <img src="https://a.espncdn.com/i/headshots/nfl/players/full/3117251.png" alt="CMC"/>
+      <div class="info">
+        <div class="nm">Christian McCaffrey</div>
+        <div class="meta"><span class="pos">RB</span>SF · #1 · ADP 2.1</div>
+        <div class="winrow">★ <b>5 of 12</b> categories won</div>
+      </div>
+    </div>
+    <div class="vs-mini" data-pos="RB">
+      <span class="vs-rank-badge" data-r="2">2ND PICK</span>
+      <img src="https://a.espncdn.com/i/headshots/nfl/players/full/4430807.png" alt="Bijan"/>
+      <div class="info">
+        <div class="nm">Bijan Robinson</div>
+        <div class="meta"><span class="pos">RB</span>ATL · #2 · ADP 1.8</div>
+        <div class="winrow">★ <b>4 of 12</b> categories won</div>
+      </div>
+    </div>
+    <div class="vs-mini" data-pos="WR">
+      <span class="vs-rank-badge" data-r="3">3RD PICK</span>
+      <img src="https://a.espncdn.com/i/headshots/nfl/players/full/4362628.png" alt="Chase"/>
+      <div class="info">
+        <div class="nm">Ja'Marr Chase</div>
+        <div class="meta"><span class="pos">WR</span>CIN · #3 · ADP 3.4</div>
+        <div class="winrow">★ <b>3 of 12</b> categories won</div>
+      </div>
+    </div>
+  </div>
+</aside>
+</body>
+</html>

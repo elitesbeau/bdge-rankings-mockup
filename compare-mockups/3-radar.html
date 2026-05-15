@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Mockup 3 · Radar Overlay</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root{--cream:#f9f5eb;--ink:#082430;--ink-soft:#1c3543;--blue:#259fd6;--pink:#fb637a;--gold:#febe02;--green:#16a34a;--gray:#94a3b8}
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--cream);color:var(--ink);font-family:Inter,sans-serif}
+  .nav{display:flex;align-items:center;justify-content:space-between;padding:14px 24px;background:#fff;border-bottom:1px solid rgba(8,36,48,.15)}
+  .nav a{color:var(--ink);text-decoration:none;font-size:12px;text-transform:uppercase;letter-spacing:.18em}
+  .nav .num{font-family:"Bebas Neue",sans-serif;font-size:18px;letter-spacing:.06em}
+
+  .wrap{max-width:1180px;margin:0 auto;padding:32px 24px 60px;display:grid;grid-template-columns:1fr 320px;gap:32px}
+
+  .stage{background:#fff;border:2px solid var(--ink);box-shadow:6px 6px 0 var(--ink);padding:28px;position:relative}
+  .header{display:grid;grid-template-columns:1fr auto 1fr;gap:18px;align-items:center;margin-bottom:6px}
+  .header .player{display:flex;align-items:center;gap:14px}
+  .header .player.right{justify-content:flex-end}
+  .header img{width:64px;height:64px;border-radius:50%;border:2px solid var(--ink);background:var(--cream);object-fit:cover;object-position:top}
+  .header .nm{font-family:"Bebas Neue",sans-serif;font-size:26px;line-height:1;letter-spacing:.02em}
+  .header .meta{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-soft);margin-top:3px}
+  .swatch{width:14px;height:14px;border-radius:50%;display:inline-block;margin-right:8px;vertical-align:middle}
+  .swatch.b{background:var(--blue)}
+  .swatch.p{background:var(--pink)}
+
+  svg.radar{display:block;margin:18px auto 8px;width:100%;max-width:560px;height:auto}
+  .axis-label{font-family:"Bebas Neue",sans-serif;font-size:12px;letter-spacing:.12em;fill:var(--ink);text-transform:uppercase}
+  .grid-line{stroke:rgba(8,36,48,.1);fill:none}
+  .grid-tick{font-size:9px;fill:rgba(8,36,48,.4)}
+  .blob.b{fill:var(--blue);fill-opacity:.32;stroke:var(--blue);stroke-width:2.5}
+  .blob.p{fill:var(--pink);fill-opacity:.32;stroke:var(--pink);stroke-width:2.5}
+  .vert{fill:var(--ink);stroke:#fff;stroke-width:1.5}
+  .vert.b{fill:var(--blue)}
+  .vert.p{fill:var(--pink)}
+
+  .legend{display:flex;justify-content:center;gap:32px;font-size:13px;letter-spacing:.06em;color:var(--ink-soft);margin-top:8px}
+  .legend b{color:var(--ink)}
+
+  .axis-table{margin-top:28px;border-top:2px solid var(--ink);padding-top:16px}
+  .axis-table h4{font-family:"Bebas Neue",sans-serif;letter-spacing:.18em;font-size:13px;color:var(--ink-soft);margin:0 0 10px}
+  .axis-row{display:grid;grid-template-columns:1fr 70px 90px 70px 1fr;gap:8px;align-items:center;padding:6px 0;border-bottom:1px solid rgba(8,36,48,.08);font-size:13px}
+  .axis-row .l{text-align:right}
+  .axis-row .r{text-align:left}
+  .axis-row .lab{text-align:center;font-family:"Bebas Neue",sans-serif;letter-spacing:.14em;font-size:12px;color:var(--ink-soft)}
+  .axis-row .vL,.axis-row .vR{text-align:center;font-family:"Bebas Neue",sans-serif;font-size:18px;letter-spacing:.02em}
+  .vL.win,.vR.win{color:var(--green)}
+  .vL.lose,.vR.lose{color:var(--ink-soft);opacity:.55}
+
+  /* ─── Right rail ─── */
+  .rail{display:flex;flex-direction:column;gap:18px}
+  .area-card{background:var(--ink);color:var(--cream);border:2px solid var(--ink);padding:22px;position:relative;box-shadow:6px 6px 0 var(--pink)}
+  .area-eye{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--cream);opacity:.6}
+  .area-pick{font-family:"Bebas Neue",sans-serif;font-size:42px;line-height:.95;letter-spacing:.02em;margin-top:6px}
+  .area-stat{display:flex;justify-content:space-between;margin-top:14px;font-size:13px;color:rgba(249,245,235,.85)}
+  .area-stat b{color:var(--gold);font-family:"Bebas Neue",sans-serif;font-size:18px;letter-spacing:.02em}
+  .area-stat .delta{color:var(--green)}
+
+  .key-axes{background:#fff;border:2px solid var(--ink);padding:18px}
+  .key-axes h4{font-family:"Bebas Neue",sans-serif;letter-spacing:.18em;font-size:13px;color:var(--ink-soft);margin:0 0 10px}
+  .key-line{display:flex;justify-content:space-between;font-size:13px;padding:5px 0;border-bottom:1px dashed rgba(8,36,48,.15)}
+  .key-line:last-child{border-bottom:0}
+  .key-line .who{font-family:"Bebas Neue",sans-serif;letter-spacing:.04em}
+  .key-line .who.b{color:var(--blue)}
+  .key-line .who.p{color:var(--pink)}
+
+  .draftbtns{display:flex;flex-direction:column;gap:10px}
+  .draftbtn{display:block;padding:16px 18px;border:2px solid var(--ink);background:#fff;color:var(--ink);font-family:"Bebas Neue",sans-serif;font-size:20px;letter-spacing:.06em;text-align:center;cursor:pointer;transition:transform 160ms,box-shadow 160ms}
+  .draftbtn:hover{transform:translate(-2px,-2px);box-shadow:4px 4px 0 var(--ink)}
+  .draftbtn.win{background:var(--blue);color:#fff;border-color:var(--blue)}
+  .draftbtn small{display:block;font-family:Inter,sans-serif;font-size:10px;letter-spacing:.18em;font-weight:500;margin-top:2px;opacity:.85;text-transform:uppercase}
+</style>
+</head>
+<body>
+<div class="nav">
+  <a href="2-tale-of-tape.html">← Prev</a>
+  <span class="num">03 / 05 · Radar Overlay</span>
+  <a href="4-tradeoff.html">Next →</a>
+</div>
+
+<div class="wrap">
+  <div class="stage">
+    <div class="header">
+      <div class="player">
+        <img src="https://a.espncdn.com/i/headshots/nfl/players/full/4430807.png" alt="Bijan" />
+        <div>
+          <div class="nm" style="color:var(--blue)"><span class="swatch b"></span>Bijan Robinson</div>
+          <div class="meta">RB · ATL · #1 Overall</div>
+        </div>
+      </div>
+      <div style="font-family:'Bebas Neue';font-size:32px;letter-spacing:.04em;color:var(--ink-soft)">VS</div>
+      <div class="player right">
+        <div style="text-align:right">
+          <div class="nm" style="color:var(--pink)">Jahmyr Gibbs<span class="swatch p" style="margin-left:8px;margin-right:0"></span></div>
+          <div class="meta">RB · DET · #2 Overall</div>
+        </div>
+        <img src="https://a.espncdn.com/i/headshots/nfl/players/full/4429795.png" alt="Gibbs" />
+      </div>
+    </div>
+
+    <!-- ─── 6-axis radar ─── -->
+    <svg class="radar" viewBox="0 0 560 480" aria-label="6-axis radar comparison">
+      <!-- Center 280,240 ; max radius 180 -->
+      <!-- Axes: 0 Floor (top), 60° Ceiling, 120° Volume, 180° Schedule (bottom), 240° Health, 300° Upside -->
+      <!-- Axis lines and concentric grid -->
+      <g transform="translate(280 240)">
+        <!-- Concentric polygons (4 levels) -->
+        <polygon class="grid-line" points="0,-45  39,-22.5  39,22.5  0,45  -39,22.5  -39,-22.5"/>
+        <polygon class="grid-line" points="0,-90  78,-45  78,45  0,90  -78,45  -78,-45"/>
+        <polygon class="grid-line" points="0,-135  117,-67.5  117,67.5  0,135  -117,67.5  -117,-67.5"/>
+        <polygon class="grid-line" points="0,-180  156,-90  156,90  0,180  -156,90  -156,-90"/>
+        <!-- 6 spokes -->
+        <line class="grid-line" x1="0" y1="0" x2="0" y2="-180"/>
+        <line class="grid-line" x1="0" y1="0" x2="156" y2="-90"/>
+        <line class="grid-line" x1="0" y1="0" x2="156" y2="90"/>
+        <line class="grid-line" x1="0" y1="0" x2="0" y2="180"/>
+        <line class="grid-line" x1="0" y1="0" x2="-156" y2="90"/>
+        <line class="grid-line" x1="0" y1="0" x2="-156" y2="-90"/>
+
+        <!-- Tick labels (25/50/75/100) along top spoke -->
+        <text class="grid-tick" x="3" y="-45">25</text>
+        <text class="grid-tick" x="3" y="-90">50</text>
+        <text class="grid-tick" x="3" y="-135">75</text>
+        <text class="grid-tick" x="3" y="-180">100</text>
+
+        <!-- Bijan blob (blue): values out of 100 — Floor 88, Ceiling 82, Volume 92, Schedule 60, Health 92, Upside 78 -->
+        <!-- Convert: r = (val/100)*180 -->
+        <!-- 0°(top) Floor 88 -> 0,-158.4 -->
+        <!-- 60°(top-right) Ceiling 82 -> 127.9,-73.8 -->
+        <!-- 120°(bottom-right) Volume 92 -> 143.4,82.8 -->
+        <!-- 180°(bottom) Schedule 60 -> 0,108 -->
+        <!-- 240°(bottom-left) Health 92 -> -143.4,82.8 -->
+        <!-- 300°(top-left) Upside 78 -> -121.5,-70.2 -->
+        <polygon class="blob b" points="0,-158.4 127.9,-73.8 143.4,82.8 0,108 -143.4,82.8 -121.5,-70.2"/>
+
+        <!-- Gibbs blob (pink): Floor 76, Ceiling 88, Volume 80, Schedule 86, Health 84, Upside 90 -->
+        <!-- 0° Floor 76 -> 0,-136.8 -->
+        <!-- 60° Ceiling 88 -> 137.2,-79.2 -->
+        <!-- 120° Volume 80 -> 124.7,72 -->
+        <!-- 180° Schedule 86 -> 0,154.8 -->
+        <!-- 240° Health 84 -> -131,75.6 -->
+        <!-- 300° Upside 90 -> -140.3,-81 -->
+        <polygon class="blob p" points="0,-136.8 137.2,-79.2 124.7,72 0,154.8 -131,75.6 -140.3,-81"/>
+
+        <!-- Vertices (Bijan) -->
+        <circle class="vert b" cx="0" cy="-158.4" r="4"/>
+        <circle class="vert b" cx="127.9" cy="-73.8" r="4"/>
+        <circle class="vert b" cx="143.4" cy="82.8" r="4"/>
+        <circle class="vert b" cx="0" cy="108" r="4"/>
+        <circle class="vert b" cx="-143.4" cy="82.8" r="4"/>
+        <circle class="vert b" cx="-121.5" cy="-70.2" r="4"/>
+        <!-- Vertices (Gibbs) -->
+        <circle class="vert p" cx="0" cy="-136.8" r="4"/>
+        <circle class="vert p" cx="137.2" cy="-79.2" r="4"/>
+        <circle class="vert p" cx="124.7" cy="72" r="4"/>
+        <circle class="vert p" cx="0" cy="154.8" r="4"/>
+        <circle class="vert p" cx="-131" cy="75.6" r="4"/>
+        <circle class="vert p" cx="-140.3" cy="-81" r="4"/>
+      </g>
+
+      <!-- Axis labels around the chart -->
+      <text class="axis-label" x="280" y="38" text-anchor="middle">FLOOR</text>
+      <text class="axis-label" x="478" y="138" text-anchor="middle">CEILING</text>
+      <text class="axis-label" x="478" y="358" text-anchor="middle">VOLUME</text>
+      <text class="axis-label" x="280" y="462" text-anchor="middle">SCHEDULE</text>
+      <text class="axis-label" x="82" y="358" text-anchor="middle">HEALTH</text>
+      <text class="axis-label" x="82" y="138" text-anchor="middle">UPSIDE</text>
+    </svg>
+
+    <div class="legend">
+      <span><span class="swatch b"></span><b>Bijan Robinson</b> — Area: 412 sq</span>
+      <span><span class="swatch p"></span><b>Jahmyr Gibbs</b> — Area: 398 sq</span>
+    </div>
+
+    <div class="axis-table">
+      <h4>AXIS DETAIL</h4>
+      <div class="axis-row">
+        <div class="l">P5 sim score · top-end safety</div>
+        <div class="vL win">88</div><div class="lab">FLOOR</div><div class="vR lose">76</div>
+        <div class="r">low-end risk to bust</div>
+      </div>
+      <div class="axis-row">
+        <div class="l">P95 sim score</div>
+        <div class="vL lose">82</div><div class="lab">CEILING</div><div class="vR win">88</div>
+        <div class="r">league-winner upside</div>
+      </div>
+      <div class="axis-row">
+        <div class="l">touches + targets · % team</div>
+        <div class="vL win">92</div><div class="lab">VOLUME</div><div class="vR lose">80</div>
+        <div class="r">workload share</div>
+      </div>
+      <div class="axis-row">
+        <div class="l">strength of schedule</div>
+        <div class="vL lose">60</div><div class="lab">SCHEDULE</div><div class="vR win">86</div>
+        <div class="r">opposing-D matchup ease</div>
+      </div>
+      <div class="axis-row">
+        <div class="l">3-yr snap · injury risk</div>
+        <div class="vL win">92</div><div class="lab">HEALTH</div><div class="vR lose">84</div>
+        <div class="r">availability outlook</div>
+      </div>
+      <div class="axis-row">
+        <div class="l">breakout-game frequency</div>
+        <div class="vL lose">78</div><div class="lab">UPSIDE</div><div class="vR win">90</div>
+        <div class="r">spike-week potential</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="rail">
+    <div class="area-card">
+      <div class="area-eye">AREA-WINS BY MARGIN</div>
+      <div class="area-pick">Bijan</div>
+      <div class="area-stat"><span>Bijan area</span><b>412</b></div>
+      <div class="area-stat"><span>Gibbs area</span><b style="color:#ffb1bf">398</b></div>
+      <div class="area-stat"><span>Margin</span><b class="delta">+14 sq · 3.5%</b></div>
+    </div>
+
+    <div class="key-axes">
+      <h4>WINS BY AXIS</h4>
+      <div class="key-line"><span class="who b">Bijan</span><span>Floor · Volume · Health</span></div>
+      <div class="key-line"><span class="who p">Gibbs</span><span>Ceiling · Schedule · Upside</span></div>
+    </div>
+
+    <div class="key-axes" style="background:rgba(254,190,2,.12);border-color:var(--gold)">
+      <h4 style="color:#7a5c00">⚠ TIEBREAKER</h4>
+      <div style="font-size:13px;line-height:1.5;color:var(--ink)">Bijan is the safer, higher-floor pick. <b>Flip to Gibbs</b> in superflex / best-ball or if you're stacking ceiling.</div>
+    </div>
+
+    <div class="draftbtns">
+      <button class="draftbtn win">DRAFT BIJAN ROBINSON<small>Bigger Area · 3 axes won</small></button>
+      <button class="draftbtn">DRAFT JAHMYR GIBBS<small>Override · upside play</small></button>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('keydown',e=>{
+    if(e.key==='ArrowRight') location.href='4-tradeoff.html';
+    if(e.key==='ArrowLeft')  location.href='2-tale-of-tape.html';
+  });
+</script>
+</body>
+</html>

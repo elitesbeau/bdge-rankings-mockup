@@ -1,0 +1,1712 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>BDGE — Player Card Concepts V2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,700&family=VT323&family=JetBrains+Mono:wght@400;500;700&family=Special+Elite&family=Big+Shoulders+Stencil+Display:wght@700;900&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: #0a0a0a; color: #fff; font-family: "Inter", system-ui, sans-serif; }
+
+/* ─── Top switcher ─── */
+.switcher {
+  position: sticky; top: 0; z-index: 100;
+  background: #000;
+  color: #fff;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 24px;
+  border-bottom: 2px solid #fb637a;
+}
+.switcher-l { font-family:"Bebas Neue",sans-serif; letter-spacing:0.18em; font-size:18px; color:#fff; }
+.switcher-l b { color: #259fd6; font-weight: 400; }
+.switcher-tabs { display:flex; gap:4px; flex-wrap:wrap; }
+.switcher-tabs button {
+  font-family:"Bebas Neue",sans-serif;
+  font-size:13px; letter-spacing:0.14em;
+  padding: 8px 14px;
+  background: transparent;
+  border: 1.5px solid rgba(255,255,255,0.25);
+  color: rgba(255,255,255,0.7);
+  cursor: pointer;
+}
+.switcher-tabs button:hover { color: #fff; border-color: rgba(255,255,255,0.55); }
+.switcher-tabs button.active {
+  background: #fb637a; border-color: #fb637a; color: #fff;
+}
+
+.stage { padding: 0; }
+.concept { display: none; min-height: calc(100vh - 60px); }
+.concept.active { display: block; }
+.concept-meta {
+  padding: 18px 32px;
+  background: #111;
+  border-bottom: 1px solid #222;
+  display: flex; align-items: baseline; justify-content: space-between;
+  flex-wrap: wrap; gap: 12px;
+}
+.concept-meta h1 {
+  font-family:"Bebas Neue",sans-serif;
+  font-size: 28px; letter-spacing: 0.04em;
+  margin: 0; color: #fff;
+}
+.concept-meta .pitch {
+  font-size: 12px; color: #999;
+  max-width: 700px; line-height: 1.5; text-align: right;
+}
+
+/* ════════════════════════════════════════════════════════════════════════════
+   CONCEPT A: TRADING CARD — Topps / Panini physical card aesthetic
+   ════════════════════════════════════════════════════════════════════════════ */
+.tcard-stage {
+  background: radial-gradient(ellipse at center, #1a2230 0%, #050810 100%);
+  padding: 60px 24px;
+  min-height: calc(100vh - 100px);
+  display: grid;
+  place-items: center;
+}
+.tcard-row {
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: 36px;
+  align-items: stretch;
+  perspective: 2000px;
+}
+.tcard {
+  width: 380px;
+  aspect-ratio: 5/7;
+  background: linear-gradient(135deg, #c9162a 0%, #8b0a18 100%);
+  border-radius: 14px;
+  padding: 14px;
+  position: relative;
+  box-shadow:
+    0 30px 60px rgba(0,0,0,0.7),
+    0 0 0 4px #f5d272,
+    0 0 0 6px #b8941f,
+    inset 0 0 0 1px rgba(255,255,255,0.15);
+  transform: rotate(-3deg);
+  transition: transform 400ms cubic-bezier(0.34,1.56,0.64,1);
+}
+.tcard:hover { transform: rotate(0deg) scale(1.03); }
+.tcard::before {
+  content: ""; position: absolute; inset: 14px;
+  background:
+    linear-gradient(115deg, transparent 30%, rgba(255,255,255,0.18) 45%, rgba(255,184,212,0.12) 55%, transparent 70%);
+  pointer-events: none;
+  border-radius: 6px;
+  z-index: 2;
+}
+.tcard-inner {
+  background: #fff;
+  border-radius: 6px;
+  height: 100%;
+  display: flex; flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+.tcard-flag {
+  background: linear-gradient(90deg, #c9162a, #8b0a18);
+  color: #f5d272;
+  padding: 8px 14px;
+  font-family:"Bebas Neue",sans-serif;
+  font-size: 16px; letter-spacing: 0.20em;
+  display: flex; justify-content: space-between; align-items: center;
+  text-shadow: 0 1px 0 rgba(0,0,0,0.4);
+}
+.tcard-flag .ser { color: rgba(245,210,114,0.7); font-size: 11px; letter-spacing: 0.24em; }
+.tcard-photo {
+  flex: 1;
+  background: linear-gradient(180deg, #d8e4f0 0%, #f0e8d8 100%);
+  position: relative;
+  overflow: hidden;
+}
+.tcard-photo img {
+  position: absolute;
+  width: 100%; height: 110%; object-fit: cover; object-position: center top;
+  bottom: 0;
+  filter: contrast(1.05) saturate(1.1);
+}
+.tcard-photo::after {
+  content: "";
+  position: absolute; left: 0; right: 0; bottom: 0; height: 60%;
+  background: linear-gradient(to top, rgba(255,255,255,0.6), transparent);
+  pointer-events: none;
+}
+.tcard-pos-stamp {
+  position: absolute; top: 12px; left: 12px; z-index: 3;
+  background: #f5d272;
+  color: #c9162a;
+  padding: 4px 12px;
+  font-family:"Bebas Neue",sans-serif;
+  font-size: 22px; letter-spacing: 0.12em;
+  border: 2px solid #b8941f;
+  box-shadow: 2px 2px 0 rgba(0,0,0,0.3);
+}
+.tcard-team-stamp {
+  position: absolute; top: 12px; right: 12px; z-index: 3;
+  background: rgba(0,0,0,0.85);
+  color: #fff;
+  padding: 4px 12px;
+  font-family:"Bebas Neue",sans-serif;
+  font-size: 14px; letter-spacing: 0.18em;
+}
+.tcard-name-block {
+  background: #c9162a;
+  color: #fff;
+  padding: 12px 16px 14px;
+  position: relative;
+}
+.tcard-name {
+  font-family:"Bebas Neue",sans-serif;
+  font-size: 28px; line-height: 0.9;
+  letter-spacing: -0.01em;
+  text-shadow: 0 1px 0 rgba(0,0,0,0.4);
+}
+.tcard-sub {
+  font-size: 9px; letter-spacing: 0.20em; font-weight: 700;
+  color: #f5d272;
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+.tcard-stats {
+  background: #f0e8d8;
+  padding: 10px 14px;
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+  border-top: 2px solid #c9162a;
+}
+.tcard-stat {
+  text-align: center;
+  padding: 0 4px;
+  border-right: 1px dashed rgba(201,22,42,0.3);
+}
+.tcard-stat:last-child { border-right: 0; }
+.tcard-stat .k {
+  font-size: 7px; letter-spacing: 0.18em; font-weight: 800;
+  color: #8b0a18;
+  text-transform: uppercase;
+}
+.tcard-stat .v {
+  font-family:"Bebas Neue",sans-serif;
+  font-size: 22px; line-height: 1;
+  color: #2a2418;
+  margin-top: 2px;
+}
+.tcard-foil {
+  position: absolute; right: 14px; bottom: 14px;
+  width: 44px; height: 44px;
+  background: conic-gradient(from 45deg, #f5d272, #fff5d4, #f5d272, #b8941f, #f5d272);
+  border-radius: 50%;
+  border: 2px solid #b8941f;
+  display: grid; place-items: center;
+  font-family:"Bebas Neue",sans-serif;
+  font-size: 18px; color: #c9162a;
+  z-index: 3;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+}
+
+/* Card BACK */
+.tcard-back {
+  width: 380px;
+  aspect-ratio: 5/7;
+  background: linear-gradient(135deg, #8b0a18 0%, #c9162a 100%);
+  border-radius: 14px;
+  padding: 14px;
+  position: relative;
+  box-shadow:
+    0 30px 60px rgba(0,0,0,0.7),
+    0 0 0 4px #f5d272,
+    0 0 0 6px #b8941f;
+  transform: rotate(3deg);
+  transition: transform 400ms cubic-bezier(0.34,1.56,0.64,1);
+}
+.tcard-back:hover { transform: rotate(0deg) scale(1.03); }
+.tcard-back-inner {
+  background: #fefaef;
+  border-radius: 6px;
+  height: 100%;
+  padding: 18px 20px;
+  font-family:"JetBrains Mono",monospace;
+  color: #2a2418;
+  font-size: 11px;
+  display: flex; flex-direction: column; gap: 12px;
+  overflow: hidden;
+}
+.tcard-back-h {
+  display: flex; justify-content: space-between; align-items: baseline;
+  border-bottom: 2px solid #c9162a;
+  padding-bottom: 6px;
+  font-family:"Bebas Neue",sans-serif;
+  font-size: 18px; letter-spacing: 0.16em;
+  color: #c9162a;
+}
+.tcard-back-h .num { font-size: 11px; color: #8b0a18; letter-spacing: 0.2em; }
+.tcard-bio {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 12px;
+  row-gap: 3px;
+  font-size: 10px;
+}
+.tcard-bio b { color: #c9162a; }
+.tcard-take {
+  background: #f5d272;
+  border: 1px solid #b8941f;
+  padding: 8px 10px;
+  font-family:"Special Elite",monospace;
+  font-size: 11px; line-height: 1.45;
+  color: #2a2418;
+}
+.tcard-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 6px 18px;
+  font-size: 10px;
+}
+.tcard-grid div {
+  display: flex; justify-content: space-between;
+  padding: 2px 0;
+  border-bottom: 1px dotted rgba(139,10,24,0.3);
+}
+.tcard-grid div b { font-family:"Bebas Neue",sans-serif; font-size: 14px; }
+.tcard-back-foot {
+  margin-top: auto;
+  font-size: 8px; letter-spacing: 0.14em;
+  text-align: center;
+  color: rgba(139,10,24,0.5);
+  border-top: 1px dashed #c9162a;
+  padding-top: 6px;
+}
+
+/* ════════════════════════════════════════════════════════════════════════════
+   CONCEPT B: STADIUM JUMBOTRON — broadcast / Madden / NFL graphics
+   ════════════════════════════════════════════════════════════════════════════ */
+.jumbo {
+  background: #050a14;
+  min-height: calc(100vh - 100px);
+  position: relative;
+  overflow: hidden;
+  padding: 32px;
+}
+.jumbo::before {
+  content: "";
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(37,159,214,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(37,159,214,0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+}
+.jumbo::after {
+  content: "";
+  position: absolute; left: 0; right: 0; bottom: 0; height: 40%;
+  background: linear-gradient(to top, rgba(251,99,122,0.08), transparent);
+  pointer-events: none;
+}
+.jumbo-screen {
+  position: relative; z-index: 2;
+  max-width: 1300px; margin: 0 auto;
+  background: #000;
+  border: 4px solid #1a1a1a;
+  box-shadow:
+    0 0 0 12px #2a2a2a,
+    0 0 0 16px #0a0a0a,
+    0 40px 80px rgba(0,0,0,0.8),
+    inset 0 0 120px rgba(37,159,214,0.10);
+  position: relative;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  min-height: 720px;
+}
+/* TV scanlines overlay */
+.jumbo-screen::before {
+  content: "";
+  position: absolute; inset: 0;
+  background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.15) 2px, rgba(0,0,0,0.15) 3px);
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* Top: NFL-style score bar */
+.jumbo-bar {
+  background: #aa0716;
+  padding: 8px 16px;
+  display: grid;
+  grid-template-columns: auto auto 1fr auto;
+  gap: 16px;
+  align-items: center;
+  font-family:"Bebas Neue",sans-serif;
+  letter-spacing: 0.10em;
+  border-bottom: 3px solid #f5d272;
+}
+.jumbo-bar .live {
+  background: #f5d272;
+  color: #aa0716;
+  padding: 3px 10px;
+  font-size: 13px;
+  letter-spacing: 0.20em;
+  animation: pulse 2s infinite;
+}
+@keyframes pulse { 50% { opacity: 0.6; } }
+.jumbo-bar .matchup {
+  font-size: 16px; color: #fff;
+}
+.jumbo-bar .matchup b { color: #f5d272; }
+.jumbo-bar .ticker {
+  font-family:"Inter",sans-serif;
+  font-size: 11px; font-weight: 600;
+  color: rgba(255,255,255,0.7);
+  letter-spacing: 0.04em;
+  white-space: nowrap; overflow: hidden;
+  text-transform: uppercase;
+}
+.jumbo-bar .clock {
+  font-family:"VT323",monospace;
+  font-size: 22px; color: #f5d272;
+}
+
+/* Middle: hero player block */
+.jumbo-body {
+  display: grid;
+  grid-template-columns: 360px 1fr 360px;
+  gap: 0;
+  position: relative;
+}
+/* Lower-third numbers on left */
+.jumbo-numbers {
+  background: linear-gradient(180deg, #aa0716, #6e0410);
+  border-right: 2px solid #f5d272;
+  padding: 24px 22px;
+  display: flex; flex-direction: column; gap: 18px;
+}
+.jumbo-numbers h3 {
+  font-family:"Bebas Neue",sans-serif;
+  font-size: 16px; letter-spacing: 0.20em;
+  color: #f5d272;
+  margin: 0 0 8px;
+  border-bottom: 2px solid #f5d272;
+  padding-bottom: 6px;
+}
+.jumbo-stat-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: baseline;
+  gap: 12px;
+  border-bottom: 1px solid rgba(245,210,114,0.2);
+  padding: 6px 0;
+}
+.jumbo-stat-row .k {
+  font-size: 10px; letter-spacing: 0.20em; font-weight: 700;
+  color: rgba(255,255,255,0.7);
+  text-transform: uppercase;
+}
+.jumbo-stat-row .v {
+  font-family:"VT323",monospace;
+  font-size: 36px; line-height: 1;
+  color: #f5d272;
+  text-shadow: 0 0 10px rgba(245,210,114,0.6);
+}
+.jumbo-stat-row .v.green { color: #22c55e; text-shadow: 0 0 10px rgba(34,197,94,0.6); }
+.jumbo-stat-row .v.cyan { color: #38bdf8; text-shadow: 0 0 10px rgba(56,189,248,0.6); }
+.jumbo-stat-row .v.red { color: #ff4d6d; text-shadow: 0 0 10px rgba(255,77,109,0.6); }
+
+/* Center: photo and name block */
+.jumbo-center {
+  background: radial-gradient(ellipse at center 30%, #aa071640 0%, transparent 60%);
+  position: relative;
+  display: flex; flex-direction: column; justify-content: flex-end;
+  align-items: center;
+  padding: 24px;
+  overflow: hidden;
+}
+.jumbo-center::before {
+  content: "01";
+  position: absolute;
+  top: 50%; left: 50%; transform: translate(-50%, -55%);
+  font-family:"Bebas Neue",sans-serif;
+  font-size: 480px; line-height: 0.85;
+  color: rgba(245,210,114,0.05);
+  letter-spacing: -0.06em;
+  pointer-events: none;
+  z-index: 0;
+}
+.jumbo-photo {
+  position: relative; z-index: 2;
+  width: 280px; height: 360px;
+  background: transparent;
+}
+.jumbo-photo img {
+  width: 100%; height: 100%; object-fit: contain; object-position: bottom;
+  filter: drop-shadow(0 30px 40px rgba(0,0,0,0.6));
+}
+.jumbo-l3 {
+  position: relative; z-index: 3;
+  width: 100%;
+  background: linear-gradient(90deg, #aa0716 70%, transparent);
+  margin-top: -40px;
+  padding: 14px 22px;
+  border-left: 6px solid #f5d272;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 16px;
+  align-items: center;
+}
+.jumbo-l3 .pos-badge {
+  background: #f5d272;
+  color: #aa0716;
+  padding: 6px 14px;
+  font-family:"Bebas Neue",sans-serif;
+  font-size: 28px;
+  letter-spacing: 0.06em;
+}
+.jumbo-l3 .name {
+  font-family:"Bebas Neue",sans-serif;
+  font-size: 38px; line-height: 0.95;
+  color: #fff;
+  text-shadow: 2px 2px 0 rgba(0,0,0,0.6);
+}
+.jumbo-l3 .sub {
+  font-family:"Inter",sans-serif;
+  font-size: 11px; letter-spacing: 0.14em; font-weight: 700;
+  color: #f5d272;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+.jumbo-l3 .rank {
+  font-family:"VT323",monospace;
+  font-size: 56px; color: #f5d272;
+  line-height: 0.85;
+  text-shadow: 0 0 20px rgba(245,210,114,0.6);
+}
+.jumbo-l3 .rank small {
+  font-family:"Bebas Neue",sans-serif;
+  font-size: 11px; letter-spacing: 0.20em;
+  color: rgba(245,210,114,0.7);
+  display: block;
+}
+
+/* Right: tags + take */
+.jumbo-right {
+  background: linear-gradient(180deg, #6e0410, #3a020a);
+  border-left: 2px solid #f5d272;
+  padding: 24px 22px;
+  display: flex; flex-direction: column; gap: 16px;
+}
+.jumbo-right h3 {
+  font-family:"Bebas Neue",sans-serif;
+  font-size: 16px; letter-spacing: 0.20em;
+  color: #f5d272;
+  margin: 0 0 8px;
+  border-bottom: 2px solid #f5d272;
+  padding-bottom: 6px;
+}
+.jumbo-tag {
+  display: block;
+  background: rgba(245,210,114,0.12);
+  border-left: 3px solid #f5d272;
+  padding: 8px 12px;
+  font-family:"Bebas Neue",sans-serif;
+  font-size: 14px; letter-spacing: 0.18em;
+  color: #fff;
+  margin-bottom: 6px;
+}
+.jumbo-take {
+  font-size: 13px; line-height: 1.55;
+  color: rgba(255,255,255,0.92);
+  font-family:"Inter",sans-serif;
+}
+.jumbo-take em { color: #f5d272; font-style: normal; font-weight: 700; }
+
+/* Bottom: scrolling ticker */
+.jumbo-foot {
+  background: #000;
+  border-top: 3px solid #f5d272;
+  padding: 10px 0;
+  overflow: hidden;
+  position: relative;
+}
+.jumbo-ticker-strip {
+  display: flex; gap: 36px;
+  white-space: nowrap;
+  animation: ticker 50s linear infinite;
+  font-family:"VT323",monospace;
+  font-size: 18px;
+  color: #22c55e;
+}
+.jumbo-ticker-strip span b { color: #f5d272; }
+@keyframes ticker {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* ════════════════════════════════════════════════════════════════════════════
+   CONCEPT C: NEWSPAPER — broadsheet front page
+   ════════════════════════════════════════════════════════════════════════════ */
+.paper {
+  background: #f3ead4;
+  min-height: calc(100vh - 100px);
+  padding: 40px 24px;
+  color: #1a1410;
+  font-family: "Playfair Display", Georgia, serif;
+  background-image:
+    repeating-linear-gradient(0deg, rgba(40,28,18,0.02) 0, rgba(40,28,18,0.02) 1px, transparent 1px, transparent 4px);
+}
+.paper-shell {
+  max-width: 1100px; margin: 0 auto;
+  background: #f8f0db;
+  padding: 48px 56px;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+  border: 1px solid #d4c5a0;
+  position: relative;
+}
+.paper-flag {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 20px;
+  align-items: end;
+  border-top: 4px solid #1a1410;
+  border-bottom: 1px solid #1a1410;
+  padding: 20px 0 14px;
+  margin-bottom: 6px;
+}
+.paper-flag .l, .paper-flag .r {
+  font-family:"Inter",sans-serif;
+  font-size: 9px; font-weight: 700; letter-spacing: 0.20em;
+  text-transform: uppercase;
+  color: #1a1410;
+  line-height: 1.3;
+}
+.paper-flag .nameplate {
+  font-family:"Playfair Display", serif;
+  font-weight: 900; font-style: italic;
+  font-size: 72px; line-height: 0.85;
+  letter-spacing: -0.02em;
+  text-align: center;
+  color: #1a1410;
+}
+.paper-flag .nameplate small {
+  font-family:"Playfair Display", serif;
+  font-style: italic;
+  display: block;
+  font-size: 14px; letter-spacing: 0.10em;
+  color: #6b563d;
+  margin-top: 4px;
+  font-weight: 400;
+}
+.paper-issue {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 16px;
+  font-family:"Inter",sans-serif;
+  font-size: 9px; font-weight: 700; letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #6b563d;
+  padding: 6px 0 22px;
+  border-bottom: 4px double #1a1410;
+}
+.paper-issue .center { text-align: center; }
+.paper-issue .right { text-align: right; }
+.paper-kicker {
+  font-family:"Inter",sans-serif;
+  font-size: 11px; font-weight: 800; letter-spacing: 0.20em;
+  color: #c9162a;
+  text-transform: uppercase;
+  text-align: center;
+  margin: 24px 0 8px;
+}
+.paper-headline {
+  font-family:"Playfair Display", serif;
+  font-weight: 900;
+  font-size: 76px; line-height: 0.95;
+  letter-spacing: -0.02em;
+  color: #1a1410;
+  text-align: center;
+  margin: 0;
+}
+.paper-subhead {
+  font-family:"Playfair Display", serif;
+  font-style: italic;
+  font-size: 22px; line-height: 1.35;
+  text-align: center;
+  color: #4a3a2a;
+  margin: 16px auto 28px;
+  max-width: 720px;
+  font-weight: 400;
+}
+.paper-byline {
+  font-family:"Inter",sans-serif;
+  font-size: 10px; font-weight: 700; letter-spacing: 0.20em;
+  text-transform: uppercase;
+  color: #6b563d;
+  text-align: center;
+  border-top: 1px solid #1a1410;
+  border-bottom: 1px solid #1a1410;
+  padding: 10px 0;
+  margin-bottom: 30px;
+}
+.paper-byline span { margin: 0 12px; }
+
+.paper-body {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 48px;
+}
+.paper-photo-block {
+  margin-bottom: 16px;
+}
+.paper-photo-block img {
+  width: 100%;
+  filter: grayscale(0.85) contrast(1.1) brightness(0.95);
+  border: 1px solid #1a1410;
+  display: block;
+}
+.paper-caption {
+  font-family:"Inter",sans-serif;
+  font-size: 10px; line-height: 1.45; font-weight: 600;
+  color: #4a3a2a;
+  border-bottom: 1px solid #6b563d;
+  padding: 6px 0;
+  margin-bottom: 16px;
+}
+.paper-caption b { color: #1a1410; text-transform: uppercase; letter-spacing: 0.10em; }
+.paper-article {
+  column-count: 2;
+  column-gap: 24px;
+  column-rule: 1px solid #d4c5a0;
+  font-size: 14px; line-height: 1.55;
+  color: #1a1410;
+}
+.paper-article p { margin: 0 0 12px; }
+.paper-article p:first-child::first-letter {
+  font-family:"Playfair Display", serif;
+  font-weight: 900;
+  font-size: 64px;
+  float: left;
+  line-height: 0.85;
+  padding: 6px 8px 0 0;
+  color: #c9162a;
+}
+.paper-aside { display: flex; flex-direction: column; gap: 22px; }
+.paper-box {
+  border: 2px solid #1a1410;
+  padding: 16px 18px;
+  background: rgba(212,197,160,0.18);
+}
+.paper-box h4 {
+  font-family:"Playfair Display", serif;
+  font-weight: 900;
+  font-size: 20px;
+  margin: 0 0 10px;
+  border-bottom: 2px solid #1a1410;
+  padding-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.paper-table {
+  width: 100%;
+  font-family:"Inter",sans-serif;
+  font-size: 12px;
+  border-collapse: collapse;
+}
+.paper-table tr { border-bottom: 1px dotted #6b563d; }
+.paper-table tr:last-child { border-bottom: 0; }
+.paper-table td { padding: 5px 0; }
+.paper-table td:last-child {
+  text-align: right;
+  font-family:"Playfair Display", serif;
+  font-weight: 900; font-size: 18px;
+}
+.paper-pull {
+  font-family:"Playfair Display", serif;
+  font-style: italic; font-weight: 700;
+  font-size: 28px; line-height: 1.2;
+  color: #c9162a;
+  border-top: 4px double #c9162a;
+  border-bottom: 4px double #c9162a;
+  padding: 14px 0;
+  margin: 14px 0;
+  text-align: center;
+}
+.paper-classified {
+  border: 1px solid #1a1410;
+  padding: 12px;
+  background: #1a1410;
+  color: #f8f0db;
+}
+.paper-classified h4 {
+  font-family:"Inter",sans-serif;
+  font-size: 9px; letter-spacing: 0.30em; font-weight: 800;
+  margin: 0 0 8px;
+  border-bottom: 1px solid #d4c5a0;
+  padding-bottom: 4px;
+  color: #d4c5a0;
+}
+.paper-classified .item {
+  font-family:"Inter",sans-serif;
+  font-size: 11px; line-height: 1.45;
+  padding: 6px 0;
+  border-bottom: 1px dotted rgba(212,197,160,0.3);
+}
+.paper-classified .item:last-child { border-bottom: 0; }
+.paper-classified .item b { color: #f5d272; }
+
+/* ════════════════════════════════════════════════════════════════════════════
+   CONCEPT D: SCOUTING REPORT — combine dossier / coach's clipboard
+   ════════════════════════════════════════════════════════════════════════════ */
+.scout {
+  background:
+    repeating-linear-gradient(0deg, transparent 0, transparent 27px, rgba(38,77,144,0.18) 27px, rgba(38,77,144,0.18) 28px),
+    #fbf6e8;
+  min-height: calc(100vh - 100px);
+  padding: 40px 24px;
+  color: #1a1a1a;
+  font-family:"JetBrains Mono", monospace;
+}
+.scout-shell {
+  max-width: 1100px; margin: 0 auto;
+  background:
+    linear-gradient(90deg, transparent 60px, #c9162a40 60px, #c9162a40 62px, transparent 62px),
+    repeating-linear-gradient(0deg, transparent 0, transparent 27px, rgba(38,77,144,0.18) 27px, rgba(38,77,144,0.18) 28px),
+    #fbf6e8;
+  padding: 36px 48px 36px 96px;
+  border: 2px solid #1a1a1a;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+  position: relative;
+}
+/* Punch holes on left edge */
+.scout-shell::before {
+  content: "";
+  position: absolute; left: 24px; top: 36px; bottom: 36px; width: 18px;
+  background-image: radial-gradient(circle, rgba(0,0,0,0.5) 5px, transparent 6px);
+  background-size: 18px 80px;
+  background-repeat: repeat-y;
+}
+.scout-stamp {
+  position: absolute;
+  top: 30px; right: 36px;
+  border: 4px solid #c9162a;
+  color: #c9162a;
+  padding: 8px 18px;
+  font-family:"Big Shoulders Stencil Display", "Bebas Neue", sans-serif;
+  font-weight: 900;
+  font-size: 32px;
+  letter-spacing: 0.10em;
+  transform: rotate(-12deg);
+  background: rgba(255,255,255,0.4);
+  text-shadow: 0 0 1px rgba(201,22,42,0.4);
+  opacity: 0.9;
+}
+.scout-stamp small {
+  display: block;
+  font-family:"JetBrains Mono",monospace;
+  font-size: 10px; font-weight: 700; letter-spacing: 0.16em;
+  margin-top: 2px;
+}
+.scout-h {
+  font-family:"Big Shoulders Stencil Display", "Bebas Neue", sans-serif;
+  font-weight: 900;
+  font-size: 36px; letter-spacing: 0.10em;
+  color: #1a1a1a;
+  margin: 0 0 4px;
+  text-transform: uppercase;
+}
+.scout-sub {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.16em;
+  color: #6b6b6b;
+  text-transform: uppercase;
+  margin-bottom: 18px;
+}
+.scout-doc {
+  border-top: 2px solid #1a1a1a;
+  border-bottom: 2px solid #1a1a1a;
+  padding: 12px 0;
+  margin-bottom: 22px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  font-size: 10px;
+}
+.scout-doc div { display: flex; flex-direction: column; gap: 2px; }
+.scout-doc .k { font-weight: 700; letter-spacing: 0.14em; color: #6b6b6b; }
+.scout-doc .v { font-weight: 700; }
+.scout-section {
+  margin-bottom: 22px;
+}
+.scout-section h3 {
+  font-family:"Big Shoulders Stencil Display", "Bebas Neue", sans-serif;
+  font-weight: 900;
+  font-size: 18px;
+  letter-spacing: 0.10em;
+  margin: 0 0 8px;
+  border-bottom: 1px solid #1a1a1a;
+  padding-bottom: 4px;
+  display: flex; justify-content: space-between; align-items: baseline;
+}
+.scout-section h3 small {
+  font-family:"JetBrains Mono",monospace;
+  font-size: 9px; font-weight: 400; letter-spacing: 0.10em;
+  color: #6b6b6b;
+}
+.scout-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  align-items: start;
+}
+.scout-photo {
+  border: 1.5px solid #1a1a1a;
+  padding: 6px;
+  background: #fff;
+}
+.scout-photo img {
+  width: 100%; display: block;
+  filter: grayscale(0.6) contrast(1.05);
+}
+.scout-photo .cap {
+  font-size: 9px; font-weight: 700; letter-spacing: 0.10em;
+  color: #6b6b6b;
+  text-align: center;
+  padding-top: 4px;
+}
+.scout-form {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  row-gap: 4px;
+  font-size: 11px;
+  align-items: center;
+}
+.scout-form .lab { color: #6b6b6b; font-weight: 700; }
+.scout-form .val { font-weight: 700; }
+.scout-form .field {
+  border-bottom: 1px solid #1a1a1a;
+  padding: 2px 4px;
+  display: flex; align-items: center; gap: 6px;
+}
+.scout-grade {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  border: 2px solid #1a1a1a;
+  background: #fff;
+}
+.scout-grade > div {
+  padding: 10px 8px;
+  border-right: 1px solid #1a1a1a;
+  text-align: center;
+}
+.scout-grade > div:last-child { border-right: 0; }
+.scout-grade .k {
+  font-size: 8px; font-weight: 700; letter-spacing: 0.14em;
+  color: #6b6b6b;
+  text-transform: uppercase;
+}
+.scout-grade .v {
+  font-family:"Big Shoulders Stencil Display", "Bebas Neue", sans-serif;
+  font-size: 32px; line-height: 1;
+  font-weight: 900;
+  margin-top: 4px;
+}
+.scout-grade .v.A { color: #047857; }
+.scout-grade .v.B { color: #1a1a1a; }
+.scout-grade .v.C { color: #d97706; }
+.scout-grade .grade-final {
+  background: #c9162a;
+  color: #fff;
+}
+.scout-grade .grade-final .k { color: rgba(255,255,255,0.7); }
+.scout-grade .grade-final .v { color: #fff; }
+.scout-checkbox-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px 18px;
+  font-size: 11px;
+}
+.scout-cbox {
+  display: flex; align-items: center; gap: 8px;
+  padding: 2px 0;
+}
+.scout-cbox .box {
+  width: 14px; height: 14px;
+  border: 1.5px solid #1a1a1a;
+  display: grid; place-items: center;
+  font-weight: 900;
+  flex-shrink: 0;
+}
+.scout-cbox.checked .box::after { content: "✕"; color: #c9162a; font-size: 14px; line-height: 1; }
+.scout-narrative {
+  font-family:"Special Elite", "JetBrains Mono", monospace;
+  font-size: 12px; line-height: 1.6;
+  background: #fff;
+  border: 1px solid #1a1a1a;
+  padding: 14px 18px;
+  white-space: pre-wrap;
+}
+.scout-narrative b { background: #f5d272; padding: 0 3px; }
+.scout-sig {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  font-size: 10px;
+}
+.scout-sig div {
+  border-top: 1px solid #1a1a1a;
+  padding-top: 4px;
+  font-weight: 700; letter-spacing: 0.10em;
+  color: #6b6b6b;
+  text-transform: uppercase;
+}
+.scout-sig div b {
+  font-family:"Special Elite", cursive;
+  font-size: 18px;
+  font-weight: 400;
+  color: #1a1a1a;
+  text-transform: none; letter-spacing: 0;
+  display: block;
+  margin-bottom: 2px;
+}
+
+/* ════════════════════════════════════════════════════════════════════════════
+   CONCEPT E: ALBUM / MUSIC PLAYER — Spotify-style now playing
+   ════════════════════════════════════════════════════════════════════════════ */
+.album {
+  background: linear-gradient(160deg, #1a0f24 0%, #08152a 50%, #0a0a0a 100%);
+  min-height: calc(100vh - 100px);
+  padding: 40px 32px;
+  color: #fff;
+  font-family:"Inter", sans-serif;
+}
+.album-shell {
+  max-width: 1300px; margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 480px) 1fr;
+  gap: 48px;
+  align-items: start;
+}
+.album-cover {
+  position: sticky; top: 100px;
+  display: flex; flex-direction: column; gap: 20px;
+}
+.album-art {
+  aspect-ratio: 1;
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 30px 80px rgba(251,99,122,0.35), 0 60px 120px rgba(0,0,0,0.6);
+}
+.album-art img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%; object-fit: cover; object-position: top;
+}
+.album-art::after {
+  content: "";
+  position: absolute; inset: 0;
+  background:
+    linear-gradient(180deg, transparent 0%, transparent 60%, rgba(10,10,10,0.95) 100%),
+    radial-gradient(ellipse at center top, transparent, rgba(251,99,122,0.35));
+  mix-blend-mode: multiply;
+}
+.album-art-overlay {
+  position: absolute; left: 24px; right: 24px; bottom: 24px;
+  z-index: 2;
+}
+.album-art-overlay .label {
+  font-size: 11px; letter-spacing: 0.30em; font-weight: 800;
+  color: #fb637a; text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.album-art-overlay .album-name {
+  font-family:"Bebas Neue",sans-serif;
+  font-size: 56px; line-height: 0.9;
+  letter-spacing: -0.01em;
+  text-shadow: 0 2px 20px rgba(0,0,0,0.6);
+}
+.album-art-overlay .artist {
+  font-size: 12px; letter-spacing: 0.18em; font-weight: 700;
+  color: rgba(255,255,255,0.75);
+  text-transform: uppercase;
+  margin-top: 6px;
+}
+
+/* Now playing controls */
+.album-controls {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 14px;
+  padding: 18px 22px;
+  backdrop-filter: blur(20px);
+}
+.album-progress {
+  height: 4px;
+  background: rgba(255,255,255,0.12);
+  border-radius: 2px;
+  position: relative;
+  margin-bottom: 10px;
+}
+.album-progress::before {
+  content: "";
+  position: absolute; left: 0; top: 0; bottom: 0;
+  width: 38%;
+  background: linear-gradient(90deg, #fb637a, #259fd6);
+  border-radius: 2px;
+}
+.album-progress::after {
+  content: "";
+  position: absolute; left: 38%; top: 50%;
+  width: 12px; height: 12px;
+  background: #fff;
+  border-radius: 50%;
+  transform: translate(-50%,-50%);
+  box-shadow: 0 0 10px rgba(255,255,255,0.6);
+}
+.album-time {
+  display: flex; justify-content: space-between;
+  font-size: 10px; letter-spacing: 0.14em; font-weight: 700;
+  color: rgba(255,255,255,0.55);
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+.album-buttons {
+  display: flex; align-items: center; justify-content: center;
+  gap: 22px;
+}
+.album-buttons button {
+  background: transparent;
+  border: 0;
+  color: rgba(255,255,255,0.7);
+  cursor: pointer;
+  font-size: 18px;
+  padding: 0;
+}
+.album-buttons button:hover { color: #fff; }
+.album-buttons .play {
+  width: 56px; height: 56px;
+  background: #fff;
+  color: #0a0a0a;
+  border-radius: 50%;
+  display: grid; place-items: center;
+  font-size: 22px;
+  box-shadow: 0 8px 24px rgba(255,255,255,0.2);
+}
+.album-buttons .play:hover { transform: scale(1.05); color: #fb637a; }
+
+/* Right: tracklist + lyrics */
+.album-right { min-width: 0; padding-top: 20px; }
+.album-meta-line {
+  display: flex; gap: 18px; align-items: center;
+  font-size: 11px; letter-spacing: 0.14em; font-weight: 700;
+  color: rgba(255,255,255,0.55);
+  text-transform: uppercase;
+  margin-bottom: 24px;
+}
+.album-meta-line .dot { width: 4px; height: 4px; background: rgba(255,255,255,0.4); border-radius: 50%; }
+.album-tagline {
+  font-family:"Bebas Neue",sans-serif;
+  font-size: 96px; line-height: 0.85;
+  letter-spacing: -0.02em;
+  margin: 0 0 14px;
+}
+.album-tagline .accent {
+  background: linear-gradient(90deg, #fb637a, #259fd6);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.album-deck {
+  font-size: 16px; line-height: 1.55;
+  color: rgba(255,255,255,0.75);
+  max-width: 600px;
+  margin-bottom: 36px;
+}
+.album-deck b { color: #fff; font-weight: 700; }
+
+.album-section { margin-bottom: 32px; }
+.album-section h3 {
+  font-size: 11px; letter-spacing: 0.30em; font-weight: 800;
+  color: #fb637a;
+  text-transform: uppercase;
+  margin: 0 0 14px;
+  display: flex; justify-content: space-between; align-items: baseline;
+}
+.album-section h3 small {
+  font-size: 10px; color: rgba(255,255,255,0.4);
+  letter-spacing: 0.16em; font-weight: 600;
+}
+.album-tracklist { display: flex; flex-direction: column; }
+.album-track {
+  display: grid;
+  grid-template-columns: 24px 1fr auto auto;
+  gap: 18px; align-items: center;
+  padding: 10px 12px;
+  border-radius: 6px;
+  transition: background 200ms;
+  cursor: pointer;
+}
+.album-track:hover { background: rgba(255,255,255,0.05); }
+.album-track.playing { background: rgba(251,99,122,0.10); }
+.album-track .num {
+  font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.45);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+.album-track.playing .num { color: #fb637a; }
+.album-track .meta { min-width: 0; }
+.album-track .title {
+  font-size: 14px; font-weight: 600; color: #fff;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.album-track .sub {
+  font-size: 11px; color: rgba(255,255,255,0.5);
+  letter-spacing: 0.04em; margin-top: 2px;
+}
+.album-track .v {
+  font-family:"Bebas Neue",sans-serif;
+  font-size: 22px;
+  font-variant-numeric: tabular-nums;
+  color: #fff;
+}
+.album-track .v.cy { color: #259fd6; }
+.album-track .v.gn { color: #22c55e; }
+.album-track .v.go { color: #f5d272; }
+.album-track .v.rd { color: #fb637a; }
+.album-track .dur {
+  font-size: 11px; color: rgba(255,255,255,0.4);
+  font-variant-numeric: tabular-nums;
+}
+
+.album-lyrics {
+  background: linear-gradient(135deg, rgba(251,99,122,0.10), rgba(37,159,214,0.06));
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 14px;
+  padding: 24px 28px;
+  font-size: 17px; line-height: 1.65;
+  color: rgba(255,255,255,0.92);
+  font-weight: 500;
+}
+.album-lyrics em { color: #fb637a; font-style: normal; font-weight: 700; }
+.album-lyrics b { color: #259fd6; font-weight: 700; }
+.album-lyrics-credits {
+  margin-top: 16px; padding-top: 14px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  font-size: 11px; letter-spacing: 0.14em; font-weight: 600;
+  color: rgba(255,255,255,0.45);
+  text-transform: uppercase;
+}
+
+.album-eq {
+  display: inline-flex; gap: 2px; height: 14px; align-items: end;
+  margin-left: 8px;
+}
+.album-eq i {
+  display: block; width: 3px; background: #fb637a;
+  animation: eq 0.9s ease-in-out infinite;
+}
+.album-eq i:nth-child(1) { height: 60%; animation-delay: 0s; }
+.album-eq i:nth-child(2) { height: 90%; animation-delay: 0.2s; }
+.album-eq i:nth-child(3) { height: 40%; animation-delay: 0.4s; }
+@keyframes eq {
+  0%, 100% { transform: scaleY(0.4); }
+  50% { transform: scaleY(1); }
+}
+
+@media (max-width: 1000px) {
+  .tcard-row { grid-template-columns: 1fr; }
+  .jumbo-body { grid-template-columns: 1fr; }
+  .jumbo-numbers, .jumbo-right { border: 0; border-top: 2px solid #f5d272; }
+  .paper-body { grid-template-columns: 1fr; }
+  .scout-grid { grid-template-columns: 1fr; }
+  .album-shell { grid-template-columns: 1fr; }
+  .album-cover { position: static; }
+  .album-tagline { font-size: 60px; }
+  .paper-headline { font-size: 48px; }
+  .paper-flag .nameplate { font-size: 48px; }
+  .scout-shell { padding: 24px 24px 24px 60px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Concept switcher -->
+<div class="switcher">
+  <div class="switcher-l">BDGE <b>// V2 Concepts — Fresh Metaphors</b></div>
+  <div class="switcher-tabs" id="switcher">
+    <button class="active" data-concept="A">A · Trading Card</button>
+    <button data-concept="B">B · Stadium</button>
+    <button data-concept="C">C · Newspaper</button>
+    <button data-concept="D">D · Scouting Report</button>
+    <button data-concept="E">E · Album</button>
+  </div>
+</div>
+
+<div class="stage">
+
+<!-- ═════════════ CONCEPT A: TRADING CARD ═════════════ -->
+<section class="concept active" data-concept="A">
+  <div class="concept-meta">
+    <h1>A · Trading Card</h1>
+    <div class="pitch">Physical Topps/Panini collectible. Front = identity & headline numbers, back = full bio + stats + take. Holographic foil, gold border, rookie-card serial. Treats every player as a card you'd shuffle through.</div>
+  </div>
+  <div class="tcard-stage">
+    <div class="tcard-row">
+      <!-- Front -->
+      <div class="tcard">
+        <div class="tcard-inner">
+          <div class="tcard-flag">
+            <span>// 2026 BIG BOARD</span>
+            <span class="ser">VOL IV · 01 / 300</span>
+          </div>
+          <div class="tcard-photo">
+            <div class="tcard-pos-stamp">RB</div>
+            <div class="tcard-team-stamp">SF · #23</div>
+            <img src="https://a.espncdn.com/combiner/i?img=/i/headshots/nfl/players/full/3117251.png&w=350&h=254" alt=""/>
+          </div>
+          <div class="tcard-name-block">
+            <div class="tcard-name">CHRISTIAN MCCAFFREY</div>
+            <div class="tcard-sub">SAN FRANCISCO 49ERS · AGE 29 · 9TH SEASON</div>
+          </div>
+          <div class="tcard-stats">
+            <div class="tcard-stat"><span class="k">Pts</span><span class="v">348</span></div>
+            <div class="tcard-stat"><span class="k">Ceil</span><span class="v">412</span></div>
+            <div class="tcard-stat"><span class="k">VBD</span><span class="v">+62</span></div>
+            <div class="tcard-stat"><span class="k">ADP</span><span class="v">2.1</span></div>
+          </div>
+          <div class="tcard-foil">★</div>
+        </div>
+      </div>
+
+      <!-- Back -->
+      <div class="tcard-back">
+        <div class="tcard-back-inner">
+          <div class="tcard-back-h">
+            <span>// PROFILE</span>
+            <span class="num">CARD 01 / 300</span>
+          </div>
+          <div class="tcard-bio">
+            <span>Born</span><b>JUN 7, 1996 · CASTLE ROCK, CO</b>
+            <span>Height</span><b>5' 11"</b>
+            <span>Weight</span><b>205 LBS</b>
+            <span>College</span><b>STANFORD ('17)</b>
+            <span>Drafted</span><b>2017 RD 1 PICK 8 · CAR</b>
+            <span>Tier</span><b style="color:#c9162a">ELITE · CEILING_GOD</b>
+          </div>
+          <div class="tcard-take">
+            "Workhorse RB1 with no concrete handcuff threat — still the alpha. Floor-driven CEO who hits ceiling more reliably than any back since Faulk." — BDGE Desk · v4.2
+          </div>
+          <div class="tcard-back-h">
+            <span>// 2026 PROJ</span>
+            <span class="num">PPR · 17 G</span>
+          </div>
+          <div class="tcard-grid">
+            <div><span>Proj Pts</span><b>348.2</b></div>
+            <div><span>PPG</span><b>21.8</b></div>
+            <div><span>Ceiling</span><b>412</b></div>
+            <div><span>Floor</span><b>268</b></div>
+            <div><span>VBD</span><b>+62.4</b></div>
+            <div><span>ADP</span><b>2.1</b></div>
+            <div><span>BDGE+</span><b>88</b></div>
+            <div><span>EPA/Play</span><b>+0.21</b></div>
+            <div><span>Snap %</span><b>82</b></div>
+            <div><span>RZ Touch</span><b>68%</b></div>
+          </div>
+          <div class="tcard-back-foot">
+            BDGE.CO · BIG BOARD 2026 · ROOKIE CARD #01 · SERIAL 0001/0300 · ⓒ THE BDGE DESK
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════════ CONCEPT B: STADIUM JUMBOTRON ═════════════ -->
+<section class="concept" data-concept="B">
+  <div class="concept-meta">
+    <h1>B · Stadium JumboTron</h1>
+    <div class="pitch">NFL broadcast graphics meet Madden player card. CRT scanlines, LED dot-matrix numerals, lower-third overlay, scrolling bottom ticker. Treats each profile as a stadium intro segment instead of a webpage.</div>
+  </div>
+  <div class="jumbo">
+    <div class="jumbo-screen">
+      <div class="jumbo-bar">
+        <span class="live">● LIVE</span>
+        <span class="matchup"><b>SF</b> vs ARI · WK 1</span>
+        <span class="ticker">PLAYER ANALYSIS · 49ERS · MCCAFFREY UPGRADED TO FULL · NO COMMITTEE SIGNAL · OL RANKED #3 · CONTRACT LOCKED THROUGH 2027</span>
+        <span class="clock">21:34</span>
+      </div>
+      <div class="jumbo-body">
+        <div class="jumbo-numbers">
+          <h3>// THE LINE</h3>
+          <div class="jumbo-stat-row"><span class="k">Proj Pts</span><span class="v cyan">348.2</span></div>
+          <div class="jumbo-stat-row"><span class="k">Ceiling</span><span class="v green">412</span></div>
+          <div class="jumbo-stat-row"><span class="k">Floor</span><span class="v red">268</span></div>
+          <div class="jumbo-stat-row"><span class="k">VBD</span><span class="v">+62.4</span></div>
+          <div class="jumbo-stat-row"><span class="k">ADP</span><span class="v">2.1</span></div>
+          <div class="jumbo-stat-row"><span class="k">PPG</span><span class="v">21.8</span></div>
+          <div class="jumbo-stat-row"><span class="k">BDGE+</span><span class="v green">88</span></div>
+        </div>
+        <div class="jumbo-center">
+          <div class="jumbo-photo"><img src="https://a.espncdn.com/combiner/i?img=/i/headshots/nfl/players/full/3117251.png&w=350&h=254" alt=""/></div>
+          <div class="jumbo-l3">
+            <span class="pos-badge">RB</span>
+            <div>
+              <div class="name">CHRISTIAN MCCAFFREY</div>
+              <div class="sub">49ERS · #23 · AGE 29 · BYE WK 6</div>
+            </div>
+            <div class="rank"><small>OVERALL</small>01</div>
+          </div>
+        </div>
+        <div class="jumbo-right">
+          <h3>// ARCHETYPE</h3>
+          <div>
+            <div class="jumbo-tag">CEILING_GOD</div>
+            <div class="jumbo-tag">VOLUME_DEMON</div>
+            <div class="jumbo-tag">BELL_COW</div>
+            <div class="jumbo-tag">DURABLE_24M</div>
+          </div>
+          <h3 style="margin-top:8px">// THE TAKE</h3>
+          <div class="jumbo-take">Workhorse RB1 with no concrete handcuff threat — <em>still the alpha</em>. Ceiling caps the room and the floor is among the highest at the position. Floor-driven CEO who hits ceiling more reliably than any back since Faulk.</div>
+          <h3 style="margin-top:8px">// VEGAS · WK 1</h3>
+          <div style="font-family:'VT323',monospace; font-size:18px; color:#22c55e; line-height:1.4">
+            TEAM IMPLIED <b style="color:#f5d272; float:right">26.5</b><br/>
+            SPREAD <b style="color:#f5d272; float:right">−4.5</b><br/>
+            O/U <b style="color:#f5d272; float:right">48.0</b><br/>
+            RUSH PROP <b style="color:#f5d272; float:right">94.5</b>
+          </div>
+        </div>
+      </div>
+      <div class="jumbo-foot">
+        <div class="jumbo-ticker-strip">
+          <span><b>CMC</b> 348.2 PROJ ·</span>
+          <span>SAQUON 292.3 ·</span>
+          <span>BIJAN 336.8 ·</span>
+          <span>HENRY 244.6 ·</span>
+          <span>JT 261.8 ·</span>
+          <span><b>WK 1</b> SF -4.5 vs ARI ·</span>
+          <span>O/U 48.0 ·</span>
+          <span>CMC RUSH PROP 94.5 ·</span>
+          <span>CMC ATTD -250 ·</span>
+          <span><b>NEWS</b> CMC FULL PRACTICE ·</span>
+          <span>OL #3 PFF ·</span>
+          <span>CONTRACT LOCKED THRU 2027 ·</span>
+          <!-- duplicate for seamless loop -->
+          <span><b>CMC</b> 348.2 PROJ ·</span>
+          <span>SAQUON 292.3 ·</span>
+          <span>BIJAN 336.8 ·</span>
+          <span>HENRY 244.6 ·</span>
+          <span>JT 261.8 ·</span>
+          <span><b>WK 1</b> SF -4.5 vs ARI ·</span>
+          <span>O/U 48.0 ·</span>
+          <span>CMC RUSH PROP 94.5 ·</span>
+          <span>CMC ATTD -250 ·</span>
+          <span><b>NEWS</b> CMC FULL PRACTICE ·</span>
+          <span>OL #3 PFF ·</span>
+          <span>CONTRACT LOCKED THRU 2027 ·</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════════ CONCEPT C: NEWSPAPER ═════════════ -->
+<section class="concept" data-concept="C">
+  <div class="concept-meta">
+    <h1>C · Newspaper Front Page</h1>
+    <div class="pitch">Old-school broadsheet. Italic Playfair nameplate, drop-cap article body, pull quotes, classified-ad style aside boxes. Sepia paper, dotted column rules, halftone-style photo. Treats the player as front-page news.</div>
+  </div>
+  <div class="paper">
+    <div class="paper-shell">
+      <div class="paper-flag">
+        <div class="l">VOL. IV<br/>NO. 01<br/>$0.00</div>
+        <div class="nameplate">The BDGE Times<small>— A FANTASY DRAFT GAZETTE EST. 2024 —</small></div>
+        <div class="r" style="text-align:right">DRAFT EDITION<br/>2026 SEASON<br/>WEATHER: CLEAR</div>
+      </div>
+      <div class="paper-issue">
+        <div>EDITORIAL · OPINION · STATS · WAGERS · CLASSIFIEDS</div>
+        <div class="center">FRIDAY · MAY 6 · 2026</div>
+        <div class="right">UPDATED 2 MIN AGO</div>
+      </div>
+
+      <div class="paper-kicker">— RB1 OVERALL · BIG BOARD #01 · ELITE TIER —</div>
+      <h1 class="paper-headline"><i>McCaffrey</i> Still the Alpha</h1>
+      <div class="paper-subhead">As the 49ers' workhorse enters his ninth year, every metric says volume isn't the question. <b>Durability is.</b></div>
+      <div class="paper-byline">
+        <span>BY <b>THE BDGE DESK</b></span><span>FILED FROM SANTA CLARA</span><span>RANKINGS PASS V4.2</span><span>CONFIDENCE 78%</span>
+      </div>
+
+      <div class="paper-body">
+        <div class="paper-main">
+          <div class="paper-photo-block">
+            <img src="https://a.espncdn.com/combiner/i?img=/i/headshots/nfl/players/full/3117251.png&w=350&h=254" alt=""/>
+            <div class="paper-caption"><b>FILE PHOTO</b> · McCaffrey at training camp, May 2026. The 49ers funnel every meaningful touch through him; backup Jordan Mason has flashed spike weeks but no path to a 3-down role.</div>
+          </div>
+          <div class="paper-article">
+            <p>Workhorse RB1 with no concrete handcuff threat — still the alpha of the 49ers' offense. Ceiling caps the room and the floor is among the highest at the position. Volume risk is attached to durability profile, but the 24-month injury record now reads cleaner than it has at any point since the rookie deal.</p>
+            <p>Backup Jordan Mason has flashed spike weeks but no realistic path to a 3-down role. Kyle Shanahan funnels every meaningful touch through McCaffrey when he's available, and the 2026 cap structure says he's available all year.</p>
+            <p>The 49ers' offensive line ranks #3 in PFF preseason grades. Interior run-blocking projects as a top-five unit, a direct positive for McCaffrey's rush-yardage prop ceiling. Combined with a contract restructure that clears $11.3M in cap space and locks him through 2027, the trade-chip speculation that briefly surfaced this offseason is dead.</p>
+            <div class="paper-pull">"Floor-driven CEO who hits ceiling more reliably than any back since Faulk."</div>
+            <p>Age 29 is the historical RB cliff. The comps say the cliff is real. But the 24-month load profile and the 2024 receiving-game reset suggest a softer landing than the position average. The bet is on durability holding for one more year — and on the 49ers' offense staying near the league's top five in scripted touch volume.</p>
+            <p>Vegas agrees. The Wk 1 line implies San Francisco at <b>26.5</b> against Arizona, with the spread at <b>−4.5</b> and an O/U of <b>48.0</b>. McCaffrey's rush-yards prop opens at <b>94.5</b>, with anytime touchdown odds at <b>−250</b>. He is, as one beat reporter put it, the safest <i>floor</i> in football and the highest <i>ceiling</i> at his position simultaneously.</p>
+          </div>
+        </div>
+
+        <aside class="paper-aside">
+          <div class="paper-box">
+            <h4>By The Numbers</h4>
+            <table class="paper-table">
+              <tr><td>Projected Points</td><td>348.2</td></tr>
+              <tr><td>Ceiling (90th)</td><td>412</td></tr>
+              <tr><td>Floor (10th)</td><td>268</td></tr>
+              <tr><td>VBD vs Repl.</td><td>+62.4</td></tr>
+              <tr><td>Consensus ADP</td><td>2.1</td></tr>
+              <tr><td>BDGE+ (age-adj)</td><td>88</td></tr>
+              <tr><td>EPA / Play</td><td>+0.21</td></tr>
+              <tr><td>Snap Share '24</td><td>82%</td></tr>
+            </table>
+          </div>
+          <div class="paper-box">
+            <h4>Closest Comps</h4>
+            <table class="paper-table">
+              <tr><td>L. Tomlinson '06</td><td>88%</td></tr>
+              <tr><td>M. Faulk '00</td><td>84%</td></tr>
+              <tr><td>A. Foster '12</td><td>79%</td></tr>
+            </table>
+          </div>
+          <div class="paper-classified">
+            <h4>// LATE WIRES</h4>
+            <div class="item"><b>2H AGO</b> · Christian upgraded to FULL practice. Shanahan: "He'll get whatever he wants."</div>
+            <div class="item"><b>1D</b> · Mason listed RB2 — no committee usage signal from Shanahan presser.</div>
+            <div class="item"><b>3D</b> · Limited Wednesday with knee soreness — listed as precaution.</div>
+            <div class="item"><b>5D</b> · 49ers OL ranked #3 PFF preseason grades.</div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════════ CONCEPT D: SCOUTING REPORT ═════════════ -->
+<section class="concept" data-concept="D">
+  <div class="concept-meta">
+    <h1>D · Scouting Report</h1>
+    <div class="pitch">NFL combine dossier on a coach's clipboard. Punch-holed paper, red margin line, stenciled headers, typewriter narrative, hand-stamped final grade, signature line. Treats the profile as a confidential evaluation, not marketing.</div>
+  </div>
+  <div class="scout">
+    <div class="scout-shell">
+      <div class="scout-stamp">DRAFT<br/>BUY<small>RANK #01</small></div>
+      <h2 class="scout-h">// PROSPECT EVAL · MCCAFFREY, C.</h2>
+      <div class="scout-sub">CONFIDENTIAL · BDGE DESK · 2026 BIG BOARD · v4.2</div>
+
+      <div class="scout-doc">
+        <div><span class="k">PROSPECT_ID</span><span class="v">CMC-3117251</span></div>
+        <div><span class="k">FILE_OPENED</span><span class="v">MAY 6 2026</span></div>
+        <div><span class="k">EVAL_BY</span><span class="v">B. ELITES</span></div>
+        <div><span class="k">CONFIDENCE</span><span class="v">78% (HIGH)</span></div>
+      </div>
+
+      <div class="scout-section">
+        <h3>SECTION 01 — IDENTITY <small>auto-pulled · NFLverse</small></h3>
+        <div class="scout-grid">
+          <div class="scout-photo">
+            <img src="https://a.espncdn.com/combiner/i?img=/i/headshots/nfl/players/full/3117251.png&w=350&h=254" alt=""/>
+            <div class="cap">FIG. 1 · SUBJECT IN UNIFORM · MAY 2026</div>
+          </div>
+          <div class="scout-form">
+            <span class="lab">FULL NAME</span><span class="field val">CHRISTIAN MCCAFFREY</span>
+            <span class="lab">POSITION</span><span class="field val">RB</span>
+            <span class="lab">TEAM / NUMBER</span><span class="field val">SF · #23</span>
+            <span class="lab">DOB / AGE</span><span class="field val">JUN 7, 1996 · 29 YR</span>
+            <span class="lab">HEIGHT / WEIGHT</span><span class="field val">5'11" / 205 LB</span>
+            <span class="lab">COLLEGE</span><span class="field val">STANFORD '17</span>
+            <span class="lab">DRAFTED</span><span class="field val">2017 R1.08 · CAR</span>
+            <span class="lab">EXPERIENCE</span><span class="field val">9 YR · 2,148 TOUCHES</span>
+            <span class="lab">BYE WEEK</span><span class="field val">WK 6</span>
+            <span class="lab">CONTRACT</span><span class="field val">LOCKED THRU 2027</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="scout-section">
+        <h3>SECTION 02 — GRADE CARD <small>1-100 scale · age-adjusted</small></h3>
+        <div class="scout-grade">
+          <div><span class="k">PROJ</span><span class="v A">88</span></div>
+          <div><span class="k">CEILING</span><span class="v A">94</span></div>
+          <div><span class="k">FLOOR</span><span class="v B">82</span></div>
+          <div><span class="k">EPA+</span><span class="v A">86</span></div>
+          <div><span class="k">DURABILITY</span><span class="v C">71</span></div>
+          <div class="grade-final"><span class="k">FINAL</span><span class="v">A−</span></div>
+        </div>
+      </div>
+
+      <div class="scout-section">
+        <h3>SECTION 03 — TRAIT CHECKLIST <small>X = present · 2024 reg-season tape</small></h3>
+        <div class="scout-checkbox-list">
+          <div class="scout-cbox checked"><span class="box"></span>WORKHORSE VOLUME (60%+ touch share)</div>
+          <div class="scout-cbox checked"><span class="box"></span>3-DOWN USAGE</div>
+          <div class="scout-cbox checked"><span class="box"></span>RECEIVING DOWN ROLE</div>
+          <div class="scout-cbox checked"><span class="box"></span>RZ TOUCH MONOPOLY (60%+)</div>
+          <div class="scout-cbox checked"><span class="box"></span>GOAL-LINE TOUCH MONOPOLY</div>
+          <div class="scout-cbox"><span class="box"></span>ELITE BREAKAWAY SPEED</div>
+          <div class="scout-cbox checked"><span class="box"></span>POSITIVE GAME-SCRIPT BIAS</div>
+          <div class="scout-cbox"><span class="box"></span>SUB-26 AGE PROFILE</div>
+          <div class="scout-cbox checked"><span class="box"></span>TOP-5 OL SUPPORT (PFF)</div>
+          <div class="scout-cbox"><span class="box"></span>ROOKIE / SOPHOMORE LEAP</div>
+        </div>
+      </div>
+
+      <div class="scout-section">
+        <h3>SECTION 04 — NARRATIVE <small>desk eval · 78% conf</small></h3>
+        <div class="scout-narrative">Workhorse <b>RB1</b> with no concrete handcuff threat — still the alpha. Ceiling caps the room. Floor is among the highest at the position. Mason has flashed spike weeks but no path to a 3-down role.
+
+The 49ers' OL ranks <b>#3 in PFF preseason grades</b>. Interior run-blocking projects as a top-5 unit. Direct positive for the rush-yards prop ceiling.
+
+Age 29 is the historical RB cliff. Comps say the cliff is real, but the 24-month load profile and the 2024 receiving-game reset suggest a <b>softer landing</b> than the position average.
+
+The bet: durability holds for one more year. The Niners stay top-5 in scripted touch volume. Take McCaffrey at the 1.01 and don't think twice.</div>
+      </div>
+
+      <div class="scout-sig">
+        <div><b>B. Elites</b>EVALUATOR — DESK LEAD</div>
+        <div><b>2026.05.06</b>FILED · TIMESTAMP</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════════ CONCEPT E: ALBUM / MUSIC PLAYER ═════════════ -->
+<section class="concept" data-concept="E">
+  <div class="concept-meta">
+    <h1>E · Album / Now Playing</h1>
+    <div class="pitch">Spotify-style album page meets player profile. Square art = headshot, tracklist = stat lines, lyrics panel = the take, controls bar at the bottom. Glassmorphic, dark, gradient-heavy. The most modern / app-native option.</div>
+  </div>
+  <div class="album">
+    <div class="album-shell">
+      <div class="album-cover">
+        <div class="album-art">
+          <img src="https://a.espncdn.com/combiner/i?img=/i/headshots/nfl/players/full/3117251.png&w=350&h=254" alt=""/>
+          <div class="album-art-overlay">
+            <div class="label">// 2026 BIG BOARD · #01</div>
+            <div class="album-name">RB1 · Volume IV</div>
+            <div class="artist">CHRISTIAN MCCAFFREY · 49ERS</div>
+          </div>
+        </div>
+
+        <div class="album-controls">
+          <div class="album-progress"></div>
+          <div class="album-time"><span>2:14</span><span>5:48</span></div>
+          <div class="album-buttons">
+            <button>↻</button>
+            <button>⏮</button>
+            <button class="play">▶</button>
+            <button>⏭</button>
+            <button>⇄</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="album-right">
+        <div class="album-meta-line">
+          <span>RB · #23 · 49ERS</span><span class="dot"></span>
+          <span>AGE 29</span><span class="dot"></span>
+          <span>BYE WK 6</span><span class="dot"></span>
+          <span>9 YR EXP</span><span class="dot"></span>
+          <span>UPDATED 2 MIN AGO</span>
+        </div>
+        <h1 class="album-tagline">Still the <span class="accent">alpha.</span><br/>Volume CEO,<br/>RB1 forever.</h1>
+        <p class="album-deck">Workhorse RB1 with no concrete handcuff threat. Ceiling caps the room and the floor is among the highest at the position — and the 49ers' offense funnels <b>every meaningful touch</b> through him.</p>
+
+        <div class="album-section">
+          <h3>The Numbers <small>Projection · v4.2</small></h3>
+          <div class="album-tracklist">
+            <div class="album-track playing">
+              <span class="num">01</span>
+              <div class="meta">
+                <div class="title">Projected Points <span class="album-eq"><i></i><i></i><i></i></span></div>
+                <div class="sub">Median season total · PPR</div>
+              </div>
+              <span class="v cy">348.2</span>
+              <span class="dur">PPG 21.8</span>
+            </div>
+            <div class="album-track">
+              <span class="num">02</span>
+              <div class="meta"><div class="title">Ceiling</div><div class="sub">90th percentile outcome</div></div>
+              <span class="v gn">412</span><span class="dur">+18%</span>
+            </div>
+            <div class="album-track">
+              <span class="num">03</span>
+              <div class="meta"><div class="title">Floor</div><div class="sub">10th percentile outcome</div></div>
+              <span class="v rd">268</span><span class="dur">−23%</span>
+            </div>
+            <div class="album-track">
+              <span class="num">04</span>
+              <div class="meta"><div class="title">VBD vs Replacement</div><div class="sub">Roster-build value</div></div>
+              <span class="v go">+62.4</span><span class="dur">RB1</span>
+            </div>
+            <div class="album-track">
+              <span class="num">05</span>
+              <div class="meta"><div class="title">Consensus ADP</div><div class="sub">12-team · half-PPR</div></div>
+              <span class="v">2.1</span><span class="dur">range 1.2-4.0</span>
+            </div>
+            <div class="album-track">
+              <span class="num">06</span>
+              <div class="meta"><div class="title">BDGE+ (age-adj)</div><div class="sub">Composite impact score</div></div>
+              <span class="v cy">88</span><span class="dur">A−</span>
+            </div>
+            <div class="album-track">
+              <span class="num">07</span>
+              <div class="meta"><div class="title">EPA / Play</div><div class="sub">Per-touch efficiency</div></div>
+              <span class="v gn">+0.21</span><span class="dur">86th pct</span>
+            </div>
+            <div class="album-track">
+              <span class="num">08</span>
+              <div class="meta"><div class="title">Snap Share '24</div><div class="sub">Reg-season usage</div></div>
+              <span class="v">82%</span><span class="dur">RB1</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="album-section">
+          <h3>The Take <small>BDGE Desk · 78% conf</small></h3>
+          <div class="album-lyrics">
+            <em>Workhorse RB1 with no concrete handcuff threat — still the alpha.</em> Ceiling caps the room and the floor is among the highest at the position. Mason has flashed spike weeks but no path to a 3-down role.<br/><br/>
+            The 49ers' OL ranks <b>#3 in PFF preseason grades</b>. Interior run-blocking projects as a top-5 unit — direct positive for the rush-yards prop ceiling.<br/><br/>
+            Age 29 is the historical RB cliff. Comps say the cliff is real, but the 24-month load profile and the 2024 receiving-game reset suggest a softer landing than the position average. <em>The bet is on durability holding for one more year.</em>
+            <div class="album-lyrics-credits">// LT '06 (88%) · FAULK '00 (84%) · FOSTER '12 (79%)</div>
+          </div>
+        </div>
+
+        <div class="album-section">
+          <h3>Wk 1 vs ARI <small>Vegas line · book consensus</small></h3>
+          <div class="album-tracklist">
+            <div class="album-track">
+              <span class="num">♠</span>
+              <div class="meta"><div class="title">Team Implied</div><div class="sub">SF scoring projection</div></div>
+              <span class="v">26.5</span><span class="dur">−4.5</span>
+            </div>
+            <div class="album-track">
+              <span class="num">♣</span>
+              <div class="meta"><div class="title">Rush Yards Prop</div><div class="sub">Sportsbook line</div></div>
+              <span class="v cy">94.5</span><span class="dur">o−110</span>
+            </div>
+            <div class="album-track">
+              <span class="num">♥</span>
+              <div class="meta"><div class="title">Anytime TD</div><div class="sub">Most-bet on slate</div></div>
+              <span class="v gn">−250</span><span class="dur">71%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</div>
+
+<script>
+document.querySelectorAll('#switcher button').forEach(b => {
+  b.addEventListener('click', () => {
+    const target = b.dataset.concept;
+    document.querySelectorAll('#switcher button').forEach(x => x.classList.toggle('active', x === b));
+    document.querySelectorAll('.concept').forEach(c => c.classList.toggle('active', c.dataset.concept === target));
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  });
+});
+</script>
+</body>
+</html>

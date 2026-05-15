@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Mockup 4 · Tradeoff Lens</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root{--cream:#f9f5eb;--ink:#082430;--ink-soft:#1c3543;--blue:#259fd6;--pink:#fb637a;--gold:#febe02;--green:#16a34a;--gray:#94a3b8}
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--cream);color:var(--ink);font-family:Inter,sans-serif}
+  .nav{display:flex;align-items:center;justify-content:space-between;padding:14px 24px;background:#fff;border-bottom:1px solid rgba(8,36,48,.15)}
+  .nav a{color:var(--ink);text-decoration:none;font-size:12px;text-transform:uppercase;letter-spacing:.18em}
+  .nav .num{font-family:"Bebas Neue",sans-serif;font-size:18px;letter-spacing:.06em}
+
+  .wrap{max-width:1180px;margin:0 auto;padding:32px 24px 60px;display:grid;grid-template-columns:1fr 360px;gap:32px}
+
+  .stage{background:#fff;border:2px solid var(--ink);box-shadow:6px 6px 0 var(--ink);padding:28px;position:relative}
+  .stage h2{font-family:"Bebas Neue",sans-serif;font-size:34px;letter-spacing:.02em;margin:0 0 4px;line-height:1}
+  .stage .lede{color:var(--ink-soft);font-size:13px;margin:0 0 18px}
+
+  /* ─── Scatter ─── */
+  .scatter-wrap{position:relative}
+  svg.scatter{display:block;width:100%;height:auto;aspect-ratio:1.2/1;background:linear-gradient(135deg,rgba(8,36,48,.03) 0%,rgba(8,36,48,.06) 100%);border:1px solid rgba(8,36,48,.18)}
+  .axis{stroke:var(--ink);stroke-width:1.5}
+  .axis-tick{stroke:rgba(8,36,48,.2);stroke-dasharray:3,4}
+  .axis-label{font-family:"Bebas Neue",sans-serif;letter-spacing:.16em;font-size:13px;fill:var(--ink)}
+  .axis-tick-label{font-family:Inter,sans-serif;font-size:10px;fill:var(--ink-soft)}
+  .quad-label{font-family:"Bebas Neue",sans-serif;letter-spacing:.18em;fill:rgba(8,36,48,.32);font-size:11px}
+  .cloud.b{fill:var(--blue);fill-opacity:.16}
+  .cloud.p{fill:var(--pink);fill-opacity:.16}
+  .cloud.glow{filter:drop-shadow(0 0 12px currentColor)}
+  .pt{stroke:#fff;stroke-width:2}
+  .pt.b{fill:var(--blue)}
+  .pt.p{fill:var(--pink)}
+  .pt-label{font-family:"Bebas Neue",sans-serif;font-size:14px;letter-spacing:.04em}
+  .pt-label.b{fill:var(--blue)}
+  .pt-label.p{fill:var(--pink)}
+
+  .legend{display:flex;justify-content:center;gap:32px;font-size:13px;letter-spacing:.06em;color:var(--ink-soft);margin-top:12px}
+  .swatch{width:14px;height:14px;border-radius:50%;display:inline-block;margin-right:8px;vertical-align:middle}
+  .swatch.b{background:var(--blue)}
+  .swatch.p{background:var(--pink)}
+  .legend b{color:var(--ink)}
+
+  /* ─── Right rail ─── */
+  .rail{display:flex;flex-direction:column;gap:18px}
+  .rail h3{font-family:"Bebas Neue",sans-serif;letter-spacing:.18em;font-size:14px;color:var(--ink-soft);margin:0 0 12px}
+
+  .prompts{background:#fff;border:2px solid var(--ink);padding:20px}
+  .prompt{display:flex;align-items:flex-start;gap:14px;padding:14px;border:2px solid rgba(8,36,48,.12);margin-bottom:10px;cursor:pointer;transition:all 160ms;background:var(--cream)}
+  .prompt:hover{border-color:var(--ink)}
+  .prompt.active{border-color:var(--ink);box-shadow:4px 4px 0 var(--ink)}
+  .prompt.active.b{background:rgba(37,159,214,.14);border-color:var(--blue);box-shadow:4px 4px 0 var(--blue)}
+  .prompt.active.p{background:rgba(251,99,122,.14);border-color:var(--pink);box-shadow:4px 4px 0 var(--pink)}
+  .prompt .ico{font-family:"Bebas Neue",sans-serif;font-size:32px;line-height:1;letter-spacing:.02em;color:var(--ink-soft);width:42px;flex-shrink:0;text-align:center;border:2px solid rgba(8,36,48,.2);padding:6px 0;background:#fff}
+  .prompt.active.b .ico{background:var(--blue);color:#fff;border-color:var(--blue)}
+  .prompt.active.p .ico{background:var(--pink);color:#fff;border-color:var(--pink)}
+  .prompt .body{flex:1;min-width:0}
+  .prompt .q{font-family:"Bebas Neue",sans-serif;font-size:18px;letter-spacing:.04em;line-height:1.05}
+  .prompt .a{font-size:12px;color:var(--ink-soft);margin-top:3px;line-height:1.4}
+  .prompt .pick{margin-top:6px;font-family:"Bebas Neue",sans-serif;font-size:14px;letter-spacing:.08em;color:var(--ink-soft)}
+  .prompt.active.b .pick{color:var(--blue)}
+  .prompt.active.p .pick{color:var(--pink)}
+
+  .ctxstat{background:var(--ink);color:var(--cream);border:2px solid var(--ink);padding:18px}
+  .ctxstat h3{color:rgba(249,245,235,.6);margin-bottom:10px}
+  .ctxrow{display:grid;grid-template-columns:1fr auto auto auto;gap:8px;align-items:center;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.1);font-size:13px}
+  .ctxrow:last-child{border-bottom:0}
+  .ctxrow .k{color:rgba(249,245,235,.85);font-size:12px;letter-spacing:.06em}
+  .ctxrow .v{font-family:"Bebas Neue",sans-serif;font-size:18px;letter-spacing:.02em;min-width:50px;text-align:center}
+  .ctxrow .v.b{color:#9fdcff}
+  .ctxrow .v.p{color:#ffb1bf}
+  .ctxrow .v.win{box-shadow:inset 0 -2px 0 var(--green)}
+
+  .draftbtns{display:flex;flex-direction:column;gap:10px}
+  .draftbtn{display:block;padding:16px 18px;border:2px solid var(--ink);background:#fff;color:var(--ink);font-family:"Bebas Neue",sans-serif;font-size:20px;letter-spacing:.06em;text-align:center;cursor:pointer;transition:all 160ms}
+  .draftbtn:hover{transform:translate(-2px,-2px);box-shadow:4px 4px 0 var(--ink)}
+  .draftbtn small{display:block;font-family:Inter,sans-serif;font-size:10px;letter-spacing:.18em;font-weight:500;margin-top:2px;opacity:.7;text-transform:uppercase}
+</style>
+</head>
+<body>
+<div class="nav">
+  <a href="3-radar.html">← Prev</a>
+  <span class="num">04 / 05 · Tradeoff Lens</span>
+  <a href="5-clock.html">Next →</a>
+</div>
+
+<div class="wrap">
+  <div class="stage">
+    <h2>Floor vs. Ceiling — pick your tradeoff</h2>
+    <p class="lede">Each player's <b>outcome cloud</b> is the P5–P95 simulation range. Click a context on the right to see who fits.</p>
+
+    <div class="scatter-wrap">
+      <svg class="scatter" viewBox="0 0 720 600" id="scatterSvg">
+        <!-- Quadrant background tints -->
+        <rect x="60" y="40" width="320" height="260" fill="rgba(8,36,48,.04)"/>
+        <rect x="380" y="40" width="280" height="260" fill="rgba(254,190,2,.08)"/>
+        <rect x="60" y="300" width="320" height="240" fill="rgba(94,94,94,.05)"/>
+        <rect x="380" y="300" width="280" height="240" fill="rgba(34,197,94,.08)"/>
+
+        <!-- Quadrant labels -->
+        <text class="quad-label" x="68" y="56">LOW FLOOR · HIGH CEILING</text>
+        <text class="quad-label" x="388" y="56">HIGH FLOOR · HIGH CEILING ★</text>
+        <text class="quad-label" x="68" y="534">LOW FLOOR · LOW CEILING</text>
+        <text class="quad-label" x="388" y="534">HIGH FLOOR · LOW CEILING</text>
+
+        <!-- Axes -->
+        <line class="axis" x1="60" y1="540" x2="660" y2="540"/>
+        <line class="axis" x1="60" y1="40"  x2="60"  y2="540"/>
+        <text class="axis-label" x="360" y="582" text-anchor="middle">FLOOR (P5 simulated points) →</text>
+        <text class="axis-label" x="-300" y="28" transform="rotate(-90)" text-anchor="middle">↑ CEILING (P95 simulated points)</text>
+        <!-- Ticks -->
+        <line class="axis-tick" x1="200" y1="40" x2="200" y2="540"/>
+        <line class="axis-tick" x1="360" y1="40" x2="360" y2="540"/>
+        <line class="axis-tick" x1="500" y1="40" x2="500" y2="540"/>
+        <text class="axis-tick-label" x="60"  y="556" text-anchor="middle">160</text>
+        <text class="axis-tick-label" x="200" y="556" text-anchor="middle">200</text>
+        <text class="axis-tick-label" x="360" y="556" text-anchor="middle">240</text>
+        <text class="axis-tick-label" x="500" y="556" text-anchor="middle">280</text>
+        <text class="axis-tick-label" x="660" y="556" text-anchor="middle">320</text>
+        <line class="axis-tick" x1="60" y1="180" x2="660" y2="180"/>
+        <line class="axis-tick" x1="60" y1="320" x2="660" y2="320"/>
+        <line class="axis-tick" x1="60" y1="460" x2="660" y2="460"/>
+        <text class="axis-tick-label" x="52" y="44"  text-anchor="end">450</text>
+        <text class="axis-tick-label" x="52" y="184" text-anchor="end">400</text>
+        <text class="axis-tick-label" x="52" y="324" text-anchor="end">350</text>
+        <text class="axis-tick-label" x="52" y="464" text-anchor="end">300</text>
+        <text class="axis-tick-label" x="52" y="544" text-anchor="end">250</text>
+
+        <!-- Bijan: floor 251 (x ~ 380), ceiling 398 (x: floor=251 → 60+(251-160)/160*600 = 60+91/160*600 = 60+341 = 401);
+             Y: ceiling 398 → 40+(450-398)/200*500 = 40+52/200*500 = 40+130 = 170 -->
+        <ellipse class="cloud b" cx="401" cy="170" rx="86" ry="56"/>
+        <circle class="pt b" cx="401" cy="170" r="9"/>
+        <text class="pt-label b" x="415" y="174">Bijan · 87.4</text>
+
+        <!-- Gibbs: floor 232 (x: 60+(232-160)/160*600 = 60+72/160*600 = 60+270 = 330);
+             ceiling 414 (y: 40+(450-414)/200*500 = 40+36/200*500 = 40+90 = 130) -->
+        <ellipse class="cloud p" cx="330" cy="130" rx="74" ry="64"/>
+        <circle class="pt p" cx="330" cy="130" r="9"/>
+        <text class="pt-label p" x="240" y="116">Gibbs · 84.2</text>
+
+        <!-- Center crosshair label "median bench" -->
+        <text class="quad-label" x="664" y="560" text-anchor="end">▲ Better both</text>
+      </svg>
+    </div>
+
+    <div class="legend">
+      <span><span class="swatch b"></span><b>Bijan Robinson</b> — Floor 251 · Ceiling 398 · Spread 147</span>
+      <span><span class="swatch p"></span><b>Jahmyr Gibbs</b> — Floor 232 · Ceiling 414 · Spread 182</span>
+    </div>
+  </div>
+
+  <div class="rail">
+    <div class="prompts">
+      <h3>WHICH SITUATION ARE YOU IN?</h3>
+
+      <div class="prompt active b" data-pick="b">
+        <div class="ico">⛨</div>
+        <div class="body">
+          <div class="q">Need a safe Week-1 starter?</div>
+          <div class="a">You can't afford a bust. RB1 floor matters more than ceiling.</div>
+          <div class="pick">→ DRAFT BIJAN</div>
+        </div>
+      </div>
+
+      <div class="prompt" data-pick="p">
+        <div class="ico">⚡</div>
+        <div class="body">
+          <div class="q">Building for the playoffs?</div>
+          <div class="a">Spike-weeks beat consistency in Wks 14–17. Schedule + ceiling lead.</div>
+          <div class="pick">→ DRAFT GIBBS</div>
+        </div>
+      </div>
+
+      <div class="prompt" data-pick="p">
+        <div class="ico">★</div>
+        <div class="body">
+          <div class="q">Best-ball or tournament?</div>
+          <div class="a">Best lineup counts. Ceiling games are everything.</div>
+          <div class="pick">→ DRAFT GIBBS</div>
+        </div>
+      </div>
+
+      <div class="prompt" data-pick="b">
+        <div class="ico">$</div>
+        <div class="body">
+          <div class="q">Drafting late round / cash league?</div>
+          <div class="a">Volume + health stabilize weekly cash payouts.</div>
+          <div class="pick">→ DRAFT BIJAN</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ctxstat">
+      <h3 id="ctxHeader">CONTEXT-AWARE STATS · NEED SAFETY</h3>
+      <div class="ctxrow"><div class="k">Floor (P5 sim)</div><div class="v b win">251</div><div class="k" style="opacity:.6">vs</div><div class="v p">232</div></div>
+      <div class="ctxrow"><div class="k">Ceiling (P95 sim)</div><div class="v b">398</div><div class="k" style="opacity:.6">vs</div><div class="v p win">414</div></div>
+      <div class="ctxrow"><div class="k">Health · 3-yr</div><div class="v b win">92%</div><div class="k" style="opacity:.6">vs</div><div class="v p">84%</div></div>
+      <div class="ctxrow"><div class="k">Volume share</div><div class="v b win">71%</div><div class="k" style="opacity:.6">vs</div><div class="v p">58%</div></div>
+    </div>
+
+    <div class="draftbtns">
+      <button class="draftbtn" style="background:var(--blue);color:#fff;border-color:var(--blue)">DRAFT BIJAN<small>fits your context</small></button>
+      <button class="draftbtn">DRAFT GIBBS<small>override</small></button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const prompts=document.querySelectorAll('.prompt');
+  const headers={
+    'Need a safe Week-1 starter?':'CONTEXT-AWARE STATS · NEED SAFETY',
+    'Building for the playoffs?':'CONTEXT-AWARE STATS · PLAYOFF UPSIDE',
+    'Best-ball or tournament?':'CONTEXT-AWARE STATS · BEST-BALL',
+    'Drafting late round / cash league?':'CONTEXT-AWARE STATS · CASH FLOOR'
+  };
+  prompts.forEach(p=>p.addEventListener('click',()=>{
+    prompts.forEach(x=>x.classList.remove('active','b','p'));
+    p.classList.add('active', p.dataset.pick);
+    const q=p.querySelector('.q').textContent;
+    document.getElementById('ctxHeader').textContent = headers[q] || 'CONTEXT-AWARE STATS';
+    // Swap draft button highlight
+    const btns=document.querySelectorAll('.draftbtn');
+    if (p.dataset.pick==='b') {
+      btns[0].style.background='var(--blue)';btns[0].style.borderColor='var(--blue)';btns[0].style.color='#fff';
+      btns[1].style.background='#fff';btns[1].style.borderColor='var(--ink)';btns[1].style.color='var(--ink)';
+      btns[0].firstChild.nodeValue='DRAFT BIJAN'; btns[1].firstChild.nodeValue='DRAFT GIBBS';
+    } else {
+      btns[0].style.background='var(--pink)';btns[0].style.borderColor='var(--pink)';btns[0].style.color='#fff';
+      btns[1].style.background='#fff';btns[1].style.borderColor='var(--ink)';btns[1].style.color='var(--ink)';
+      btns[0].firstChild.nodeValue='DRAFT GIBBS'; btns[1].firstChild.nodeValue='DRAFT BIJAN';
+    }
+  }));
+
+  document.addEventListener('keydown',e=>{
+    if(e.key==='ArrowRight') location.href='5-clock.html';
+    if(e.key==='ArrowLeft')  location.href='3-radar.html';
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Compare Mockups · BDGE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --cream:#f9f5eb; --ink:#082430; --ink-soft:#1c3543; --line:#082430;
+    --blue:#259fd6; --pink:#fb637a; --gold:#febe02; --green:#16a34a; --gray:#94a3b8;
+  }
+  * { box-sizing:border-box }
+  html,body{margin:0;padding:0;background:var(--cream);color:var(--ink);font-family:Inter,sans-serif}
+  .wrap{max-width:1180px;margin:0 auto;padding:48px 32px 80px}
+  .head{display:flex;align-items:flex-end;justify-content:space-between;border-bottom:2px solid var(--ink);padding-bottom:20px;margin-bottom:36px}
+  .h-l{display:flex;align-items:flex-end;gap:18px}
+  .badge{background:var(--ink);color:var(--cream);font-family:"Bebas Neue",sans-serif;font-size:36px;line-height:1;letter-spacing:.03em;padding:10px 16px 6px;display:inline-block}
+  h1{font-family:"Bebas Neue",sans-serif;font-size:64px;line-height:.92;letter-spacing:.01em;margin:0;font-weight:400}
+  h1 .accent{color:var(--pink)}
+  .sub{font-size:13px;text-transform:uppercase;letter-spacing:.18em;color:var(--ink-soft);margin-top:6px}
+  .intro{max-width:720px;margin:0 0 48px;font-size:15px;line-height:1.55;color:var(--ink-soft)}
+  .intro b{color:var(--ink)}
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+  @media(min-width:1100px){.grid{grid-template-columns:repeat(3,1fr)}}
+  .tile{background:#fff;border:2px solid var(--ink);padding:0;text-decoration:none;color:inherit;display:block;transition:transform 160ms,box-shadow 160ms;box-shadow:4px 4px 0 var(--ink);overflow:hidden}
+  .tile:hover{transform:translate(-2px,-2px);box-shadow:8px 8px 0 var(--ink)}
+  .tile-poster{height:160px;display:flex;align-items:center;justify-content:center;font-family:"Bebas Neue",sans-serif;font-size:96px;line-height:1;color:#fff;letter-spacing:.02em;position:relative;overflow:hidden;border-bottom:2px solid var(--ink)}
+  .tile-poster::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(135deg,transparent 0 22px,rgba(0,0,0,.05) 22px 24px)}
+  .t1{background:linear-gradient(135deg,#fb637a,#e11d48)}
+  .t2{background:linear-gradient(135deg,#082430,#1c3543)}
+  .t3{background:linear-gradient(135deg,#259fd6,#1e7fb4)}
+  .t4{background:linear-gradient(135deg,#febe02,#d97706);color:#082430}
+  .t5{background:linear-gradient(135deg,#082430 0%,#082430 50%,#fb637a 50%,#fb637a 100%)}
+  .tile-body{padding:18px 20px}
+  .tile-tag{font-family:"Bebas Neue",sans-serif;letter-spacing:.12em;font-size:12px;color:var(--ink-soft);margin-bottom:4px}
+  .tile-title{font-family:"Bebas Neue",sans-serif;font-size:28px;line-height:1;letter-spacing:.02em;margin:0 0 10px}
+  .tile-desc{font-size:13px;line-height:1.5;color:var(--ink-soft);margin:0}
+  .why{margin-top:14px;font-size:11px;text-transform:uppercase;letter-spacing:.18em;color:var(--pink);font-weight:600}
+  .foot{margin-top:48px;font-size:12px;color:var(--ink-soft);border-top:1px solid rgba(8,36,48,.18);padding-top:18px}
+  .foot kbd{font-family:"Bebas Neue",sans-serif;background:var(--ink);color:var(--cream);padding:1px 6px;font-size:13px;letter-spacing:.06em}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head">
+    <div class="h-l">
+      <div class="badge">VS</div>
+      <div>
+        <h1>Compare <span class="accent">Players</span></h1>
+        <div class="sub">5 design directions · 2-minute pick clock</div>
+      </div>
+    </div>
+  </div>
+  <p class="intro">
+    <b>Direction v2 — Compare Dock.</b> Three live, interactive variants. Persistent dock at the bottom; board still visible above. Drop any player into either slot, click the active one to swap, drag the weight sliders to change what matters, watch the verdict shift in real time.
+  </p>
+
+  <div class="grid" style="margin-bottom:48px">
+    <a class="tile" href="dock-tug.html">
+      <div class="tile-poster" style="background:linear-gradient(90deg,#259fd6 0%,#259fd6 50%,#fb637a 50%,#fb637a 100%);position:relative">
+        <span style="font-size:60px;letter-spacing:.04em;z-index:1;color:#fff">⇄ TUG</span>
+      </div>
+      <div class="tile-body">
+        <div class="tile-tag">Dock v2 · Tug-of-War</div>
+        <h2 class="tile-title">Tug-of-War Meter</h2>
+        <p class="tile-desc">One horizontal needle bar across the top. Each stat row contributes a slice. Sliders shift the pointer live. The bar IS the decision.</p>
+        <div class="why">→ One pointer, one verdict</div>
+      </div>
+    </a>
+
+    <a class="tile" href="dock-plinko.html">
+      <div class="tile-poster" style="background:#082430;position:relative">
+        <span style="font-size:50px;color:#febe02;z-index:1">● → ←</span>
+      </div>
+      <div class="tile-body">
+        <div class="tile-tag">Dock v2 · Plinko</div>
+        <h2 class="tile-title">Plinko Lanes</h2>
+        <p class="tile-desc">Five horizontal channels, one per stat. Pucks physically slide toward whichever player wins. Aggregate puck at the bottom delivers the verdict.</p>
+        <div class="why">→ Live, tactile, kinetic</div>
+      </div>
+    </a>
+
+    <a class="tile" href="dock-pip.html">
+      <div class="tile-poster" style="background:#082430;position:relative">
+        <span style="font-family:'Bebas Neue';font-size:48px;letter-spacing:.12em;color:#fff;z-index:1">● ● ● ○ ○</span>
+      </div>
+      <div class="tile-body">
+        <div class="tile-tag">Dock v2 · Pip Grid</div>
+        <h2 class="tile-title">Pip Grid</h2>
+        <p class="tile-desc">Minimalist scoreboard. Each row's pips light up by margin; weights dim or boost rows. Total row = rounds won.</p>
+        <div class="why">→ Cleanest, glanceable</div>
+      </div>
+    </a>
+  </div>
+
+  <p class="intro" style="margin-top:0">
+    <b>Direction v1 — early ideas (rejected).</b> Five takeover-style approaches I built first. Kept here for reference; not the path forward.
+  </p>
+
+  <div class="grid">
+    <a class="tile" href="1-verdict.html">
+      <div class="tile-poster t1">VERDICT</div>
+      <div class="tile-body">
+        <div class="tile-tag">Mockup 1 · Recommendation-first</div>
+        <h2 class="tile-title">The Verdict</h2>
+        <p class="tile-desc">A giant pick with a confidence %, four hero stats as duel bars, and a one-sentence reason. Decide in five seconds, override if you disagree.</p>
+        <div class="why">→ Removes decision fatigue</div>
+      </div>
+    </a>
+
+    <a class="tile" href="2-tale-of-tape.html">
+      <div class="tile-poster t2">TALE / TAPE</div>
+      <div class="tile-body">
+        <div class="tile-tag">Mockup 2 · Sports broadcast</div>
+        <h2 class="tile-title">Tale of the Tape</h2>
+        <p class="tile-desc">UFC pre-fight card. Two portraits face off, composite scores in giant numerals, five "rounds" each with a checkmark winner, final scorecard.</p>
+        <div class="why">→ Familiar mental model</div>
+      </div>
+    </a>
+
+    <a class="tile" href="3-radar.html">
+      <div class="tile-poster t3">RADAR</div>
+      <div class="tile-body">
+        <div class="tile-tag">Mockup 3 · Visual gestalt</div>
+        <h2 class="tile-title">Radar Overlay</h2>
+        <p class="tile-desc">Two overlapping spider charts on six axes. Bigger blob wins. Hover an axis to drill into the underlying stat. Pure pattern recognition.</p>
+        <div class="why">→ One image = decision</div>
+      </div>
+    </a>
+
+    <a class="tile" href="4-tradeoff.html">
+      <div class="tile-poster t4">TRADEOFF</div>
+      <div class="tile-body">
+        <div class="tile-tag">Mockup 4 · Situational decision</div>
+        <h2 class="tile-title">Tradeoff Lens</h2>
+        <p class="tile-desc">Floor-vs-Ceiling scatter with outcome clouds. Four situational prompts ("Need safety?" "Need upside?") highlight the contextual winner.</p>
+        <div class="why">→ Frames context, not numbers</div>
+      </div>
+    </a>
+
+    <a class="tile" href="5-clock.html">
+      <div class="tile-poster t5">2:00</div>
+      <div class="tile-body">
+        <div class="tile-tag">Mockup 5 · Time pressure</div>
+        <h2 class="tile-title">The Clock</h2>
+        <p class="tile-desc">Live 2:00 countdown ticking at top. Five battle cards with glowing winner sides. Two huge "DRAFT" buttons. Embraces the clock as the design driver.</p>
+        <div class="why">→ Theatrical, keeps you moving</div>
+      </div>
+    </a>
+  </div>
+
+  <div class="foot">
+    All five use the same matchup — <b>Bijan Robinson</b> vs <b>Jahmyr Gibbs</b> — with the same underlying stats.
+    Press <kbd>← →</kbd> inside any mockup to navigate between them.
+  </div>
+</div>
+</body>
+</html>

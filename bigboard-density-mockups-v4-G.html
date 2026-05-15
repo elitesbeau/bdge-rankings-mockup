@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Big Board — G Variants (G1 – G5)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&family=Source+Serif+Pro:ital,wght@1,400;1,600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f9f5eb;
+  --card: #f4ede0;
+  --bg-soft: #efe6d4;
+  --ink: #082430;
+  --ink-soft: #54616a;
+  --ink-dim: #8a949b;
+  --ink-faint: #c1c8cd;
+  --line: #082430;
+  --line-soft: #d8d0bd;
+  --accent: #259fd6;
+  --accent-2: #fb637a;
+  --steal: #15803d;
+  --steal-bg: rgba(34,197,94,0.14);
+  --reach: #b91c1c;
+  --reach-bg: rgba(251,99,122,0.14);
+  --even:  #54616a;
+  --even-bg: rgba(138,148,155,0.10);
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--ink);
+  font-family: "Inter", sans-serif; }
+body { padding: 28px 28px 80px; max-width: 1240px; margin: 0 auto; }
+
+.page-h { font-family: "Oswald", sans-serif; font-size: 36px; margin: 0 0 6px; }
+.page-sub { font-size: 13px; color: var(--ink-soft); margin: 0 0 28px;
+  line-height: 1.5; max-width: 860px; }
+.page-sub b { color: var(--ink); }
+.page-sub code { background: var(--card); padding: 1px 5px; border-radius: 2px;
+  font-family: "JetBrains Mono", monospace; font-size: 11px; }
+
+.mock { margin-bottom: 48px; background: var(--bg);
+  border: 2px solid var(--line); padding: 22px; }
+.mock-h { display: flex; align-items: baseline; gap: 14px; margin: 0 0 4px; }
+.mock-tag { font-family: "JetBrains Mono", monospace;
+  font-size: 11px; letter-spacing: 0.24em; color: var(--accent-2); }
+.mock-name { font-family: "Oswald", sans-serif; font-size: 26px; }
+.mock-blurb { font-size: 12px; color: var(--ink-soft); margin: 0 0 16px;
+  line-height: 1.5; max-width: 860px; }
+.mock-blurb b { color: var(--ink); }
+
+/* shared chips */
+.pos { display: inline-grid; place-items: center;
+  min-width: 32px; height: 18px; padding: 0 6px;
+  font-family: "Oswald", sans-serif; font-size: 11px;
+  letter-spacing: 0.04em; border-radius: 3px;
+  font-variant-numeric: tabular-nums;
+}
+.pos.QB { background: rgba(251,99,122,0.18); color: #b91c1c; }
+.pos.RB { background: rgba(34,197,94,0.18);  color: var(--steal); }
+.pos.WR { background: rgba(37,159,214,0.18); color: #1e6f9c; }
+.pos.TE { background: rgba(217,119,6,0.18);  color: #92560a; }
+.chk { width: 20px; height: 20px;
+  border: 1.5px solid var(--line-soft); border-radius: 3px;
+  display: inline-grid; place-items: center;
+  background: var(--bg); font-size: 12px; color: var(--ink-soft);
+  flex-shrink: 0;
+}
+.chk.on { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+.round-h { display: flex; align-items: center; justify-content: space-between;
+  margin: 8px 0 6px; padding: 6px 0;
+  border-bottom: 1.5px solid var(--line);
+}
+.round-h .l { display: flex; align-items: center; gap: 12px;
+  font-family: "Oswald", sans-serif; font-size: 20px; }
+.round-h .l .num { font-family: "JetBrains Mono", monospace;
+  font-size: 11px; letter-spacing: 0.18em;
+  background: var(--ink); color: var(--bg); padding: 3px 7px; }
+.round-h .r { font-size: 11px; font-weight: 600; letter-spacing: 0.10em;
+  color: var(--ink-dim); }
+
+/* Verdict pill (small) used in multiple variants */
+.verdict { font-family: "Oswald", sans-serif;
+  font-size: 11px; letter-spacing: 0.04em;
+  padding: 3px 8px; border-radius: 3px;
+  white-space: nowrap;
+}
+.verdict.steal { background: var(--steal-bg); color: var(--steal); }
+.verdict.even  { background: var(--even-bg);  color: var(--even);  }
+.verdict.reach { background: var(--reach-bg); color: var(--reach); }
+
+/* ───────── shared row anatomy (all G variants build on this) ───────── */
+.gvar .header {
+  display: grid;
+  gap: 14px;
+  padding: 4px 14px 6px;
+  font-family: "Inter", sans-serif;
+  font-size: 10px; font-weight: 800; letter-spacing: 0.14em;
+  color: var(--ink-dim);
+}
+.gvar .header > * { text-align: center; }
+.gvar .header .l { text-align: left; }
+.gvar .row {
+  display: grid;
+  gap: 14px;
+  align-items: center;
+  padding: 7px 14px;
+  background: var(--card);
+  border: 1.5px solid var(--line-soft);
+  border-radius: 8px;
+  margin-bottom: 4px;
+  cursor: pointer;
+  min-height: 50px;
+  transition: border-color 120ms, transform 120ms, box-shadow 120ms;
+}
+.gvar .row:hover {
+  border-color: var(--accent);
+  transform: translateX(2px);
+  box-shadow: 0 2px 8px rgba(8,36,48,0.06);
+}
+.gvar .rk {
+  font-family: "Oswald", sans-serif;
+  font-size: 15px;
+  background: var(--bg);
+  border: 1.5px solid var(--line-soft);
+  padding: 4px 0; text-align: center; border-radius: 4px;
+  font-variant-numeric: tabular-nums;
+  min-width: 32px;
+}
+.gvar .pfp { width: 38px; height: 38px; border-radius: 50%; overflow: hidden;
+  border: 1.5px solid var(--line); background: var(--bg-soft); }
+.gvar .pfp img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+.gvar .nm {
+  font-family: "Oswald", sans-serif;
+  font-size: 17px; line-height: 1.05;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.gvar .team-logo {
+  display: inline-grid; place-items: center;
+  width: 22px; height: 22px;
+}
+.gvar .team-logo img { width: 100%; height: 100%; object-fit: contain; }
+.gvar .team-abbr {
+  font-family: "Inter", sans-serif;
+  font-size: 11px; font-weight: 800; letter-spacing: 0.06em;
+  color: var(--ink);
+}
+.gvar .adp {
+  font-family: "Oswald", sans-serif;
+  font-size: 18px; line-height: 1;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+  white-space: nowrap;
+}
+.gvar .chev {
+  color: var(--accent); font-size: 16px; text-align: right;
+  font-weight: 700;
+}
+
+/* ──────────────────────────────────────────
+   G1 — POLISHED SPACING
+   Same as G but: name+pos+team are grouped left,
+   ADP is a single number, props column = verdict.
+   ────────────────────────────────────────── */
+.G1 .header,
+.G1 .row {
+  grid-template-columns: 22px 36px 38px minmax(160px, 1fr) 90px 70px 90px 16px;
+}
+.G1 .who {
+  display: flex; align-items: center; gap: 10px; min-width: 0;
+}
+.G1 .who .nm { min-width: 0; }
+.G1 .team {
+  display: flex; align-items: center; gap: 6px;
+  font-family: "Inter", sans-serif;
+  font-size: 12px; font-weight: 800; letter-spacing: 0.06em;
+  color: var(--ink-soft);
+  white-space: nowrap;
+}
+
+/* ──────────────────────────────────────────
+   G2 — VERDICT-TINTED ROWS
+   Same anatomy as G1, but the WHOLE row has a soft
+   tint and a 4px left stripe driven by the verdict.
+   Eye scans for STEAL stripes down the page.
+   ────────────────────────────────────────── */
+.G2 .header,
+.G2 .row {
+  grid-template-columns: 22px 36px 38px minmax(160px, 1fr) 90px 70px 80px 16px;
+}
+.G2 .row { position: relative; padding-left: 18px; }
+.G2 .row::before {
+  content: ""; position: absolute; left: 0; top: 0; bottom: 0;
+  width: 4px; border-radius: 4px 0 0 4px;
+  background: var(--line-soft);
+}
+.G2 .row.steal::before { background: var(--steal); }
+.G2 .row.even::before  { background: var(--ink-dim); }
+.G2 .row.reach::before { background: var(--reach); }
+.G2 .row.steal { background: color-mix(in srgb, var(--steal) 5%, var(--card)); }
+.G2 .row.reach { background: color-mix(in srgb, var(--reach) 5%, var(--card)); }
+.G2 .who { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.G2 .team {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 12px; font-weight: 800; letter-spacing: 0.06em;
+  color: var(--ink-soft); white-space: nowrap;
+}
+
+/* ──────────────────────────────────────────
+   G3 — MINI CHIP TRIO
+   The props column becomes 3 informative chips:
+   Tier · Trend · Pos Rank.
+   ────────────────────────────────────────── */
+.G3 .header,
+.G3 .row {
+  grid-template-columns: 22px 36px 38px minmax(150px, 0.9fr) 80px minmax(180px, 1fr) 70px 16px;
+}
+.G3 .who { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.G3 .team {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 12px; font-weight: 800; letter-spacing: 0.06em;
+  color: var(--ink-soft); white-space: nowrap;
+}
+.G3 .chip-trio {
+  display: inline-flex; gap: 6px; align-items: center;
+  flex-wrap: nowrap; overflow: hidden;
+}
+.G3 .chip {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 9px; border-radius: 12px;
+  font-family: "Inter", sans-serif;
+  font-size: 11px; font-weight: 700; line-height: 1.2;
+  white-space: nowrap;
+}
+.G3 .chip.tier1 { background: rgba(34,197,94,0.16); color: var(--steal); }
+.G3 .chip.tier2 { background: rgba(37,159,214,0.16); color: #1e6f9c; }
+.G3 .chip.tier3 { background: rgba(217,119,6,0.16); color: #92560a; }
+.G3 .chip.trend.up   { background: var(--steal-bg); color: var(--steal); }
+.G3 .chip.trend.dn   { background: var(--reach-bg); color: var(--reach); }
+.G3 .chip.trend.flat { background: var(--bg-soft); color: var(--ink-soft); }
+.G3 .chip.posrk { background: var(--bg-soft); color: var(--ink); border: 1px solid var(--line-soft); }
+
+/* ──────────────────────────────────────────
+   G4 — SUB-LINE TAKE
+   Stacks a 1-line BDGE editorial italic below the name.
+   Rows slightly taller. Replaces props column entirely.
+   ────────────────────────────────────────── */
+.G4 .header,
+.G4 .row {
+  grid-template-columns: 22px 36px 44px 1fr 76px 70px 16px;
+}
+.G4 .row { min-height: 62px; }
+.G4 .who { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.G4 .nm-row {
+  display: flex; align-items: center; gap: 8px; min-width: 0;
+}
+.G4 .nm-row .nm { min-width: 0; }
+.G4 .take {
+  font-family: "Source Serif Pro", Georgia, serif;
+  font-style: italic;
+  font-size: 12px; color: var(--ink-soft);
+  line-height: 1.25;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.G4 .pfp { width: 44px; height: 44px; }
+.G4 .team {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 12px; font-weight: 800; letter-spacing: 0.06em;
+  color: var(--ink-soft);
+  justify-content: center;
+}
+
+/* ──────────────────────────────────────────
+   G5 — POSITION RANK GAUGE
+   Replaces props with a horizontal gauge showing
+   where this player sits within his position
+   (RB1 = 100% filled, RB10 = 70% filled, etc.)
+   ────────────────────────────────────────── */
+.G5 .header,
+.G5 .row {
+  grid-template-columns: 22px 36px 38px minmax(150px, 0.9fr) 80px minmax(160px, 1fr) 70px 16px;
+}
+.G5 .who { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.G5 .team {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 12px; font-weight: 800; letter-spacing: 0.06em;
+  color: var(--ink-soft); white-space: nowrap;
+}
+.G5 .gauge {
+  display: flex; flex-direction: column; gap: 3px;
+  min-width: 0;
+}
+.G5 .gauge-top {
+  display: flex; justify-content: space-between; align-items: baseline;
+  font-family: "Inter", sans-serif;
+  font-size: 10px; font-weight: 700; letter-spacing: 0.06em;
+  color: var(--ink-soft);
+}
+.G5 .gauge-top .posrk {
+  font-family: "Oswald", sans-serif;
+  font-size: 13px; color: var(--ink); letter-spacing: 0.02em;
+}
+.G5 .gauge-top .of { color: var(--ink-dim); font-weight: 500; font-size: 10px; }
+.G5 .gauge-bar {
+  position: relative;
+  height: 7px;
+  background: var(--bg-soft);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.G5 .gauge-fill {
+  position: absolute; left: 0; top: 0; bottom: 0;
+  background: linear-gradient(90deg, var(--reach), #febe02 35%, var(--steal) 65%);
+  border-radius: 4px;
+}
+
+.scorecard {
+  margin-top: 16px;
+  padding: 16px 20px;
+  background: var(--bg-soft);
+  border: 1.5px solid var(--line);
+  font-size: 12px; line-height: 1.6;
+}
+.scorecard .lab { font-family: "JetBrains Mono", monospace;
+  font-size: 10px; letter-spacing: 0.20em; color: var(--accent-2);
+  min-width: 28px; display: inline-block; }
+</style>
+</head>
+<body>
+
+<h1 class="page-h">G Variants — Polished Pill Rows</h1>
+<p class="page-sub">
+  Five takes on Mockup G. All keep the rounded-pill row anatomy you liked. They differ in how they fill the middle and what visual signal they bake into each row.
+  Same data in each so you can compare apples-to-apples. <code>bigboard.html</code> untouched.
+</p>
+
+<!-- ═══════════ G1 ═══════════ -->
+<section class="mock gvar G1">
+  <div class="mock-h">
+    <span class="mock-tag">// G1</span>
+    <span class="mock-name">Polished Spacing</span>
+  </div>
+  <p class="mock-blurb">
+    Same anatomy as G with three fixes: <b>name + pos + team are grouped left</b> (no gap between them), <b>ADP is a single number</b> (no awkward "2 (2.10)"), and the "Coming Soon" props column is replaced with the <b>BDGE verdict pill</b>. Cleanest interpretation of G.
+  </p>
+  <div class="round-h">
+    <div class="l"><span class="num">R1</span> Round One</div>
+    <div class="r">Picks 1 – 10</div>
+  </div>
+  <div class="header">
+    <span></span><span>Rank</span><span></span>
+    <span class="l">Player</span><span>Team</span><span>ADP</span>
+    <span>Verdict</span><span></span>
+  </div>
+  <div id="G1-rows"></div>
+</section>
+
+<!-- ═══════════ G2 ═══════════ -->
+<section class="mock gvar G2">
+  <div class="mock-h">
+    <span class="mock-tag">// G2</span>
+    <span class="mock-name">Verdict-Tinted Rows</span>
+  </div>
+  <p class="mock-blurb">
+    Same as G1, but the <b>entire row gets a soft tint and a 4px left stripe</b> driven by the verdict. Steals = green, reaches = pink, even = neutral. Now the page has a vertical rhythm — your eye scans for the green stripes down the column and instantly sees every steal. Zero new data, just visual scan.
+  </p>
+  <div class="round-h">
+    <div class="l"><span class="num">R1</span> Round One</div>
+    <div class="r">Picks 1 – 10</div>
+  </div>
+  <div class="header">
+    <span></span><span>Rank</span><span></span>
+    <span class="l">Player</span><span>Team</span><span>ADP</span>
+    <span>Verdict</span><span></span>
+  </div>
+  <div id="G2-rows"></div>
+</section>
+
+<!-- ═══════════ G3 ═══════════ -->
+<section class="mock gvar G3">
+  <div class="mock-h">
+    <span class="mock-tag">// G3</span>
+    <span class="mock-name">Mini Chip Trio</span>
+  </div>
+  <p class="mock-blurb">
+    The middle column becomes <b>three informative chips</b>: Tier · Trend (↑ rising / ↓ falling / — stable) · Positional rank. Tiny, colored, packed inline. Replaces "Coming Soon" with three real signals. The eye reads each row as a quick stat line.
+  </p>
+  <div class="round-h">
+    <div class="l"><span class="num">R1</span> Round One</div>
+    <div class="r">Picks 1 – 10</div>
+  </div>
+  <div class="header">
+    <span></span><span>Rank</span><span></span>
+    <span class="l">Player</span><span>Team</span>
+    <span class="l">Quick Read</span><span>ADP</span><span></span>
+  </div>
+  <div id="G3-rows"></div>
+</section>
+
+<!-- ═══════════ G4 ═══════════ -->
+<section class="mock gvar G4">
+  <div class="mock-h">
+    <span class="mock-tag">// G4</span>
+    <span class="mock-name">Editorial Sub-Line</span>
+  </div>
+  <p class="mock-blurb">
+    Adds a <b>one-line BDGE editorial italic below the player name</b>. "Workhorse role solidified — bet on the volume." Slightly taller rows (62px). The middle of the row becomes BDGE's voice, not data. This is the differentiator vs every other ADP site.
+  </p>
+  <div class="round-h">
+    <div class="l"><span class="num">R1</span> Round One</div>
+    <div class="r">Picks 1 – 10</div>
+  </div>
+  <div class="header">
+    <span></span><span>Rank</span><span></span>
+    <span class="l">Player &amp; BDGE Take</span><span>Team</span><span>ADP</span><span></span>
+  </div>
+  <div id="G4-rows"></div>
+</section>
+
+<!-- ═══════════ G5 ═══════════ -->
+<section class="mock gvar G5">
+  <div class="mock-h">
+    <span class="mock-tag">// G5</span>
+    <span class="mock-name">Position Rank Gauge</span>
+  </div>
+  <p class="mock-blurb">
+    Replaces props with a <b>horizontal gauge</b> showing where this player sits within his position. RB1 fills the bar; RB16 fills half. Gradient runs red → amber → green so the bar's <em>color</em> at the fill point tells you "elite at the position" vs "middle of the pack." Compact, glanceable.
+  </p>
+  <div class="round-h">
+    <div class="l"><span class="num">R1</span> Round One</div>
+    <div class="r">Picks 1 – 10</div>
+  </div>
+  <div class="header">
+    <span></span><span>Rank</span><span></span>
+    <span class="l">Player</span><span>Team</span>
+    <span class="l">Position Rank</span><span>ADP</span><span></span>
+  </div>
+  <div id="G5-rows"></div>
+</section>
+
+<div class="scorecard">
+  <div><span class="lab">G1</span> Cleanest polish of G. Easy to read, no new info.</div>
+  <div><span class="lab">G2</span> Adds page rhythm via verdict-tinted rows. Scan-for-steals at a glance.</div>
+  <div><span class="lab">G3</span> Three real signals (tier · trend · pos rank) replacing "Coming Soon."</div>
+  <div><span class="lab">G4</span> BDGE editorial voice in every row. Highest content density, slightly taller rows.</div>
+  <div><span class="lab">G5</span> Visual gauge of position rank. Most graphical, most scannable.</div>
+</div>
+
+<script>
+const P = [
+  { rk:1,  name:"Christian McCaffrey", team:"SF",  pos:"RB", espn:"3117251", adp:2.1,  tier:1, posRk:1, posTot:32, trend:'up',   take:"Health is the question — top-3 ceiling when he plays." },
+  { rk:2,  name:"Bijan Robinson",      team:"ATL", pos:"RB", espn:"4430807", adp:1.8,  tier:1, posRk:2, posTot:32, trend:'up',   take:"Bell-cow role unlocked. 280+ touches incoming." },
+  { rk:3,  name:"Ja'Marr Chase",       team:"CIN", pos:"WR", espn:"4362628", adp:3.4,  tier:1, posRk:1, posTot:64, trend:'flat', take:"Burrow's #1 — 160 targets and a sky-high ceiling." },
+  { rk:4,  name:"Justin Jefferson",    team:"MIN", pos:"WR", espn:"4262921", adp:4.1,  tier:1, posRk:2, posTot:64, trend:'flat', take:"Target share insulates him from the QB room." },
+  { rk:5,  name:"Tyreek Hill",         team:"MIA", pos:"WR", espn:"3116406", adp:6.5,  tier:2, posRk:3, posTot:64, trend:'dn',   take:"Age narrative overblown — still 9+ targets a game." },
+  { rk:6,  name:"CeeDee Lamb",         team:"DAL", pos:"WR", espn:"4241389", adp:7.2,  tier:2, posRk:4, posTot:64, trend:'dn',   take:"Locked-in alpha — gated only by Dak's health." },
+  { rk:7,  name:"Saquon Barkley",      team:"PHI", pos:"RB", espn:"3929630", adp:8.4,  tier:2, posRk:3, posTot:32, trend:'up',   take:"Eagles O-line is a cheat code — career-best blocking." },
+  { rk:8,  name:"Patrick Mahomes",     team:"KC",  pos:"QB", espn:"3139477", adp:38.0, tier:1, posRk:1, posTot:24, trend:'flat', take:"Late-round Mahomes — the 2026 cheat code." },
+  { rk:9,  name:"Amon-Ra St. Brown",   team:"DET", pos:"WR", espn:"4374302", adp:9.6,  tier:2, posRk:5, posTot:64, trend:'flat', take:"Goff's security blanket. Boring WR1 production." },
+  { rk:10, name:"Puka Nacua",          team:"LAR", pos:"WR", espn:"4426338", adp:11.8, tier:2, posRk:6, posTot:64, trend:'up',   take:"Rookie year was no fluke — McVay built around him." },
+];
+
+function verdict(p) {
+  const d = p.adp - p.rk;
+  if (d > 0.5)  return ['steal', `Steal +${d.toFixed(1)}`];
+  if (d < -0.5) return ['reach', `Reach ${d.toFixed(1)}`];
+  return         ['even',  `Even`];
+}
+function img(p) {
+  return `<img src="https://a.espncdn.com/i/headshots/nfl/players/full/${p.espn}.png" alt="${p.name}" onerror="this.style.opacity=.15">`;
+}
+function teamLogo(p) {
+  return `<span class="team-logo"><img src="https://a.espncdn.com/i/teamlogos/nfl/500/${p.team.toLowerCase()}.png" alt="${p.team}" onerror="this.style.display='none'"></span>`;
+}
+function trendChip(t) {
+  if (t === 'up')   return `<span class="chip trend up">↑ Rising</span>`;
+  if (t === 'dn')   return `<span class="chip trend dn">↓ Falling</span>`;
+  return            `<span class="chip trend flat">— Stable</span>`;
+}
+function gaugePct(posRk, posTot) {
+  // RB1 = 100%, RB(posTot) = 25% (so the bar always has something)
+  return Math.max(25, 100 - (posRk - 1) / Math.max(1, posTot - 1) * 75);
+}
+
+// G1 — Polished Spacing
+document.getElementById('G1-rows').innerHTML = P.map((p, i) => {
+  const [vk, vl] = verdict(p);
+  return `<div class="row">
+    <span class="chk ${i === 0 ? 'on' : ''}">${i === 0 ? '✓' : ''}</span>
+    <div class="rk">${p.rk}</div>
+    <div class="pfp">${img(p)}</div>
+    <div class="who">
+      <div class="nm">${p.name}</div>
+      <span class="pos ${p.pos}">${p.pos}${p.posRk}</span>
+    </div>
+    <div class="team">${teamLogo(p)}<span class="team-abbr">${p.team}</span></div>
+    <div class="adp">${p.adp.toFixed(1)}</div>
+    <span class="verdict ${vk}">${vl}</span>
+    <div class="chev">›</div>
+  </div>`;
+}).join('');
+
+// G2 — Verdict-Tinted Rows
+document.getElementById('G2-rows').innerHTML = P.map((p, i) => {
+  const [vk, vl] = verdict(p);
+  return `<div class="row ${vk}">
+    <span class="chk ${i === 0 ? 'on' : ''}">${i === 0 ? '✓' : ''}</span>
+    <div class="rk">${p.rk}</div>
+    <div class="pfp">${img(p)}</div>
+    <div class="who">
+      <div class="nm">${p.name}</div>
+      <span class="pos ${p.pos}">${p.pos}${p.posRk}</span>
+    </div>
+    <div class="team">${teamLogo(p)}<span class="team-abbr">${p.team}</span></div>
+    <div class="adp">${p.adp.toFixed(1)}</div>
+    <span class="verdict ${vk}">${vl}</span>
+    <div class="chev">›</div>
+  </div>`;
+}).join('');
+
+// G3 — Mini Chip Trio
+document.getElementById('G3-rows').innerHTML = P.map((p, i) => `
+  <div class="row">
+    <span class="chk ${i === 0 ? 'on' : ''}">${i === 0 ? '✓' : ''}</span>
+    <div class="rk">${p.rk}</div>
+    <div class="pfp">${img(p)}</div>
+    <div class="who">
+      <div class="nm">${p.name}</div>
+      <span class="pos ${p.pos}">${p.pos}${p.posRk}</span>
+    </div>
+    <div class="team">${teamLogo(p)}<span class="team-abbr">${p.team}</span></div>
+    <div class="chip-trio">
+      <span class="chip tier${p.tier}">Tier ${p.tier}</span>
+      ${trendChip(p.trend)}
+      <span class="chip posrk">${p.pos}${p.posRk} of ${p.posTot}</span>
+    </div>
+    <div class="adp">${p.adp.toFixed(1)}</div>
+    <div class="chev">›</div>
+  </div>
+`).join('');
+
+// G4 — Editorial Sub-Line
+document.getElementById('G4-rows').innerHTML = P.map((p, i) => `
+  <div class="row">
+    <span class="chk ${i === 0 ? 'on' : ''}">${i === 0 ? '✓' : ''}</span>
+    <div class="rk">${p.rk}</div>
+    <div class="pfp">${img(p)}</div>
+    <div class="who">
+      <div class="nm-row">
+        <span class="nm">${p.name}</span>
+        <span class="pos ${p.pos}">${p.pos}${p.posRk}</span>
+      </div>
+      <div class="take">${p.take}</div>
+    </div>
+    <div class="team">${teamLogo(p)}<span class="team-abbr">${p.team}</span></div>
+    <div class="adp">${p.adp.toFixed(1)}</div>
+    <div class="chev">›</div>
+  </div>
+`).join('');
+
+// G5 — Position Rank Gauge
+document.getElementById('G5-rows').innerHTML = P.map((p, i) => {
+  const pct = gaugePct(p.posRk, p.posTot);
+  return `<div class="row">
+    <span class="chk ${i === 0 ? 'on' : ''}">${i === 0 ? '✓' : ''}</span>
+    <div class="rk">${p.rk}</div>
+    <div class="pfp">${img(p)}</div>
+    <div class="who">
+      <div class="nm">${p.name}</div>
+      <span class="pos ${p.pos}">${p.pos}${p.posRk}</span>
+    </div>
+    <div class="team">${teamLogo(p)}<span class="team-abbr">${p.team}</span></div>
+    <div class="gauge">
+      <div class="gauge-top">
+        <span class="posrk">${p.pos}${p.posRk}</span>
+        <span class="of">of ${p.posTot}</span>
+      </div>
+      <div class="gauge-bar"><div class="gauge-fill" style="width:${pct.toFixed(1)}%"></div></div>
+    </div>
+    <div class="adp">${p.adp.toFixed(1)}</div>
+    <div class="chev">›</div>
+  </div>`;
+}).join('');
+</script>
+
+</body>
+</html>

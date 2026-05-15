@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Card · Stat Pills</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#1c1c1f;--bg-soft:#232328;--ink:#e8e3d6;--ink-soft:#e8e3d6cc;--ink-dim:#e8e3d688;--ink-faint:#e8e3d622;
+    --accent:#fb637a;--accent-2:#7ab2cc;--line:#3a3a3f;--line-soft:#3a3a3faa;--card:#25252a;
+    --shadow:6px 6px 0 #3a3a3f;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,sans-serif;min-height:100vh}
+  .nav{display:flex;align-items:center;justify-content:space-between;padding:12px 24px;background:var(--bg);border-bottom:2px solid var(--line)}
+  .nav .back{color:var(--ink);text-decoration:none;font-size:11px;text-transform:uppercase;letter-spacing:.18em}
+  .nav .pickers{display:flex;border:1.5px solid var(--line);font-size:11px;font-family:"Bebas Neue",sans-serif;letter-spacing:.16em}
+  .nav .pickers a{padding:5px 14px;color:var(--ink);text-decoration:none;border-right:1px solid var(--line-soft)}
+  .nav .pickers a:last-child{border-right:0}
+  .nav .pickers a.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+
+  .hero{padding:32px}
+  .hero h1{font-family:"Bebas Neue",sans-serif;font-size:48px;letter-spacing:.02em;margin:0 0 4px;line-height:1}
+  .hero .tag{font-family:"Bebas Neue",sans-serif;letter-spacing:.18em;font-size:13px;color:var(--accent);margin-bottom:6px}
+  .hero p{font-size:14px;color:var(--ink-soft);max-width:680px;margin:8px 0 0;line-height:1.5}
+
+  .board{padding:0 32px 48px;display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+  @media(max-width:900px){.board{grid-template-columns:1fr}}
+
+  /* ─── Card · Stat Pills variation ─── */
+  .card{background:var(--card);border:2.5px solid var(--line);padding:14px 16px;display:grid;grid-template-columns:38px 56px 1fr auto;align-items:start;gap:14px;min-height:110px;cursor:pointer;transition:all 200ms;position:relative;row-gap:10px}
+  .card:hover{transform:translate(-3px,-3px);box-shadow:var(--shadow)}
+  .card-rk{font-family:"Bebas Neue",sans-serif;font-size:30px;letter-spacing:-.02em;text-align:center;color:var(--ink);padding-top:6px}
+  .card-pfp{width:56px;height:56px;border-radius:50%;border:1.5px solid var(--line);background:var(--bg-soft);overflow:hidden}
+  .card-pfp img{width:100%;height:100%;object-fit:cover;object-position:top}
+  .card-body{display:flex;flex-direction:column;gap:6px;min-width:0}
+  .card-name{font-family:"Bebas Neue",sans-serif;font-size:22px;letter-spacing:.01em;color:var(--ink);line-height:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .card-meta{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600;color:var(--ink-soft)}
+  .card-pos{display:inline-grid;place-items:center;min-width:28px;height:19px;padding:0 6px;font-family:"Bebas Neue",sans-serif;font-size:12px;letter-spacing:.06em;border-radius:3px}
+  .card[data-pos="QB"] .card-pos{background:rgba(251,99,122,.18);color:#fb7185}
+  .card[data-pos="RB"] .card-pos{background:rgba(74,222,128,.16);color:#4ade80}
+  .card[data-pos="WR"] .card-pos{background:rgba(122,178,204,.18);color:#7ab2cc}
+  .card[data-pos="TE"] .card-pos{background:rgba(245,158,11,.16);color:#f59e0b}
+  .card-team{font-weight:700;letter-spacing:.04em;color:var(--ink)}
+
+  .tags{display:flex;gap:4px;flex-wrap:wrap}
+  .tbk{display:inline-flex;font-size:10px;font-weight:700;letter-spacing:.06em;padding:1px 6px;border-radius:2px;text-transform:uppercase}
+  .tbk.must{background:rgba(74,222,128,.14);color:#4ade80}
+  .tbk.boom{background:rgba(245,158,11,.14);color:#f59e0b}
+  .tbk.fade{background:rgba(251,99,122,.14);color:#fb7185}
+
+  .card-r{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+  .card-cmp{padding:5px 9px 6px;border:1.5px solid var(--line-soft);border-radius:4px;min-width:80px;background:var(--bg);text-align:center}
+  .card-cmp .lbl{font-size:9px;letter-spacing:.16em;font-weight:800;color:var(--ink-dim);text-transform:uppercase}
+  .card-cmp .val{font-family:"Bebas Neue",sans-serif;font-size:18px;color:var(--ink);margin-top:1px}
+  .card-cmp .delta{display:inline-block;margin-top:5px;font-size:10px;font-weight:800;letter-spacing:.08em;padding:2px 7px;border-radius:2px}
+  .card-cmp .delta.up{background:rgba(74,222,128,.18);color:#4ade80}
+  .card-cmp .delta.down{background:rgba(251,99,122,.18);color:#fb7185}
+  .card-cmp .delta.flat{background:rgba(232,227,214,.08);color:var(--ink-soft)}
+  .card-act{display:flex;gap:4px}
+  .card-act button{display:inline-flex;align-items:center;gap:4px;padding:4px 8px;background:var(--card);border:1.5px solid var(--line-soft);font-family:"Inter",sans-serif;font-size:11px;font-weight:700;color:var(--ink-soft);cursor:pointer;border-radius:4px}
+  .card-act button.on.team{background:var(--accent);color:#fff;border-color:var(--accent)}
+
+  /* Stat pills row — spans full card width */
+  .stat-pills{grid-column:1 / -1;display:flex;gap:6px;padding-top:8px;border-top:1px solid var(--line-soft);flex-wrap:wrap}
+  .stat-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 9px 4px;background:var(--bg);border:1px solid var(--line-soft);border-radius:3px;font-family:"Inter",sans-serif;font-size:10px;font-weight:800;letter-spacing:.1em;color:var(--ink-dim);text-transform:uppercase}
+  .stat-pill b{font-family:"Bebas Neue",sans-serif;font-size:14px;letter-spacing:.02em;color:var(--ink);font-weight:400}
+  .stat-pill.proj{border-color:rgba(122,178,204,.4);color:#7ab2cc}
+  .stat-pill.proj b{color:#bbe2f3}
+  .stat-pill.flr{border-color:rgba(74,222,128,.4);color:#4ade80}
+  .stat-pill.flr b{color:#bef7d6}
+  .stat-pill.ceil{border-color:rgba(245,158,11,.4);color:#f59e0b}
+  .stat-pill.ceil b{color:#fde6c2}
+  .stat-pill.vbd{border-color:rgba(251,99,122,.4);color:#fb637a}
+  .stat-pill.vbd b{color:#ffc7d0}
+</style>
+</head>
+<body>
+<div class="nav">
+  <a class="back" href="index.html">← All variations</a>
+  <span class="pickers">
+    <a href="1-data-strip.html">DATA STRIP</a>
+    <a href="2-tier-poster.html">TIER POSTER</a>
+    <a class="on" href="3-stat-pills.html">STAT PILLS</a>
+  </span>
+</div>
+
+<section class="hero">
+  <div class="tag">VARIATION 3</div>
+  <h1>Stat Pills</h1>
+  <p>Keep the existing card layout. Add a row of color-coded stat chips that span the full width along the bottom: <b>PROJ 348 · FLR 268 · CEIL 412 · VBD +62</b>. Each chip is colored by what it represents — blue for projections, green for floor, orange for ceiling, pink for value. Scannable at a glance.</p>
+</section>
+
+<div class="board">
+
+  <div class="card" data-pos="RB">
+    <div class="card-rk">1</div>
+    <div class="card-pfp"><img src="https://a.espncdn.com/i/headshots/nfl/players/full/3117251.png" alt="CMC"/></div>
+    <div class="card-body">
+      <div class="card-name">CHRISTIAN MCCAFFREY</div>
+      <div class="card-meta"><span class="card-pos">RB</span><span class="card-team">SF</span></div>
+      <div class="tags"><span class="tbk must">MUST DRAFT</span><span class="tbk fade">INJURY RISK</span></div>
+    </div>
+    <div class="card-r">
+      <div class="card-cmp"><div class="lbl">ADP</div><div class="val">2.1</div><span class="delta up">▲ STEAL +1.1</span></div>
+      <div class="card-act"><button>★ TEAM</button><button>⚖ VS</button></div>
+    </div>
+    <div class="stat-pills">
+      <span class="stat-pill proj">PROJ <b>348</b></span>
+      <span class="stat-pill flr">FLOOR <b>268</b></span>
+      <span class="stat-pill ceil">CEIL <b>412</b></span>
+      <span class="stat-pill vbd">VBD <b>+62</b></span>
+    </div>
+  </div>
+
+  <div class="card" data-pos="RB">
+    <div class="card-rk">2</div>
+    <div class="card-pfp"><img src="https://a.espncdn.com/i/headshots/nfl/players/full/4430807.png" alt="Bijan"/></div>
+    <div class="card-body">
+      <div class="card-name">BIJAN ROBINSON</div>
+      <div class="card-meta"><span class="card-pos">RB</span><span class="card-team">ATL</span></div>
+      <div class="tags"><span class="tbk must">MUST DRAFT</span></div>
+    </div>
+    <div class="card-r">
+      <div class="card-cmp"><div class="lbl">ADP</div><div class="val">1.8</div><span class="delta flat">● EVEN</span></div>
+      <div class="card-act"><button class="on team">★ TEAM</button><button>⚖ VS</button></div>
+    </div>
+    <div class="stat-pills">
+      <span class="stat-pill proj">PROJ <b>336</b></span>
+      <span class="stat-pill flr">FLOOR <b>251</b></span>
+      <span class="stat-pill ceil">CEIL <b>398</b></span>
+      <span class="stat-pill vbd">VBD <b>+58</b></span>
+    </div>
+  </div>
+
+  <div class="card" data-pos="WR">
+    <div class="card-rk">3</div>
+    <div class="card-pfp"><img src="https://a.espncdn.com/i/headshots/nfl/players/full/4362628.png" alt="Chase"/></div>
+    <div class="card-body">
+      <div class="card-name">JA'MARR CHASE</div>
+      <div class="card-meta"><span class="card-pos">WR</span><span class="card-team">CIN</span></div>
+      <div class="tags"><span class="tbk boom">BOOM</span><span class="tbk must">MUST DRAFT</span></div>
+    </div>
+    <div class="card-r">
+      <div class="card-cmp"><div class="lbl">ADP</div><div class="val">3.4</div><span class="delta flat">● EVEN</span></div>
+      <div class="card-act"><button>★ TEAM</button><button>⚖ VS</button></div>
+    </div>
+    <div class="stat-pills">
+      <span class="stat-pill proj">PROJ <b>336</b></span>
+      <span class="stat-pill flr">FLOOR <b>262</b></span>
+      <span class="stat-pill ceil">CEIL <b>402</b></span>
+      <span class="stat-pill vbd">VBD <b>+63</b></span>
+    </div>
+  </div>
+
+  <div class="card" data-pos="WR">
+    <div class="card-rk">4</div>
+    <div class="card-pfp"><img src="https://a.espncdn.com/i/headshots/nfl/players/full/4262921.png" alt="JJ"/></div>
+    <div class="card-body">
+      <div class="card-name">JUSTIN JEFFERSON</div>
+      <div class="card-meta"><span class="card-pos">WR</span><span class="card-team">MIN</span></div>
+      <div class="tags"><span class="tbk must">MUST DRAFT</span></div>
+    </div>
+    <div class="card-r">
+      <div class="card-cmp"><div class="lbl">ADP</div><div class="val">4.1</div><span class="delta flat">● EVEN</span></div>
+      <div class="card-act"><button>★ TEAM</button><button>⚖ VS</button></div>
+    </div>
+    <div class="stat-pills">
+      <span class="stat-pill proj">PROJ <b>317</b></span>
+      <span class="stat-pill flr">FLOOR <b>251</b></span>
+      <span class="stat-pill ceil">CEIL <b>382</b></span>
+      <span class="stat-pill vbd">VBD <b>+52</b></span>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Big Board — Density Mockups (A / B / C)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f9f5eb;
+  --card: #f4ede0;
+  --bg-soft: #efe6d4;
+  --ink: #082430;
+  --ink-soft: #54616a;
+  --ink-dim: #8a949b;
+  --ink-faint: #c1c8cd;
+  --line: #082430;
+  --line-soft: #d8d0bd;
+  --accent: #259fd6;
+  --accent-2: #fb637a;
+}
+* { box-sizing: border-box; }
+html, body {
+  margin: 0; padding: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: "Inter", sans-serif;
+}
+body {
+  padding: 28px 40px 80px;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+.page-h {
+  font-family: "Oswald", sans-serif;
+  font-size: 36px; letter-spacing: 0.01em;
+  margin: 0 0 6px;
+}
+.page-sub {
+  font-size: 13px; color: var(--ink-soft);
+  margin: 0 0 32px;
+  line-height: 1.5;
+}
+.page-sub b { color: var(--ink); }
+
+.mock {
+  margin-bottom: 56px;
+  background: var(--bg);
+  border: 2px solid var(--line);
+  padding: 22px;
+}
+.mock-h {
+  display: flex; align-items: baseline; gap: 14px;
+  margin: 0 0 4px;
+}
+.mock-tag {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px; letter-spacing: 0.24em;
+  color: var(--accent-2);
+}
+.mock-name {
+  font-family: "Oswald", sans-serif;
+  font-size: 26px; letter-spacing: 0.01em;
+}
+.mock-blurb {
+  font-size: 12px; color: var(--ink-soft);
+  margin: 0 0 18px;
+  line-height: 1.5;
+}
+.mock-blurb code {
+  background: var(--card);
+  padding: 1px 5px; border-radius: 2px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+}
+
+/* ──────────────────────────────────────────
+   SHARED ROW PARTS
+   ────────────────────────────────────────── */
+.pos { display: inline-grid; place-items: center;
+  min-width: 26px; height: 17px; padding: 0 5px;
+  font-family: "Oswald", sans-serif;
+  font-size: 11px; letter-spacing: 0.05em;
+  border-radius: 3px;
+}
+.pos.QB { background: rgba(251,99,122,0.18); color: #b91c1c; }
+.pos.RB { background: rgba(34,197,94,0.18); color: #15803d; }
+.pos.WR { background: rgba(37,159,214,0.18); color: #1e6f9c; }
+.pos.TE { background: rgba(217,119,6,0.18); color: #92560a; }
+.verdict { font-family: "Oswald", sans-serif;
+  font-size: 11px; letter-spacing: 0.06em;
+  padding: 2px 7px; border-radius: 3px;
+}
+.verdict.steal { background: rgba(34,197,94,0.18); color: #15803d; }
+.verdict.even  { background: rgba(138,148,155,0.20); color: var(--ink-soft); }
+.verdict.reach { background: rgba(251,99,122,0.18); color: #b91c1c; }
+.chk {
+  width: 22px; height: 22px;
+  border: 1.5px solid var(--line-soft);
+  border-radius: 3px;
+  display: inline-grid; place-items: center;
+  background: var(--card);
+  font-size: 13px; color: var(--ink-soft);
+}
+.chk.on { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+/* ──────────────────────────────────────────
+   A · DENSE DATA ROW — fill the void
+   ────────────────────────────────────────── */
+.A .row {
+  display: grid;
+  grid-template-columns: 32px 40px 40px minmax(180px, 1.2fr) 76px 96px 80px 110px auto;
+  align-items: center;
+  gap: 14px;
+  padding: 8px 14px;
+  border-bottom: 1px solid var(--line-soft);
+  background: var(--card);
+  min-height: 56px;
+}
+.A .row:nth-child(even) { background: color-mix(in srgb, var(--ink) 3%, var(--card)); }
+.A .row:hover { box-shadow: inset 4px 0 0 var(--accent); }
+.A .rk {
+  font-family: "Oswald", sans-serif;
+  font-size: 22px; text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+.A .pfp { width: 40px; height: 40px; border-radius: 50%; overflow: hidden;
+  border: 1.5px solid var(--line); background: var(--bg-soft);
+}
+.A .pfp img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+.A .who {
+  display: flex; flex-direction: column; gap: 2px; min-width: 0;
+}
+.A .nm {
+  font-family: "Oswald", sans-serif;
+  font-size: 19px; line-height: 1;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.A .sub {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 11px; color: var(--ink-soft); font-weight: 600;
+}
+.A .tier {
+  font-family: "Oswald", sans-serif;
+  font-size: 13px; letter-spacing: 0.10em;
+  padding: 4px 8px;
+  background: var(--ink); color: var(--bg);
+  border-radius: 2px;
+  text-align: center;
+  width: max-content;
+  justify-self: center;
+}
+.A .ppg {
+  font-family: "Oswald", sans-serif;
+  font-size: 17px; font-variant-numeric: tabular-nums;
+  display: flex; flex-direction: column; align-items: center; gap: 1px;
+  line-height: 1;
+}
+.A .ppg-lbl {
+  font-family: "Inter", sans-serif;
+  font-size: 9px; font-weight: 700; letter-spacing: 0.12em;
+  color: var(--ink-dim);
+}
+.A .range {
+  display: flex; flex-direction: column; gap: 3px; min-width: 0;
+}
+.A .range-lbl {
+  font-family: "Inter", sans-serif;
+  font-size: 9px; font-weight: 700; letter-spacing: 0.12em;
+  color: var(--ink-dim);
+}
+.A .range-bar {
+  position: relative;
+  height: 5px;
+  background: var(--bg-soft);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.A .range-fill {
+  position: absolute; top: 0; bottom: 0;
+  background: linear-gradient(90deg, #fb637a, #febe02, #16a34a);
+}
+.A .range-tick {
+  font-family: "Inter", sans-serif;
+  font-size: 9px; color: var(--ink-dim);
+  display: flex; justify-content: space-between; font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.A .adp {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 4px 10px;
+  background: var(--bg-soft);
+  border-radius: 3px;
+  font-family: "Oswald", sans-serif;
+  font-size: 15px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  width: max-content;
+}
+.A .adp-lbl {
+  font-family: "Inter", sans-serif;
+  font-size: 9px; font-weight: 700; letter-spacing: 0.12em;
+  color: var(--ink-dim);
+}
+.A .props {
+  display: flex; flex-direction: column; gap: 1px;
+  font-family: "Inter", sans-serif;
+  font-size: 11px;
+  color: var(--ink-soft);
+  font-style: italic;
+  justify-self: end;
+  text-align: right;
+  min-width: 92px;
+}
+.A .props-lbl {
+  font-style: normal;
+  font-size: 9px; font-weight: 700; letter-spacing: 0.12em;
+  color: var(--ink-dim);
+}
+
+/* ──────────────────────────────────────────
+   B · COMPACT — just shrink everything
+   ────────────────────────────────────────── */
+.B .row {
+  display: grid;
+  grid-template-columns: 28px 36px 32px 1fr 90px 96px;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 12px;
+  border-bottom: 1px solid var(--line-soft);
+  background: var(--card);
+  min-height: 42px;
+}
+.B .row:nth-child(even) { background: color-mix(in srgb, var(--ink) 3%, var(--card)); }
+.B .row:hover { box-shadow: inset 3px 0 0 var(--accent); }
+.B .chk { width: 18px; height: 18px; font-size: 11px; }
+.B .rk {
+  font-family: "Oswald", sans-serif;
+  font-size: 16px; text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+.B .pfp { width: 32px; height: 32px; border-radius: 50%; overflow: hidden;
+  border: 1.5px solid var(--line); background: var(--bg-soft);
+}
+.B .pfp img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+.B .who { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.B .nm {
+  font-family: "Oswald", sans-serif;
+  font-size: 16px; line-height: 1;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.B .meta {
+  display: inline-flex; gap: 6px; align-items: center;
+  font-size: 10px; font-weight: 700; color: var(--ink-soft);
+}
+.B .adp-block {
+  display: flex; align-items: center; gap: 6px;
+  font-family: "Oswald", sans-serif; font-size: 14px;
+  font-variant-numeric: tabular-nums;
+}
+.B .adp-block .lbl {
+  font-family: "Inter", sans-serif;
+  font-size: 9px; font-weight: 700; letter-spacing: 0.10em;
+  color: var(--ink-dim);
+}
+
+/* ──────────────────────────────────────────
+   C · TWO-UP CARDS — half-width pair per row
+   ────────────────────────────────────────── */
+.C .grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--line-soft);
+  border: 1px solid var(--line-soft);
+}
+.C .cell {
+  display: grid;
+  grid-template-columns: 26px 38px 40px 1fr auto;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 14px;
+  background: var(--card);
+  min-height: 60px;
+  position: relative;
+}
+.C .cell:hover { box-shadow: inset 3px 0 0 var(--accent); }
+.C .rk {
+  font-family: "Oswald", sans-serif;
+  font-size: 20px; text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+.C .pfp { width: 40px; height: 40px; border-radius: 50%; overflow: hidden;
+  border: 1.5px solid var(--line); background: var(--bg-soft);
+}
+.C .pfp img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+.C .who {
+  display: flex; flex-direction: column; gap: 3px; min-width: 0;
+}
+.C .nm {
+  font-family: "Oswald", sans-serif;
+  font-size: 17px; line-height: 1;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.C .meta {
+  display: inline-flex; gap: 6px; align-items: center;
+  font-size: 10px; font-weight: 700; color: var(--ink-soft);
+}
+.C .right {
+  display: flex; flex-direction: column; align-items: flex-end; gap: 2px;
+  font-family: "Oswald", sans-serif;
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+}
+.C .right .lbl {
+  font-family: "Inter", sans-serif;
+  font-size: 9px; font-weight: 700; letter-spacing: 0.10em;
+  color: var(--ink-dim);
+}
+
+/* ──────────────────────────────────────────
+   ROUND HEADER (shared across mockups)
+   ────────────────────────────────────────── */
+.round-h {
+  display: flex; align-items: center; justify-content: space-between;
+  margin: 8px 0 4px;
+  padding: 6px 0;
+  border-bottom: 1.5px solid var(--line);
+}
+.round-h .l {
+  display: flex; align-items: center; gap: 12px;
+  font-family: "Oswald", sans-serif;
+  font-size: 22px; letter-spacing: 0.01em;
+}
+.round-h .l .num {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px; letter-spacing: 0.18em;
+  background: var(--ink); color: var(--bg);
+  padding: 4px 8px;
+}
+.round-h .r {
+  font-family: "Inter", sans-serif;
+  font-size: 11px; font-weight: 600; letter-spacing: 0.10em;
+  color: var(--ink-dim);
+}
+.score-row {
+  display: flex; gap: 24px;
+  margin-top: 24px;
+  padding: 14px 18px;
+  background: var(--bg-soft);
+  border: 1.5px solid var(--line-soft);
+  font-size: 12px;
+}
+.score-row b { font-family: "Oswald", sans-serif; font-size: 14px; letter-spacing: 0.04em; }
+.score-row .item { display: flex; flex-direction: column; gap: 2px; }
+.score-row .lbl { font-size: 10px; font-weight: 700; letter-spacing: 0.10em; color: var(--ink-dim); }
+</style>
+</head>
+<body>
+
+<h1 class="page-h">Big Board — Density Mockups</h1>
+<p class="page-sub">
+  Three takes on the same row, each addressing the empty horizontal space differently.
+  <b>A</b> fills the void with stat data. <b>B</b> just shrinks everything so more fits.
+  <b>C</b> doubles up — two players per horizontal row.<br>
+  Pick one, mix two, or tell me which direction to push further. The live <code>bigboard.html</code> is unchanged.
+</p>
+
+<!-- ═══════════════════════════════════════
+     MOCKUP A · DENSE DATA ROW
+     ═══════════════════════════════════════ -->
+<section class="mock A">
+  <div class="mock-h">
+    <span class="mock-tag">// MOCKUP A</span>
+    <span class="mock-name">Dense Data Row</span>
+  </div>
+  <p class="mock-blurb">
+    Fills the gap with <b>Tier</b>, <b>Projected PPG</b>, and a <b>Floor / Ceiling range bar</b> between the player name and the ADP block.
+    Every column does work; no dead pixels. Row height 56px.
+  </p>
+
+  <div class="round-h">
+    <div class="l"><span class="num">R1</span> Round One</div>
+    <div class="r">Picks 1 – 10</div>
+  </div>
+
+  <div id="A-rows"></div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     MOCKUP B · COMPACT
+     ═══════════════════════════════════════ -->
+<section class="mock B">
+  <div class="mock-h">
+    <span class="mock-tag">// MOCKUP B</span>
+    <span class="mock-name">Compact Rows</span>
+  </div>
+  <p class="mock-blurb">
+    Same content, smaller everything. Row height drops from 64px → 42px. PFP 32px, name 16px Oswald, padding 4px.
+    No new info — just lets you see ~50% more players in the same vertical space.
+  </p>
+
+  <div class="round-h">
+    <div class="l"><span class="num">R1</span> Round One</div>
+    <div class="r">Picks 1 – 10</div>
+  </div>
+
+  <div id="B-rows"></div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     MOCKUP C · TWO-UP
+     ═══════════════════════════════════════ -->
+<section class="mock C">
+  <div class="mock-h">
+    <span class="mock-tag">// MOCKUP C</span>
+    <span class="mock-name">Two-Up Card Pairs</span>
+  </div>
+  <p class="mock-blurb">
+    Rethink the row. Two players sit side-by-side per horizontal row, each in a half-width cell.
+    Doubles row density. Magazine-style — feels less like a spreadsheet and more like a curated list.
+  </p>
+
+  <div class="round-h">
+    <div class="l"><span class="num">R1</span> Round One</div>
+    <div class="r">Picks 1 – 10</div>
+  </div>
+
+  <div class="grid" id="C-rows"></div>
+</section>
+
+<div class="score-row">
+  <div class="item"><span class="lbl">Density</span> <b>A</b> +info, <b>B</b> +rows visible, <b>C</b> +pairs</div>
+  <div class="item"><span class="lbl">Row height</span> A·56px · B·42px · C·60px (but 2/row)</div>
+  <div class="item"><span class="lbl">Information added</span> A adds tier, PPG, floor/ceiling · B/C none</div>
+  <div class="item"><span class="lbl">Best at</span> A for power users · B for scrollers · C for visual scan</div>
+</div>
+
+<script>
+// Same 10 players for all three mockups
+const P = [
+  { rk:1,  name:"Christian McCaffrey", team:"SF",  pos:"RB", espn:"3117251", adp:2.1,  tier:"T1", ppg:21.8, floor:268, ceil:412 },
+  { rk:2,  name:"Bijan Robinson",      team:"ATL", pos:"RB", espn:"4430807", adp:1.8,  tier:"T1", ppg:22.4, floor:280, ceil:425 },
+  { rk:3,  name:"Ja'Marr Chase",       team:"CIN", pos:"WR", espn:"4362628", adp:3.4,  tier:"T1", ppg:20.7, floor:255, ceil:398 },
+  { rk:4,  name:"Justin Jefferson",    team:"MIN", pos:"WR", espn:"4262921", adp:4.1,  tier:"T1", ppg:20.2, floor:248, ceil:392 },
+  { rk:5,  name:"Tyreek Hill",         team:"MIA", pos:"WR", espn:"3116406", adp:6.5,  tier:"T2", ppg:19.4, floor:232, ceil:378 },
+  { rk:6,  name:"CeeDee Lamb",         team:"DAL", pos:"WR", espn:"4241389", adp:7.2,  tier:"T2", ppg:18.9, floor:228, ceil:362 },
+  { rk:7,  name:"Saquon Barkley",      team:"PHI", pos:"RB", espn:"3929630", adp:8.4,  tier:"T2", ppg:19.1, floor:235, ceil:355 },
+  { rk:8,  name:"Patrick Mahomes",     team:"KC",  pos:"QB", espn:"3139477", adp:38.0, tier:"T1", ppg:24.5, floor:295, ceil:445 },
+  { rk:9,  name:"Amon-Ra St. Brown",   team:"DET", pos:"WR", espn:"4374302", adp:9.6,  tier:"T2", ppg:18.3, floor:220, ceil:348 },
+  { rk:10, name:"Puka Nacua",          team:"LAR", pos:"WR", espn:"4426338", adp:11.8, tier:"T2", ppg:17.8, floor:210, ceil:340 },
+];
+
+function verdict(p) {
+  const d = p.adp - p.rk;
+  if (d > 0.5) return ['steal', `Steal +${d.toFixed(1)}`];
+  if (d < -0.5) return ['reach', `Reach ${d.toFixed(1)}`];
+  return ['even', `Even`];
+}
+function rangePct(p, hi=420, lo=200) {
+  const a = (p.floor - lo) / (hi - lo) * 100;
+  const b = (p.ceil  - lo) / (hi - lo) * 100;
+  return [Math.max(0,a), Math.min(100,b)];
+}
+function img(p) {
+  return `<img src="https://a.espncdn.com/i/headshots/nfl/players/full/${p.espn}.png" alt="${p.name}" onerror="this.style.opacity=.15">`;
+}
+
+// ─── MOCKUP A — Dense Data Row
+document.getElementById('A-rows').innerHTML = P.map((p,i) => {
+  const [vk,vl] = verdict(p);
+  const [a,b] = rangePct(p);
+  return `<div class="row">
+    <span class="chk ${i===0?'on':''}">${i===0?'✓':''}</span>
+    <div class="rk">${p.rk}</div>
+    <div class="pfp">${img(p)}</div>
+    <div class="who">
+      <div class="nm">${p.name}</div>
+      <div class="sub">
+        <span class="pos ${p.pos}">${p.pos}</span>
+        <span>${p.team}</span>
+      </div>
+    </div>
+    <div class="tier">${p.tier}</div>
+    <div class="ppg">
+      <span class="ppg-lbl">PROJ PPG</span>
+      <span>${p.ppg}</span>
+    </div>
+    <div class="range">
+      <span class="range-lbl">FLOOR · CEIL</span>
+      <div class="range-bar"><div class="range-fill" style="left:${a}%; width:${b-a}%"></div></div>
+      <div class="range-tick"><span>${p.floor}</span><span>${p.ceil}</span></div>
+    </div>
+    <div class="adp">
+      <span class="adp-lbl">ADP</span>
+      <span>${p.adp.toFixed(1)}</span>
+      <span class="verdict ${vk}">${vl}</span>
+    </div>
+    <div class="props">
+      <span class="props-lbl">PROPS</span>
+      <span>Coming Soon</span>
+    </div>
+  </div>`;
+}).join('');
+
+// ─── MOCKUP B — Compact
+document.getElementById('B-rows').innerHTML = P.map((p,i) => {
+  const [vk,vl] = verdict(p);
+  return `<div class="row">
+    <span class="chk ${i===0?'on':''}">${i===0?'✓':''}</span>
+    <div class="rk">${p.rk}</div>
+    <div class="pfp">${img(p)}</div>
+    <div class="who">
+      <div class="nm">${p.name}</div>
+      <div class="meta">
+        <span class="pos ${p.pos}">${p.pos}</span>
+        <span>${p.team}</span>
+      </div>
+    </div>
+    <div class="adp-block"><span class="lbl">ADP</span> ${p.adp.toFixed(1)}</div>
+    <span class="verdict ${vk}">${vl}</span>
+  </div>`;
+}).join('');
+
+// ─── MOCKUP C — Two-up
+document.getElementById('C-rows').innerHTML = P.map((p,i) => {
+  const [vk,vl] = verdict(p);
+  return `<div class="cell">
+    <span class="chk ${i===0?'on':''}">${i===0?'✓':''}</span>
+    <div class="rk">${p.rk}</div>
+    <div class="pfp">${img(p)}</div>
+    <div class="who">
+      <div class="nm">${p.name}</div>
+      <div class="meta">
+        <span class="pos ${p.pos}">${p.pos}</span>
+        <span>${p.team}</span>
+        <span class="verdict ${vk}">${vl}</span>
+      </div>
+    </div>
+    <div class="right">
+      <span class="lbl">ADP</span>
+      <span>${p.adp.toFixed(1)}</span>
+    </div>
+  </div>`;
+}).join('');
+</script>
+
+</body>
+</html>

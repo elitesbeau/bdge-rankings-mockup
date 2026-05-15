@@ -1,0 +1,804 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>V3 — Board + Side Rails · BDGE Big Board</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Oswald:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #f9f5eb;
+    --bg-soft: #f1ecdf;
+    --card: #fffaf0;
+    --ink: #082430;
+    --ink-soft: #3a4f5a;
+    --ink-dim: #6c7c87;
+    --ink-faint: #a8b3ba;
+    --line: #082430;
+    --line-soft: rgba(8, 36, 48, 0.14);
+    --accent: #fb637a;
+    --accent-2: #259fd6;
+    --pink: #fb637a;
+    --blue: #259fd6;
+    --green: #16a34a;
+    --amber: #d97706;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Inter", sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+  }
+
+  /* ─── TOP BAR (real bigboard chrome) ─── */
+  .tb {
+    position: sticky; top: 0; z-index: 50;
+    background: var(--bg);
+    border-bottom: 4px double var(--line);
+    padding: 12px 32px;
+    display: flex; align-items: center; gap: 16px;
+  }
+  .tb-brand {
+    display: inline-flex; align-items: center;
+    font-family: "Oswald", sans-serif;
+    font-size: 30px; font-weight: 700; letter-spacing: 0.04em;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .tb-brand::before {
+    content: '';
+    display: inline-block;
+    width: 28px; height: 28px;
+    background: var(--accent); color: #fff;
+    margin-right: 8px;
+    font-size: 16px;
+    display: inline-grid; place-items: center;
+    border-radius: 2px;
+    font-family: "Oswald", sans-serif;
+  }
+  .tb-spacer { flex: 1; }
+  .tb-icon-btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 36px; height: 32px;
+    background: transparent;
+    border: 1.5px solid var(--line-soft);
+    color: var(--ink);
+    cursor: pointer;
+    font-size: 16px;
+  }
+  .tb-theme {
+    display: inline-flex; align-items: center;
+    background: transparent;
+    border: 1.5px solid var(--line);
+  }
+  .tb-theme button {
+    background: transparent; border: 0;
+    font-family: "Oswald", sans-serif;
+    font-size: 13px; letter-spacing: 0.18em;
+    padding: 8px 14px;
+    color: var(--ink-soft);
+    cursor: pointer;
+  }
+  .tb-theme button.active { background: var(--ink); color: var(--bg); }
+  .tb-acct {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 6px 12px;
+    background: var(--accent); color: #fff;
+    font-family: "Oswald", sans-serif;
+    font-size: 14px; letter-spacing: 0.16em;
+  }
+
+  /* ─── HERO ─── */
+  .hero {
+    position: relative;
+    padding: 48px 32px 28px;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: "DRAFT";
+    position: absolute;
+    right: -12px; bottom: 28px;
+    font-family: "Oswald", sans-serif;
+    font-size: clamp(120px, 18vw, 200px);
+    font-weight: 400; line-height: 0.85;
+    color: color-mix(in srgb, var(--ink) 6%, transparent);
+    letter-spacing: -0.03em;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .hero > * { position: relative; z-index: 1; }
+  .hero-h {
+    font-family: "Oswald", sans-serif;
+    font-size: clamp(64px, 9vw, 104px); line-height: 0.92; font-weight: 400;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin: 0;
+  }
+  .hero-h .stripe {
+    display: inline-block;
+    padding: 4px 22px 22px;
+    line-height: 1;
+    background: var(--accent); color: #f9f5eb;
+    font-style: italic;
+  }
+  .hero-pill {
+    display: inline-block;
+    margin-top: 18px;
+    padding: 8px 18px;
+    background: var(--card);
+    border: 2.5px solid var(--line);
+    font-family: "Oswald", sans-serif;
+    font-size: 18px; letter-spacing: 0.18em;
+    color: var(--ink);
+  }
+  .mode-stamp {
+    display: inline-block;
+    margin-left: 12px;
+    padding: 6px 12px;
+    background: var(--accent); color: #fff;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.16em;
+    border-radius: 2px;
+    vertical-align: middle;
+  }
+
+  /* ─── FILTER BAR ─── */
+  .fbar {
+    position: sticky; top: 0;
+    z-index: 40;
+    background: var(--bg);
+    border-bottom: 1.5px solid var(--line);
+    padding: 14px 32px;
+    display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  }
+  .fbar-l {
+    font-family: "Oswald", sans-serif;
+    font-size: 14px; letter-spacing: 0.22em;
+    color: var(--ink-soft);
+    margin-right: 4px;
+  }
+  .fbar-pill {
+    font-family: "Oswald", sans-serif;
+    font-size: 14px; letter-spacing: 0.16em;
+    padding: 6px 14px;
+    background: transparent;
+    border: 1.5px solid var(--line-soft);
+    color: var(--ink);
+    cursor: pointer;
+    transition: all 160ms;
+  }
+  .fbar-pill:hover { border-color: var(--ink); }
+  .fbar-pill.active { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+  .fbar-pill.action {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 10px;
+  }
+  .fbar-pill.action .ct {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px; line-height: 1; font-weight: 700;
+    padding: 3px 6px;
+    background: color-mix(in srgb, var(--ink) 8%, transparent);
+    color: var(--ink-soft);
+    letter-spacing: 0.04em;
+    border-radius: 2px;
+  }
+  .fbar-pill.action.team:hover { border-color: var(--accent); color: var(--accent); }
+  .fbar-pill.action:hover { border-color: var(--accent-2); color: var(--accent-2); }
+  .fbar-search {
+    display: inline-flex; align-items: center; gap: 8px;
+    height: 28px; padding: 0 10px;
+    border: 1.5px solid var(--line-soft);
+    border-radius: 4px;
+    font-family: "Inter", sans-serif;
+    font-size: 12px;
+    color: var(--ink-soft);
+    min-width: 200px;
+  }
+  .fbar-search input {
+    background: transparent; border: 0; outline: 0;
+    color: var(--ink);
+    font: inherit; flex: 1;
+  }
+
+  /* ─── Selection bar (bulk actions) ─── */
+  .sel-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+    margin: 14px 28px 0;
+    background: var(--card);
+    border: 1.5px solid var(--ink);
+    border-radius: 4px;
+    box-shadow: 3px 3px 0 var(--ink);
+    font-family: "Inter", sans-serif;
+  }
+  .sel-bar .sel-eye {
+    margin-left: auto;
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: "Oswald", sans-serif;
+    font-size: 13px; letter-spacing: 0.08em;
+    font-weight: 600;
+  }
+  .sel-bar .sel-eye .sel-ct {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px; font-weight: 700;
+    padding: 3px 7px;
+    background: var(--ink); color: var(--bg);
+    border-radius: 2px;
+    line-height: 1;
+  }
+  .sel-bar button {
+    font-family: "Inter", sans-serif;
+    font-size: 12px; font-weight: 600;
+    padding: 7px 12px;
+    border: 1.5px solid var(--ink);
+    background: var(--bg); color: var(--ink);
+    border-radius: 3px;
+    cursor: pointer;
+  }
+  .sel-bar button.sel-compare {
+    background: var(--accent-2); color: #fff; border-color: var(--accent-2);
+  }
+  .sel-bar button.sel-add-team {
+    background: var(--accent); color: #fff; border-color: var(--accent);
+  }
+  .sel-bar button.sel-mark-drafted {
+    background: var(--ink); color: var(--bg); border-color: var(--ink);
+  }
+  .sel-bar button.sel-clear {
+    color: #b91c1c;
+    border-color: color-mix(in srgb, #b91c1c 38%, var(--line));
+  }
+
+  /* ─── 3-column shell ─── */
+  .shell {
+    display: grid;
+    grid-template-columns: 250px minmax(0, 1fr) 290px;
+    gap: 22px;
+    padding: 22px 32px 60px;
+  }
+  @media (max-width: 1300px) {
+    .shell { grid-template-columns: 220px minmax(0, 1fr) 250px; gap: 16px; padding: 22px 20px 60px; }
+  }
+  @media (max-width: 980px) {
+    .shell { grid-template-columns: 1fr; }
+    .rail { display: none; }
+  }
+
+  .rail { display: flex; flex-direction: column; gap: 16px; position: sticky; top: 16px; height: max-content; }
+  .rail-card {
+    background: var(--card);
+    border: 1.5px solid var(--line);
+    border-radius: 6px;
+    box-shadow: 3px 3px 0 var(--ink);
+    overflow: hidden;
+  }
+  .rail-h {
+    display: flex; align-items: center; gap: 8px;
+    padding: 12px 14px;
+    border-bottom: 1.5px solid var(--ink);
+    background: var(--bg);
+  }
+  .rail-h .ico {
+    width: 22px; height: 22px;
+    display: grid; place-items: center;
+    background: var(--ink); color: var(--bg);
+    font-family: "Oswald", sans-serif;
+    font-size: 11px; font-weight: 700;
+    border-radius: 2px;
+  }
+  .rail-h .ttl {
+    font-family: "Oswald", sans-serif;
+    font-size: 14px; letter-spacing: 0.10em;
+    font-weight: 700;
+  }
+  .rail-h .ct {
+    margin-left: auto;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px; color: var(--ink-dim);
+    font-weight: 700;
+  }
+
+  /* Positional leaders */
+  .pos-grp { padding: 10px 12px 12px; border-bottom: 1px solid var(--line-soft); }
+  .pos-grp:last-child { border-bottom: 0; }
+  .pos-grp-h {
+    display: flex; align-items: center; gap: 8px;
+    font-family: "Oswald", sans-serif;
+    font-size: 13px; letter-spacing: 0.10em;
+    margin-bottom: 6px;
+  }
+  .pos-grp-h .badge {
+    font-family: "Oswald", sans-serif;
+    font-size: 10px; letter-spacing: 0.06em;
+    padding: 2px 6px;
+    border-radius: 2px;
+  }
+  .pos-grp.qb .badge { background: rgba(251,99,122,0.16); color: #b91c1c; }
+  .pos-grp.rb .badge { background: rgba(22,163,74,0.16); color: #15803d; }
+  .pos-grp.wr .badge { background: rgba(37,159,214,0.16); color: #1e6f9c; }
+  .pos-grp.te .badge { background: rgba(217,119,6,0.16); color: #92560a; }
+  .pos-row {
+    display: flex; align-items: center; gap: 8px;
+    padding: 4px 0;
+    font-size: 12px;
+  }
+  .pos-row .r {
+    font-family: "Oswald", sans-serif;
+    font-size: 12px; color: var(--ink-dim);
+    width: 22px; flex-shrink: 0;
+  }
+  .pos-row .n { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .pos-row .t {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px; color: var(--ink-dim); font-weight: 700;
+  }
+
+  /* Watch list */
+  .watch-row {
+    display: grid;
+    grid-template-columns: 30px 1fr auto;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .watch-row:last-child { border-bottom: 0; }
+  .watch-row img {
+    width: 30px; height: 30px; border-radius: 50%;
+    border: 1.5px solid var(--line);
+    background: var(--bg-soft);
+    object-fit: cover; object-position: top;
+  }
+  .watch-row .body { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .watch-row .nm {
+    font-family: "Oswald", sans-serif;
+    font-size: 13px;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .watch-row .meta {
+    font-size: 9.5px; color: var(--ink-dim);
+    letter-spacing: 0.04em;
+  }
+  .watch-row .price {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px; font-weight: 700;
+    text-align: right; line-height: 1.2;
+  }
+  .watch-row .price small { color: var(--ink-dim); font-weight: 600; font-size: 9px; }
+
+  .clock { padding: 16px 14px; }
+  .clock .lbl {
+    font-family: "Inter", sans-serif;
+    font-size: 10px; font-weight: 800;
+    letter-spacing: 0.18em;
+    color: var(--ink-dim);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .clock .turn {
+    font-family: "Oswald", sans-serif;
+    font-size: 26px; line-height: 1;
+    font-weight: 700; color: var(--accent);
+    margin-bottom: 8px;
+  }
+  .clock .sug {
+    font-family: "Oswald", sans-serif;
+    font-size: 16px; line-height: 1.1;
+  }
+  .clock .why {
+    margin-top: 6px;
+    font-size: 11px; color: var(--ink-soft); line-height: 1.45;
+  }
+  .clock .timer {
+    margin-top: 12px;
+    display: flex; align-items: center; gap: 8px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px; color: var(--ink-dim);
+    font-weight: 700;
+  }
+  .clock .timer .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); animation: pulse 1.6s infinite; }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
+
+  /* ─── MAIN BOARD (matches bigboard.html row chrome) ─── */
+  .round-h {
+    display: flex; align-items: baseline; gap: 10px;
+    padding: 12px 4px 8px;
+    margin-top: 6px;
+    border-bottom: 1.5px solid var(--line);
+  }
+  .round-h .tag {
+    background: var(--ink); color: var(--bg);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px; font-weight: 700; letter-spacing: 0.10em;
+    padding: 3px 8px; border-radius: 2px;
+  }
+  .round-h .ttl {
+    font-family: "Oswald", sans-serif;
+    font-size: 26px; letter-spacing: 0.01em; font-weight: 700;
+  }
+  .round-h .meta {
+    margin-left: auto;
+    font-size: 11px; color: var(--ink-dim);
+    font-weight: 700; letter-spacing: 0.08em;
+  }
+
+  /* board column header (BDGE / Rank stacked) */
+  .board-h {
+    display: grid;
+    grid-template-columns: 24px 60px 44px minmax(180px, 1.6fr) 90px 70px minmax(100px, 1fr) 18px;
+    gap: 14px;
+    padding: 8px 16px 4px;
+    align-items: end;
+  }
+  .h-cell {
+    font-family: "Inter", sans-serif;
+    font-size: 10px; font-weight: 800; letter-spacing: 0.14em;
+    color: var(--ink-dim);
+    text-align: center;
+    white-space: nowrap;
+    text-transform: uppercase;
+  }
+  .h-cell.l { text-align: left; }
+  .h-stack { display: inline-flex; flex-direction: column; align-items: center; line-height: 1; gap: 3px; }
+  .h-stack .pre { font-size: 8px; letter-spacing: 0.18em; opacity: 0.65; }
+  .h-stack .main { font-size: 11px; letter-spacing: 0.06em; color: var(--ink); }
+
+  .row {
+    display: grid;
+    grid-template-columns: 24px 60px 44px minmax(180px, 1.6fr) 90px 70px minmax(100px, 1fr) 18px;
+    gap: 14px;
+    align-items: center;
+    padding: 6px 16px;
+    border: 1.5px solid var(--line-soft);
+    border-radius: 8px;
+    background: var(--card);
+    margin: 4px 0;
+    min-height: 50px;
+    transition: border-color 120ms, transform 120ms;
+    cursor: pointer;
+  }
+  .row:hover { border-color: var(--accent); transform: translateX(2px); }
+  .chk {
+    width: 20px; height: 20px;
+    border: 1.5px solid var(--line-soft);
+    background: var(--card);
+    border-radius: 4px;
+  }
+  .rk {
+    width: 36px; justify-self: center;
+    text-align: center;
+    padding: 3px 0;
+    background: var(--bg);
+    border: 1.5px solid var(--line-soft);
+    border-radius: 4px;
+    font-family: "Oswald", sans-serif;
+    font-size: 14px;
+    font-variant-numeric: tabular-nums;
+  }
+  .pfp {
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    background: var(--bg-soft);
+    border: 1.5px solid var(--line);
+    overflow: hidden;
+    object-fit: cover; object-position: top;
+  }
+  .who { display: flex; align-items: center; gap: 8px; min-width: 0; }
+  .who .nm {
+    font-family: "Oswald", sans-serif;
+    font-size: 16px; line-height: 1;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .row .chev {
+    text-align: right;
+    color: var(--ink-faint);
+    font-family: "Inter", sans-serif;
+    font-size: 16px; font-weight: 700;
+    transition: color 120ms, transform 120ms;
+  }
+  .row:hover .chev { color: var(--accent); transform: translateX(2px); }
+  .pos {
+    display: inline-grid; place-items: center;
+    height: 17px; min-width: 32px; padding: 0 6px;
+    font-family: "Oswald", sans-serif;
+    font-size: 10px; letter-spacing: 0.04em;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+  .pos.RB { background: rgba(22,163,74,0.16); color: #15803d; }
+  .pos.WR { background: rgba(37,159,214,0.16); color: #1e6f9c; }
+  .pos.QB { background: rgba(251,99,122,0.18); color: #b91c1c; }
+  .pos.TE { background: rgba(217,119,6,0.16); color: #92560a; }
+  .team {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 12px; font-weight: 700;
+    color: var(--ink);
+    justify-content: center;
+    font-family: "Oswald", sans-serif;
+    letter-spacing: 0.04em;
+  }
+  .team img.logo {
+    width: 20px; height: 20px;
+    object-fit: contain;
+    flex-shrink: 0;
+  }
+  .num {
+    text-align: center;
+    font-family: "Oswald", sans-serif;
+    font-size: 14px; font-variant-numeric: tabular-nums;
+  }
+  .props {
+    font-family: "Inter", sans-serif;
+    font-size: 11px; font-style: italic;
+    color: var(--ink-dim);
+    text-align: left;
+  }
+</style>
+</head>
+<body>
+
+<header class="tb">
+  <a class="tb-brand" href="#">BDGE</a>
+  <div class="tb-spacer"></div>
+  <button class="tb-icon-btn" title="Replay the tour">?</button>
+  <button class="tb-icon-btn" title="Re-run setup">⚙</button>
+  <div class="tb-theme">
+    <button class="active">☀</button>
+    <button>☾</button>
+  </div>
+  <span class="tb-acct">B · BEAU</span>
+</header>
+
+<section class="hero">
+  <h1 class="hero-h">The BDGE <span class="stripe">Big Board</span></h1>
+  <div>
+    <span class="hero-pill">Draft Rankings · 2026</span>
+    <span class="mode-stamp">▶ DRAFTING MODE</span>
+  </div>
+</section>
+
+<div class="fbar">
+  <span class="fbar-l">Position</span>
+  <button class="fbar-pill active">All</button>
+  <button class="fbar-pill">QB</button>
+  <button class="fbar-pill">RB</button>
+  <button class="fbar-pill">WR</button>
+  <button class="fbar-pill">TE</button>
+  <span class="fbar-l" style="margin-left:18px">View</span>
+  <button class="fbar-pill active">Rounds</button>
+  <button class="fbar-pill">Tiers</button>
+  <span style="flex:1"></span>
+  <button class="fbar-pill action">✓ Drafted <span class="ct">0</span></button>
+  <button class="fbar-pill action team">★ My Team <span class="ct">0</span></button>
+  <label class="fbar-search">
+    <span style="opacity:0.6">⌕</span>
+    <input placeholder="Search players, teams" />
+  </label>
+</div>
+
+<div class="sel-bar">
+  <button class="sel-compare">⚖ Compare (2)</button>
+  <button class="sel-add-team">★ Add to Team</button>
+  <button class="sel-mark-drafted">✓ Mark Drafted</button>
+  <button class="sel-clear">✕ Clear</button>
+  <span class="sel-eye">⚑ Selected <span class="sel-ct">2</span></span>
+</div>
+
+<div class="shell">
+
+  <!-- LEFT RAIL -->
+  <aside class="rail">
+    <div class="rail-card">
+      <div class="rail-h">
+        <span class="ico">P</span>
+        <span class="ttl">Positional Top 5</span>
+      </div>
+      <div class="pos-grp qb">
+        <div class="pos-grp-h"><span class="badge">QB</span></div>
+        <div class="pos-row"><span class="r">1</span><span class="n">P. Mahomes</span><span class="t">388</span></div>
+        <div class="pos-row"><span class="r">2</span><span class="n">J. Daniels</span><span class="t">374</span></div>
+        <div class="pos-row"><span class="r">3</span><span class="n">B. Nix</span><span class="t">362</span></div>
+        <div class="pos-row"><span class="r">4</span><span class="n">J. Allen</span><span class="t">358</span></div>
+        <div class="pos-row"><span class="r">5</span><span class="n">L. Jackson</span><span class="t">352</span></div>
+      </div>
+      <div class="pos-grp rb">
+        <div class="pos-grp-h"><span class="badge">RB</span></div>
+        <div class="pos-row"><span class="r">1</span><span class="n">C. McCaffrey</span><span class="t">348</span></div>
+        <div class="pos-row"><span class="r">2</span><span class="n">B. Robinson</span><span class="t">337</span></div>
+        <div class="pos-row"><span class="r">3</span><span class="n">S. Barkley</span><span class="t">292</span></div>
+        <div class="pos-row"><span class="r">4</span><span class="n">B. Hall</span><span class="t">271</span></div>
+        <div class="pos-row"><span class="r">5</span><span class="n">J. Taylor</span><span class="t">262</span></div>
+      </div>
+      <div class="pos-grp wr">
+        <div class="pos-grp-h"><span class="badge">WR</span></div>
+        <div class="pos-row"><span class="r">1</span><span class="n">J. Chase</span><span class="t">336</span></div>
+        <div class="pos-row"><span class="r">2</span><span class="n">J. Jefferson</span><span class="t">317</span></div>
+        <div class="pos-row"><span class="r">3</span><span class="n">T. Hill</span><span class="t">299</span></div>
+        <div class="pos-row"><span class="r">4</span><span class="n">C. Lamb</span><span class="t">295</span></div>
+        <div class="pos-row"><span class="r">5</span><span class="n">A-R St. Brown</span><span class="t">282</span></div>
+      </div>
+      <div class="pos-grp te">
+        <div class="pos-grp-h"><span class="badge">TE</span></div>
+        <div class="pos-row"><span class="r">1</span><span class="n">S. LaPorta</span><span class="t">219</span></div>
+        <div class="pos-row"><span class="r">2</span><span class="n">B. Bowers</span><span class="t">208</span></div>
+        <div class="pos-row"><span class="r">3</span><span class="n">T. Kelce</span><span class="t">202</span></div>
+        <div class="pos-row"><span class="r">4</span><span class="n">M. Andrews</span><span class="t">198</span></div>
+        <div class="pos-row"><span class="r">5</span><span class="n">D. Goedert</span><span class="t">186</span></div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN BOARD -->
+  <main>
+    <div class="round-h">
+      <span class="tag">R1</span>
+      <span class="ttl">Round One</span>
+      <span class="meta">PICKS 1–10</span>
+    </div>
+
+    <div class="board-h">
+      <div class="h-cell"></div>
+      <div class="h-cell"><span class="h-stack"><span class="pre">BDGE</span><span class="main">Rank ↑</span></span></div>
+      <div class="h-cell"></div>
+      <div class="h-cell l">Player</div>
+      <div class="h-cell">Team</div>
+      <div class="h-cell">ADP</div>
+      <div class="h-cell l">Props</div>
+      <div class="h-cell"></div>
+    </div>
+
+    <div class="row">
+      <div class="chk"></div>
+      <div class="rk">1</div>
+      <img class="pfp" src="https://a.espncdn.com/i/headshots/nfl/players/full/3117251.png" />
+      <div class="who"><span class="nm">Christian McCaffrey</span><span class="pos RB">RB1</span></div>
+      <div class="team"><img class="logo" src="https://a.espncdn.com/i/teamlogos/nfl/500/sf.png" alt="" />SF</div>
+      <div class="num">2.1</div>
+      <div class="props">Coming Soon</div>
+      <div class="chev">&rsaquo;</div>
+    </div>
+    <div class="row">
+      <div class="chk"></div>
+      <div class="rk">2</div>
+      <img class="pfp" src="https://a.espncdn.com/i/headshots/nfl/players/full/4430807.png" />
+      <div class="who"><span class="nm">Bijan Robinson</span><span class="pos RB">RB2</span></div>
+      <div class="team"><img class="logo" src="https://a.espncdn.com/i/teamlogos/nfl/500/atl.png" alt="" />ATL</div>
+      <div class="num">1.8</div>
+      <div class="props">Coming Soon</div>
+      <div class="chev">&rsaquo;</div>
+    </div>
+    <div class="row">
+      <div class="chk"></div>
+      <div class="rk">3</div>
+      <img class="pfp" src="https://a.espncdn.com/i/headshots/nfl/players/full/4362628.png" />
+      <div class="who"><span class="nm">Ja'Marr Chase</span><span class="pos WR">WR1</span></div>
+      <div class="team"><img class="logo" src="https://a.espncdn.com/i/teamlogos/nfl/500/cin.png" alt="" />CIN</div>
+      <div class="num">3.4</div>
+      <div class="props">Coming Soon</div>
+      <div class="chev">&rsaquo;</div>
+    </div>
+    <div class="row">
+      <div class="chk"></div>
+      <div class="rk">4</div>
+      <img class="pfp" src="https://a.espncdn.com/i/headshots/nfl/players/full/4262921.png" />
+      <div class="who"><span class="nm">Justin Jefferson</span><span class="pos WR">WR2</span></div>
+      <div class="team"><img class="logo" src="https://a.espncdn.com/i/teamlogos/nfl/500/min.png" alt="" />MIN</div>
+      <div class="num">4.1</div>
+      <div class="props">Coming Soon</div>
+      <div class="chev">&rsaquo;</div>
+    </div>
+    <div class="row">
+      <div class="chk"></div>
+      <div class="rk">5</div>
+      <img class="pfp" src="https://a.espncdn.com/i/headshots/nfl/players/full/3116406.png" />
+      <div class="who"><span class="nm">Tyreek Hill</span><span class="pos WR">WR3</span></div>
+      <div class="team"><img class="logo" src="https://a.espncdn.com/i/teamlogos/nfl/500/mia.png" alt="" />MIA</div>
+      <div class="num">6.5</div>
+      <div class="props">Coming Soon</div>
+      <div class="chev">&rsaquo;</div>
+    </div>
+    <div class="row">
+      <div class="chk"></div>
+      <div class="rk">6</div>
+      <img class="pfp" src="https://a.espncdn.com/i/headshots/nfl/players/full/4241389.png" />
+      <div class="who"><span class="nm">CeeDee Lamb</span><span class="pos WR">WR4</span></div>
+      <div class="team"><img class="logo" src="https://a.espncdn.com/i/teamlogos/nfl/500/dal.png" alt="" />DAL</div>
+      <div class="num">7.2</div>
+      <div class="props">Coming Soon</div>
+      <div class="chev">&rsaquo;</div>
+    </div>
+    <div class="row">
+      <div class="chk"></div>
+      <div class="rk">7</div>
+      <img class="pfp" src="https://a.espncdn.com/i/headshots/nfl/players/full/3929630.png" />
+      <div class="who"><span class="nm">Saquon Barkley</span><span class="pos RB">RB3</span></div>
+      <div class="team"><img class="logo" src="https://a.espncdn.com/i/teamlogos/nfl/500/phi.png" alt="" />PHI</div>
+      <div class="num">8.4</div>
+      <div class="props">Coming Soon</div>
+      <div class="chev">&rsaquo;</div>
+    </div>
+    <div class="row">
+      <div class="chk"></div>
+      <div class="rk">8</div>
+      <img class="pfp" src="https://a.espncdn.com/i/headshots/nfl/players/full/3139477.png" />
+      <div class="who"><span class="nm">Patrick Mahomes</span><span class="pos QB">QB1</span></div>
+      <div class="team"><img class="logo" src="https://a.espncdn.com/i/teamlogos/nfl/500/kc.png" alt="" />KC</div>
+      <div class="num">38.0</div>
+      <div class="props">Coming Soon</div>
+      <div class="chev">&rsaquo;</div>
+    </div>
+    <div class="row">
+      <div class="chk"></div>
+      <div class="rk">9</div>
+      <img class="pfp" src="https://a.espncdn.com/i/headshots/nfl/players/full/4374302.png" />
+      <div class="who"><span class="nm">Amon-Ra St. Brown</span><span class="pos WR">WR5</span></div>
+      <div class="team"><img class="logo" src="https://a.espncdn.com/i/teamlogos/nfl/500/det.png" alt="" />DET</div>
+      <div class="num">9.6</div>
+      <div class="props">Coming Soon</div>
+      <div class="chev">&rsaquo;</div>
+    </div>
+    <div class="row">
+      <div class="chk"></div>
+      <div class="rk">10</div>
+      <img class="pfp" src="https://a.espncdn.com/i/headshots/nfl/players/full/4426515.png" />
+      <div class="who"><span class="nm">Puka Nacua</span><span class="pos WR">WR6</span></div>
+      <div class="team"><img class="logo" src="https://a.espncdn.com/i/teamlogos/nfl/500/lar.png" alt="" />LAR</div>
+      <div class="num">11.8</div>
+      <div class="props">Coming Soon</div>
+      <div class="chev">&rsaquo;</div>
+    </div>
+  </main>
+
+  <!-- RIGHT RAIL -->
+  <aside class="rail">
+    <div class="rail-card">
+      <div class="rail-h">
+        <span class="ico">●</span>
+        <span class="ttl">On the Clock</span>
+      </div>
+      <div class="clock">
+        <div class="lbl">Your turn · Pick 7</div>
+        <div class="turn">2:00</div>
+        <div class="lbl" style="margin-top:14px">BDGE suggests</div>
+        <div class="sug">Saquon Barkley</div>
+        <div class="why">Top RB still on the board · 4-pick value vs ADP · PHI projects most red-zone carries since 2017.</div>
+        <div class="timer"><span class="dot"></span>WATCHING THE BOARD</div>
+      </div>
+    </div>
+
+    <div class="rail-card">
+      <div class="rail-h">
+        <span class="ico">★</span>
+        <span class="ttl">Watching</span>
+        <span class="ct">5</span>
+      </div>
+      <div class="watch-row"><img src="https://a.espncdn.com/i/headshots/nfl/players/full/4427366.png" /><div class="body"><span class="nm">Breece Hall</span><span class="meta">RB · NYJ · ADP 13.2</span></div><div class="price">+2<small> vs ADP</small></div></div>
+      <div class="watch-row"><img src="https://a.espncdn.com/i/headshots/nfl/players/full/4047646.png" /><div class="body"><span class="nm">A.J. Brown</span><span class="meta">WR · PHI · ADP 14.8</span></div><div class="price">+3<small> vs ADP</small></div></div>
+      <div class="watch-row"><img src="https://a.espncdn.com/i/headshots/nfl/players/full/4430027.png" /><div class="body"><span class="nm">Sam LaPorta</span><span class="meta">TE · DET · ADP 34.2</span></div><div class="price">+17<small> vs ADP</small></div></div>
+      <div class="watch-row"><img src="https://a.espncdn.com/i/headshots/nfl/players/full/4426348.png" /><div class="body"><span class="nm">Jayden Daniels</span><span class="meta">QB · WSH · ADP 42.0</span></div><div class="price">+24<small> vs ADP</small></div></div>
+      <div class="watch-row"><img src="https://a.espncdn.com/i/headshots/nfl/players/full/4432665.png" /><div class="body"><span class="nm">Brock Bowers</span><span class="meta">TE · LV · ADP 36.0</span></div><div class="price">+11<small> vs ADP</small></div></div>
+    </div>
+
+    <div class="rail-card">
+      <div class="rail-h">
+        <span class="ico">!</span>
+        <span class="ttl">Tier Drop Alert</span>
+      </div>
+      <div class="clock">
+        <div class="lbl">After pick 10</div>
+        <div class="sug" style="color: var(--accent)">ELITE tier closes</div>
+        <div class="why">Only McCaffrey, Robinson, Chase, Jefferson remain at ELITE. After R1, projected drop to FRANCHISE.</div>
+      </div>
+    </div>
+  </aside>
+
+</div>
+
+</body>
+</html>

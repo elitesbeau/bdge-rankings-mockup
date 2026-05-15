@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Big Board — Density Mockups v2 (D / E / F)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&family=Source+Serif+Pro:ital,wght@1,400;1,600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f9f5eb;
+  --card: #f4ede0;
+  --bg-soft: #efe6d4;
+  --ink: #082430;
+  --ink-soft: #54616a;
+  --ink-dim: #8a949b;
+  --ink-faint: #c1c8cd;
+  --line: #082430;
+  --line-soft: #d8d0bd;
+  --accent: #259fd6;
+  --accent-2: #fb637a;
+  --steal: #15803d;
+  --steal-bg: rgba(34,197,94,0.14);
+  --reach: #b91c1c;
+  --reach-bg: rgba(251,99,122,0.14);
+  --even:  #54616a;
+  --even-bg: rgba(138,148,155,0.14);
+}
+* { box-sizing: border-box; }
+html, body {
+  margin: 0; padding: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: "Inter", sans-serif;
+}
+body {
+  padding: 28px 40px 80px;
+  max-width: 1320px;
+  margin: 0 auto;
+}
+.page-h {
+  font-family: "Oswald", sans-serif;
+  font-size: 36px; letter-spacing: 0.01em;
+  margin: 0 0 6px;
+}
+.page-sub {
+  font-size: 13px; color: var(--ink-soft);
+  margin: 0 0 32px;
+  line-height: 1.5;
+}
+.page-sub b { color: var(--ink); }
+
+.mock {
+  margin-bottom: 56px;
+  background: var(--bg);
+  border: 2px solid var(--line);
+  padding: 22px;
+}
+.mock-h {
+  display: flex; align-items: baseline; gap: 14px;
+  margin: 0 0 4px;
+}
+.mock-tag {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px; letter-spacing: 0.24em;
+  color: var(--accent-2);
+}
+.mock-name {
+  font-family: "Oswald", sans-serif;
+  font-size: 26px; letter-spacing: 0.01em;
+}
+.mock-blurb {
+  font-size: 12px; color: var(--ink-soft);
+  margin: 0 0 18px;
+  line-height: 1.5;
+}
+.mock-blurb b { color: var(--ink); }
+
+/* shared pos/verdict styling */
+.pos { display: inline-grid; place-items: center;
+  min-width: 26px; height: 17px; padding: 0 5px;
+  font-family: "Oswald", sans-serif;
+  font-size: 11px; letter-spacing: 0.05em;
+  border-radius: 3px;
+}
+.pos.QB { background: rgba(251,99,122,0.18); color: #b91c1c; }
+.pos.RB { background: rgba(34,197,94,0.18); color: var(--steal); }
+.pos.WR { background: rgba(37,159,214,0.18); color: #1e6f9c; }
+.pos.TE { background: rgba(217,119,6,0.18); color: #92560a; }
+.chk {
+  width: 22px; height: 22px;
+  border: 1.5px solid var(--line-soft);
+  border-radius: 3px;
+  display: inline-grid; place-items: center;
+  background: var(--card);
+  font-size: 13px; color: var(--ink-soft);
+}
+.chk.on { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+.round-h {
+  display: flex; align-items: center; justify-content: space-between;
+  margin: 8px 0 4px;
+  padding: 6px 0;
+  border-bottom: 1.5px solid var(--line);
+}
+.round-h .l {
+  display: flex; align-items: center; gap: 12px;
+  font-family: "Oswald", sans-serif;
+  font-size: 22px; letter-spacing: 0.01em;
+}
+.round-h .l .num {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px; letter-spacing: 0.18em;
+  background: var(--ink); color: var(--bg);
+  padding: 4px 8px;
+}
+.round-h .r {
+  font-family: "Inter", sans-serif;
+  font-size: 11px; font-weight: 600; letter-spacing: 0.10em;
+  color: var(--ink-dim);
+}
+
+/* ──────────────────────────────────────────
+   D · VERDICT HERO — the middle IS the answer
+   ────────────────────────────────────────── */
+.D .row {
+  display: grid;
+  grid-template-columns: 28px 40px 44px minmax(170px, 0.9fr) 1.4fr 92px;
+  align-items: center;
+  gap: 12px;
+  padding: 0 14px 0 0;
+  border-bottom: 1px solid var(--line-soft);
+  background: var(--card);
+  min-height: 64px;
+  overflow: hidden;
+}
+.D .row:hover { box-shadow: inset 4px 0 0 var(--accent); }
+.D .row .chk { margin-left: 14px; }
+.D .rk {
+  font-family: "Oswald", sans-serif;
+  font-size: 22px; text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+.D .pfp { width: 44px; height: 44px; border-radius: 50%; overflow: hidden;
+  border: 1.5px solid var(--line); background: var(--bg-soft);
+}
+.D .pfp img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+.D .who { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.D .nm {
+  font-family: "Oswald", sans-serif;
+  font-size: 19px; line-height: 1;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.D .sub { display: inline-flex; gap: 6px; align-items: center;
+  font-size: 11px; font-weight: 700; color: var(--ink-soft);
+}
+
+/* The verdict hero — colored ribbon, the eye lands here */
+.D .hero {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 14px;
+  border-left: 4px solid currentColor;
+  font-family: "Inter", sans-serif;
+  height: 100%;
+  min-width: 0;
+}
+.D .hero.steal { background: var(--steal-bg); color: var(--steal); }
+.D .hero.reach { background: var(--reach-bg); color: var(--reach); }
+.D .hero.even  { background: var(--even-bg);  color: var(--even);  }
+.D .hero-tag {
+  font-family: "Oswald", sans-serif;
+  font-size: 20px; line-height: 1;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+.D .hero-tag .delta { font-family: "Inter", sans-serif; font-size: 13px; font-weight: 800; margin-left: 4px; }
+.D .hero-why {
+  font-size: 12px; line-height: 1.3;
+  color: var(--ink-soft);
+  font-weight: 500;
+  min-width: 0;
+  flex: 1;
+}
+.D .hero-why b { color: var(--ink); font-weight: 700; }
+.D .adp {
+  text-align: right;
+  font-family: "Oswald", sans-serif;
+  display: flex; flex-direction: column; gap: 1px; align-items: flex-end;
+  font-variant-numeric: tabular-nums;
+}
+.D .adp .lbl {
+  font-family: "Inter", sans-serif;
+  font-size: 9px; font-weight: 700; letter-spacing: 0.12em;
+  color: var(--ink-dim);
+}
+.D .adp .val { font-size: 22px; line-height: 1; }
+.D .adp .src { font-family: "Inter", sans-serif; font-size: 10px; color: var(--ink-dim); font-weight: 600; }
+
+/* ──────────────────────────────────────────
+   E · TIER STRIPE + SPARKLINE
+   ────────────────────────────────────────── */
+.E .row {
+  display: grid;
+  grid-template-columns: 6px 28px 40px 44px minmax(170px, 1fr) auto 100px 92px;
+  align-items: center;
+  gap: 14px;
+  padding: 0 14px 0 0;
+  border-bottom: 1px solid var(--line-soft);
+  background: var(--card);
+  min-height: 60px;
+  overflow: hidden;
+}
+.E .row:hover { background: color-mix(in srgb, var(--accent) 4%, var(--card)); }
+.E .stripe { width: 6px; height: 100%; background: var(--ink); }
+.E .stripe.T1 { background: var(--steal); }
+.E .stripe.T2 { background: var(--accent); }
+.E .stripe.T3 { background: #d97706; }
+.E .stripe.T4 { background: var(--ink-dim); }
+.E .row .chk { margin-left: 8px; }
+.E .rk {
+  font-family: "Oswald", sans-serif;
+  font-size: 20px; text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+.E .pfp { width: 44px; height: 44px; border-radius: 50%; overflow: hidden;
+  border: 1.5px solid var(--line); background: var(--bg-soft);
+}
+.E .pfp img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+.E .who { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.E .nm {
+  font-family: "Oswald", sans-serif;
+  font-size: 19px; line-height: 1;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.E .meta { display: inline-flex; gap: 6px; align-items: center;
+  font-size: 11px; font-weight: 700; color: var(--ink-soft);
+}
+.E .posrk {
+  display: inline-flex; align-items: baseline; gap: 4px;
+  padding: 6px 10px;
+  border: 1.5px solid var(--line);
+  font-family: "Oswald", sans-serif;
+  font-size: 16px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.E .posrk .of { font-size: 11px; color: var(--ink-dim); font-weight: 500; }
+
+/* Mini sparkline */
+.E .spark {
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+  min-width: 100px;
+}
+.E .spark-lbl {
+  font-family: "Inter", sans-serif;
+  font-size: 9px; font-weight: 700; letter-spacing: 0.12em;
+  color: var(--ink-dim);
+}
+.E .spark svg { display: block; }
+.E .spark-tag {
+  font-family: "Oswald", sans-serif;
+  font-size: 12px; letter-spacing: 0.04em;
+  display: inline-flex; gap: 4px; align-items: center;
+}
+.E .spark-tag.up   { color: var(--steal); }
+.E .spark-tag.dn   { color: var(--reach); }
+.E .spark-tag.flat { color: var(--ink-soft); }
+
+.E .adp {
+  text-align: right;
+  font-family: "Oswald", sans-serif;
+  display: flex; flex-direction: column; gap: 1px; align-items: flex-end;
+  font-variant-numeric: tabular-nums;
+}
+.E .adp .lbl {
+  font-family: "Inter", sans-serif;
+  font-size: 9px; font-weight: 700; letter-spacing: 0.12em;
+  color: var(--ink-dim);
+}
+.E .adp .val { font-size: 20px; line-height: 1; }
+
+/* ──────────────────────────────────────────
+   F · EDITORIAL — BDGE's take is the middle
+   ────────────────────────────────────────── */
+.F .row {
+  display: grid;
+  grid-template-columns: 28px 40px 48px minmax(190px, 0.85fr) 1.6fr 96px;
+  align-items: center;
+  gap: 16px;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--line-soft);
+  background: var(--card);
+  min-height: 66px;
+}
+.F .row:hover { box-shadow: inset 4px 0 0 var(--accent-2); }
+.F .rk {
+  font-family: "Oswald", sans-serif;
+  font-size: 22px; text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+.F .pfp { width: 48px; height: 48px; border-radius: 50%; overflow: hidden;
+  border: 1.5px solid var(--line); background: var(--bg-soft);
+}
+.F .pfp img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+.F .who { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.F .nm {
+  font-family: "Oswald", sans-serif;
+  font-size: 20px; line-height: 1;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.F .meta { display: inline-flex; gap: 6px; align-items: center;
+  font-size: 11px; font-weight: 700; color: var(--ink-soft);
+}
+
+/* The take — pull-quote style */
+.F .take {
+  font-family: "Source Serif Pro", Georgia, serif;
+  font-style: italic;
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--ink);
+  padding-left: 14px;
+  border-left: 2px solid var(--ink);
+  position: relative;
+}
+.F .take::before {
+  content: "";
+  position: absolute;
+  left: -2px; top: 0; bottom: 0;
+  width: 2px;
+  background: var(--accent-2);
+  height: 60%;
+  top: 20%;
+}
+.F .take .byline {
+  font-family: "Inter", sans-serif;
+  font-style: normal;
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 0.10em;
+  color: var(--accent-2);
+  display: block;
+  margin-top: 4px;
+}
+.F .adp {
+  text-align: right;
+  font-family: "Oswald", sans-serif;
+  display: flex; flex-direction: column; gap: 3px; align-items: flex-end;
+  font-variant-numeric: tabular-nums;
+}
+.F .adp .lbl {
+  font-family: "Inter", sans-serif;
+  font-size: 9px; font-weight: 700; letter-spacing: 0.12em;
+  color: var(--ink-dim);
+}
+.F .adp .val { font-size: 22px; line-height: 1; }
+.F .adp .verdict {
+  font-family: "Oswald", sans-serif;
+  font-size: 11px; letter-spacing: 0.06em;
+  padding: 2px 7px; border-radius: 3px;
+}
+.F .adp .verdict.steal { background: var(--steal-bg); color: var(--steal); }
+.F .adp .verdict.even  { background: var(--even-bg);  color: var(--even);  }
+.F .adp .verdict.reach { background: var(--reach-bg); color: var(--reach); }
+</style>
+</head>
+<body>
+
+<h1 class="page-h">Big Board — Density Mockups v2</h1>
+<p class="page-sub">
+  All three put a <b>visual anchor in the middle</b> so the eye lands on something meaningful instead of dead space.
+  No side-by-side cards. <code>bigboard.html</code> untouched. Pick a direction or remix.
+</p>
+
+<!-- ═══════════════════════════════════════
+     MOCKUP D · VERDICT HERO
+     ═══════════════════════════════════════ -->
+<section class="mock D">
+  <div class="mock-h">
+    <span class="mock-tag">// MOCKUP D</span>
+    <span class="mock-name">Verdict Hero</span>
+  </div>
+  <p class="mock-blurb">
+    The <b>STEAL / EVEN / REACH</b> verdict is the largest, most colored element in each row.
+    The eye lands there first because that <em>is</em> the answer to "should I draft this player?"
+    A one-line reason follows: "BDGE #1, going 2.1 ADP." The colored background (green/grey/red) gives the page a rhythm you can scan in a glance.
+  </p>
+
+  <div class="round-h">
+    <div class="l"><span class="num">R1</span> Round One</div>
+    <div class="r">Picks 1 – 10</div>
+  </div>
+
+  <div id="D-rows"></div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     MOCKUP E · TIER STRIPE + SPARKLINE
+     ═══════════════════════════════════════ -->
+<section class="mock E">
+  <div class="mock-h">
+    <span class="mock-tag">// MOCKUP E</span>
+    <span class="mock-name">Tier Stripe + ADP Sparkline</span>
+  </div>
+  <p class="mock-blurb">
+    Two visual anchors:
+    a <b>tier-colored left stripe</b> (green = T1, blue = T2, etc.) gives the page a column of color you can scan vertically,
+    and an <b>ADP sparkline</b> in the middle shows whether a player is rising or falling on the market over the last 30 days.
+    Adds <em>positional rank</em> ("RB1 of 32") as the second middle anchor — "where do they fall inside their position?"
+  </p>
+
+  <div class="round-h">
+    <div class="l"><span class="num">R1</span> Round One</div>
+    <div class="r">Picks 1 – 10</div>
+  </div>
+
+  <div id="E-rows"></div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     MOCKUP F · EDITORIAL
+     ═══════════════════════════════════════ -->
+<section class="mock F">
+  <div class="mock-h">
+    <span class="mock-tag">// MOCKUP F</span>
+    <span class="mock-name">Editorial — BDGE's Take</span>
+  </div>
+  <p class="mock-blurb">
+    Each row gets a <b>one-sentence pull-quote</b> in the middle — BDGE's actual take on the player.
+    No data here, just opinion. This is what differentiates BDGE from raw ADP sites:
+    a person who watches the tape telling you why this guy matters or doesn't.
+    Serif italic font signals "this is editorial, not stats."
+  </p>
+
+  <div class="round-h">
+    <div class="l"><span class="num">R1</span> Round One</div>
+    <div class="r">Picks 1 – 10</div>
+  </div>
+
+  <div id="F-rows"></div>
+</section>
+
+<script>
+// Same 10 players — now with verdict copy, tier, sparkline data, and BDGE editorial takes
+const P = [
+  { rk:1,  name:"Christian McCaffrey", team:"SF",  pos:"RB", espn:"3117251", adp:2.1,  tier:"T1", posRk:1, posTot:32,
+    why: "BDGE #1 going 2.1 ADP. Workhorse role, healthy.",
+    take: "Health is the only question — when he plays he's the highest-ceiling RB of the decade.",
+    spark: [4.2, 3.8, 3.1, 2.6, 2.4, 2.2, 2.1] },
+  { rk:2,  name:"Bijan Robinson",      team:"ATL", pos:"RB", espn:"4430807", adp:1.8,  tier:"T1", posRk:2, posTot:32,
+    why: "Going #1 overall, BDGE has him #2 — slight reach.",
+    take: "Bell-cow role finally unlocked. Tyler Allgeier gone, no committee, 280+ touches incoming.",
+    spark: [3.1, 2.8, 2.4, 2.2, 1.9, 1.9, 1.8] },
+  { rk:3,  name:"Ja'Marr Chase",       team:"CIN", pos:"WR", espn:"4362628", adp:3.4,  tier:"T1", posRk:1, posTot:64,
+    why: "On par. WR1 floor, perennial 1,400+ yard pace.",
+    take: "Burrow throws him 160 targets and the ceiling is whatever you can imagine.",
+    spark: [3.6, 3.4, 3.5, 3.4, 3.3, 3.4, 3.4] },
+  { rk:4,  name:"Justin Jefferson",    team:"MIN", pos:"WR", espn:"4262921", adp:4.1,  tier:"T1", posRk:2, posTot:64,
+    why: "Going 4.1, BDGE #4 — fair price for the best WR alive.",
+    take: "QB room is shaky but Jefferson is target-share insulated. Floor of WR5, ceiling of WR1.",
+    spark: [4.8, 4.6, 4.4, 4.2, 4.0, 4.1, 4.1] },
+  { rk:5,  name:"Tyreek Hill",         team:"MIA", pos:"WR", espn:"3116406", adp:6.5,  tier:"T2", posRk:3, posTot:64,
+    why: "Going 6.5, BDGE has him #5 — steal at the turn.",
+    take: "Age 32 narrative is overblown. Still the fastest player in football, still gets 9+ targets a game.",
+    spark: [5.2, 5.6, 6.0, 6.2, 6.4, 6.6, 6.5] },
+  { rk:6,  name:"CeeDee Lamb",         team:"DAL", pos:"WR", espn:"4241389", adp:7.2,  tier:"T2", posRk:4, posTot:64,
+    why: "ADP 7.2, BDGE #6 — modest steal.",
+    take: "Locked-in alpha. Dak healthy is the gating factor — when he is, Lamb is a top-3 fantasy WR.",
+    spark: [6.0, 6.4, 6.8, 7.0, 7.2, 7.4, 7.2] },
+  { rk:7,  name:"Saquon Barkley",      team:"PHI", pos:"RB", espn:"3929630", adp:8.4,  tier:"T2", posRk:3, posTot:32,
+    why: "ADP 8.4, BDGE #7 — small edge.",
+    take: "Eagles' offensive line is a cheat code. He's never had blocking like this in his career.",
+    spark: [9.6, 9.2, 8.8, 8.6, 8.4, 8.2, 8.4] },
+  { rk:8,  name:"Patrick Mahomes",     team:"KC",  pos:"QB", espn:"3139477", adp:38.0, tier:"T1", posRk:1, posTot:24,
+    why: "ADP 38.0, BDGE has him #8 — massive steal.",
+    take: "Late-round Mahomes is the cheat code of 2026 — let the room burn picks on QBs while you stack RB/WR.",
+    spark: [42, 40, 39, 38, 37, 38, 38] },
+  { rk:9,  name:"Amon-Ra St. Brown",   team:"DET", pos:"WR", espn:"4374302", adp:9.6,  tier:"T2", posRk:5, posTot:64,
+    why: "ADP 9.6 vs BDGE #9 — even.",
+    take: "Goff's security blanket. 130+ targets banked even in committee. Boring WR1 production.",
+    spark: [10.2, 10.0, 9.8, 9.6, 9.4, 9.6, 9.6] },
+  { rk:10, name:"Puka Nacua",          team:"LAR", pos:"WR", espn:"4426338", adp:11.8, tier:"T2", posRk:6, posTot:64,
+    why: "ADP 11.8 vs BDGE #10 — small steal.",
+    take: "Rookie year was no fluke — McVay built the offense around him. Target share will hold.",
+    spark: [13.6, 13.0, 12.4, 12.0, 11.8, 11.6, 11.8] },
+];
+
+function verdict(p) {
+  const d = p.adp - p.rk;
+  if (d > 0.5)  return ['steal', `Steal`,  `+${d.toFixed(1)}`];
+  if (d < -0.5) return ['reach', `Reach`,  d.toFixed(1)];
+  return         ['even',  `Even`, ''];
+}
+function img(p) {
+  return `<img src="https://a.espncdn.com/i/headshots/nfl/players/full/${p.espn}.png" alt="${p.name}" onerror="this.style.opacity=.15">`;
+}
+
+// Build a sparkline SVG path from a series of points
+function sparkline(pts, w = 80, h = 22, color = '#082430') {
+  const min = Math.min(...pts), max = Math.max(...pts);
+  const rng = max - min || 1;
+  // Note: lower ADP = better, so invert Y (lower number plots higher)
+  const d = pts.map((p, i) => {
+    const x = (i / (pts.length - 1)) * w;
+    const y = ((p - min) / rng) * h;
+    return `${i === 0 ? 'M' : 'L'} ${x.toFixed(1)} ${y.toFixed(1)}`;
+  }).join(' ');
+  const trend = pts[pts.length - 1] - pts[0];
+  return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}">
+    <path d="${d}" fill="none" stroke="${color}" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/>
+  </svg>`;
+}
+
+// ─── MOCKUP D — Verdict Hero
+document.getElementById('D-rows').innerHTML = P.map((p, i) => {
+  const [vk, vl, vd] = verdict(p);
+  return `<div class="row">
+    <span class="chk ${i === 0 ? 'on' : ''}">${i === 0 ? '✓' : ''}</span>
+    <div class="rk">${p.rk}</div>
+    <div class="pfp">${img(p)}</div>
+    <div class="who">
+      <div class="nm">${p.name}</div>
+      <div class="sub">
+        <span class="pos ${p.pos}">${p.pos}</span>
+        <span>${p.team}</span>
+      </div>
+    </div>
+    <div class="hero ${vk}">
+      <div class="hero-tag">${vl}${vd ? `<span class="delta">${vd}</span>` : ''}</div>
+      <div class="hero-why">${p.why}</div>
+    </div>
+    <div class="adp">
+      <span class="lbl">ADP</span>
+      <span class="val">${p.adp.toFixed(1)}</span>
+      <span class="src">ESPN</span>
+    </div>
+  </div>`;
+}).join('');
+
+// ─── MOCKUP E — Tier Stripe + Sparkline
+document.getElementById('E-rows').innerHTML = P.map((p, i) => {
+  const trend = p.spark[p.spark.length - 1] - p.spark[0];
+  let trendCls = 'flat', trendLabel = '— flat';
+  if (trend < -0.3) { trendCls = 'up'; trendLabel = `↑ rising`; }
+  else if (trend > 0.3) { trendCls = 'dn'; trendLabel = `↓ falling`; }
+  const sparkColor = trendCls === 'up' ? '#15803d' : trendCls === 'dn' ? '#b91c1c' : '#54616a';
+  return `<div class="row">
+    <div class="stripe ${p.tier}"></div>
+    <span class="chk ${i === 0 ? 'on' : ''}">${i === 0 ? '✓' : ''}</span>
+    <div class="rk">${p.rk}</div>
+    <div class="pfp">${img(p)}</div>
+    <div class="who">
+      <div class="nm">${p.name}</div>
+      <div class="meta">
+        <span class="pos ${p.pos}">${p.pos}</span>
+        <span>${p.team}</span>
+        <span style="color:var(--ink-dim);font-size:10px">· ${p.tier}</span>
+      </div>
+    </div>
+    <div class="posrk">${p.pos}${p.posRk} <span class="of">of ${p.posTot}</span></div>
+    <div class="spark">
+      <span class="spark-lbl">ADP 30D</span>
+      ${sparkline(p.spark, 80, 22, sparkColor)}
+      <span class="spark-tag ${trendCls}">${trendLabel}</span>
+    </div>
+    <div class="adp">
+      <span class="lbl">ADP</span>
+      <span class="val">${p.adp.toFixed(1)}</span>
+    </div>
+  </div>`;
+}).join('');
+
+// ─── MOCKUP F — Editorial
+document.getElementById('F-rows').innerHTML = P.map((p, i) => {
+  const [vk, vl, vd] = verdict(p);
+  return `<div class="row">
+    <span class="chk ${i === 0 ? 'on' : ''}">${i === 0 ? '✓' : ''}</span>
+    <div class="rk">${p.rk}</div>
+    <div class="pfp">${img(p)}</div>
+    <div class="who">
+      <div class="nm">${p.name}</div>
+      <div class="meta">
+        <span class="pos ${p.pos}">${p.pos}</span>
+        <span>${p.team}</span>
+      </div>
+    </div>
+    <div class="take">
+      ${p.take}
+      <span class="byline">— BDGE</span>
+    </div>
+    <div class="adp">
+      <span class="lbl">ADP</span>
+      <span class="val">${p.adp.toFixed(1)}</span>
+      <span class="verdict ${vk}">${vl}${vd ? ' ' + vd : ''}</span>
+    </div>
+  </div>`;
+}).join('');
+</script>
+
+</body>
+</html>

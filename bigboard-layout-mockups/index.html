@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>BDGE — Big Board Layout Mockups</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #f9f5eb;
+    --card: #fffaf0;
+    --ink: #082430;
+    --ink-soft: #3a4f5a;
+    --ink-dim: #6c7c87;
+    --line: #082430;
+    --line-soft: rgba(8, 36, 48, 0.14);
+    --pink: #fb637a;
+    --blue: #259fd6;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 48px 32px;
+    font-family: "Inter", sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    min-height: 100vh;
+  }
+  .wrap { max-width: 1100px; margin: 0 auto; }
+  h1 {
+    font-family: "Oswald", sans-serif;
+    font-size: 52px; line-height: 0.95;
+    letter-spacing: 0.01em;
+    margin: 0 0 8px 0;
+  }
+  h1 em {
+    background: var(--pink); color: #fff;
+    padding: 2px 12px; font-style: italic;
+    margin-left: 4px;
+  }
+  .sub {
+    font-size: 14px;
+    color: var(--ink-soft);
+    max-width: 620px;
+    line-height: 1.55;
+    margin-bottom: 36px;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
+  .card {
+    display: block;
+    background: var(--card);
+    border: 1.5px solid var(--ink);
+    border-radius: 6px;
+    padding: 22px 22px 18px;
+    color: var(--ink);
+    text-decoration: none;
+    box-shadow: 3px 3px 0 var(--ink);
+    transition: transform 140ms ease, box-shadow 140ms ease;
+  }
+  .card:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 5px 5px 0 var(--ink);
+  }
+  .card .n {
+    display: inline-block;
+    background: var(--ink); color: var(--bg);
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.10em;
+    padding: 3px 8px;
+    border-radius: 2px;
+    margin-bottom: 14px;
+  }
+  .card h3 {
+    font-family: "Oswald", sans-serif;
+    font-size: 26px; letter-spacing: 0.01em;
+    margin: 0 0 8px;
+    line-height: 1;
+  }
+  .card p {
+    font-size: 13px; line-height: 1.55;
+    color: var(--ink-soft);
+    margin: 0 0 14px;
+  }
+  .card .key {
+    display: flex; flex-wrap: wrap; gap: 6px;
+    font-size: 11px; letter-spacing: 0.04em;
+    color: var(--ink-dim);
+    font-weight: 600;
+  }
+  .card .key span {
+    background: var(--bg);
+    border: 1px solid var(--line-soft);
+    padding: 3px 8px;
+    border-radius: 3px;
+  }
+  .nav {
+    margin-top: 36px;
+    font-size: 12px;
+    color: var(--ink-dim);
+  }
+  .nav a { color: var(--ink); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Big Board <em>Layouts</em></h1>
+  <p class="sub">Three layout directions that use the side gutters better than the current 1100px centered column. Each keeps the same look-and-feel — just rearranges what fills the screen.</p>
+
+  <div class="grid">
+    <a class="card" href="1-wide-data.html">
+      <span class="n">// V1</span>
+      <h3>Wide + More Data</h3>
+      <p>Same single-list layout, expanded to ~1500px wide. Uses the new horizontal room for extra columns (Bye · Proj Pts · Tier · Stadium · Snap%) so each row carries more decision-grade info.</p>
+      <div class="key">
+        <span>Single column</span>
+        <span>+5 data columns</span>
+        <span>Lowest risk</span>
+      </div>
+    </a>
+
+    <a class="card" href="2-rounds-grid.html">
+      <span class="n">// V2</span>
+      <h3>Rounds Side-by-Side</h3>
+      <p>Classic draft-board view. Rounds laid out as columns left → right, picks stack vertically inside each round. You can scan two or three rounds at once without scrolling — board fills the whole canvas.</p>
+      <div class="key">
+        <span>Multi-column rounds</span>
+        <span>Glanceable</span>
+        <span>Draft-day feel</span>
+      </div>
+    </a>
+
+    <a class="card" href="3-side-rail.html">
+      <span class="n">// V3</span>
+      <h3>Board + Side Rails</h3>
+      <p>Center board stays the comfortable reading width, but the gutters become useful: a positional leaders rail on the left and a "watching / on the clock" rail on the right. Nothing feels empty.</p>
+      <div class="key">
+        <span>3-column shell</span>
+        <span>Positional rail</span>
+        <span>Watchlist rail</span>
+      </div>
+    </a>
+  </div>
+
+  <p class="nav">← <a href="../bigboard.html">Back to current Big Board</a></p>
+</div>
+</body>
+</html>
