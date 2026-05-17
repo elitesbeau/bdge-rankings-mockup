@@ -1,0 +1,2342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BDGE · Onboarding Mockups</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Playfair+Display:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet">
+<style>
+/* ─────────────────────────────────────────────────────────────
+   SHARED SHELL
+   ───────────────────────────────────────────────────────────── */
+:root {
+  --cream:#f9f5eb; --cream-2:#f1ead7;
+  --navy:#082430; --navy-2:#0f3243;
+  --pink:#fb637a; --pink-2:#fc8195;
+  --blue:#259fd6; --blue-2:#7ab2cc;
+  --ink-soft:rgba(8,36,48,0.62);
+  --ink-dim:rgba(8,36,48,0.38);
+  --line:#082430;
+  --line-soft:rgba(8,36,48,0.18);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: #0a1a26; color: var(--navy); font-family: "Inter", sans-serif; min-height: 100vh; }
+
+/* ── top status strip ────────────────────────────────── */
+.top {
+  position: sticky; top: 0; z-index: 200;
+  background: var(--navy);
+  color: var(--cream);
+  padding: 12px 24px 10px;
+  border-bottom: 3px solid var(--pink);
+  display: flex; align-items: center; gap: 16px;
+}
+.top h1 {
+  font-family: "Oswald", sans-serif;
+  font-size: 13px; letter-spacing: 0.22em; font-weight: 600;
+}
+.top p { font-size: 11px; color: rgba(249,245,235,0.62); font-family: "JetBrains Mono", monospace; letter-spacing: 0.05em; }
+.top .pill {
+  margin-left: auto;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px; letter-spacing: 0.25em;
+  color: var(--pink); border: 1px solid rgba(251,99,122,0.4);
+  padding: 4px 10px;
+}
+
+/* ── tab strip ──────────────────────────────────────── */
+.tabs {
+  position: sticky; top: 49px; z-index: 199;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  background: var(--navy);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.tab {
+  padding: 14px 12px 13px;
+  background: transparent; border: 0;
+  border-bottom: 3px solid transparent;
+  color: rgba(249,245,235,0.45);
+  font-family: "Oswald", sans-serif; font-size: 12px; letter-spacing: 0.16em; font-weight: 500;
+  cursor: pointer;
+  transition: color 200ms, border-color 200ms, background 200ms;
+  text-align: center;
+}
+.tab:hover { color: rgba(249,245,235,0.9); background: rgba(255,255,255,0.04); }
+.tab.active { color: var(--cream); border-bottom-color: var(--pink); }
+.tab .num { display: block; font-size: 9px; opacity: 0.55; letter-spacing: 0.3em; margin-bottom: 3px; }
+
+/* ── variant container ──────────────────────────────── */
+.variant { display: none; min-height: calc(100vh - 110px); }
+.variant.active { display: block; }
+.variant-intro {
+  max-width: 760px; margin: 0 auto;
+  padding: 28px 24px 0;
+  color: rgba(249,245,235,0.65);
+}
+.variant-intro .ref {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase;
+  color: rgba(249,245,235,0.42);
+  margin-bottom: 6px;
+}
+.variant-intro h2 {
+  font-family: "Oswald", sans-serif;
+  font-size: 26px; color: var(--cream);
+  letter-spacing: 0.02em; margin-bottom: 6px;
+}
+.variant-intro p { font-size: 13px; line-height: 1.55; }
+.step-divider {
+  max-width: 760px; margin: 36px auto 4px;
+  display: flex; align-items: center; gap: 14px;
+  color: rgba(249,245,235,0.32);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px; letter-spacing: 0.3em;
+  padding: 0 24px;
+}
+.step-divider::before, .step-divider::after {
+  content: ''; flex: 1; height: 1px;
+  background: rgba(249,245,235,0.12);
+}
+
+/* shared utility: hide alt text fallback if image renders */
+.plat-img { display: block; }
+.plat-img.broken + .plat-fb { display: flex; }
+.plat-fb { display: none; }
+
+/* ═════════════════════════════════════════════════════════════
+   V1 — EDITORIAL ALMANAC
+   Cream paper, navy ink, magazine masthead, Oswald + Playfair
+   ═════════════════════════════════════════════════════════════ */
+.v1 .frame {
+  max-width: 880px; margin: 28px auto;
+  background: var(--cream);
+  border: 2px solid var(--navy);
+  box-shadow: 0 30px 80px -20px rgba(0,0,0,0.5);
+  padding: 0;
+}
+.v1-mast {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: end;
+  gap: 24px;
+  padding: 28px 36px 22px;
+  border-bottom: 2px solid var(--navy);
+}
+.v1-mast .mast-logo {
+  font-family: "Playfair Display", serif;
+  font-weight: 900; font-style: italic;
+  font-size: 56px; line-height: 0.85;
+  color: var(--navy); letter-spacing: -0.04em;
+}
+.v1-mast .mast-logo i { color: var(--pink); font-style: italic; }
+.v1-mast .mast-mid {
+  text-align: center;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px; letter-spacing: 0.3em; color: var(--ink-soft);
+  line-height: 1.8;
+}
+.v1-mast .mast-mid b { color: var(--navy); }
+.v1-mast .mast-right {
+  text-align: right;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px; letter-spacing: 0.2em; color: var(--ink-soft);
+  line-height: 1.7;
+}
+.v1-mast .mast-right .iss { font-family: "Oswald", sans-serif; font-size: 13px; letter-spacing: 0.18em; color: var(--navy); font-weight: 600; }
+.v1-prog {
+  display: flex; gap: 0;
+  border-bottom: 1px solid var(--line-soft);
+  background: var(--cream-2);
+}
+.v1-prog .prog-i {
+  flex: 1;
+  padding: 9px 14px;
+  font-family: "Playfair Display", serif;
+  font-style: italic;
+  font-size: 14px;
+  color: var(--ink-dim);
+  border-right: 1px solid var(--line-soft);
+  display: flex; align-items: center; gap: 10px;
+}
+.v1-prog .prog-i:last-child { border-right: 0; }
+.v1-prog .prog-i.done { color: var(--pink); }
+.v1-prog .prog-i.active { color: var(--navy); background: var(--cream); }
+.v1-prog .prog-i .lbl { font-family: "Oswald", sans-serif; font-style: normal; font-size: 10px; letter-spacing: 0.18em; }
+
+.v1-step { padding: 32px 36px 28px; border-bottom: 1px solid var(--line-soft); }
+.v1-step:last-child { border-bottom: 0; }
+.v1-byline {
+  font-family: "Playfair Display", serif;
+  font-style: italic;
+  font-size: 13px; color: var(--pink);
+  margin-bottom: 8px;
+}
+.v1-h {
+  font-family: "Oswald", sans-serif;
+  font-size: 42px; line-height: 0.98; color: var(--navy);
+  letter-spacing: 0.005em; margin-bottom: 10px;
+  font-weight: 500;
+}
+.v1-h em { font-family: "Playfair Display", serif; font-style: italic; color: var(--pink); font-weight: 700; }
+.v1-lede {
+  font-size: 14px; color: var(--ink-soft);
+  line-height: 1.55; margin-bottom: 22px;
+  max-width: 620px;
+}
+.v1-lede::first-letter {
+  float: left;
+  font-family: "Playfair Display", serif;
+  font-weight: 900; font-size: 44px; line-height: 0.85;
+  padding: 4px 8px 0 0; color: var(--navy);
+}
+
+/* V1 step1 — two big spread cards */
+.v1-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.v1-card-spread {
+  background: var(--cream); border: 1.5px solid var(--navy);
+  padding: 22px 22px 20px; cursor: pointer;
+  position: relative; min-height: 180px;
+  transition: background 180ms, transform 180ms;
+  font-family: "Inter", sans-serif;
+  text-align: left;
+}
+.v1-card-spread:hover { background: var(--cream-2); }
+.v1-card-spread.selected { background: var(--navy); color: var(--cream); }
+.v1-card-spread.selected .v1-card-num,
+.v1-card-spread.selected .v1-card-title,
+.v1-card-spread.selected .v1-card-desc { color: var(--cream); }
+.v1-card-num {
+  font-family: "Playfair Display", serif;
+  font-style: italic; font-weight: 700;
+  font-size: 11px; color: var(--pink);
+  letter-spacing: 0.1em; margin-bottom: 10px;
+}
+.v1-card-title {
+  font-family: "Oswald", sans-serif;
+  font-size: 28px; color: var(--navy);
+  letter-spacing: 0.01em; line-height: 1; margin-bottom: 8px;
+  font-weight: 500;
+}
+.v1-card-desc { font-size: 12px; color: var(--ink-soft); line-height: 1.5; max-width: 240px; }
+.v1-card-tag {
+  position: absolute; top: 18px; right: 20px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 9px; letter-spacing: 0.22em; font-weight: 700;
+  color: var(--pink); padding: 3px 7px; border: 1px solid var(--pink);
+}
+.v1-card-spread.selected .v1-card-tag { color: var(--pink-2); border-color: var(--pink-2); }
+
+/* V1 step2 — platform grid */
+.v1-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+.v1-opt-row {
+  background: var(--cream); border: 1.5px solid var(--navy);
+  padding: 12px 14px; cursor: pointer;
+  display: flex; align-items: center; gap: 12px;
+  font-family: "Oswald", sans-serif;
+  font-size: 14px; color: var(--navy); letter-spacing: 0.04em;
+  text-align: left;
+  transition: background 180ms;
+}
+.v1-opt-row:hover { background: var(--cream-2); }
+.v1-opt-row.selected { background: var(--navy); color: var(--cream); border-color: var(--navy); }
+.v1-opt-row .plat {
+  width: 36px; height: 36px;
+  display: grid; place-items: center;
+  background: #fff; border: 1px solid var(--line-soft);
+  flex-shrink: 0;
+  overflow: hidden;
+}
+.v1-opt-row .plat img { width: 22px; height: 22px; display: block; object-fit: contain; }
+.v1-opt-row.selected .plat { background: var(--cream); border-color: var(--cream); }
+.v1-opt-row .plat-fb {
+  width: 100%; height: 100%;
+  display: none;
+  align-items: center; justify-content: center;
+  font-family: "Oswald", sans-serif; font-size: 10px;
+  color: var(--navy); font-weight: 700;
+}
+.v1-opt-row img[data-fb].broken { display: none; }
+.v1-opt-row img[data-fb].broken + .plat-fb { display: flex; }
+
+/* V1 step3 — team counts */
+.v1-grid-team { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
+.v1-team-cell {
+  background: var(--cream); border: 1.5px solid var(--navy);
+  padding: 14px 8px 12px;
+  cursor: pointer;
+  text-align: center;
+  font-family: "Oswald", sans-serif;
+  transition: background 180ms;
+}
+.v1-team-cell:hover { background: var(--cream-2); }
+.v1-team-cell.selected { background: var(--navy); color: var(--cream); }
+.v1-team-num {
+  font-family: "Playfair Display", serif;
+  font-weight: 700; font-size: 32px;
+  line-height: 1; color: var(--navy); margin-bottom: 4px;
+}
+.v1-team-cell.selected .v1-team-num { color: var(--cream); }
+.v1-team-lbl { font-size: 10px; letter-spacing: 0.18em; color: var(--ink-soft); text-transform: uppercase; }
+.v1-team-cell.selected .v1-team-lbl { color: rgba(249,245,235,0.7); }
+.v1-team-tag {
+  display: block;
+  font-family: "Inter", sans-serif;
+  font-size: 9px; letter-spacing: 0.12em; color: var(--pink);
+  text-transform: uppercase;
+  margin-top: 4px;
+  min-height: 12px;
+}
+
+/* V1 step4 — layout long rows */
+.v1-grid-stack { display: grid; grid-template-columns: 1fr; gap: 8px; }
+.v1-layout-row {
+  background: var(--cream); border: 1.5px solid var(--navy);
+  padding: 16px 18px;
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: 60px 1fr auto;
+  gap: 18px;
+  align-items: center;
+  text-align: left;
+  font-family: "Inter", sans-serif;
+  transition: background 180ms;
+}
+.v1-layout-row:hover { background: var(--cream-2); }
+.v1-layout-row.selected { background: var(--navy); color: var(--cream); }
+.v1-layout-tag {
+  font-family: "Oswald", sans-serif;
+  font-size: 14px; color: var(--pink); letter-spacing: 0.12em;
+  font-weight: 700;
+  border-right: 1.5px solid var(--line-soft); padding-right: 14px;
+}
+.v1-layout-row.selected .v1-layout-tag { color: var(--pink-2); border-right-color: rgba(252,129,149,0.4); }
+.v1-layout-title { font-family: "Oswald", sans-serif; font-size: 20px; color: var(--navy); letter-spacing: 0.02em; margin-bottom: 4px; font-weight: 500; }
+.v1-layout-row.selected .v1-layout-title { color: var(--cream); }
+.v1-layout-desc { font-size: 11px; color: var(--ink-soft); font-family: "JetBrains Mono", monospace; letter-spacing: 0.04em; }
+.v1-layout-row.selected .v1-layout-desc { color: rgba(249,245,235,0.65); }
+.v1-layout-row .arrow { font-family: "Playfair Display", serif; font-style: italic; font-size: 22px; color: var(--ink-dim); }
+.v1-layout-row.selected .arrow { color: var(--pink-2); }
+
+/* V1 footer (per-step nav) */
+.v1-foot {
+  margin-top: 22px; padding-top: 18px;
+  border-top: 1px solid var(--line-soft);
+  display: flex; align-items: center; gap: 12px;
+}
+.v1-foot .skip {
+  background: transparent; border: 0; padding: 0;
+  font-family: "Playfair Display", serif; font-style: italic;
+  font-size: 13px; color: var(--ink-soft); cursor: pointer;
+  text-decoration: underline;
+}
+.v1-foot .nav { margin-left: auto; display: flex; gap: 10px; }
+.v1-foot .back, .v1-foot .cta {
+  font-family: "Oswald", sans-serif;
+  font-size: 14px; letter-spacing: 0.14em;
+  padding: 12px 22px;
+  cursor: pointer;
+  height: 44px;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.v1-foot .back {
+  background: transparent; color: var(--ink-soft);
+  border: 1.5px solid var(--line-soft);
+}
+.v1-foot .back:hover { color: var(--navy); border-color: var(--navy); }
+.v1-foot .cta {
+  background: var(--navy); color: var(--cream);
+  border: 1.5px solid var(--navy);
+  font-weight: 600;
+}
+.v1-foot .cta:hover { background: var(--navy-2); }
+
+/* ═════════════════════════════════════════════════════════════
+   V2 — NEUBRUTALIST TRADING CARDS
+   Cream bg, heavy 3px navy borders, hard pink shadow offsets
+   ═════════════════════════════════════════════════════════════ */
+.v2 .frame {
+  max-width: 880px; margin: 28px auto;
+  padding: 24px;
+}
+.v2-card {
+  background: var(--cream);
+  border: 3px solid var(--navy);
+  box-shadow: 8px 8px 0 var(--pink);
+  padding: 28px 32px 24px;
+  margin-bottom: 28px;
+}
+.v2-head {
+  display: flex; align-items: center; gap: 16px;
+  border-bottom: 3px solid var(--navy);
+  padding-bottom: 14px; margin-bottom: 20px;
+}
+.v2-logo {
+  font-family: "Oswald", sans-serif; font-weight: 700;
+  font-size: 30px; letter-spacing: -0.02em;
+  background: var(--navy); color: var(--cream);
+  padding: 4px 14px 2px; line-height: 1;
+}
+.v2-logo b { color: var(--pink); }
+.v2-tag { font-family: "JetBrains Mono", monospace; font-size: 10px; letter-spacing: 0.22em; color: var(--ink-soft); }
+.v2-prog {
+  margin-left: auto;
+  display: flex; gap: 4px;
+}
+.v2-prog i {
+  width: 26px; height: 14px;
+  background: var(--cream-2); border: 2px solid var(--navy);
+}
+.v2-prog i.done { background: var(--pink); }
+.v2-prog i.active { background: var(--navy); }
+.v2-num {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px; letter-spacing: 0.25em; color: var(--pink); font-weight: 700;
+  margin-bottom: 6px;
+}
+.v2-h {
+  font-family: "Oswald", sans-serif;
+  font-size: 38px; color: var(--navy);
+  font-weight: 700; line-height: 1; margin-bottom: 8px;
+  text-transform: uppercase; letter-spacing: -0.005em;
+}
+.v2-sub { font-size: 13px; color: var(--ink-soft); margin-bottom: 22px; max-width: 560px; }
+
+/* V2 step1 — two slabs */
+.v2-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.v2-slab {
+  background: var(--cream); border: 3px solid var(--navy);
+  box-shadow: 5px 5px 0 var(--navy);
+  padding: 22px 22px 18px;
+  cursor: pointer;
+  text-align: left;
+  font-family: "Inter", sans-serif;
+  position: relative;
+  min-height: 180px;
+  display: flex; flex-direction: column;
+  transition: transform 120ms, box-shadow 120ms;
+}
+.v2-slab:hover { transform: translate(-2px,-2px); box-shadow: 7px 7px 0 var(--navy); }
+.v2-slab.selected { background: var(--pink); color: var(--cream); border-color: var(--navy); box-shadow: 5px 5px 0 var(--navy); }
+.v2-slab.selected.blue { background: var(--blue); }
+.v2-slab .ico {
+  width: 48px; height: 48px;
+  background: var(--navy); color: var(--cream);
+  border: 2px solid var(--navy);
+  display: grid; place-items: center;
+  font-size: 22px;
+  margin-bottom: 14px;
+}
+.v2-slab.selected .ico { background: var(--cream); color: var(--navy); }
+.v2-slab .title {
+  font-family: "Oswald", sans-serif;
+  font-size: 26px; color: var(--navy);
+  letter-spacing: -0.005em; text-transform: uppercase;
+  font-weight: 700; line-height: 0.95;
+  margin-bottom: 6px;
+}
+.v2-slab.selected .title { color: var(--cream); }
+.v2-slab .desc { font-size: 12px; color: var(--ink-soft); line-height: 1.45; }
+.v2-slab.selected .desc { color: rgba(249,245,235,0.92); }
+.v2-slab .corner {
+  position: absolute; top: 12px; right: 14px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 9px; letter-spacing: 0.25em; font-weight: 700;
+  color: var(--pink);
+  background: var(--navy); padding: 3px 7px;
+}
+.v2-slab.selected .corner { background: var(--cream); color: var(--navy); }
+
+/* V2 step2 — platform brutalist tiles */
+.v2-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+.v2-tile {
+  background: var(--cream); border: 3px solid var(--navy);
+  box-shadow: 4px 4px 0 var(--navy);
+  padding: 14px 12px; cursor: pointer;
+  display: flex; align-items: center; gap: 12px;
+  font-family: "Oswald", sans-serif;
+  font-size: 14px; color: var(--navy); letter-spacing: 0.04em;
+  text-align: left; text-transform: uppercase;
+  transition: transform 120ms, box-shadow 120ms;
+}
+.v2-tile:hover { transform: translate(-2px,-2px); box-shadow: 6px 6px 0 var(--navy); }
+.v2-tile.selected { background: var(--navy); color: var(--cream); }
+.v2-tile .plat {
+  width: 38px; height: 38px;
+  background: #fff; border: 2px solid var(--navy);
+  display: grid; place-items: center;
+  flex-shrink: 0; overflow: hidden;
+}
+.v2-tile .plat img { width: 24px; height: 24px; object-fit: contain; }
+.v2-tile.selected .plat { border-color: var(--cream); }
+.v2-tile .plat-fb {
+  display: none;
+  width: 100%; height: 100%;
+  align-items: center; justify-content: center;
+  font-family: "Oswald", sans-serif; font-size: 10px;
+  color: var(--navy); font-weight: 700;
+}
+.v2-tile img.broken { display: none; }
+.v2-tile img.broken + .plat-fb { display: flex; }
+
+/* V2 step3 — bold team grid */
+.v2-grid-6 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.v2-tcell {
+  background: var(--cream); border: 3px solid var(--navy);
+  box-shadow: 4px 4px 0 var(--navy);
+  padding: 14px 12px;
+  cursor: pointer;
+  display: grid; grid-template-columns: 52px 1fr; gap: 12px;
+  align-items: center;
+  text-align: left;
+  transition: transform 120ms, box-shadow 120ms;
+}
+.v2-tcell:hover { transform: translate(-2px,-2px); box-shadow: 6px 6px 0 var(--navy); }
+.v2-tcell.selected { background: var(--navy); color: var(--cream); }
+.v2-tcell .big {
+  background: var(--pink); color: var(--cream);
+  border: 2px solid var(--navy);
+  font-family: "Oswald", sans-serif; font-weight: 700;
+  font-size: 28px; padding: 4px 0 0; text-align: center;
+  line-height: 1;
+  height: 52px;
+  display: grid; place-items: center;
+}
+.v2-tcell.selected .big { background: var(--cream); color: var(--navy); border-color: var(--cream); }
+.v2-tcell .ttl { font-family: "Oswald", sans-serif; font-size: 18px; letter-spacing: 0.04em; color: var(--navy); text-transform: uppercase; font-weight: 600; }
+.v2-tcell.selected .ttl { color: var(--cream); }
+.v2-tcell .sub { font-family: "JetBrains Mono", monospace; font-size: 10px; letter-spacing: 0.14em; color: var(--ink-soft); text-transform: uppercase; }
+.v2-tcell.selected .sub { color: rgba(249,245,235,0.65); }
+
+/* V2 step4 — roster slabs */
+.v2-grid-stack { display: grid; gap: 10px; }
+.v2-lay {
+  background: var(--cream); border: 3px solid var(--navy);
+  box-shadow: 4px 4px 0 var(--navy);
+  padding: 16px 18px; cursor: pointer;
+  display: grid; grid-template-columns: 62px 1fr auto; gap: 18px;
+  align-items: center; text-align: left;
+  transition: transform 120ms, box-shadow 120ms;
+}
+.v2-lay:hover { transform: translate(-2px,-2px); box-shadow: 6px 6px 0 var(--navy); }
+.v2-lay.selected { background: var(--navy); color: var(--cream); }
+.v2-lay .tag {
+  background: var(--pink); color: var(--cream);
+  border: 2px solid var(--navy);
+  font-family: "Oswald", sans-serif; font-weight: 700; font-size: 14px;
+  text-align: center; padding: 8px 0;
+}
+.v2-lay.selected .tag { background: var(--cream); color: var(--navy); border-color: var(--cream); }
+.v2-lay .ttl { font-family: "Oswald", sans-serif; font-size: 20px; letter-spacing: 0.02em; color: var(--navy); text-transform: uppercase; font-weight: 600; margin-bottom: 3px; }
+.v2-lay.selected .ttl { color: var(--cream); }
+.v2-lay .dsc { font-family: "JetBrains Mono", monospace; font-size: 10px; letter-spacing: 0.06em; color: var(--ink-soft); }
+.v2-lay.selected .dsc { color: rgba(249,245,235,0.7); }
+.v2-lay .ar {
+  font-family: "Oswald", sans-serif; font-size: 28px;
+  color: var(--ink-dim);
+}
+.v2-lay.selected .ar { color: var(--pink-2); }
+
+/* V2 footer */
+.v2-foot {
+  margin-top: 22px; padding-top: 16px;
+  border-top: 3px solid var(--navy);
+  display: flex; align-items: center; gap: 12px;
+}
+.v2-foot .skip {
+  background: transparent; border: 0;
+  font-family: "Oswald", sans-serif; font-size: 11px; letter-spacing: 0.18em;
+  color: var(--ink-soft); cursor: pointer; text-transform: uppercase;
+  text-decoration: underline;
+}
+.v2-foot .nav { margin-left: auto; display: flex; gap: 10px; }
+.v2-foot .back, .v2-foot .cta {
+  font-family: "Oswald", sans-serif;
+  font-size: 14px; letter-spacing: 0.14em; font-weight: 600;
+  padding: 0 22px; height: 46px;
+  cursor: pointer;
+  border: 3px solid var(--navy);
+  text-transform: uppercase;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.v2-foot .back { background: var(--cream); color: var(--navy); box-shadow: 3px 3px 0 var(--navy); }
+.v2-foot .back:hover { transform: translate(-2px,-2px); box-shadow: 5px 5px 0 var(--navy); }
+.v2-foot .cta { background: var(--pink); color: var(--cream); box-shadow: 3px 3px 0 var(--navy); }
+.v2-foot .cta:hover { transform: translate(-2px,-2px); box-shadow: 5px 5px 0 var(--navy); }
+
+/* ═════════════════════════════════════════════════════════════
+   V3 — STADIUM NIGHTS (dark)
+   Dark navy bg, cotton-blue neon outlines, inset glows, no fills
+   ═════════════════════════════════════════════════════════════ */
+.v3 .frame {
+  max-width: 880px; margin: 28px auto;
+  background: #0a1a26;
+  border: 1px solid rgba(122,178,204,0.18);
+  padding: 0;
+  color: var(--cream);
+  position: relative;
+  overflow: hidden;
+}
+.v3 .frame::before {
+  content: ''; position: absolute; inset: 0;
+  background-image: radial-gradient(circle at 1px 1px, rgba(122,178,204,0.05) 1px, transparent 0);
+  background-size: 28px 28px;
+  pointer-events: none;
+}
+.v3-head {
+  display: flex; align-items: center; gap: 18px;
+  padding: 24px 32px;
+  border-bottom: 1px solid rgba(122,178,204,0.15);
+  position: relative;
+}
+.v3-logo {
+  font-family: "Oswald", sans-serif; font-weight: 700;
+  font-size: 32px; letter-spacing: -0.02em; line-height: 1;
+}
+.v3-logo i { color: var(--blue); font-style: italic; }
+.v3-logo-sub {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px; letter-spacing: 0.28em;
+  color: rgba(249,245,235,0.5);
+  margin-top: 6px;
+}
+.v3-status { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+.v3-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--pink);
+  box-shadow: 0 0 0 0 rgba(251,99,122,0.6);
+  animation: v3pulse 2.4s ease-in-out infinite;
+}
+@keyframes v3pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(251,99,122,0.55); }
+  50% { box-shadow: 0 0 0 10px rgba(251,99,122,0); }
+}
+.v3-status-l {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px; letter-spacing: 0.22em; color: rgba(249,245,235,0.7);
+  text-transform: uppercase;
+}
+.v3-prog {
+  display: flex; gap: 3px;
+  padding: 0 32px;
+  margin-top: 18px; margin-bottom: 4px;
+  position: relative;
+}
+.v3-prog i {
+  flex: 1; height: 3px;
+  background: rgba(122,178,204,0.15);
+  position: relative; overflow: hidden;
+}
+.v3-prog i.done { background: var(--pink); }
+.v3-prog i.active::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(90deg, var(--pink) 0%, var(--pink) 60%, rgba(251,99,122,0.2) 100%);
+}
+
+.v3-step { padding: 26px 32px 22px; position: relative; border-bottom: 1px solid rgba(122,178,204,0.12); }
+.v3-step:last-child { border-bottom: 0; }
+.v3-eye {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px; letter-spacing: 0.28em;
+  color: var(--blue); margin-bottom: 10px;
+  text-transform: uppercase;
+}
+.v3-h {
+  font-family: "Oswald", sans-serif;
+  font-size: 38px; line-height: 1;
+  color: var(--cream); margin-bottom: 8px;
+  letter-spacing: 0.005em;
+  font-weight: 500;
+}
+.v3-h em { font-style: normal; color: var(--blue); }
+.v3-sub { font-size: 13px; color: rgba(249,245,235,0.55); line-height: 1.55; margin-bottom: 22px; max-width: 580px; }
+
+/* V3 step1 — inset glow cards */
+.v3-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.v3-glow {
+  background: rgba(122,178,204,0.04);
+  border: 1px solid rgba(122,178,204,0.18);
+  padding: 20px 22px 18px;
+  cursor: pointer; position: relative;
+  min-height: 160px;
+  display: flex; flex-direction: column; gap: 12px;
+  text-align: left;
+  font-family: "Inter", sans-serif;
+  color: var(--cream);
+  transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+.v3-glow::before {
+  content: ''; position: absolute; inset: 0;
+  box-shadow: inset 0 0 60px rgba(122,178,204,0.06);
+  pointer-events: none;
+}
+.v3-glow:hover { background: rgba(122,178,204,0.07); border-color: rgba(122,178,204,0.35); }
+.v3-glow.selected { border-color: var(--blue); background: rgba(37,159,214,0.10); }
+.v3-glow.selected.pink { border-color: var(--pink); background: rgba(251,99,122,0.10); }
+.v3-glow .ico {
+  width: 42px; height: 42px;
+  display: grid; place-items: center;
+  border: 1px solid rgba(122,178,204,0.3);
+  color: var(--blue);
+  font-size: 18px; line-height: 1;
+}
+.v3-glow.selected.pink .ico { border-color: var(--pink); color: var(--pink); }
+.v3-glow .title {
+  font-family: "Oswald", sans-serif;
+  font-size: 26px; color: var(--cream);
+  letter-spacing: 0.02em; line-height: 1; font-weight: 500;
+}
+.v3-glow .desc { font-size: 12px; color: rgba(249,245,235,0.55); line-height: 1.5; }
+.v3-glow .corner {
+  position: absolute; top: 16px; right: 18px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 9px; letter-spacing: 0.24em; font-weight: 600;
+  color: var(--blue);
+}
+.v3-glow.selected.pink .corner { color: var(--pink); }
+
+/* V3 step2 — platforms */
+.v3-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+.v3-pill {
+  background: rgba(122,178,204,0.04);
+  border: 1px solid rgba(122,178,204,0.18);
+  padding: 12px 14px;
+  cursor: pointer;
+  display: flex; align-items: center; gap: 12px;
+  font-family: "Oswald", sans-serif;
+  font-size: 13px; color: var(--cream); letter-spacing: 0.05em;
+  text-align: left;
+  transition: all 180ms;
+}
+.v3-pill:hover { border-color: rgba(122,178,204,0.4); background: rgba(122,178,204,0.07); }
+.v3-pill.selected { border-color: var(--pink); background: rgba(251,99,122,0.08); }
+.v3-pill .plat {
+  width: 34px; height: 34px;
+  background: rgba(249,245,235,0.96);
+  border-radius: 4px;
+  display: grid; place-items: center;
+  overflow: hidden; flex-shrink: 0;
+}
+.v3-pill .plat img { width: 22px; height: 22px; object-fit: contain; }
+.v3-pill .plat-fb {
+  display: none; width: 100%; height: 100%;
+  align-items: center; justify-content: center;
+  font-family: "Oswald", sans-serif; font-size: 10px;
+  color: var(--navy); font-weight: 700;
+}
+.v3-pill img.broken { display: none; }
+.v3-pill img.broken + .plat-fb { display: flex; }
+
+/* V3 step3 — team count */
+.v3-grid-team { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; }
+.v3-tcell {
+  background: rgba(122,178,204,0.04);
+  border: 1px solid rgba(122,178,204,0.18);
+  padding: 14px 8px;
+  cursor: pointer; text-align: center;
+  transition: all 180ms;
+}
+.v3-tcell:hover { border-color: rgba(122,178,204,0.4); }
+.v3-tcell.selected { border-color: var(--blue); background: rgba(37,159,214,0.10); }
+.v3-tcell .n {
+  font-family: "Oswald", sans-serif; font-weight: 700;
+  font-size: 30px; color: var(--cream); line-height: 1;
+  margin-bottom: 4px;
+  letter-spacing: -0.01em;
+}
+.v3-tcell .lbl {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: rgba(249,245,235,0.45);
+}
+.v3-tcell .tag {
+  display: block; min-height: 12px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 8px; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--blue); margin-top: 4px;
+}
+
+/* V3 step4 — layouts */
+.v3-grid-stack { display: grid; gap: 8px; }
+.v3-lay {
+  background: rgba(122,178,204,0.04);
+  border: 1px solid rgba(122,178,204,0.18);
+  padding: 16px 18px;
+  cursor: pointer;
+  display: grid; grid-template-columns: 50px 1fr auto; gap: 16px;
+  align-items: center; text-align: left;
+  transition: all 180ms;
+}
+.v3-lay:hover { border-color: rgba(122,178,204,0.4); }
+.v3-lay.selected { border-color: var(--blue); background: rgba(37,159,214,0.08); }
+.v3-lay .ico {
+  font-family: "Oswald", sans-serif; font-weight: 700;
+  font-size: 14px; letter-spacing: 0.06em;
+  color: var(--blue);
+  border: 1px solid rgba(37,159,214,0.4);
+  padding: 8px 0; text-align: center;
+}
+.v3-lay.selected .ico { background: var(--blue); color: var(--cream); }
+.v3-lay .ttl { font-family: "Oswald", sans-serif; font-size: 20px; color: var(--cream); letter-spacing: 0.02em; font-weight: 500; margin-bottom: 3px; }
+.v3-lay .dsc { font-family: "JetBrains Mono", monospace; font-size: 10px; color: rgba(249,245,235,0.45); letter-spacing: 0.04em; }
+.v3-lay .ar { color: rgba(249,245,235,0.3); font-size: 18px; }
+.v3-lay.selected .ar { color: var(--blue); }
+
+/* V3 footer */
+.v3-foot {
+  margin-top: 22px; padding-top: 16px;
+  border-top: 1px solid rgba(122,178,204,0.15);
+  display: flex; align-items: center; gap: 12px;
+}
+.v3-foot .skip {
+  background: transparent; border: 0;
+  font-family: "JetBrains Mono", monospace; font-size: 10px;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  color: rgba(249,245,235,0.4); cursor: pointer;
+  text-decoration: underline;
+}
+.v3-foot .nav { margin-left: auto; display: flex; gap: 10px; }
+.v3-foot .back, .v3-foot .cta {
+  font-family: "Oswald", sans-serif;
+  font-size: 14px; letter-spacing: 0.14em;
+  padding: 0 22px; height: 44px;
+  cursor: pointer;
+  display: inline-flex; align-items: center; gap: 8px;
+  font-weight: 500;
+}
+.v3-foot .back { background: transparent; color: rgba(249,245,235,0.55); border: 1px solid rgba(122,178,204,0.2); }
+.v3-foot .back:hover { color: var(--cream); border-color: rgba(122,178,204,0.5); }
+.v3-foot .cta {
+  background: var(--pink); color: var(--cream); border: 1px solid var(--pink);
+  position: relative;
+  box-shadow: 0 0 0 0 rgba(251,99,122,0.5);
+  animation: v3cta 3s ease-in-out infinite;
+}
+@keyframes v3cta {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(251,99,122,0); }
+  50% { box-shadow: 0 0 0 6px rgba(251,99,122,0.18); }
+}
+.v3-foot .cta:hover { background: var(--pink-2); }
+
+/* ═════════════════════════════════════════════════════════════
+   V4 — BENTO
+   Soft rounded cards, drop shadows, generous spacing, ana.sh-style
+   ═════════════════════════════════════════════════════════════ */
+.v4 .frame {
+  max-width: 920px; margin: 28px auto;
+  background: var(--cream);
+  border-radius: 24px;
+  box-shadow: 0 30px 80px -20px rgba(0,0,0,0.4);
+  padding: 0;
+  overflow: hidden;
+}
+.v4-head {
+  display: flex; align-items: center; gap: 18px;
+  padding: 26px 36px;
+  background: linear-gradient(135deg, var(--cream) 0%, var(--cream-2) 100%);
+  border-bottom: 1px solid var(--line-soft);
+}
+.v4-logo-wrap {
+  display: flex; align-items: center; gap: 14px;
+}
+.v4-logo-mark {
+  width: 56px; height: 56px;
+  background: var(--navy); color: var(--cream);
+  border-radius: 14px;
+  display: grid; place-items: center;
+  font-family: "Oswald", sans-serif; font-weight: 700;
+  font-size: 22px; letter-spacing: -0.02em;
+  box-shadow: 0 4px 12px rgba(8,36,48,0.25);
+}
+.v4-logo-text { line-height: 1.15; }
+.v4-logo-text .name {
+  font-family: "Oswald", sans-serif; font-weight: 600;
+  font-size: 20px; letter-spacing: 0.02em;
+  color: var(--navy);
+}
+.v4-logo-text .sub {
+  font-family: "Inter", sans-serif; font-size: 11px;
+  color: var(--ink-soft); letter-spacing: 0.06em;
+}
+.v4-step-chip {
+  margin-left: auto;
+  display: flex; align-items: center; gap: 8px;
+  background: rgba(251,99,122,0.12);
+  color: var(--pink);
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px; letter-spacing: 0.2em; font-weight: 600;
+}
+.v4-step-chip .d {
+  width: 6px; height: 6px; border-radius: 50%; background: var(--pink);
+  box-shadow: 0 0 0 0 rgba(251,99,122,0.5);
+  animation: v3pulse 2.4s ease-in-out infinite;
+}
+.v4-prog {
+  display: flex; gap: 6px;
+  padding: 12px 36px 0;
+}
+.v4-prog i { flex: 1; height: 4px; border-radius: 2px; background: rgba(8,36,48,0.08); }
+.v4-prog i.done { background: var(--pink); }
+.v4-prog i.active { background: linear-gradient(90deg, var(--pink) 60%, rgba(251,99,122,0.2) 100%); }
+
+.v4-step { padding: 26px 36px 24px; border-bottom: 1px solid var(--line-soft); }
+.v4-step:last-child { border-bottom: 0; }
+.v4-eye {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px; letter-spacing: 0.28em; text-transform: uppercase;
+  color: var(--pink); margin-bottom: 8px;
+}
+.v4-h {
+  font-family: "Oswald", sans-serif; font-weight: 500;
+  font-size: 38px; line-height: 1.02; color: var(--navy);
+  letter-spacing: -0.01em; margin-bottom: 10px;
+}
+.v4-sub { font-size: 14px; color: var(--ink-soft); line-height: 1.55; margin-bottom: 22px; max-width: 580px; }
+
+/* V4 step1 — bento split */
+.v4-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.v4-bento {
+  background: #fff;
+  border: 1px solid rgba(8,36,48,0.08);
+  border-radius: 16px;
+  padding: 22px 24px 20px;
+  cursor: pointer;
+  text-align: left;
+  position: relative;
+  min-height: 170px;
+  display: flex; flex-direction: column; gap: 12px;
+  font-family: "Inter", sans-serif;
+  box-shadow: 0 1px 3px rgba(8,36,48,0.04);
+  transition: box-shadow 220ms, border-color 220ms, background 220ms;
+}
+.v4-bento:hover { box-shadow: 0 8px 24px rgba(8,36,48,0.10); border-color: rgba(8,36,48,0.18); }
+.v4-bento.selected {
+  background: linear-gradient(135deg, var(--pink) 0%, #ff8095 100%);
+  color: var(--cream); border-color: transparent;
+  box-shadow: 0 16px 30px -8px rgba(251,99,122,0.45);
+}
+.v4-bento.selected.blue {
+  background: linear-gradient(135deg, var(--blue) 0%, #4cb7e5 100%);
+  box-shadow: 0 16px 30px -8px rgba(37,159,214,0.45);
+}
+.v4-bento .ico {
+  width: 42px; height: 42px; border-radius: 12px;
+  background: rgba(8,36,48,0.06);
+  display: grid; place-items: center;
+  font-size: 20px; color: var(--navy);
+}
+.v4-bento.selected .ico { background: rgba(255,255,255,0.22); color: var(--cream); }
+.v4-bento .title {
+  font-family: "Oswald", sans-serif; font-weight: 500;
+  font-size: 26px; color: var(--navy);
+  letter-spacing: -0.005em; line-height: 1.05;
+}
+.v4-bento.selected .title { color: var(--cream); }
+.v4-bento .desc { font-size: 13px; color: var(--ink-soft); line-height: 1.5; }
+.v4-bento.selected .desc { color: rgba(255,255,255,0.92); }
+.v4-bento .ping {
+  position: absolute; top: 18px; right: 20px;
+  display: flex; align-items: center; gap: 6px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 9px; letter-spacing: 0.22em; font-weight: 700;
+  color: var(--pink);
+}
+.v4-bento .ping .d {
+  width: 6px; height: 6px; border-radius: 50%; background: var(--pink);
+}
+.v4-bento.selected .ping { color: rgba(255,255,255,0.85); }
+.v4-bento.selected .ping .d { background: rgba(255,255,255,0.85); }
+
+/* V4 step2 — platforms */
+.v4-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+.v4-plat {
+  background: #fff;
+  border: 1px solid rgba(8,36,48,0.08);
+  border-radius: 12px;
+  padding: 12px 14px;
+  cursor: pointer;
+  display: flex; align-items: center; gap: 12px;
+  font-family: "Oswald", sans-serif;
+  font-size: 14px; color: var(--navy); letter-spacing: 0.04em;
+  text-align: left;
+  box-shadow: 0 1px 2px rgba(8,36,48,0.03);
+  transition: all 200ms;
+}
+.v4-plat:hover { box-shadow: 0 6px 18px rgba(8,36,48,0.08); border-color: rgba(8,36,48,0.18); }
+.v4-plat.selected { background: var(--navy); color: var(--cream); border-color: var(--navy); }
+.v4-plat .plat {
+  width: 38px; height: 38px; border-radius: 9px;
+  background: var(--cream-2);
+  display: grid; place-items: center;
+  overflow: hidden; flex-shrink: 0;
+}
+.v4-plat .plat img { width: 24px; height: 24px; object-fit: contain; }
+.v4-plat.selected .plat { background: rgba(255,255,255,0.95); }
+.v4-plat .plat-fb {
+  display: none; width: 100%; height: 100%;
+  align-items: center; justify-content: center;
+  font-family: "Oswald", sans-serif; font-size: 10px;
+  color: var(--navy); font-weight: 700;
+}
+.v4-plat img.broken { display: none; }
+.v4-plat img.broken + .plat-fb { display: flex; }
+
+/* V4 step3 — team count */
+.v4-grid-team { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.v4-tnum {
+  background: #fff;
+  border: 1px solid rgba(8,36,48,0.08);
+  border-radius: 14px;
+  padding: 16px 18px;
+  cursor: pointer;
+  display: flex; align-items: center; gap: 14px;
+  text-align: left;
+  box-shadow: 0 1px 2px rgba(8,36,48,0.03);
+  transition: all 200ms;
+}
+.v4-tnum:hover { box-shadow: 0 6px 18px rgba(8,36,48,0.08); border-color: rgba(8,36,48,0.18); }
+.v4-tnum.selected { background: var(--navy); color: var(--cream); border-color: var(--navy); }
+.v4-tnum .n {
+  width: 48px; height: 48px;
+  background: var(--cream-2);
+  border-radius: 12px;
+  display: grid; place-items: center;
+  font-family: "Oswald", sans-serif; font-weight: 600;
+  font-size: 22px; color: var(--navy);
+  flex-shrink: 0;
+}
+.v4-tnum.selected .n { background: var(--pink); color: var(--cream); }
+.v4-tnum .lbl { font-family: "Oswald", sans-serif; font-size: 16px; color: var(--navy); letter-spacing: 0.02em; font-weight: 500; }
+.v4-tnum.selected .lbl { color: var(--cream); }
+.v4-tnum .tag { font-family: "Inter", sans-serif; font-size: 11px; color: var(--ink-soft); margin-top: 2px; }
+.v4-tnum.selected .tag { color: rgba(255,255,255,0.75); }
+
+/* V4 step4 — layouts */
+.v4-grid-stack { display: grid; gap: 10px; }
+.v4-lay {
+  background: #fff;
+  border: 1px solid rgba(8,36,48,0.08);
+  border-radius: 14px;
+  padding: 16px 22px;
+  cursor: pointer;
+  display: grid; grid-template-columns: 54px 1fr auto;
+  gap: 18px; align-items: center; text-align: left;
+  box-shadow: 0 1px 2px rgba(8,36,48,0.03);
+  transition: all 200ms;
+}
+.v4-lay:hover { box-shadow: 0 6px 18px rgba(8,36,48,0.08); border-color: rgba(8,36,48,0.18); }
+.v4-lay.selected { background: var(--navy); color: var(--cream); border-color: var(--navy); }
+.v4-lay .tag {
+  background: var(--cream-2);
+  border-radius: 10px;
+  font-family: "Oswald", sans-serif; font-weight: 600; font-size: 13px;
+  letter-spacing: 0.04em;
+  color: var(--navy); padding: 8px 0; text-align: center;
+}
+.v4-lay.selected .tag { background: var(--pink); color: var(--cream); }
+.v4-lay .ttl { font-family: "Oswald", sans-serif; font-size: 20px; color: var(--navy); font-weight: 500; letter-spacing: 0.02em; margin-bottom: 3px; }
+.v4-lay.selected .ttl { color: var(--cream); }
+.v4-lay .dsc { font-size: 12px; color: var(--ink-soft); }
+.v4-lay.selected .dsc { color: rgba(255,255,255,0.75); }
+.v4-lay .ar { color: var(--ink-dim); font-size: 18px; }
+.v4-lay.selected .ar { color: var(--pink-2); }
+
+/* V4 footer */
+.v4-foot {
+  margin-top: 24px; padding-top: 18px;
+  border-top: 1px solid var(--line-soft);
+  display: flex; align-items: center; gap: 12px;
+}
+.v4-foot .skip {
+  background: transparent; border: 0;
+  font-size: 12px; color: var(--ink-soft); cursor: pointer;
+  text-decoration: underline;
+}
+.v4-foot .nav { margin-left: auto; display: flex; gap: 10px; }
+.v4-foot .back, .v4-foot .cta {
+  font-family: "Oswald", sans-serif;
+  font-size: 14px; letter-spacing: 0.12em; font-weight: 500;
+  padding: 0 24px; height: 46px;
+  border-radius: 12px;
+  cursor: pointer;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.v4-foot .back { background: var(--cream-2); color: var(--navy); border: 0; }
+.v4-foot .back:hover { background: rgba(8,36,48,0.1); }
+.v4-foot .cta {
+  background: var(--navy); color: var(--cream); border: 0;
+  box-shadow: 0 6px 16px -4px rgba(8,36,48,0.4);
+}
+.v4-foot .cta:hover { background: var(--navy-2); box-shadow: 0 10px 22px -4px rgba(8,36,48,0.45); }
+
+/* ═════════════════════════════════════════════════════════════
+   V5 — TIMELINE ARCHIVE
+   ufotimeline.com inspired: dark, opacity hierarchy, timeline left
+   ═════════════════════════════════════════════════════════════ */
+.v5 .frame {
+  max-width: 920px; margin: 28px auto;
+  background: #16181d;
+  border: 1px solid rgba(255,255,255,0.06);
+  color: rgba(255,255,255,0.92);
+  position: relative; overflow: hidden;
+}
+.v5 .frame::before {
+  content: ''; position: absolute; inset: 0;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence baseFrequency='0.9'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/></svg>");
+  opacity: 0.4; pointer-events: none;
+}
+.v5-head {
+  display: flex; align-items: center; gap: 18px;
+  padding: 22px 28px 18px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  position: relative;
+}
+.v5-logo {
+  font-family: "Oswald", sans-serif; font-weight: 700;
+  font-size: 26px; letter-spacing: -0.01em;
+  color: rgba(255,255,255,0.95);
+}
+.v5-logo i { color: var(--pink); font-style: italic; }
+.v5-meta {
+  display: flex; flex-direction: column; gap: 2px;
+  font-family: "JetBrains Mono", monospace; font-size: 10px;
+  color: rgba(255,255,255,0.5); letter-spacing: 0.15em;
+}
+.v5-meta .label { color: rgba(255,255,255,0.35); }
+.v5-arch {
+  margin-left: auto;
+  font-family: "JetBrains Mono", monospace; font-size: 10px;
+  letter-spacing: 0.22em; color: rgba(255,255,255,0.4);
+  text-transform: uppercase;
+}
+
+.v5-grid {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 0;
+}
+.v5-rail {
+  border-right: 1px solid rgba(255,255,255,0.06);
+  padding: 24px 0;
+  position: relative;
+}
+.v5-tl {
+  position: relative; padding-left: 30px; padding-right: 18px; padding-top: 0;
+  cursor: pointer;
+  margin-bottom: 22px;
+  transition: all 220ms;
+}
+.v5-tl::before {
+  content: ''; position: absolute;
+  left: 14px; top: 24px; bottom: -22px;
+  width: 1px; background: rgba(255,255,255,0.1);
+}
+.v5-tl:last-child::before { display: none; }
+.v5-tl .dot {
+  position: absolute; left: 10px; top: 6px;
+  width: 9px; height: 9px; border-radius: 50%;
+  background: #16181d;
+  border: 2px solid rgba(255,255,255,0.25);
+  transition: all 220ms;
+}
+.v5-tl.done .dot { background: var(--pink); border-color: var(--pink); }
+.v5-tl.active .dot { background: var(--pink); border-color: var(--pink); box-shadow: 0 0 0 5px rgba(251,99,122,0.18); }
+.v5-tl .stp { font-family: "JetBrains Mono", monospace; font-size: 9px; letter-spacing: 0.22em; color: rgba(255,255,255,0.4); text-transform: uppercase; margin-bottom: 4px; }
+.v5-tl .ttl { font-family: "Oswald", sans-serif; font-size: 15px; color: rgba(255,255,255,0.6); letter-spacing: 0.04em; line-height: 1.1; }
+.v5-tl.done .ttl { color: rgba(255,255,255,0.85); }
+.v5-tl.active .ttl { color: rgba(255,255,255,1); }
+.v5-tl:hover { transform: translateX(2px); }
+.v5-tl:hover .ttl { color: rgba(255,255,255,0.95); }
+
+.v5-content { padding: 26px 32px 32px; }
+.v5-step {
+  margin-bottom: 36px;
+  padding-bottom: 36px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.v5-step:last-child { border-bottom: 0; margin-bottom: 0; }
+.v5-step .head {
+  display: flex; align-items: baseline; gap: 14px;
+  margin-bottom: 12px;
+}
+.v5-step .num {
+  font-family: "JetBrains Mono", monospace; font-size: 10px; letter-spacing: 0.28em;
+  color: rgba(255,255,255,0.4);
+  border: 1px solid rgba(255,255,255,0.12);
+  padding: 3px 8px;
+}
+.v5-step .cat {
+  font-family: "JetBrains Mono", monospace; font-size: 10px; letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--pink);
+}
+.v5-h {
+  font-family: "Oswald", sans-serif; font-weight: 500;
+  font-size: 32px; line-height: 1.05;
+  color: rgba(255,255,255,0.95); margin-bottom: 8px;
+  letter-spacing: 0.005em;
+}
+.v5-sub { font-size: 13px; color: rgba(255,255,255,0.55); line-height: 1.55; margin-bottom: 20px; max-width: 540px; }
+
+/* V5 step1 — inset cards */
+.v5-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.v5-inset {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.07);
+  padding: 18px 20px; cursor: pointer;
+  position: relative;
+  min-height: 150px;
+  display: flex; flex-direction: column; gap: 10px;
+  text-align: left;
+  font-family: "Inter", sans-serif;
+  color: rgba(255,255,255,0.92);
+  transition: all 220ms;
+  box-shadow: inset 0 0 40px rgba(255,255,255,0.015);
+}
+.v5-inset:hover { background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.18); padding-left: 22px; }
+.v5-inset.selected { border-color: var(--pink); background: rgba(251,99,122,0.06); }
+.v5-inset .ico {
+  width: 36px; height: 36px;
+  background: rgba(255,255,255,0.04);
+  display: grid; place-items: center;
+  font-size: 16px; color: rgba(255,255,255,0.6);
+}
+.v5-inset.selected .ico { background: rgba(251,99,122,0.15); color: var(--pink); }
+.v5-inset .title { font-family: "Oswald", sans-serif; font-size: 22px; letter-spacing: 0.02em; color: rgba(255,255,255,0.95); font-weight: 500; }
+.v5-inset .desc { font-size: 12px; color: rgba(255,255,255,0.5); line-height: 1.5; }
+.v5-inset .cat-tag {
+  position: absolute; top: 16px; right: 18px;
+  font-family: "JetBrains Mono", monospace; font-size: 9px;
+  letter-spacing: 0.22em; color: var(--pink); font-weight: 700;
+}
+
+/* V5 step2 — platform inset rows */
+.v5-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+.v5-row {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.07);
+  padding: 11px 14px;
+  cursor: pointer;
+  display: flex; align-items: center; gap: 12px;
+  font-family: "Oswald", sans-serif; font-size: 13px;
+  color: rgba(255,255,255,0.9);
+  letter-spacing: 0.05em; text-align: left;
+  transition: all 220ms;
+}
+.v5-row:hover { background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.18); padding-left: 16px; }
+.v5-row.selected { border-color: var(--pink); background: rgba(251,99,122,0.06); }
+.v5-row .plat {
+  width: 32px; height: 32px;
+  background: rgba(255,255,255,0.92);
+  display: grid; place-items: center;
+  overflow: hidden; flex-shrink: 0;
+}
+.v5-row .plat img { width: 20px; height: 20px; object-fit: contain; }
+.v5-row .plat-fb {
+  display: none; width: 100%; height: 100%;
+  align-items: center; justify-content: center;
+  font-family: "Oswald", sans-serif; font-size: 10px;
+  color: var(--navy); font-weight: 700;
+}
+.v5-row img.broken { display: none; }
+.v5-row img.broken + .plat-fb { display: flex; }
+
+/* V5 step3 */
+.v5-grid-team { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; }
+.v5-tcell {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.07);
+  padding: 12px 6px; cursor: pointer;
+  text-align: center;
+  transition: all 220ms;
+}
+.v5-tcell:hover { background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.18); }
+.v5-tcell.selected { border-color: var(--pink); background: rgba(251,99,122,0.06); }
+.v5-tcell .n {
+  font-family: "Oswald", sans-serif; font-weight: 600;
+  font-size: 24px; color: rgba(255,255,255,0.95); line-height: 1;
+  margin-bottom: 4px;
+  letter-spacing: -0.01em;
+}
+.v5-tcell .lbl { font-family: "JetBrains Mono", monospace; font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.45); }
+.v5-tcell .tag { font-family: "JetBrains Mono", monospace; font-size: 8px; letter-spacing: 0.16em; color: var(--pink); text-transform: uppercase; margin-top: 3px; min-height: 10px; display: block; }
+
+/* V5 step4 */
+.v5-grid-stack { display: grid; gap: 6px; }
+.v5-lay {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.07);
+  padding: 14px 18px;
+  cursor: pointer;
+  display: grid; grid-template-columns: 56px 1fr auto; gap: 16px;
+  align-items: center; text-align: left;
+  transition: all 220ms;
+}
+.v5-lay:hover { background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.18); padding-left: 22px; }
+.v5-lay.selected { border-color: var(--pink); background: rgba(251,99,122,0.05); }
+.v5-lay .tag {
+  font-family: "Oswald", sans-serif; font-weight: 600; font-size: 13px;
+  letter-spacing: 0.06em;
+  color: var(--pink);
+  border: 1px solid rgba(251,99,122,0.4);
+  padding: 6px 0; text-align: center;
+}
+.v5-lay.selected .tag { background: var(--pink); color: var(--cream); }
+.v5-lay .ttl { font-family: "Oswald", sans-serif; font-size: 18px; color: rgba(255,255,255,0.95); font-weight: 500; letter-spacing: 0.02em; margin-bottom: 3px; }
+.v5-lay .dsc { font-family: "JetBrains Mono", monospace; font-size: 10px; color: rgba(255,255,255,0.45); letter-spacing: 0.04em; }
+.v5-lay .ar { color: rgba(255,255,255,0.3); font-size: 16px; }
+.v5-lay.selected .ar { color: var(--pink); }
+
+/* V5 footer */
+.v5-foot {
+  margin-top: 22px; padding-top: 16px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  display: flex; align-items: center; gap: 12px;
+}
+.v5-foot .skip {
+  background: transparent; border: 0;
+  font-family: "JetBrains Mono", monospace; font-size: 10px;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  color: rgba(255,255,255,0.4); cursor: pointer;
+  text-decoration: underline;
+}
+.v5-foot .nav { margin-left: auto; display: flex; gap: 10px; }
+.v5-foot .back, .v5-foot .cta {
+  font-family: "Oswald", sans-serif;
+  font-size: 13px; letter-spacing: 0.14em;
+  padding: 0 20px; height: 42px;
+  cursor: pointer;
+  display: inline-flex; align-items: center; gap: 8px;
+  font-weight: 500;
+}
+.v5-foot .back { background: transparent; color: rgba(255,255,255,0.55); border: 1px solid rgba(255,255,255,0.12); }
+.v5-foot .back:hover { color: rgba(255,255,255,0.95); border-color: rgba(255,255,255,0.3); }
+.v5-foot .cta { background: var(--pink); color: var(--cream); border: 1px solid var(--pink); }
+.v5-foot .cta:hover { background: var(--pink-2); }
+
+/* responsive */
+@media (max-width: 760px) {
+  .tabs { grid-template-columns: repeat(5, 1fr); }
+  .tab { font-size: 10px; letter-spacing: 0.08em; padding: 10px 6px; }
+  .v1-mast, .v3-head, .v4-head, .v5-head { padding-left: 18px; padding-right: 18px; }
+  .v1-step, .v2-card, .v3-step, .v4-step { padding-left: 18px; padding-right: 18px; }
+  .v5-grid { grid-template-columns: 1fr; }
+  .v5-rail { display: none; }
+  .v1-grid-2, .v2-grid-2, .v3-grid-2, .v4-grid-2, .v5-grid-2 { grid-template-columns: 1fr; }
+  .v1-grid-3, .v2-grid-3, .v3-grid-3, .v4-grid-3, .v5-grid-3 { grid-template-columns: 1fr 1fr; }
+  .v1-grid-team, .v3-grid-team, .v5-grid-team { grid-template-columns: repeat(3, 1fr); }
+  .v4-grid-team { grid-template-columns: 1fr 1fr; }
+  .v2-grid-6 { grid-template-columns: 1fr 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- ─── HEADER ─── -->
+<header class="top">
+  <h1>BDGE // ONBOARDING MOCKUPS</h1>
+  <p>5 directions for the Quick Setup flow — each shows all 4 steps. Pick one and we ship it into bigboard.html.</p>
+  <span class="pill">2026 · 05 · 17</span>
+</header>
+
+<nav class="tabs">
+  <button class="tab active" data-v="1"><span class="num">01</span>Editorial Almanac</button>
+  <button class="tab" data-v="2"><span class="num">02</span>Neubrutalist</button>
+  <button class="tab" data-v="3"><span class="num">03</span>Stadium Nights</button>
+  <button class="tab" data-v="4"><span class="num">04</span>Bento</button>
+  <button class="tab" data-v="5"><span class="num">05</span>Timeline Archive</button>
+</nav>
+
+<!-- ═════════════════════════════════════════════════════════════
+     V1 — EDITORIAL ALMANAC
+     ═════════════════════════════════════════════════════════════ -->
+<section class="variant v1 active">
+  <div class="variant-intro">
+    <div class="ref">Direction · editorial-dashboard · Oswald + Playfair · cream + navy + pink</div>
+    <h2>Editorial Almanac</h2>
+    <p>Magazine masthead with BDGE as the headline mark. Each step reads like a feature opener. Confident, brand-forward, deliberately analog — fits "the Fantasy Football Almanac" voice.</p>
+  </div>
+
+  <div class="frame">
+    <header class="v1-mast">
+      <div class="mast-logo">BDGE<i>.</i></div>
+      <div class="mast-mid">
+        <div><b>THE FANTASY FOOTBALL ALMANAC</b></div>
+        <div>EST. 2026 · CIRCULATION DRAFT WEEK</div>
+      </div>
+      <div class="mast-right">
+        <div class="iss">VOL. I</div>
+        <div>ISSUE 01 · QUICK SETUP</div>
+      </div>
+    </header>
+
+    <div class="v1-prog">
+      <span class="prog-i done">I. <span class="lbl">DRAFT</span></span>
+      <span class="prog-i active">II. <span class="lbl">PLATFORM</span></span>
+      <span class="prog-i">III. <span class="lbl">TEAMS</span></span>
+      <span class="prog-i">IV. <span class="lbl">LAYOUT</span></span>
+    </div>
+
+    <!-- step 1 -->
+    <article class="v1-step">
+      <div class="v1-byline">— No. 01 · Tell us where you stand —</div>
+      <h1 class="v1-h">Are you in a <em>draft?</em></h1>
+      <p class="v1-lede">We'll tune the board for what you need right now — every screen, every column, every column rank. You can switch any time from the dashboard cog.</p>
+
+      <div class="v1-grid-2" data-group="v1-step1">
+        <button class="v1-card-spread opt selected" data-val="now">
+          <div class="v1-card-num">— PART ONE —</div>
+          <div class="v1-card-title">Drafting Now</div>
+          <div class="v1-card-desc">Live board. Two minutes on the clock. Auto-grading every pick. Spring-loaded suggestions.</div>
+          <div class="v1-card-tag">LIVE</div>
+        </button>
+        <button class="v1-card-spread opt" data-val="prep">
+          <div class="v1-card-num">— PART TWO —</div>
+          <div class="v1-card-title">Just Prepping</div>
+          <div class="v1-card-desc">Research mode. Full data table. Stadium notes. Take your time.</div>
+          <div class="v1-card-tag">RESEARCH</div>
+        </button>
+      </div>
+
+      <div class="v1-foot">
+        <button class="skip">Skip setup ↗</button>
+        <div class="nav">
+          <button class="back">← Back</button>
+          <button class="cta">Continue →</button>
+        </div>
+      </div>
+    </article>
+
+    <!-- step 2 -->
+    <article class="v1-step">
+      <div class="v1-byline">— No. 02 · The competitive landscape —</div>
+      <h1 class="v1-h">Which <em>platform?</em></h1>
+      <p class="v1-lede">We'll cross-reference BDGE rankings against theirs — vs ADP, sleeper picks, fade calls. Nothing proprietary leaves your machine.</p>
+
+      <div class="v1-grid-3" data-group="v1-step2">
+        <button class="v1-opt-row opt selected" data-val="espn">
+          <span class="plat"><img src="https://cdn.simpleicons.org/espn/D00000" alt="ESPN" data-fb onerror="this.classList.add('broken')"><span class="plat-fb">ESPN</span></span>
+          ESPN
+        </button>
+        <button class="v1-opt-row opt" data-val="yahoo">
+          <span class="plat"><img src="https://cdn.simpleicons.org/yahoo/5F01D1" alt="Yahoo" data-fb onerror="this.classList.add('broken')"><span class="plat-fb">YHO</span></span>
+          Yahoo
+        </button>
+        <button class="v1-opt-row opt" data-val="sleeper">
+          <span class="plat"><img src="https://www.google.com/s2/favicons?domain=sleeper.app&sz=64" alt="Sleeper" data-fb onerror="this.classList.add('broken')"><span class="plat-fb">SLP</span></span>
+          Sleeper
+        </button>
+        <button class="v1-opt-row opt" data-val="nfl">
+          <span class="plat"><img src="https://cdn.simpleicons.org/nfl/013369" alt="NFL.com" data-fb onerror="this.classList.add('broken')"><span class="plat-fb">NFL</span></span>
+          NFL.com
+        </button>
+        <button class="v1-opt-row opt" data-val="underdog">
+          <span class="plat"><img src="https://www.google.com/s2/favicons?domain=underdogfantasy.com&sz=64" alt="Underdog" data-fb onerror="this.classList.add('broken')"><span class="plat-fb">UD</span></span>
+          Underdog
+        </button>
+        <button class="v1-opt-row opt" data-val="none">
+          <span class="plat"><span class="plat-fb" style="display:flex">—</span></span>
+          Skip
+        </button>
+      </div>
+
+      <div class="v1-foot">
+        <button class="skip">Skip setup ↗</button>
+        <div class="nav">
+          <button class="back">← Back</button>
+          <button class="cta">Continue →</button>
+        </div>
+      </div>
+    </article>
+
+    <!-- step 3 -->
+    <article class="v1-step">
+      <div class="v1-byline">— No. 03 · Roster the room —</div>
+      <h1 class="v1-h">How <em>many teams?</em></h1>
+      <p class="v1-lede">Each round on the board will be sized to one pick per team. We'll adjust tier breaks and run-end warnings to match.</p>
+
+      <div class="v1-grid-team" data-group="v1-step3">
+        <button class="v1-team-cell opt" data-val="8">
+          <div class="v1-team-num">8</div>
+          <div class="v1-team-lbl">Teams</div>
+          <span class="v1-team-tag">small</span>
+        </button>
+        <button class="v1-team-cell opt" data-val="10">
+          <div class="v1-team-num">10</div>
+          <div class="v1-team-lbl">Teams</div>
+          <span class="v1-team-tag">&nbsp;</span>
+        </button>
+        <button class="v1-team-cell opt selected" data-val="12">
+          <div class="v1-team-num">12</div>
+          <div class="v1-team-lbl">Teams</div>
+          <span class="v1-team-tag">most common</span>
+        </button>
+        <button class="v1-team-cell opt" data-val="14">
+          <div class="v1-team-num">14</div>
+          <div class="v1-team-lbl">Teams</div>
+          <span class="v1-team-tag">&nbsp;</span>
+        </button>
+        <button class="v1-team-cell opt" data-val="16">
+          <div class="v1-team-num">16</div>
+          <div class="v1-team-lbl">Teams</div>
+          <span class="v1-team-tag">deep</span>
+        </button>
+        <button class="v1-team-cell opt" data-val="custom">
+          <div class="v1-team-num">+</div>
+          <div class="v1-team-lbl">Custom</div>
+          <span class="v1-team-tag">&nbsp;</span>
+        </button>
+      </div>
+
+      <div class="v1-foot">
+        <button class="skip">Skip setup ↗</button>
+        <div class="nav">
+          <button class="back">← Back</button>
+          <button class="cta">Continue →</button>
+        </div>
+      </div>
+    </article>
+
+    <!-- step 4 -->
+    <article class="v1-step">
+      <div class="v1-byline">— No. 04 · Roster shape —</div>
+      <h1 class="v1-h">Team <em>layout?</em></h1>
+      <p class="v1-lede">Pick the roster format your league uses. You can change it anytime from the cog.</p>
+
+      <div class="v1-grid-stack" data-group="v1-step4">
+        <button class="v1-layout-row opt selected" data-val="standard">
+          <div class="v1-layout-tag">PPR</div>
+          <div>
+            <div class="v1-layout-title">Standard PPR</div>
+            <div class="v1-layout-desc">QB · RB · RB · WR · WR · TE · FLEX · K · DST · 7 BENCH</div>
+          </div>
+          <span class="arrow">→</span>
+        </button>
+        <button class="v1-layout-row opt" data-val="superflex">
+          <div class="v1-layout-tag">SF</div>
+          <div>
+            <div class="v1-layout-title">Superflex</div>
+            <div class="v1-layout-desc">+ SUPERFLEX slot (QB/RB/WR/TE) · 7 BENCH</div>
+          </div>
+          <span class="arrow">→</span>
+        </button>
+        <button class="v1-layout-row opt" data-val="bestball">
+          <div class="v1-layout-tag">BB</div>
+          <div>
+            <div class="v1-layout-title">Best Ball</div>
+            <div class="v1-layout-desc">QB · 2 RB · 3 WR · TE · FLEX · 12 BENCH · no K/DST</div>
+          </div>
+          <span class="arrow">→</span>
+        </button>
+        <button class="v1-layout-row opt" data-val="custom">
+          <div class="v1-layout-tag">+</div>
+          <div>
+            <div class="v1-layout-title">Custom</div>
+            <div class="v1-layout-desc">Build your own (defaults to Standard PPR)</div>
+          </div>
+          <span class="arrow">→</span>
+        </button>
+      </div>
+
+      <div class="v1-foot">
+        <button class="skip">Skip setup ↗</button>
+        <div class="nav">
+          <button class="back">← Back</button>
+          <button class="cta">Done →</button>
+        </div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- ═════════════════════════════════════════════════════════════
+     V2 — NEUBRUTALIST
+     ═════════════════════════════════════════════════════════════ -->
+<section class="variant v2">
+  <div class="variant-intro">
+    <div class="ref">Direction · neubrutalist · 3px navy borders · 8px pink offset shadows · Oswald uppercase</div>
+    <h2>Neubrutalist</h2>
+    <p>Trading-card energy. Heavy borders, hard shadows, pink + navy, no gradients. Reads as confident, sports-card collector. Same family as your bigboard density mockups v6.</p>
+  </div>
+
+  <div class="frame">
+    <!-- step 1 -->
+    <div class="v2-card">
+      <div class="v2-head">
+        <div class="v2-logo">B<b>D</b>GE</div>
+        <div class="v2-tag">THE FANTASY FOOTBALL ALMANAC</div>
+        <div class="v2-prog">
+          <i class="active"></i><i></i><i></i><i></i>
+        </div>
+      </div>
+      <div class="v2-num">// STEP 01 OF 04 — DRAFT STATE</div>
+      <h2 class="v2-h">Are you in a draft?</h2>
+      <div class="v2-sub">We'll tune the board for what you need right now. You can switch modes any time from settings.</div>
+
+      <div class="v2-grid-2" data-group="v2-step1">
+        <button class="v2-slab opt selected" data-val="now">
+          <span class="corner">LIVE</span>
+          <div class="ico">▶</div>
+          <div class="title">Drafting Now</div>
+          <div class="desc">Live board · two minutes on the clock · spring-loaded picks · auto-grading</div>
+        </button>
+        <button class="v2-slab opt blue" data-val="prep">
+          <span class="corner">RESEARCH</span>
+          <div class="ico">▤</div>
+          <div class="title">Just Prepping</div>
+          <div class="desc">Research mode · full data table · stadium notes · take your time</div>
+        </button>
+      </div>
+
+      <div class="v2-foot">
+        <button class="skip">Skip setup</button>
+        <div class="nav">
+          <button class="back">← Back</button>
+          <button class="cta">Continue →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- step 2 -->
+    <div class="v2-card">
+      <div class="v2-head">
+        <div class="v2-logo">B<b>D</b>GE</div>
+        <div class="v2-tag">PLATFORM CROSS-REFERENCE</div>
+        <div class="v2-prog">
+          <i class="done"></i><i class="active"></i><i></i><i></i>
+        </div>
+      </div>
+      <div class="v2-num">// STEP 02 OF 04 — PLATFORM</div>
+      <h2 class="v2-h">Which platform?</h2>
+      <div class="v2-sub">We'll show how BDGE rankings compare to theirs — no proprietary data shared.</div>
+
+      <div class="v2-grid-3" data-group="v2-step2">
+        <button class="v2-tile opt selected" data-val="espn">
+          <span class="plat"><img src="https://cdn.simpleicons.org/espn/D00000" alt="" data-fb onerror="this.classList.add('broken')"><span class="plat-fb">ESPN</span></span>
+          ESPN
+        </button>
+        <button class="v2-tile opt" data-val="yahoo">
+          <span class="plat"><img src="https://cdn.simpleicons.org/yahoo/5F01D1" alt="" data-fb onerror="this.classList.add('broken')"><span class="plat-fb">YHO</span></span>
+          Yahoo
+        </button>
+        <button class="v2-tile opt" data-val="sleeper">
+          <span class="plat"><img src="https://www.google.com/s2/favicons?domain=sleeper.app&sz=64" alt="" data-fb onerror="this.classList.add('broken')"><span class="plat-fb">SLP</span></span>
+          Sleeper
+        </button>
+        <button class="v2-tile opt" data-val="nfl">
+          <span class="plat"><img src="https://cdn.simpleicons.org/nfl/013369" alt="" data-fb onerror="this.classList.add('broken')"><span class="plat-fb">NFL</span></span>
+          NFL.com
+        </button>
+        <button class="v2-tile opt" data-val="underdog">
+          <span class="plat"><img src="https://www.google.com/s2/favicons?domain=underdogfantasy.com&sz=64" alt="" data-fb onerror="this.classList.add('broken')"><span class="plat-fb">UD</span></span>
+          Underdog
+        </button>
+        <button class="v2-tile opt" data-val="none">
+          <span class="plat"><span class="plat-fb" style="display:flex">—</span></span>
+          Skip
+        </button>
+      </div>
+
+      <div class="v2-foot">
+        <button class="skip">Skip setup</button>
+        <div class="nav">
+          <button class="back">← Back</button>
+          <button class="cta">Continue →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- step 3 -->
+    <div class="v2-card">
+      <div class="v2-head">
+        <div class="v2-logo">B<b>D</b>GE</div>
+        <div class="v2-tag">LEAGUE SIZE</div>
+        <div class="v2-prog">
+          <i class="done"></i><i class="done"></i><i class="active"></i><i></i>
+        </div>
+      </div>
+      <div class="v2-num">// STEP 03 OF 04 — TEAMS</div>
+      <h2 class="v2-h">How many teams?</h2>
+      <div class="v2-sub">Each round will be sized to one pick per team. Tier breaks and run-end warnings adjust to match.</div>
+
+      <div class="v2-grid-6" data-group="v2-step3">
+        <button class="v2-tcell opt" data-val="8">
+          <div class="big">8</div>
+          <div>
+            <div class="ttl">8 Teams</div>
+            <div class="sub">small league</div>
+          </div>
+        </button>
+        <button class="v2-tcell opt" data-val="10">
+          <div class="big">10</div>
+          <div>
+            <div class="ttl">10 Teams</div>
+            <div class="sub">standard</div>
+          </div>
+        </button>
+        <button class="v2-tcell opt selected" data-val="12">
+          <div class="big">12</div>
+          <div>
+            <div class="ttl">12 Teams</div>
+            <div class="sub">most common</div>
+          </div>
+        </button>
+        <button class="v2-tcell opt" data-val="14">
+          <div class="big">14</div>
+          <div>
+            <div class="ttl">14 Teams</div>
+            <div class="sub">deeper</div>
+          </div>
+        </button>
+        <button class="v2-tcell opt" data-val="16">
+          <div class="big">16</div>
+          <div>
+            <div class="ttl">16 Teams</div>
+            <div class="sub">deep league</div>
+          </div>
+        </button>
+        <button class="v2-tcell opt" data-val="custom">
+          <div class="big">+</div>
+          <div>
+            <div class="ttl">Custom</div>
+            <div class="sub">set your own</div>
+          </div>
+        </button>
+      </div>
+
+      <div class="v2-foot">
+        <button class="skip">Skip setup</button>
+        <div class="nav">
+          <button class="back">← Back</button>
+          <button class="cta">Continue →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- step 4 -->
+    <div class="v2-card">
+      <div class="v2-head">
+        <div class="v2-logo">B<b>D</b>GE</div>
+        <div class="v2-tag">ROSTER SHAPE</div>
+        <div class="v2-prog">
+          <i class="done"></i><i class="done"></i><i class="done"></i><i class="active"></i>
+        </div>
+      </div>
+      <div class="v2-num">// STEP 04 OF 04 — LAYOUT</div>
+      <h2 class="v2-h">Team layout?</h2>
+      <div class="v2-sub">Pick the roster format your league uses. You can change it anytime.</div>
+
+      <div class="v2-grid-stack" data-group="v2-step4">
+        <button class="v2-lay opt selected" data-val="standard">
+          <div class="tag">PPR</div>
+          <div>
+            <div class="ttl">Standard PPR</div>
+            <div class="dsc">QB · RB · RB · WR · WR · TE · FLEX · K · DST · 7 BENCH</div>
+          </div>
+          <span class="ar">→</span>
+        </button>
+        <button class="v2-lay opt" data-val="superflex">
+          <div class="tag">SF</div>
+          <div>
+            <div class="ttl">Superflex</div>
+            <div class="dsc">+ SUPERFLEX slot (QB/RB/WR/TE) · 7 BENCH</div>
+          </div>
+          <span class="ar">→</span>
+        </button>
+        <button class="v2-lay opt" data-val="bestball">
+          <div class="tag">BB</div>
+          <div>
+            <div class="ttl">Best Ball</div>
+            <div class="dsc">QB · 2 RB · 3 WR · TE · FLEX · 12 BENCH · no K/DST</div>
+          </div>
+          <span class="ar">→</span>
+        </button>
+        <button class="v2-lay opt" data-val="custom">
+          <div class="tag">+</div>
+          <div>
+            <div class="ttl">Custom</div>
+            <div class="dsc">Build your own (defaults to Standard PPR)</div>
+          </div>
+          <span class="ar">→</span>
+        </button>
+      </div>
+
+      <div class="v2-foot">
+        <button class="skip">Skip setup</button>
+        <div class="nav">
+          <button class="back">← Back</button>
+          <button class="cta">Done →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════════════════════════════════════════════════════════
+     V3 — STADIUM NIGHTS (dark)
+     ═════════════════════════════════════════════════════════════ -->
+<section class="variant v3">
+  <div class="variant-intro">
+    <div class="ref">Direction · paper-physics / dark · cotton-blue neon outlines · breathing CTA</div>
+    <h2>Stadium Nights</h2>
+    <p>Dark navy field, cotton-blue neon outlines, inset glows instead of solid fills. Breathing pulse on the Continue button. Reads as Friday-night-lights — premium, modern.</p>
+  </div>
+
+  <div class="frame">
+    <header class="v3-head">
+      <div>
+        <div class="v3-logo">BDGE<i>.</i></div>
+        <div class="v3-logo-sub">// THE FANTASY FOOTBALL ALMANAC · QUICK SETUP</div>
+      </div>
+      <div class="v3-status">
+        <span class="v3-dot"></span>
+        <span class="v3-status-l">2026 SEASON · LIVE</span>
+      </div>
+    </header>
+
+    <div class="v3-prog">
+      <i class="done"></i><i class="active"></i><i></i><i></i>
+    </div>
+
+    <!-- step 1 -->
+    <div class="v3-step">
+      <div class="v3-eye">// STEP 01 — DRAFT STATE</div>
+      <h2 class="v3-h">Are you <em>in a draft?</em></h2>
+      <div class="v3-sub">We'll tune the board for what you need right now. Every screen, every column, every micro-interaction.</div>
+
+      <div class="v3-grid-2" data-group="v3-step1">
+        <button class="v3-glow opt selected pink" data-val="now">
+          <span class="corner">// LIVE</span>
+          <div class="ico">▶</div>
+          <div class="title">Drafting Now</div>
+          <div class="desc">Live board · 2 min on the clock · auto-grading every pick</div>
+        </button>
+        <button class="v3-glow opt" data-val="prep">
+          <span class="corner">// RESEARCH</span>
+          <div class="ico">▤</div>
+          <div class="title">Just Prepping</div>
+          <div class="desc">Research mode · full data table · take your time</div>
+        </button>
+      </div>
+
+      <div class="v3-foot">
+        <button class="skip">Skip setup</button>
+        <div class="nav">
+          <button class="back">← Back</button>
+          <button class="cta">Continue →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- step 2 -->
+    <div class="v3-step">
+      <div class="v3-eye">// STEP 02 — PLATFORM</div>
+      <h2 class="v3-h">Which <em>platform?</em></h2>
+      <div class="v3-sub">We'll cross-reference BDGE rankings vs theirs — no proprietary data shared.</div>
+
+      <div class="v3-grid-3" data-group="v3-step2">
+        <button class="v3-pill opt selected" data-val="espn">
+          <span class="plat"><img src="https://cdn.simpleicons.org/espn/D00000" alt="" data-fb onerror="this.classList.add('broken')"><span class="plat-fb">ESPN</span></span>
+          ESPN
+        </button>
+        <button class="v3-pill opt" data-val="yahoo">
+          <span class="plat"><img src="https://cdn.simpleicons.org/yahoo/5F01D1" alt="" data-fb onerror="this.classList.add('broken')"><span class="plat-fb">YHO</span></span>
+          Yahoo
+        </button>
+        <button class="v3-pill opt" data-val="sleeper">
+          <span class="plat"><img src="https://www.google.com/s2/favicons?domain=sleeper.app&sz=64" alt="" data-fb onerror="this.classList.add('broken')"><span class="plat-fb">SLP</span></span>
+          Sleeper
+        </button>
+        <button class="v3-pill opt" data-val="nfl">
+          <span class="plat"><img src="https://cdn.simpleicons.org/nfl/013369" alt="" data-fb onerror="this.classList.add('broken')"><span class="plat-fb">NFL</span></span>
+          NFL.com
+        </button>
+        <button class="v3-pill opt" data-val="underdog">
+          <span class="plat"><img src="https://www.google.com/s2/favicons?domain=underdogfantasy.com&sz=64" alt="" data-fb onerror="this.classList.add('broken')"><span class="plat-fb">UD</span></span>
+          Underdog
+        </button>
+        <button class="v3-pill opt" data-val="none">
+          <span class="plat"><span class="plat-fb" style="display:flex">—</span></span>
+          Skip
+        </button>
+      </div>
+
+      <div class="v3-foot">
+        <button class="skip">Skip setup</button>
+        <div class="nav">
+          <button class="back">← Back</button>
+          <button class="cta">Continue →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- step 3 -->
+    <div class="v3-step">
+      <div class="v3-eye">// STEP 03 — LEAGUE SIZE</div>
+      <h2 class="v3-h">How many <em>teams?</em></h2>
+      <div class="v3-sub">Each round on the board will be sized to one pick per team. Tier breaks adjust automatically.</div>
+
+      <div class="v3-grid-team" data-group="v3-step3">
+        <button class="v3-tcell opt" data-val="8">
+          <div class="n">8</div><div class="lbl">Teams</div><span class="tag">small</span>
+        </button>
+        <button class="v3-tcell opt" data-val="10">
+          <div class="n">10</div><div class="lbl">Teams</div><span class="tag">&nbsp;</span>
+        </button>
+        <button class="v3-tcell opt selected" data-val="12">
+          <div class="n">12</div><div class="lbl">Teams</div><span class="tag">most common</span>
+        </button>
+        <button class="v3-tcell opt" data-val="14">
+          <div class="n">14</div><div class="lbl">Teams</div><span class="tag">&nbsp;</span>
+        </button>
+        <button class="v3-tcell opt" data-val="16">
+          <div class="n">16</div><div class="lbl">Teams</div><span class="tag">deep</span>
+        </button>
+        <button class="v3-tcell opt" data-val="custom">
+          <div class="n">+</div><div class="lbl">Custom</div><span class="tag">&nbsp;</span>
+        </button>
+      </div>
+
+      <div class="v3-foot">
+        <button class="skip">Skip setup</button>
+        <div class="nav">
+          <button class="back">← Back</button>
+          <button class="cta">Continue →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- step 4 -->
+    <div class="v3-step">
+      <div class="v3-eye">// STEP 04 — ROSTER SHAPE</div>
+      <h2 class="v3-h">Team <em>layout?</em></h2>
+      <div class="v3-sub">Pick the roster format your league uses. You can change it anytime.</div>
+
+      <div class="v3-grid-stack" data-group="v3-step4">
+        <button class="v3-lay opt selected" data-val="standard">
+          <div class="ico">PPR</div>
+          <div>
+            <div class="ttl">Standard PPR</div>
+            <div class="dsc">QB · RB · RB · WR · WR · TE · FLEX · K · DST · 7 BENCH</div>
+          </div>
+          <span class="ar">→</span>
+        </button>
+        <button class="v3-lay opt" data-val="superflex">
+          <div class="ico">SF</div>
+          <div>
+            <div class="ttl">Superflex</div>
+            <div class="dsc">+ SUPERFLEX slot (QB/RB/WR/TE) · 7 BENCH</div>
+          </div>
+          <span class="ar">→</span>
+        </button>
+        <button class="v3-lay opt" data-val="bestball">
+          <div class="ico">BB</div>
+          <div>
+            <div class="ttl">Best Ball</div>
+            <div class="dsc">QB · 2 RB · 3 WR · TE · FLEX · 12 BENCH · no K/DST</div>
+          </div>
+          <span class="ar">→</span>
+        </button>
+        <button class="v3-lay opt" data-val="custom">
+          <div class="ico">+</div>
+          <div>
+            <div class="ttl">Custom</div>
+            <div class="dsc">Build your own (defaults to Standard PPR)</div>
+          </div>
+          <span class="ar">→</span>
+        </button>
+      </div>
+
+      <div class="v3-foot">
+        <button class="skip">Skip setup</button>
+        <div class="nav">
+          <button class="back">← Back</button>
+          <button class="cta">Done →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════════════════════════════════════════════════════════
+     V4 — BENTO
+     ═════════════════════════════════════════════════════════════ -->
+<section class="variant v4">
+  <div class="variant-intro">
+    <div class="ref">Direction · bento-dashboard / ana.sh · 16px rounded · soft shadows · ping dots</div>
+    <h2>Bento Cards</h2>
+    <p>Soft glassmorphic cards on a cream canvas. Generous whitespace, pink ping-dot status, smooth gradient progress. Feels expensive without being loud — closest to a 2026 Apple-style product onboarding.</p>
+  </div>
+
+  <div class="frame">
+    <header class="v4-head">
+      <div class="v4-logo-wrap">
+        <div class="v4-logo-mark">B</div>
+        <div class="v4-logo-text">
+          <div class="name">BDGE</div>
+          <div class="sub">The Fantasy Football Almanac</div>
+        </div>
+      </div>
+      <div class="v4-step-chip"><span class="d"></span>STEP 02 OF 04</div>
+    </header>
+
+    <div class="v4-prog">
+      <i class="done"></i><i class="active"></i><i></i><i></i>
+    </div>
+
+    <!-- step 1 -->
+    <div class="v4-step">
+      <div class="v4-eye">// 01 · DRAFT STATE</div>
+      <h2 class="v4-h">Are you in a draft?</h2>
+      <div class="v4-sub">We'll tune the board for what you need right now. You can switch modes any time from settings.</div>
+
+      <div class="v4-grid-2" data-group="v4-step1">
+        <button class="v4-bento opt selected" data-val="now">
+          <span class="ping"><span class="d"></span>LIVE</span>
+          <div class="ico">▶</div>
+          <div class="title">Drafting Now</div>
+          <div class="desc">Live board · two minutes on the clock · auto-grade every pick</div>
+        </button>
+        <button class="v4-bento opt blue" data-val="prep">
+          <span class="ping"><span class="d" style="background:var(--blue)"></span>RESEARCH</span>
+          <div class="ico">▤</div>
+          <div class="title">Just Prepping</div>
+          <div class="desc">Research mode · full data table · take your time</div>
+        </button>
+      </div>
+
+      <div class="v4-foot">
+        <button class="skip">Skip setup</button>
+        <div class="nav">
+          <button class="back">← Back</button>
+          <button class="cta">Continue →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- step 2 -->
+    <div class="v4-step">
+      <div class="v4-eye">// 02 · PLATFORM</div>
+      <h2 class="v4-h">Which platform?</h2>
+      <div class="v4-sub">We'll show how BDGE rankings compare to theirs (no proprietary data shared).</div>
+
+      <div class="v4-grid-3" data-group="v4-step2">
+        <button class="v4-plat opt selected" data-val="espn">
+          <span class="plat"><img src="https://cdn.simpleicons.org/espn/D00000" alt="" data-fb onerror="this.classList.add('broken')"><span class="plat-fb">ESPN</span></span>
+          ESPN
+        </button>
+        <button class="v4-plat opt" data-val="yahoo">
+          <span class="plat"><img src="https://cdn.simpleicons.org/yahoo/5F01D1" alt="" data-fb onerror="this.classList.add('broken')"><span class="plat-fb">YHO</span></span>
+          Yahoo
+        </button>
+        <button class="v4-plat opt" data-val="sleeper">
+          <span class="plat"><img src="https://www.google.com/s2/favicons?domain=sleeper.app&sz=64" alt="" data-fb onerror="this.classList.add('broken')"><span class="plat-fb">SLP</span></span>
+          Sleeper
+        </button>
+        <button class="v4-plat opt" data-val="nfl">
+          <span class="plat"><img src="https://cdn.simpleicons.org/nfl/013369" alt="" data-fb onerror="this.classList.add('broken')"><span class="plat-fb">NFL</span></span>
+          NFL.com
+        </button>
+        <button class="v4-plat opt" data-val="underdog">
+          <span class="plat"><img src="https://www.google.com/s2/favicons?domain=underdogfantasy.com&sz=64" alt="" data-fb onerror="this.classList.add('broken')"><span class="plat-fb">UD</span></span>
+          Underdog
+        </button>
+        <button class="v4-plat opt" data-val="none">
+          <span class="plat"><span class="plat-fb" style="display:flex">—</span></span>
+          Skip
+        </button>
+      </div>
+
+      <div class="v4-foot">
+        <button class="skip">Skip setup</button>
+        <div class="nav">
+          <button class="back">← Back</button>
+          <button class="cta">Continue →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- step 3 -->
+    <div class="v4-step">
+      <div class="v4-eye">// 03 · LEAGUE SIZE</div>
+      <h2 class="v4-h">How many teams?</h2>
+      <div class="v4-sub">Each round on the board will be sized to one pick per team.</div>
+
+      <div class="v4-grid-team" data-group="v4-step3">
+        <button class="v4-tnum opt" data-val="8">
+          <div class="n">8</div>
+          <div><div class="lbl">8 teams</div><div class="tag">small league</div></div>
+        </button>
+        <button class="v4-tnum opt" data-val="10">
+          <div class="n">10</div>
+          <div><div class="lbl">10 teams</div><div class="tag">standard</div></div>
+        </button>
+        <button class="v4-tnum opt selected" data-val="12">
+          <div class="n">12</div>
+          <div><div class="lbl">12 teams</div><div class="tag">most common</div></div>
+        </button>
+        <button class="v4-tnum opt" data-val="14">
+          <div class="n">14</div>
+          <div><div class="lbl">14 teams</div><div class="tag">deeper</div></div>
+        </button>
+        <button class="v4-tnum opt" data-val="16">
+          <div class="n">16</div>
+          <div><div class="lbl">16 teams</div><div class="tag">deep league</div></div>
+        </button>
+        <button class="v4-tnum opt" data-val="custom">
+          <div class="n">+</div>
+          <div><div class="lbl">Custom</div><div class="tag">set your own</div></div>
+        </button>
+      </div>
+
+      <div class="v4-foot">
+        <button class="skip">Skip setup</button>
+        <div class="nav">
+          <button class="back">← Back</button>
+          <button class="cta">Continue →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- step 4 -->
+    <div class="v4-step">
+      <div class="v4-eye">// 04 · ROSTER SHAPE</div>
+      <h2 class="v4-h">Team layout?</h2>
+      <div class="v4-sub">Pick the roster format your league uses. You can change it anytime.</div>
+
+      <div class="v4-grid-stack" data-group="v4-step4">
+        <button class="v4-lay opt selected" data-val="standard">
+          <div class="tag">PPR</div>
+          <div>
+            <div class="ttl">Standard PPR</div>
+            <div class="dsc">QB · RB · RB · WR · WR · TE · FLEX · K · DST · 7 BENCH</div>
+          </div>
+          <span class="ar">→</span>
+        </button>
+        <button class="v4-lay opt" data-val="superflex">
+          <div class="tag">SF</div>
+          <div>
+            <div class="ttl">Superflex</div>
+            <div class="dsc">+ SUPERFLEX slot (QB/RB/WR/TE) · 7 BENCH</div>
+          </div>
+          <span class="ar">→</span>
+        </button>
+        <button class="v4-lay opt" data-val="bestball">
+          <div class="tag">BB</div>
+          <div>
+            <div class="ttl">Best Ball</div>
+            <div class="dsc">QB · 2 RB · 3 WR · TE · FLEX · 12 BENCH · no K/DST</div>
+          </div>
+          <span class="ar">→</span>
+        </button>
+        <button class="v4-lay opt" data-val="custom">
+          <div class="tag">+</div>
+          <div>
+            <div class="ttl">Custom</div>
+            <div class="dsc">Build your own (defaults to Standard PPR)</div>
+          </div>
+          <span class="ar">→</span>
+        </button>
+      </div>
+
+      <div class="v4-foot">
+        <button class="skip">Skip setup</button>
+        <div class="nav">
+          <button class="back">← Back</button>
+          <button class="cta">Done →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════════════════════════════════════════════════════════
+     V5 — TIMELINE ARCHIVE
+     ═════════════════════════════════════════════════════════════ -->
+<section class="variant v5">
+  <div class="variant-intro">
+    <div class="ref">Direction · ufotimeline.com · dark with opacity hierarchy · vertical timeline · inset glow</div>
+    <h2>Timeline Archive</h2>
+    <p>Vertical timeline on the left, content on the right. Opacity-based hierarchy, no solid fills. Cards shift right on hover. Feels like browsing an almanac archive — quiet, considered, premium.</p>
+  </div>
+
+  <div class="frame">
+    <header class="v5-head">
+      <div class="v5-logo">BDGE<i>.</i></div>
+      <div class="v5-meta">
+        <div><span class="label">TYPE</span> · QUICK SETUP</div>
+        <div><span class="label">ISSUE</span> · 01</div>
+      </div>
+      <div class="v5-arch">2026 · ARCHIVE</div>
+    </header>
+
+    <div class="v5-grid">
+      <!-- left rail -->
+      <aside class="v5-rail">
+        <div class="v5-tl done">
+          <span class="dot"></span>
+          <div class="stp">No. 01</div>
+          <div class="ttl">Draft State</div>
+        </div>
+        <div class="v5-tl active">
+          <span class="dot"></span>
+          <div class="stp">No. 02</div>
+          <div class="ttl">Platform</div>
+        </div>
+        <div class="v5-tl">
+          <span class="dot"></span>
+          <div class="stp">No. 03</div>
+          <div class="ttl">League Size</div>
+        </div>
+        <div class="v5-tl">
+          <span class="dot"></span>
+          <div class="stp">No. 04</div>
+          <div class="ttl">Roster Shape</div>
+        </div>
+      </aside>
+
+      <!-- right content -->
+      <div class="v5-content">
+        <!-- step 1 -->
+        <div class="v5-step">
+          <div class="head"><span class="num">NO. 01</span><span class="cat">// DRAFT STATE</span></div>
+          <h2 class="v5-h">Are you in a draft?</h2>
+          <div class="v5-sub">We'll tune the board for what you need right now. Switchable from settings.</div>
+
+          <div class="v5-grid-2" data-group="v5-step1">
+            <button class="v5-inset opt selected" data-val="now">
+              <span class="cat-tag">LIVE</span>
+              <div class="ico">▶</div>
+              <div class="title">Drafting Now</div>
+              <div class="desc">Live board · 2 min on the clock · auto-grade every pick</div>
+            </button>
+            <button class="v5-inset opt" data-val="prep">
+              <span class="cat-tag">RESEARCH</span>
+              <div class="ico">▤</div>
+              <div class="title">Just Prepping</div>
+              <div class="desc">Research mode · full data table · take your time</div>
+            </button>
+          </div>
+        </div>
+
+        <!-- step 2 -->
+        <div class="v5-step">
+          <div class="head"><span class="num">NO. 02</span><span class="cat">// PLATFORM</span></div>
+          <h2 class="v5-h">Which platform?</h2>
+          <div class="v5-sub">We'll cross-reference BDGE rankings vs theirs — no proprietary data leaves your machine.</div>
+
+          <div class="v5-grid-3" data-group="v5-step2">
+            <button class="v5-row opt selected" data-val="espn">
+              <span class="plat"><img src="https://cdn.simpleicons.org/espn/D00000" alt="" data-fb onerror="this.classList.add('broken')"><span class="plat-fb">ESPN</span></span>
+              ESPN
+            </button>
+            <button class="v5-row opt" data-val="yahoo">
+              <span class="plat"><img src="https://cdn.simpleicons.org/yahoo/5F01D1" alt="" data-fb onerror="this.classList.add('broken')"><span class="plat-fb">YHO</span></span>
+              Yahoo
+            </button>
+            <button class="v5-row opt" data-val="sleeper">
+              <span class="plat"><img src="https://www.google.com/s2/favicons?domain=sleeper.app&sz=64" alt="" data-fb onerror="this.classList.add('broken')"><span class="plat-fb">SLP</span></span>
+              Sleeper
+            </button>
+            <button class="v5-row opt" data-val="nfl">
+              <span class="plat"><img src="https://cdn.simpleicons.org/nfl/013369" alt="" data-fb onerror="this.classList.add('broken')"><span class="plat-fb">NFL</span></span>
+              NFL.com
+            </button>
+            <button class="v5-row opt" data-val="underdog">
+              <span class="plat"><img src="https://www.google.com/s2/favicons?domain=underdogfantasy.com&sz=64" alt="" data-fb onerror="this.classList.add('broken')"><span class="plat-fb">UD</span></span>
+              Underdog
+            </button>
+            <button class="v5-row opt" data-val="none">
+              <span class="plat"><span class="plat-fb" style="display:flex">—</span></span>
+              Skip
+            </button>
+          </div>
+        </div>
+
+        <!-- step 3 -->
+        <div class="v5-step">
+          <div class="head"><span class="num">NO. 03</span><span class="cat">// LEAGUE SIZE</span></div>
+          <h2 class="v5-h">How many teams?</h2>
+          <div class="v5-sub">Each round on the board sized to one pick per team. Tier breaks adjust automatically.</div>
+
+          <div class="v5-grid-team" data-group="v5-step3">
+            <button class="v5-tcell opt" data-val="8"><div class="n">8</div><div class="lbl">Teams</div><span class="tag">small</span></button>
+            <button class="v5-tcell opt" data-val="10"><div class="n">10</div><div class="lbl">Teams</div><span class="tag">&nbsp;</span></button>
+            <button class="v5-tcell opt selected" data-val="12"><div class="n">12</div><div class="lbl">Teams</div><span class="tag">most common</span></button>
+            <button class="v5-tcell opt" data-val="14"><div class="n">14</div><div class="lbl">Teams</div><span class="tag">&nbsp;</span></button>
+            <button class="v5-tcell opt" data-val="16"><div class="n">16</div><div class="lbl">Teams</div><span class="tag">deep</span></button>
+            <button class="v5-tcell opt" data-val="custom"><div class="n">+</div><div class="lbl">Custom</div><span class="tag">&nbsp;</span></button>
+          </div>
+        </div>
+
+        <!-- step 4 -->
+        <div class="v5-step">
+          <div class="head"><span class="num">NO. 04</span><span class="cat">// ROSTER SHAPE</span></div>
+          <h2 class="v5-h">Team layout?</h2>
+          <div class="v5-sub">Pick the roster format your league uses. Change it anytime from the cog.</div>
+
+          <div class="v5-grid-stack" data-group="v5-step4">
+            <button class="v5-lay opt selected" data-val="standard">
+              <div class="tag">PPR</div>
+              <div><div class="ttl">Standard PPR</div><div class="dsc">QB · RB · RB · WR · WR · TE · FLEX · K · DST · 7 BENCH</div></div>
+              <span class="ar">→</span>
+            </button>
+            <button class="v5-lay opt" data-val="superflex">
+              <div class="tag">SF</div>
+              <div><div class="ttl">Superflex</div><div class="dsc">+ SUPERFLEX slot (QB/RB/WR/TE) · 7 BENCH</div></div>
+              <span class="ar">→</span>
+            </button>
+            <button class="v5-lay opt" data-val="bestball">
+              <div class="tag">BB</div>
+              <div><div class="ttl">Best Ball</div><div class="dsc">QB · 2 RB · 3 WR · TE · FLEX · 12 BENCH · no K/DST</div></div>
+              <span class="ar">→</span>
+            </button>
+            <button class="v5-lay opt" data-val="custom">
+              <div class="tag">+</div>
+              <div><div class="ttl">Custom</div><div class="dsc">Build your own (defaults to Standard PPR)</div></div>
+              <span class="ar">→</span>
+            </button>
+          </div>
+
+          <div class="v5-foot">
+            <button class="skip">Skip setup</button>
+            <div class="nav">
+              <button class="back">← Back</button>
+              <button class="cta">Done →</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+// Tab switching
+document.querySelectorAll('.tab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+    document.querySelectorAll('.variant').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    document.querySelector('.v' + t.dataset.v).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+});
+
+// Option selection within each group
+document.querySelectorAll('.opt').forEach(o => {
+  o.addEventListener('click', () => {
+    const group = o.closest('[data-group]');
+    if (!group) return;
+    group.querySelectorAll('.opt').forEach(x => x.classList.remove('selected'));
+    o.classList.add('selected');
+  });
+});
+</script>
+
+</body>
+</html>
