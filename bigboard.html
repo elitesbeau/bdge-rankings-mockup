@@ -1402,69 +1402,71 @@ body[data-mode="drafting"].vs-open[data-vs-mode="expanded"] .rounds {
 }
 .intro-opt.selected .lbl-sub { color: var(--bg); opacity: 0.85; }
 
-/* Branded platform-logo chips (step 2) — brand colors + wordmark */
-.intro-opt .icon.brand {
-  width: 38px; height: 38px;
-  border: 0;
-  font-family: "Oswald", sans-serif;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  color: #fff;
-  text-transform: uppercase;
-}
-.intro-opt .icon.brand-espn     { background: #D00000; font-style: italic; font-size: 10px; letter-spacing: -0.04em; }
-.intro-opt .icon.brand-yahoo    { background: #5F01D1; font-size: 18px; letter-spacing: -0.04em; }
-.intro-opt .icon.brand-sleeper  { background: linear-gradient(135deg,#FF8F4E 0%,#E63E3E 100%); font-size: 16px; font-style: italic; }
-.intro-opt .icon.brand-nfl      { background: #013369; font-size: 10px; letter-spacing: 0.02em; }
-.intro-opt .icon.brand-underdog { background: #FF1F47; font-size: 11px; }
-.intro-opt .icon.brand-skip     { background: var(--bg); color: var(--ink-dim); border: 1.5px dashed var(--line-soft); font-weight: 400; font-size: 18px; }
-.intro-opt.selected .icon.brand          { color: #fff; }
-.intro-opt.selected .icon.brand-skip     { background: var(--bg); color: var(--ink-soft); border-color: var(--line); }
+/* SVG inside .icon — for steps 1 and 4 */
+.intro-opt .icon svg { width: 20px; height: 20px; display: block; stroke-width: 2; }
+.intro-opt.selected .icon svg { stroke: #fff; }
 
-/* Format chips (step 4) — semantic Oswald shorthand instead of crescent moons */
-.intro-opt .icon.fmt {
-  font-family: "Oswald", sans-serif;
-  font-size: 11px; font-weight: 700;
-  letter-spacing: 0.02em;
-  background: var(--ink);
-  color: var(--bg);
-  border-color: var(--ink);
+/* Platform logo chips (step 2) — real logos via favicon CDN, on white card */
+.intro-opt .icon.plat {
+  width: 44px; height: 44px;
+  background: #fff;
+  border: 1px solid var(--line-soft);
+  border-radius: 8px;
+  padding: 5px;
+  overflow: hidden;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
 }
-.intro-opt.selected .icon.fmt { background: var(--accent); border-color: var(--accent); color: #fff; }
+.intro-opt .icon.plat img {
+  width: 100%; height: 100%;
+  display: block;
+  object-fit: contain;
+}
+.intro-opt .icon.plat-skip {
+  width: 44px; height: 44px;
+  background: var(--bg);
+  border: 1.5px dashed var(--line-soft);
+  border-radius: 8px;
+  color: var(--ink-dim);
+  font-family: "Inter", sans-serif;
+  font-size: 18px;
+  display: grid; place-items: center;
+}
+.intro-opt.selected .icon.plat { background: #fff; border-color: rgba(255,255,255,0.4); }
+.intro-opt.selected .icon.plat-skip { background: var(--bg); color: var(--ink-soft); border-color: var(--line); }
 
-/* Step 1 — themed action cards (Drafting now = pink / Just prepping = blue) */
-#introStep1 .intro-options { gap: 14px; }
+/* Roster icon chips (step 4) — outlined SVG, accent on selection */
+.intro-opt .icon.roster {
+  width: 42px; height: 42px;
+  background: var(--bg);
+  border: 1.5px solid var(--line-soft);
+  color: var(--ink-soft);
+}
+.intro-opt.selected .icon.roster { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+/* Step 1 — Drafting / Prepping cards, calmer treatment (no saturated fill, no AI corner-labels) */
+#introStep1 .intro-options { gap: 12px; }
 #introStep1 .intro-opt {
   flex-direction: column;
   align-items: flex-start;
-  padding: 20px 20px 18px;
-  gap: 14px;
-  min-height: 160px;
-  position: relative;
+  padding: 22px 22px 20px;
+  gap: 16px;
+  min-height: 150px;
 }
 #introStep1 .intro-opt .icon {
   width: 46px; height: 46px;
-  font-size: 22px;
-  border-width: 2px;
+  background: var(--bg);
+  border: 1.5px solid var(--line);
+  color: var(--ink);
 }
-#introStep1 .intro-opt[data-val="now"]  { border-color: var(--accent); }
-#introStep1 .intro-opt[data-val="prep"] { border-color: var(--accent-2); }
-#introStep1 .intro-opt[data-val="now"]  .icon { background: var(--accent);   border-color: var(--accent);   color: #fff; }
-#introStep1 .intro-opt[data-val="prep"] .icon { background: var(--accent-2); border-color: var(--accent-2); color: #fff; }
-#introStep1 .intro-opt::after {
-  position: absolute;
-  top: 16px; right: 18px;
-  font-family: "JetBrains Mono", monospace;
-  font-size: 9px;
-  letter-spacing: 0.22em;
-  font-weight: 700;
-}
-#introStep1 .intro-opt[data-val="now"]::after  { content: "LIVE";     color: var(--accent); }
-#introStep1 .intro-opt[data-val="prep"]::after { content: "RESEARCH"; color: var(--accent-2); }
-#introStep1 .intro-opt.selected[data-val="now"]  { background: var(--accent);   border-color: var(--accent); }
-#introStep1 .intro-opt.selected[data-val="prep"] { background: var(--accent-2); border-color: var(--accent-2); }
-#introStep1 .intro-opt.selected .icon { background: var(--bg); border-color: var(--bg); color: var(--ink); }
-#introStep1 .intro-opt.selected::after { color: rgba(255,255,255,0.85); }
+#introStep1 .intro-opt .icon svg { width: 22px; height: 22px; }
+#introStep1 .intro-opt[data-val="now"]:hover { border-color: var(--accent); }
+#introStep1 .intro-opt[data-val="prep"]:hover { border-color: var(--accent-2); }
+#introStep1 .intro-opt[data-val="now"]:hover .icon  { color: var(--accent); border-color: var(--accent); }
+#introStep1 .intro-opt[data-val="prep"]:hover .icon { color: var(--accent-2); border-color: var(--accent-2); }
+#introStep1 .intro-opt.selected[data-val="now"]  { background: var(--ink); border-color: var(--ink); color: var(--bg); }
+#introStep1 .intro-opt.selected[data-val="prep"] { background: var(--ink); border-color: var(--ink); color: var(--bg); }
+#introStep1 .intro-opt.selected[data-val="now"]  .icon { background: var(--accent);   border-color: var(--accent);   color: #fff; }
+#introStep1 .intro-opt.selected[data-val="prep"] .icon { background: var(--accent-2); border-color: var(--accent-2); color: #fff; }
 .intro-foot {
   margin-top: 22px;
   display: flex; justify-content: space-between; align-items: center;
@@ -1476,13 +1478,17 @@ body[data-mode="drafting"].vs-open[data-vs-mode="expanded"] .rounds {
   text-decoration: underline;
 }
 .intro-skip:hover { color: var(--ink); }
+.intro-back, .intro-next {
+  font-family: "Oswald", sans-serif;
+  font-size: 16px; letter-spacing: 0.16em;
+  height: 46px; padding: 0 22px;
+  cursor: pointer;
+  display: inline-flex; align-items: center; gap: 8px;
+  font-weight: 500;
+}
 .intro-back {
   background: transparent;
   border: 1.5px solid var(--line-soft);
-  cursor: pointer;
-  font-family: "Oswald", sans-serif;
-  font-size: 14px; letter-spacing: 0.14em;
-  padding: 9px 16px;
   color: var(--ink-soft);
   margin-left: auto;
 }
@@ -1490,10 +1496,7 @@ body[data-mode="drafting"].vs-open[data-vs-mode="expanded"] .rounds {
 .intro-back:disabled { opacity: 0.3; cursor: not-allowed; }
 .intro-next {
   background: var(--ink); color: var(--bg);
-  border: 0; cursor: pointer;
-  font-family: "Oswald", sans-serif;
-  font-size: 18px; letter-spacing: 0.18em;
-  padding: 10px 22px;
+  border: 1.5px solid var(--ink);
 }
 .intro-next:disabled { opacity: 0.35; cursor: not-allowed; }
 .intro-progress {
@@ -4070,8 +4073,18 @@ body.vs-open[data-vs-mode="expanded"] .tb { padding-right: 752px; }
       <h2 class="intro-q">Are you in a draft?</h2>
       <div class="intro-sub">We'll tune the board for what you need right now. You can switch modes any time from settings.</div>
       <div class="intro-options" style="grid-template-columns:1fr 1fr">
-        <button class="intro-opt" data-val="now"><span class="icon">▶</span><span>Drafting now<span class="lbl-sub">2 min on the clock · live board</span></span></button>
-        <button class="intro-opt" data-val="prep"><span class="icon">▤</span><span>Just prepping<span class="lbl-sub">research mode · full data table</span></span></button>
+        <button class="intro-opt" data-val="now">
+          <span class="icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="14" r="8"/><path d="M12 10v4l2.5 2"/><path d="M9 2h6"/><path d="M12 2v4"/></svg>
+          </span>
+          <span>Drafting now<span class="lbl-sub">2 min on the clock · live board</span></span>
+        </button>
+        <button class="intro-opt" data-val="prep">
+          <span class="icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+          </span>
+          <span>Just prepping<span class="lbl-sub">research mode · full data table</span></span>
+        </button>
       </div>
     </div>
 
@@ -4079,12 +4092,12 @@ body.vs-open[data-vs-mode="expanded"] .tb { padding-right: 752px; }
       <h2 class="intro-q">Which platform?</h2>
       <div class="intro-sub">We'll show how BDGE rankings compare to theirs (no proprietary data shared).</div>
       <div class="intro-options cols-3">
-        <button class="intro-opt" data-val="espn"><span class="icon brand brand-espn">ESPN</span>ESPN</button>
-        <button class="intro-opt" data-val="yahoo"><span class="icon brand brand-yahoo">Y!</span>Yahoo</button>
-        <button class="intro-opt" data-val="sleeper"><span class="icon brand brand-sleeper">S</span>Sleeper</button>
-        <button class="intro-opt" data-val="nfl"><span class="icon brand brand-nfl">NFL</span>NFL.com</button>
-        <button class="intro-opt" data-val="underdog"><span class="icon brand brand-underdog">UD</span>Underdog</button>
-        <button class="intro-opt" data-val="none"><span class="icon brand brand-skip">—</span>Skip</button>
+        <button class="intro-opt" data-val="espn"><span class="icon plat"><img src="https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://www.espn.com&size=128" alt="" loading="lazy"></span>ESPN</button>
+        <button class="intro-opt" data-val="yahoo"><span class="icon plat"><img src="https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://sports.yahoo.com&size=128" alt="" loading="lazy"></span>Yahoo</button>
+        <button class="intro-opt" data-val="sleeper"><span class="icon plat"><img src="https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://sleeper.com&size=128" alt="" loading="lazy"></span>Sleeper</button>
+        <button class="intro-opt" data-val="nfl"><span class="icon plat"><img src="https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://www.nfl.com&size=128" alt="" loading="lazy"></span>NFL.com</button>
+        <button class="intro-opt" data-val="underdog"><span class="icon plat"><img src="https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://underdogfantasy.com&size=128" alt="" loading="lazy"></span>Underdog</button>
+        <button class="intro-opt" data-val="none"><span class="icon plat-skip">—</span>Skip</button>
       </div>
     </div>
 
@@ -4106,19 +4119,27 @@ body.vs-open[data-vs-mode="expanded"] .tb { padding-right: 752px; }
       <div class="intro-sub">Pick the roster format your league uses. You can change it anytime.</div>
       <div class="intro-options" style="grid-template-columns:1fr">
         <button class="intro-opt" data-val="standard">
-          <span class="icon fmt">PPR</span>
+          <span class="icon roster">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="7" height="4" rx="1"/><rect x="14" y="4" width="7" height="4" rx="1"/><rect x="3" y="10" width="7" height="4" rx="1"/><rect x="14" y="10" width="7" height="4" rx="1"/><rect x="3" y="16" width="18" height="4" rx="1"/></svg>
+          </span>
           <span>Standard PPR<span class="lbl-sub">QB · RB · RB · WR · WR · TE · FLEX · K · DST · 7 BENCH</span></span>
         </button>
         <button class="intro-opt" data-val="superflex">
-          <span class="icon fmt">SF</span>
+          <span class="icon roster">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="7" height="4" rx="1"/><rect x="14" y="4" width="7" height="4" rx="1" fill="currentColor" opacity="0.35"/><rect x="3" y="10" width="7" height="4" rx="1"/><rect x="14" y="10" width="7" height="4" rx="1"/><rect x="3" y="16" width="18" height="4" rx="1"/></svg>
+          </span>
           <span>Superflex<span class="lbl-sub">+ SUPERFLEX slot (QB/RB/WR/TE) — 7 BENCH</span></span>
         </button>
         <button class="intro-opt" data-val="bestball">
-          <span class="icon fmt">BB</span>
+          <span class="icon roster">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.6 4.4L18 9l-4.4 1.6L12 15l-1.6-4.4L6 9l4.4-1.6z"/><path d="M5 19l-.8-2.2L2 16l2.2-.8L5 13l.8 2.2L8 16l-2.2.8z"/><path d="M19 19l-.6-1.4L17 17l1.4-.6L19 15l.6 1.4L21 17l-1.4.6z"/></svg>
+          </span>
           <span>Best Ball<span class="lbl-sub">QB · 2 RB · 3 WR · TE · FLEX · 12 BENCH · no K/DST</span></span>
         </button>
         <button class="intro-opt" data-val="custom">
-          <span class="icon fmt">+</span>
+          <span class="icon roster">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><circle cx="10" cy="6" r="2.5" fill="var(--bg)"/><line x1="4" y1="12" x2="20" y2="12"/><circle cx="16" cy="12" r="2.5" fill="var(--bg)"/><line x1="4" y1="18" x2="20" y2="18"/><circle cx="8" cy="18" r="2.5" fill="var(--bg)"/></svg>
+          </span>
           <span>Custom<span class="lbl-sub">Build your own (defaults to Standard PPR)</span></span>
         </button>
       </div>
