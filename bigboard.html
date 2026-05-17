@@ -1330,6 +1330,22 @@ body[data-mode="drafting"].vs-open[data-vs-mode="expanded"] .rounds {
   color: var(--accent);
   margin-bottom: 12px;
 }
+.intro-brand {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 14px;
+  padding-bottom: 14px;
+  border-bottom: 1.5px solid var(--line-soft);
+}
+.intro-brand img {
+  height: 26px; width: auto; display: block;
+}
+.intro-brand .intro-brand-tag {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px; letter-spacing: 0.28em;
+  color: var(--ink-soft);
+  text-transform: uppercase;
+  margin-left: auto;
+}
 .intro-q {
   font-family: "Oswald", sans-serif;
   font-size: 38px; line-height: 1;
@@ -1380,8 +1396,75 @@ body[data-mode="drafting"].vs-open[data-vs-mode="expanded"] .rounds {
   font-size: 11px; font-weight: 500; color: var(--ink-soft);
   text-transform: none; letter-spacing: 0;
   margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .intro-opt.selected .lbl-sub { color: var(--bg); opacity: 0.85; }
+
+/* Branded platform-logo chips (step 2) — brand colors + wordmark */
+.intro-opt .icon.brand {
+  width: 38px; height: 38px;
+  border: 0;
+  font-family: "Oswald", sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #fff;
+  text-transform: uppercase;
+}
+.intro-opt .icon.brand-espn     { background: #D00000; font-style: italic; font-size: 10px; letter-spacing: -0.04em; }
+.intro-opt .icon.brand-yahoo    { background: #5F01D1; font-size: 18px; letter-spacing: -0.04em; }
+.intro-opt .icon.brand-sleeper  { background: linear-gradient(135deg,#FF8F4E 0%,#E63E3E 100%); font-size: 16px; font-style: italic; }
+.intro-opt .icon.brand-nfl      { background: #013369; font-size: 10px; letter-spacing: 0.02em; }
+.intro-opt .icon.brand-underdog { background: #FF1F47; font-size: 11px; }
+.intro-opt .icon.brand-skip     { background: var(--bg); color: var(--ink-dim); border: 1.5px dashed var(--line-soft); font-weight: 400; font-size: 18px; }
+.intro-opt.selected .icon.brand          { color: #fff; }
+.intro-opt.selected .icon.brand-skip     { background: var(--bg); color: var(--ink-soft); border-color: var(--line); }
+
+/* Format chips (step 4) — semantic Oswald shorthand instead of crescent moons */
+.intro-opt .icon.fmt {
+  font-family: "Oswald", sans-serif;
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 0.02em;
+  background: var(--ink);
+  color: var(--bg);
+  border-color: var(--ink);
+}
+.intro-opt.selected .icon.fmt { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+/* Step 1 — themed action cards (Drafting now = pink / Just prepping = blue) */
+#introStep1 .intro-options { gap: 14px; }
+#introStep1 .intro-opt {
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 20px 20px 18px;
+  gap: 14px;
+  min-height: 160px;
+  position: relative;
+}
+#introStep1 .intro-opt .icon {
+  width: 46px; height: 46px;
+  font-size: 22px;
+  border-width: 2px;
+}
+#introStep1 .intro-opt[data-val="now"]  { border-color: var(--accent); }
+#introStep1 .intro-opt[data-val="prep"] { border-color: var(--accent-2); }
+#introStep1 .intro-opt[data-val="now"]  .icon { background: var(--accent);   border-color: var(--accent);   color: #fff; }
+#introStep1 .intro-opt[data-val="prep"] .icon { background: var(--accent-2); border-color: var(--accent-2); color: #fff; }
+#introStep1 .intro-opt::after {
+  position: absolute;
+  top: 16px; right: 18px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  font-weight: 700;
+}
+#introStep1 .intro-opt[data-val="now"]::after  { content: "LIVE";     color: var(--accent); }
+#introStep1 .intro-opt[data-val="prep"]::after { content: "RESEARCH"; color: var(--accent-2); }
+#introStep1 .intro-opt.selected[data-val="now"]  { background: var(--accent);   border-color: var(--accent); }
+#introStep1 .intro-opt.selected[data-val="prep"] { background: var(--accent-2); border-color: var(--accent-2); }
+#introStep1 .intro-opt.selected .icon { background: var(--bg); border-color: var(--bg); color: var(--ink); }
+#introStep1 .intro-opt.selected::after { color: rgba(255,255,255,0.85); }
 .intro-foot {
   margin-top: 22px;
   display: flex; justify-content: space-between; align-items: center;
@@ -1767,6 +1850,15 @@ body.compare-on .card .card-delta { display: inline-flex; align-items: center; g
 .card-extra { display: none; }
 .board-header .h-cell.h-extra { display: none; }
 body[data-mode="prepping"] .rg-section { max-width: 1500px; }
+/* When drawer is open in prep mode, the centered grid would overflow equally
+   on both sides — left-align so the rank/name columns stay visible and any
+   overflow goes under the drawer on the right (where it's hidden anyway). */
+body[data-mode="prepping"].drawer-open .rg-section,
+body[data-mode="prepping"].drawer-open .sort-banner {
+  margin-left: 0;
+  margin-right: 0;
+  max-width: none;
+}
 body[data-mode="prepping"] .card,
 body[data-mode="prepping"] .board-header {
   grid-template-columns:
@@ -3962,6 +4054,10 @@ body.vs-open[data-vs-mode="expanded"] .tb { padding-right: 752px; }
 <!-- ─── 2-Q INTRO MODAL (first-visit only) ─── -->
 <div class="intro-overlay" id="intro">
   <div class="intro-card">
+    <div class="intro-brand">
+      <img src="assets/bdge-logo-clear.png" alt="BDGE">
+      <span class="intro-brand-tag">The Fantasy Football Almanac</span>
+    </div>
     <div class="intro-progress">
       <i id="introProg1"></i>
       <i id="introProg2"></i>
@@ -3983,12 +4079,12 @@ body.vs-open[data-vs-mode="expanded"] .tb { padding-right: 752px; }
       <h2 class="intro-q">Which platform?</h2>
       <div class="intro-sub">We'll show how BDGE rankings compare to theirs (no proprietary data shared).</div>
       <div class="intro-options cols-3">
-        <button class="intro-opt" data-val="espn"><span class="icon">E</span>ESPN</button>
-        <button class="intro-opt" data-val="yahoo"><span class="icon">Y</span>Yahoo</button>
-        <button class="intro-opt" data-val="sleeper"><span class="icon">S</span>Sleeper</button>
-        <button class="intro-opt" data-val="nfl"><span class="icon">N</span>NFL.com</button>
-        <button class="intro-opt" data-val="underdog"><span class="icon">U</span>Underdog</button>
-        <button class="intro-opt" data-val="none"><span class="icon">·</span>Skip</button>
+        <button class="intro-opt" data-val="espn"><span class="icon brand brand-espn">ESPN</span>ESPN</button>
+        <button class="intro-opt" data-val="yahoo"><span class="icon brand brand-yahoo">Y!</span>Yahoo</button>
+        <button class="intro-opt" data-val="sleeper"><span class="icon brand brand-sleeper">S</span>Sleeper</button>
+        <button class="intro-opt" data-val="nfl"><span class="icon brand brand-nfl">NFL</span>NFL.com</button>
+        <button class="intro-opt" data-val="underdog"><span class="icon brand brand-underdog">UD</span>Underdog</button>
+        <button class="intro-opt" data-val="none"><span class="icon brand brand-skip">—</span>Skip</button>
       </div>
     </div>
 
@@ -4010,19 +4106,19 @@ body.vs-open[data-vs-mode="expanded"] .tb { padding-right: 752px; }
       <div class="intro-sub">Pick the roster format your league uses. You can change it anytime.</div>
       <div class="intro-options" style="grid-template-columns:1fr">
         <button class="intro-opt" data-val="standard">
-          <span class="icon">●</span>
+          <span class="icon fmt">PPR</span>
           <span>Standard PPR<span class="lbl-sub">QB · RB · RB · WR · WR · TE · FLEX · K · DST · 7 BENCH</span></span>
         </button>
         <button class="intro-opt" data-val="superflex">
-          <span class="icon">◐</span>
+          <span class="icon fmt">SF</span>
           <span>Superflex<span class="lbl-sub">+ SUPERFLEX slot (QB/RB/WR/TE) — 7 BENCH</span></span>
         </button>
         <button class="intro-opt" data-val="bestball">
-          <span class="icon">◑</span>
+          <span class="icon fmt">BB</span>
           <span>Best Ball<span class="lbl-sub">QB · 2 RB · 3 WR · TE · FLEX · 12 BENCH · no K/DST</span></span>
         </button>
         <button class="intro-opt" data-val="custom">
-          <span class="icon">+</span>
+          <span class="icon fmt">+</span>
           <span>Custom<span class="lbl-sub">Build your own (defaults to Standard PPR)</span></span>
         </button>
       </div>
