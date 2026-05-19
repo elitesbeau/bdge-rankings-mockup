@@ -6,7 +6,7 @@
 <title>BDGE — The Big Board · 2026</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 <style>
 /* ─── Theme tokens ─── */
 :root[data-theme="light"] {
@@ -43,7 +43,7 @@ html, body { margin: 0; padding: 0; }
 body {
   background: var(--bg);
   color: var(--ink);
-  font-family: "Oswald", "Inter", sans-serif;
+  font-family: "Barlow", "Inter", sans-serif;
   background-image: repeating-linear-gradient(0deg, transparent, transparent 39px, color-mix(in srgb, var(--ink) 4%, transparent) 39px, color-mix(in srgb, var(--ink) 4%, transparent) 40px);
   transition: background 240ms ease, color 240ms ease;
 }
@@ -94,12 +94,12 @@ body {
   display: inline-flex; align-items: center;
   background: transparent;
   border: 1.5px solid var(--line);
-  font-family: "Oswald", sans-serif;
+  font-family: "Barlow", sans-serif;
 }
 .tb-mode button {
   background: transparent; border: 0;
   font-family: inherit;
-  font-size: 12px; letter-spacing: 0.14em;
+  font-size: 12px; letter-spacing: 0.01em;
   padding: 8px 14px;
   color: var(--ink-soft);
   cursor: pointer;
@@ -117,13 +117,13 @@ body[data-mode="prepping"] .tb-mode button[data-mode-set="prepping"] {
   border: 1.5px solid var(--line);
   padding: 0;
   cursor: pointer;
-  font-family: "Oswald", sans-serif;
+  font-family: "Barlow", sans-serif;
 }
 .tb-theme button {
   background: transparent;
   border: 0;
   font-family: inherit;
-  font-size: 13px; letter-spacing: 0.18em;
+  font-size: 13px; letter-spacing: 0.01em;
   padding: 8px 14px;
   color: var(--ink-soft);
   cursor: pointer;
@@ -137,8 +137,8 @@ body[data-mode="prepping"] .tb-mode button[data-mode-set="prepping"] {
   padding: 6px 12px;
   background: var(--accent);
   color: #fff;
-  font-family: "Oswald", sans-serif;
-  font-size: 14px; letter-spacing: 0.16em;
+  font-family: "Barlow", sans-serif;
+  font-size: 14px; letter-spacing: 0.02em;
 }
 
 /* ─── Hero ─── */
@@ -151,7 +151,7 @@ body[data-mode="prepping"] .tb-mode button[data-mode-set="prepping"] {
   content: "DRAFT";
   position: absolute;
   right: -12px; bottom: 18px;
-  font-family: "Oswald", sans-serif;
+  font-family: "Barlow", sans-serif;
   font-size: clamp(110px, 16vw, 180px);
   font-weight: 400; line-height: 0.85;
   color: color-mix(in srgb, var(--ink) 6%, transparent);
@@ -161,12 +161,12 @@ body[data-mode="prepping"] .tb-mode button[data-mode-set="prepping"] {
 }
 .hero > * { position: relative; z-index: 1; }
 .hero-eyebrow {
-  font-family: "Oswald", sans-serif;
-  font-size: 16px; letter-spacing: 0.32em; font-weight: 400;
+  font-family: "Barlow", sans-serif;
+  font-size: 16px; letter-spacing: 0.01em; font-weight: 400;
   color: var(--accent);
 }
 .hero-h {
-  font-family: "Oswald", sans-serif;
+  font-family: "Barlow", sans-serif;
   font-size: clamp(54px, 7.5vw, 88px);
   line-height: 0.92; font-weight: 400;
   letter-spacing: -0.02em;
@@ -188,8 +188,8 @@ body[data-mode="prepping"] .tb-mode button[data-mode-set="prepping"] {
   padding: 7px 16px;
   background: var(--card);
   border: 2px solid var(--line);
-  font-family: "Oswald", sans-serif;
-  font-size: 16px; letter-spacing: 0.18em;
+  font-family: "Barlow", sans-serif;
+  font-size: 16px; letter-spacing: 0.01em;
   color: var(--ink);
 }
 .hero-stats {
@@ -206,12 +206,12 @@ body[data-mode="prepping"] .tb-mode button[data-mode-set="prepping"] {
 }
 .hero-stat:last-child { border-right: 0; }
 .hero-stat-l {
-  font-family: "Oswald", sans-serif;
-  font-size: 14px; letter-spacing: 0.18em;
+  font-family: "Barlow", sans-serif;
+  font-size: 14px; letter-spacing: 0.01em;
   color: var(--ink);
 }
 .hero-stat-v {
-  font-family: "Oswald", sans-serif;
+  font-family: "Barlow", sans-serif;
   font-size: 44px; line-height: 1;
   color: var(--accent-2);
   margin-top: 2px;
@@ -225,17 +225,72 @@ body[data-mode="prepping"] .tb-mode button[data-mode-set="prepping"] {
   background: var(--bg);
   border-bottom: 1.5px solid var(--line);
   padding: 14px 32px;
-  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: center;
+  gap: 22px;
+}
+.fbar-content {
+  display: flex; align-items: center; justify-content: flex-start; gap: 10px; flex-wrap: wrap;
+  min-width: 0;
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.round-h-search {
+  display: inline-flex; align-items: center; gap: 8px;
+  height: 32px; padding: 0 12px;
+  border: 1.5px solid var(--line-soft);
+  border-radius: 4px;
+  font-family: "Inter", sans-serif;
+  font-size: 13px;
+  color: var(--ink-soft);
+  background: var(--bg);
+  min-width: 240px;
+  transition: border-color 160ms;
+}
+.round-h-search:focus-within { border-color: var(--ink); }
+.round-h-search input {
+  background: transparent; border: 0; outline: none;
+  color: var(--ink);
+  font: inherit; flex: 1; min-width: 0;
+}
+.round-h-search input::placeholder { color: var(--ink-dim); }
+.fbar-spacer { display: none; }
+/* Drafting mode: align nav to the middle (rankings) column above the rails.
+   Grid columns + gap + padding MUST mirror .board-shell at every breakpoint
+   so the centered nav row sits directly over the rankings column. */
+body[data-mode="drafting"] .fbar {
+  grid-template-columns: 250px minmax(0, 1fr) 300px;
+}
+body[data-mode="drafting"] .fbar-spacer { display: block; }
+/* When drawer is open the rails are hidden — fbar reverts to full-width */
+body[data-mode="drafting"].drawer-open .fbar { grid-template-columns: 1fr; padding: 14px 32px; }
+body[data-mode="drafting"].drawer-open .fbar-spacer { display: none; }
+@media (max-width: 1340px) {
+  body[data-mode="drafting"] .fbar {
+    grid-template-columns: 220px minmax(0, 1fr) 260px;
+    gap: 16px;
+    padding: 14px 20px;
+  }
+}
+@media (max-width: 1080px) {
+  body[data-mode="drafting"] .fbar {
+    grid-template-columns: 1fr;
+    padding: 14px 32px;
+  }
+  body[data-mode="drafting"] .fbar-spacer { display: none; }
 }
 .fbar-l {
-  font-family: "Oswald", sans-serif;
-  font-size: 14px; letter-spacing: 0.22em;
-  color: var(--ink-soft);
+  font-family: "Barlow", sans-serif;
+  font-size: 14px; letter-spacing: 0.01em;
+  font-weight: 700;
+  color: var(--ink);
   margin-right: 4px;
 }
 .fbar-pill {
-  font-family: "Oswald", sans-serif;
-  font-size: 14px; letter-spacing: 0.16em;
+  font-family: "Barlow", sans-serif;
+  font-size: 14px; letter-spacing: 0.02em;
   padding: 6px 14px;
   background: transparent;
   border: 1.5px solid var(--line-soft);
@@ -259,8 +314,8 @@ body[data-mode="prepping"] .tb-mode button[data-mode-set="prepping"] {
 .fbar-pill.staff {
   display: inline-flex; align-items: center; gap: 6px;
   padding: 4px 12px 4px 4px;
-  font-family: "Oswald", sans-serif;
-  letter-spacing: 0.18em;
+  font-family: "Barlow", sans-serif;
+  letter-spacing: 0.01em;
 }
 .fbar-pill.staff .ava {
   width: 22px; height: 22px; border-radius: 50%;
@@ -354,7 +409,8 @@ body.drawer-open .tb { padding-right: 712px; transition: padding-right 280ms cub
 .drw-pfp img { width: 100%; height: 100%; object-fit: cover; object-position: top center; }
 .drw-id { display: flex; flex-direction: column; gap: 6px; flex: 1; min-width: 0; }
 .drw-name {
-  font-family: "Oswald", sans-serif;
+  font-family: "Barlow", sans-serif;
+  font-weight: 700;
   font-size: 38px; line-height: 1; color: var(--ink); letter-spacing: 0.02em;
 }
 .drw-team-row { display: flex; align-items: center; gap: 10px; font-family: "Inter", sans-serif; }
@@ -367,13 +423,13 @@ body.drawer-open .tb { padding-right: 712px; transition: padding-right 280ms cub
   overflow: hidden;
 }
 .drw-team-logo img { width: 100%; height: 100%; object-fit: contain; padding: 2px; }
-.drw-team-name { font-size: 12px; color: var(--ink-soft); font-weight: 700; letter-spacing: 0.04em; }
+.drw-team-name { font-size: 12px; color: var(--ink-soft); font-weight: 700; letter-spacing: 0.01em; }
 .drw-rank-tag {
   display: inline-flex; align-items: center; gap: 8px;
   padding: 5px 11px;
   background: var(--card); border: 1.5px solid var(--line);
   font-family: "JetBrains Mono", ui-monospace, monospace;
-  font-size: 11px; font-weight: 700; letter-spacing: 0.10em;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.02em;
   color: var(--ink); text-transform: none;
   width: fit-content;
 }
@@ -402,7 +458,7 @@ body.drawer-open .tb { padding-right: 712px; transition: padding-right 280ms cub
   padding: 3px 6px;
   background: color-mix(in srgb, var(--ink) 8%, transparent);
   color: var(--ink-soft);
-  letter-spacing: 0.04em;
+  letter-spacing: 0.01em;
   border-radius: 2px;
 }
 .fbar-pill.action.team:hover {
@@ -447,8 +503,8 @@ body.drawer-open .tb { padding-right: 712px; transition: padding-right 280ms cub
 }
 .tagchips.open { display: flex; }
 .tagchips-l {
-  font-family: "Oswald", sans-serif;
-  font-size: 12px; letter-spacing: 0.18em;
+  font-family: "Barlow", sans-serif;
+  font-size: 12px; letter-spacing: 0.01em;
   color: var(--ink-soft);
   font-weight: 600;
   text-transform: uppercase;
@@ -462,7 +518,7 @@ body.drawer-open .tb { padding-right: 712px; transition: padding-right 280ms cub
   color: var(--tbk-c, var(--ink));
   font-family: "Inter", sans-serif;
   font-size: 11px; font-weight: 700;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.02em;
   text-transform: uppercase;
   border-radius: 999px;
   cursor: pointer;
@@ -485,7 +541,7 @@ body.drawer-open .tb { padding-right: 712px; transition: padding-right 280ms cub
   color: var(--ink-soft);
   font-family: "Inter", sans-serif;
   font-size: 11px; font-weight: 700;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.01em;
   padding: 5px 10px;
   border-radius: 3px;
   cursor: pointer;
@@ -510,7 +566,7 @@ body.drawer-open .tb { padding-right: 712px; transition: padding-right 280ms cub
   border-color: var(--accent-2);
   padding: 6px 14px;
   font-weight: 600;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.01em;
   cursor: pointer;
   box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent-2) 50%, transparent);
   animation: cmpBreath 3.6s ease-in-out infinite;
@@ -595,7 +651,7 @@ body.drawer-open .tb { padding-right: 712px; transition: padding-right 280ms cub
 /* Brutalist hover tooltip — matches the .cmp-tip pattern (cream paper,
    2px navy border, 4px hard drop-shadow, diamond arrow) but positioned
    BELOW since the button lives in the top fbar. */
-.cmp-wrap { position: relative; display: inline-flex; }
+.cmp-wrap { position: relative; display: inline-flex; margin-left: auto; }
 .cmp-fbar-tip {
   position: absolute;
   top: calc(100% + 10px); right: 0;
@@ -629,9 +685,9 @@ body.drawer-open .tb { padding-right: 712px; transition: padding-right 280ms cub
 }
 .cmp-fbar-tip-h {
   display: block;
-  font-family: "Oswald", sans-serif;
+  font-family: "Barlow", sans-serif;
   font-size: 14px; font-weight: 600;
-  letter-spacing: 0.08em; text-transform: uppercase;
+  letter-spacing: 0.02em; text-transform: uppercase;
   color: var(--ink);
   margin-bottom: 5px;
   padding-bottom: 5px;
@@ -667,7 +723,8 @@ body.drawer-open .tb { padding-right: 712px; transition: padding-right 280ms cub
   font-family: "Inter", sans-serif;
   font-size: 12px;
   color: var(--ink-soft);
-  min-width: 200px;
+  min-width: 160px;
+  margin-left: 6px;
 }
 .fbar-search:focus-within { border-color: var(--line); }
 .fbar-search input {
@@ -686,13 +743,15 @@ body.drawer-open .tb { padding-right: 712px; transition: padding-right 280ms cub
 }
 .drw-act {
   flex: 1;
+  min-width: 0;
   background: var(--ink); color: var(--bg);
   border: 0; cursor: pointer;
-  font-family: "Oswald", sans-serif;
-  font-size: 14px; letter-spacing: 0.16em;
-  padding: 10px 12px;
+  font-family: "Barlow", sans-serif;
+  font-size: 13px; letter-spacing: 0.01em;
+  padding: 10px 8px;
   border-radius: 4px;
   display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  white-space: nowrap;
 }
 .drw-act:hover { transform: translate(-1px,-1px); box-shadow: 3px 3px 0 var(--line); }
 .drw-act.secondary {
@@ -715,8 +774,8 @@ body.drawer-open .tb { padding-right: 712px; transition: padding-right 280ms cub
 .card.drafted::after {
   content: "DRAFTED";
   position: absolute; top: 8px; right: 8px;
-  font-family: "Oswald", sans-serif;
-  font-size: 11px; letter-spacing: 0.14em;
+  font-family: "Barlow", sans-serif;
+  font-size: 11px; letter-spacing: 0.01em;
   color: var(--ink-dim);
   background: var(--card);
   padding: 2px 6px; border: 1px solid var(--line-soft);
@@ -729,8 +788,8 @@ body.drawer-open .tb { padding-right: 712px; transition: padding-right 280ms cub
   content: "★ MY TEAM";
   position: absolute; top: -10px; left: 12px;
   background: var(--accent); color: #fff;
-  font-family: "Oswald", sans-serif;
-  font-size: 10px; letter-spacing: 0.18em;
+  font-family: "Barlow", sans-serif;
+  font-size: 10px; letter-spacing: 0.01em;
   padding: 2px 7px;
 }
 
@@ -745,11 +804,11 @@ body.drawer-open .tb { padding-right: 712px; transition: padding-right 280ms cub
   display: grid; place-items: center;
   background: var(--card); border: 1.5px solid var(--line);
   border-radius: 4px;
-  font-family: "Oswald", sans-serif;
+  font-family: "Barlow", sans-serif;
 }
 .mt-header .mt-title {
-  font-family: "Oswald", sans-serif;
-  font-size: 24px; letter-spacing: 0.04em; color: var(--ink);
+  font-family: "Barlow", sans-serif;
+  font-size: 24px; letter-spacing: 0.01em; color: var(--ink);
 }
 .mt-header .mt-count { color: var(--ink-soft); margin-left: 4px; }
 .mt-foot-bar {
@@ -776,8 +835,8 @@ body.drawer-open .tb { padding-right: 712px; transition: padding-right 280ms cub
   border-radius: 0 3px 3px 0;
 }
 .mt-pos-h {
-  font-family: "Oswald", sans-serif;
-  font-size: 16px; letter-spacing: 0.14em;
+  font-family: "Barlow", sans-serif;
+  font-size: 16px; letter-spacing: 0.01em;
   color: var(--pos-color, var(--ink));
   margin-bottom: 8px;
   display: flex; align-items: center; gap: 6px;
@@ -805,7 +864,7 @@ body.drawer-open .tb { padding-right: 712px; transition: padding-right 280ms cub
 .mt-pl-row:last-child { margin-bottom: 0; }
 .mt-pl-row:hover { border-color: var(--line); }
 .mt-pl-rk {
-  font-family: "Oswald", sans-serif;
+  font-family: "Barlow", sans-serif;
   font-size: 16px; color: var(--ink-soft);
   text-align: center;
   font-variant-numeric: tabular-nums;
@@ -818,20 +877,20 @@ body.drawer-open .tb { padding-right: 712px; transition: padding-right 280ms cub
 .mt-pl-pfp img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
 .mt-pl-info { min-width: 0; }
 .mt-pl-name {
-  font-family: "Oswald", sans-serif;
+  font-family: "Barlow", sans-serif;
   font-size: 16px; color: var(--ink); letter-spacing: 0.02em;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 .mt-pl-meta {
   font-family: "Inter", sans-serif;
   font-size: 11px; color: var(--ink-soft); font-weight: 600;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.01em;
   display: flex; align-items: center; gap: 5px;
 }
 .mt-pl-meta .pos-mini {
   display: inline-grid; place-items: center;
   min-width: 22px; height: 14px;
-  font-family: "Oswald", sans-serif;
+  font-family: "Barlow", sans-serif;
   font-size: 10px; padding: 0 4px;
   background: color-mix(in srgb, var(--pos-color) 14%, transparent);
   color: var(--pos-color);
@@ -855,8 +914,8 @@ body.drawer-open .tb { padding-right: 712px; transition: padding-right 280ms cub
   padding: 12px;
   background: var(--accent-2); color: #fff;
   border: 0; cursor: pointer;
-  font-family: "Oswald", sans-serif;
-  font-size: 16px; letter-spacing: 0.14em;
+  font-family: "Barlow", sans-serif;
+  font-size: 16px; letter-spacing: 0.01em;
   border-radius: 5px;
   display: flex; align-items: center; justify-content: center; gap: 8px;
 }
@@ -867,17 +926,17 @@ body.drawer-open .tb { padding-right: 712px; transition: padding-right 280ms cub
 .drw-sec { padding: 22px 18px; border-bottom: 1.5px solid var(--line-soft); }
 .drw-sec-h {
   display: flex; align-items: center; gap: 10px;
-  font-family: "Oswald", sans-serif;
-  font-size: 18px; letter-spacing: 0.16em;
+  font-family: "Barlow", sans-serif;
+  font-size: 18px; letter-spacing: 0.01em;
   color: var(--ink); text-transform: none;
   margin-bottom: 14px;
 }
 .drw-sec-h .ico { font-size: 14px; color: var(--accent); }
 .drw-sec-h .meta { font-family: "JetBrains Mono", ui-monospace, monospace;
-  font-size: 9px; font-weight: 600; letter-spacing: 0.12em;
+  font-size: 9px; font-weight: 600; letter-spacing: 0.01em;
   color: var(--ink-dim); text-transform: none; margin-left: 6px; }
 .drw-sec-h .right { margin-left: auto; font-family: "JetBrains Mono", ui-monospace, monospace;
-  font-size: 10px; color: var(--ink-dim); letter-spacing: 0.08em;
+  font-size: 10px; color: var(--ink-dim); letter-spacing: 0.02em;
   font-weight: 600; text-transform: none; }
 .drw-sec-h .src-pill {
   display: inline-flex; align-items: center;
@@ -886,7 +945,7 @@ body.drawer-open .tb { padding-right: 712px; transition: padding-right 280ms cub
   background: color-mix(in srgb, var(--accent-2) 15%, transparent);
   border: 1px solid var(--accent-2);
   color: var(--accent-2);
-  letter-spacing: 0.06em; margin-left: 6px;
+  letter-spacing: 0.02em; margin-left: 6px;
 }
 .drw-soon { color: var(--ink-dim); font-family: "Inter", sans-serif; font-size: 13px; font-style: italic; }
 
@@ -933,23 +992,23 @@ body.drawer-open .tb { padding-right: 712px; transition: padding-right 280ms cub
 /* red zone */
 .drw-rz { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; font-family: "Inter", sans-serif; }
 .drw-rz-card { background: var(--card); border: 1.5px solid var(--line); padding: 16px 12px; text-align: center; }
-.drw-rz-card .k { font-size: 11px; letter-spacing: 0.14em; color: var(--ink-dim); font-weight: 700; text-transform: none; }
-.drw-rz-card .v { font-family: "Oswald", sans-serif; font-size: 32px; color: var(--ink); margin: 4px 0; }
+.drw-rz-card .k { font-size: 11px; letter-spacing: 0.01em; color: var(--ink-dim); font-weight: 700; text-transform: none; }
+.drw-rz-card .v { font-family: "Barlow", sans-serif; font-size: 32px; color: var(--ink); margin: 4px 0; }
 .drw-rz-card .sub { font-size: 11px; color: var(--ink-soft); }
 
 /* career stats */
 .drw-stat-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin-bottom: 14px; font-family: "Inter", sans-serif; }
 .drw-stat { background: var(--card); border: 1.5px solid var(--line); padding: 14px; text-align: center; }
-.drw-stat-v { font-family: "Oswald", sans-serif; font-size: 30px; color: var(--ink); }
-.drw-stat-k { font-size: 10px; letter-spacing: 0.14em; color: var(--ink-dim); font-weight: 700; text-transform: none; margin-top: 2px; }
+.drw-stat-v { font-family: "Barlow", sans-serif; font-size: 30px; color: var(--ink); }
+.drw-stat-k { font-size: 10px; letter-spacing: 0.01em; color: var(--ink-dim); font-weight: 700; text-transform: none; margin-top: 2px; }
 .drw-tbl { width: 100%; border-collapse: collapse; font-family: "Inter", sans-serif; font-size: 12px; }
 .drw-tbl th { text-align: right; padding: 8px 10px; font-size: 10px;
-  letter-spacing: 0.1em; color: var(--ink-dim); font-weight: 700; text-transform: none;
+  letter-spacing: 0.02em; color: var(--ink-dim); font-weight: 700; text-transform: none;
   border-bottom: 1px solid var(--line-soft); }
 .drw-tbl th:first-child, .drw-tbl th:nth-child(2) { text-align: left; }
 .drw-tbl td { padding: 11px 10px; border-bottom: 1px solid var(--line-soft); text-align: right; color: var(--ink); font-weight: 600; }
 .drw-tbl td:first-child, .drw-tbl td:nth-child(2) { text-align: left; }
-.drw-tbl td:nth-child(2) { color: var(--ink-soft); letter-spacing: 0.04em; }
+.drw-tbl td:nth-child(2) { color: var(--ink-soft); letter-spacing: 0.01em; }
 
 @media (max-width: 720px) {
   .drawer { width: 100vw; }
@@ -962,7 +1021,7 @@ body.drawer-open .tb { padding-right: 712px; transition: padding-right 280ms cub
   display: inline-flex; align-items: center; gap: 4px;
   padding: 2px 7px 2px 2px;
   font-family: "JetBrains Mono", ui-monospace, monospace;
-  font-size: 9px; font-weight: 800; letter-spacing: 0.14em;
+  font-size: 9px; font-weight: 800; letter-spacing: 0.01em;
   color: var(--persona, var(--ink));
   border: 1.5px solid var(--persona, var(--ink));
   background: color-mix(in srgb, var(--persona, var(--ink)) 10%, transparent);
@@ -1075,13 +1134,13 @@ body[data-mode="drafting"].vs-open[data-vs-mode="expanded"] .rounds {
   width: 22px; height: 22px;
   display: grid; place-items: center;
   background: var(--ink); color: var(--bg);
-  font-family: "Oswald", sans-serif;
+  font-family: "Barlow", sans-serif;
   font-size: 11px; font-weight: 700;
   border-radius: 2px;
 }
 .rail-h .ttl {
-  font-family: "Oswald", sans-serif;
-  font-size: 14px; letter-spacing: 0.10em;
+  font-family: "Barlow", sans-serif;
+  font-size: 14px; letter-spacing: 0.02em;
   font-weight: 700;
 }
 .rail-h .ct {
@@ -1098,8 +1157,8 @@ body[data-mode="drafting"].vs-open[data-vs-mode="expanded"] .rounds {
   margin-bottom: 6px;
 }
 .pos-grp-h .badge {
-  font-family: "Oswald", sans-serif;
-  font-size: 11px; letter-spacing: 0.10em;
+  font-family: "Barlow", sans-serif;
+  font-size: 11px; letter-spacing: 0.02em;
   padding: 2px 7px;
   border-radius: 2px;
   font-weight: 700;
@@ -1117,7 +1176,7 @@ body[data-mode="drafting"].vs-open[data-vs-mode="expanded"] .rounds {
 }
 .pos-row:hover { background: var(--bg); }
 .pos-row .r {
-  font-family: "Oswald", sans-serif;
+  font-family: "Barlow", sans-serif;
   font-size: 12px; color: var(--ink-dim);
   width: 18px; flex-shrink: 0;
 }
@@ -1132,41 +1191,36 @@ body[data-mode="drafting"].vs-open[data-vs-mode="expanded"] .rounds {
   font-variant-numeric: tabular-nums;
 }
 /* On-the-clock card */
-.clock { padding: 16px 14px; }
-.clock .lbl {
-  font-family: "Inter", sans-serif;
-  font-size: 10px; font-weight: 800;
-  letter-spacing: 0.18em;
-  color: var(--ink-dim);
-  text-transform: uppercase;
-  margin-bottom: 4px;
-}
-.clock .turn {
-  font-family: "Oswald", sans-serif;
-  font-size: 26px; line-height: 1;
-  font-weight: 700; color: var(--accent);
-  margin-bottom: 8px;
+.clock { padding: 14px 14px 16px; }
+.clock .clock-timer {
+  display: flex; align-items: baseline; gap: 10px;
+  margin-bottom: 10px;
+  font-family: "Barlow", sans-serif;
   font-variant-numeric: tabular-nums;
 }
+.clock .clock-timer .ct-pick {
+  font-size: 13px; font-weight: 600; color: var(--ink-soft);
+  letter-spacing: 0.01em;
+}
+.clock .clock-timer .ct-time {
+  font-size: 26px; line-height: 1; font-weight: 700;
+  color: var(--accent);
+}
+.clock .clock-timer .ct-time.ct-time-sm {
+  font-size: 16px; letter-spacing: 0.01em;
+}
 .clock .sug {
-  font-family: "Oswald", sans-serif;
+  font-family: "Barlow", sans-serif;
   font-size: 18px; line-height: 1.1; font-weight: 700;
+  color: var(--ink);
 }
 .clock .why {
-  margin-top: 6px;
-  font-size: 11px; color: var(--ink-soft); line-height: 1.45;
+  margin-top: 4px;
+  font-family: "Barlow", sans-serif;
+  font-size: 12px; color: var(--ink-soft); line-height: 1.4;
+  font-weight: 500;
 }
-.clock .timer {
-  margin-top: 12px;
-  display: flex; align-items: center; gap: 8px;
-  font-family: "JetBrains Mono", monospace;
-  font-size: 11px; color: var(--ink-dim);
-  font-weight: 700;
-}
-.clock .timer .dot {
-  width: 7px; height: 7px; border-radius: 50%;
-  background: var(--accent); animation: clockPulse 1.6s infinite;
-}
+@keyframes clockPulse { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
 @keyframes clockPulse { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
 /* Watch list */
 .watch-row {
@@ -1187,13 +1241,13 @@ body[data-mode="drafting"].vs-open[data-vs-mode="expanded"] .rounds {
 }
 .watch-row .body { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
 .watch-row .nm {
-  font-family: "Oswald", sans-serif;
+  font-family: "Barlow", sans-serif;
   font-size: 13px;
   overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
 }
 .watch-row .meta {
   font-size: 9.5px; color: var(--ink-dim);
-  letter-spacing: 0.04em;
+  letter-spacing: 0.01em;
 }
 .watch-row .price {
   font-family: "JetBrains Mono", monospace;
@@ -1217,8 +1271,8 @@ body[data-mode="drafting"].vs-open[data-vs-mode="expanded"] .rounds {
   display: flex; align-items: center; gap: 12px;
 }
 .view-toggle-bar .lbl {
-  font-family: "Oswald", sans-serif;
-  font-size: 14px; letter-spacing: 0.22em;
+  font-family: "Barlow", sans-serif;
+  font-size: 14px; letter-spacing: 0.01em;
   color: var(--ink-soft);
 }
 .view-toggle {
@@ -1230,8 +1284,8 @@ body[data-mode="drafting"].vs-open[data-vs-mode="expanded"] .rounds {
 .view-toggle button {
   background: transparent;
   border: 0; cursor: pointer;
-  font-family: "Oswald", sans-serif;
-  font-size: 15px; letter-spacing: 0.18em;
+  font-family: "Barlow", sans-serif;
+  font-size: 15px; letter-spacing: 0.01em;
   padding: 6px 16px;
   color: var(--ink-soft);
   border-right: 1.5px solid var(--line);
@@ -1266,13 +1320,13 @@ body[data-mode="drafting"].vs-open[data-vs-mode="expanded"] .rounds {
 @keyframes cfPop { from { transform: translateY(8px) scale(0.96); opacity: 0; } to { transform: none; opacity: 1; } }
 .cf-tag {
   font-family: "JetBrains Mono", monospace;
-  font-size: 11px; letter-spacing: 0.3em;
+  font-size: 11px; letter-spacing: 0.01em;
   color: var(--accent);
   margin-bottom: 10px;
 }
 .cf-tag.danger { color: var(--accent-2); }
 .cf-h {
-  font-family: "Oswald", sans-serif;
+  font-family: "Barlow", sans-serif;
   font-size: 26px; line-height: 1.1;
   color: var(--ink);
   margin-bottom: 8px;
@@ -1290,8 +1344,8 @@ body[data-mode="drafting"].vs-open[data-vs-mode="expanded"] .rounds {
   background: transparent;
   border: 1.5px solid var(--line);
   cursor: pointer;
-  font-family: "Oswald", sans-serif;
-  font-size: 13px; letter-spacing: 0.14em;
+  font-family: "Barlow", sans-serif;
+  font-size: 13px; letter-spacing: 0.01em;
   padding: 10px 18px;
   color: var(--ink);
   transition: all 140ms;
@@ -1326,28 +1380,21 @@ body[data-mode="drafting"].vs-open[data-vs-mode="expanded"] .rounds {
 }
 .intro-step-num {
   font-family: "JetBrains Mono", monospace;
-  font-size: 11px; letter-spacing: 0.3em;
+  font-size: 11px; letter-spacing: 0.01em;
   color: var(--accent);
   margin-bottom: 12px;
 }
 .intro-brand {
-  display: flex; align-items: center; gap: 10px;
+  display: flex; align-items: center; justify-content: center;
   margin-bottom: 14px;
   padding-bottom: 14px;
   border-bottom: 1.5px solid var(--line-soft);
 }
 .intro-brand img {
-  height: 26px; width: auto; display: block;
-}
-.intro-brand .intro-brand-tag {
-  font-family: "JetBrains Mono", monospace;
-  font-size: 10px; letter-spacing: 0.28em;
-  color: var(--ink-soft);
-  text-transform: uppercase;
-  margin-left: auto;
+  height: 72px; width: auto; display: block;
 }
 .intro-q {
-  font-family: "Oswald", sans-serif;
+  font-family: "Barlow", sans-serif;
   font-size: 38px; line-height: 1;
   color: var(--ink);
   margin-bottom: 8px;
@@ -1366,8 +1413,8 @@ body[data-mode="drafting"].vs-open[data-vs-mode="expanded"] .rounds {
   background: var(--card);
   border: 2px solid var(--line);
   padding: 14px 16px;
-  font-family: "Oswald", sans-serif;
-  font-size: 18px; letter-spacing: 0.04em;
+  font-family: "Barlow", sans-serif;
+  font-size: 18px; letter-spacing: 0.01em;
   color: var(--ink);
   cursor: pointer;
   text-align: left;
@@ -1434,7 +1481,85 @@ body[data-mode="drafting"].vs-open[data-vs-mode="expanded"] .rounds {
 .intro-opt.selected .icon.plat { background: #fff; border-color: rgba(255,255,255,0.4); }
 .intro-opt.selected .icon.plat-skip { background: var(--bg); color: var(--ink-soft); border-color: var(--line); }
 
-/* Roster icon chips (step 4) — outlined SVG, accent on selection */
+/* Step 4 — position-by-position roster stepper */
+.roster-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 12px;
+  margin-top: 4px;
+}
+.roster-row {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px;
+  background: var(--card);
+  border: 1.5px solid var(--line);
+  padding: 10px 12px;
+  min-height: 50px;
+}
+.roster-row .rp-lbl {
+  font-family: "Barlow", sans-serif;
+  font-size: 15px; letter-spacing: 0.01em;
+  color: var(--ink);
+  text-transform: uppercase;
+  line-height: 1.1;
+  display: flex; flex-direction: column;
+}
+.roster-row .rp-lbl-sub {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 9px; letter-spacing: 0.01em;
+  color: var(--ink-soft);
+  text-transform: uppercase;
+  margin-top: 2px;
+  font-weight: 400;
+}
+.roster-row.zero { opacity: 0.55; }
+.roster-row.zero .rp-val { color: var(--ink-soft); }
+.rp-stepper {
+  display: flex; align-items: center; gap: 6px;
+}
+.rp-btn {
+  width: 26px; height: 26px;
+  display: grid; place-items: center;
+  background: var(--bg);
+  border: 1.5px solid var(--line);
+  color: var(--ink);
+  font-family: "Inter", sans-serif;
+  font-size: 16px; font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+  transition: all 120ms;
+  padding: 0;
+}
+.rp-btn:hover:not(:disabled) { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.rp-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+.rp-val {
+  font-family: "Barlow", sans-serif;
+  font-size: 18px;
+  color: var(--ink);
+  min-width: 22px; text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+.roster-total {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-top: 14px;
+  padding: 10px 12px;
+  border-top: 1.5px solid var(--line-soft);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px; letter-spacing: 0.01em;
+  color: var(--ink-soft);
+  text-transform: uppercase;
+}
+.roster-total .rt-val {
+  font-family: "Barlow", sans-serif;
+  font-size: 22px;
+  color: var(--ink);
+  letter-spacing: 0.02em;
+}
+@media (max-width: 560px) {
+  .roster-grid { grid-template-columns: 1fr; }
+}
+
+/* Roster icon chips (legacy step 4) — outlined SVG, accent on selection */
 .intro-opt .icon.roster {
   width: 42px; height: 42px;
   background: var(--bg);
@@ -1479,8 +1604,8 @@ body[data-mode="drafting"].vs-open[data-vs-mode="expanded"] .rounds {
 }
 .intro-skip:hover { color: var(--ink); }
 .intro-back, .intro-next {
-  font-family: "Oswald", sans-serif;
-  font-size: 16px; letter-spacing: 0.16em;
+  font-family: "Barlow", sans-serif;
+  font-size: 16px; letter-spacing: 0.02em;
   height: 46px; padding: 0 22px;
   cursor: pointer;
   display: inline-flex; align-items: center; gap: 8px;
@@ -1544,13 +1669,13 @@ body[data-mode="drafting"].vs-open[data-vs-mode="expanded"] .rounds {
   width: min(460px, calc(100vw - 32px));
 }
 .tut-step-num {
-  font-family: "Oswald", sans-serif;
-  font-size: 12px; letter-spacing: 0.22em;
+  font-family: "Barlow", sans-serif;
+  font-size: 12px; letter-spacing: 0.01em;
   color: var(--accent);
   margin-bottom: 6px;
 }
 .tut-h {
-  font-family: "Oswald", sans-serif;
+  font-family: "Barlow", sans-serif;
   font-size: 28px; line-height: 1.05; letter-spacing: -0.01em;
   margin: 0 0 10px;
   color: var(--ink);
@@ -1581,7 +1706,7 @@ body[data-mode="drafting"].vs-open[data-vs-mode="expanded"] .rounds {
 .tut-skip {
   background: transparent; border: 0; cursor: pointer;
   font-family: "Inter", sans-serif;
-  font-size: 12px; letter-spacing: 0.06em;
+  font-size: 12px; letter-spacing: 0.02em;
   color: var(--ink-dim);
   padding: 6px 10px;
 }
@@ -1590,8 +1715,8 @@ body[data-mode="drafting"].vs-open[data-vs-mode="expanded"] .rounds {
   background: transparent;
   border: 1.5px solid var(--line-soft);
   cursor: pointer;
-  font-family: "Oswald", sans-serif;
-  font-size: 13px; letter-spacing: 0.14em;
+  font-family: "Barlow", sans-serif;
+  font-size: 13px; letter-spacing: 0.01em;
   padding: 7px 12px;
   color: var(--ink-soft);
 }
@@ -1602,8 +1727,8 @@ body[data-mode="drafting"].vs-open[data-vs-mode="expanded"] .rounds {
   color: #fff;
   border: 0;
   cursor: pointer;
-  font-family: "Oswald", sans-serif;
-  font-size: 14px; letter-spacing: 0.16em;
+  font-family: "Barlow", sans-serif;
+  font-size: 14px; letter-spacing: 0.02em;
   padding: 9px 18px;
   box-shadow: 3px 3px 0 var(--line);
   transition: transform 120ms ease, box-shadow 120ms ease;
@@ -1615,7 +1740,7 @@ body[data-mode="drafting"].vs-open[data-vs-mode="expanded"] .rounds {
   border: 1.5px solid var(--line);
   color: var(--ink);
   width: 32px; height: 32px;
-  font-family: "Oswald", sans-serif;
+  font-family: "Barlow", sans-serif;
   font-size: 16px;
   cursor: pointer;
   display: inline-flex; align-items: center; justify-content: center;
@@ -1637,7 +1762,7 @@ body[data-mode="drafting"].vs-open[data-vs-mode="expanded"] .rounds {
   border: 1px solid var(--accent-2);
   color: var(--accent-2);
   padding: 4px 10px; border-radius: 4px;
-  font-weight: 700; font-size: 11px; letter-spacing: 0.06em; text-transform: none;
+  font-weight: 700; font-size: 11px; letter-spacing: 0.02em; text-transform: none;
 }
 .compare-banner .x {
   margin-left: auto;
@@ -1650,7 +1775,7 @@ body[data-mode="drafting"].vs-open[data-vs-mode="expanded"] .rounds {
   display: none;
   font-family: "Inter", sans-serif;
   font-size: 11px; font-weight: 700;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.01em;
 }
 body.compare-on .card .card-delta { display: inline-flex; align-items: center; gap: 3px; }
 .card-delta.up   { color: #16a34a; }
@@ -1673,13 +1798,13 @@ body.compare-on .card .card-delta { display: inline-flex; align-items: center; g
   font-size: 12px; color: var(--ink-soft);
   display: flex; align-items: center; justify-content: space-between;
 }
-.sort-banner b { font-family: "Oswald", sans-serif; color: var(--ink); letter-spacing: 0.04em; }
+.sort-banner b { font-family: "Barlow", sans-serif; color: var(--ink); letter-spacing: 0.01em; }
 .sort-banner button {
   background: transparent;
   border: 1.5px solid var(--line-soft);
   padding: 4px 10px;
-  font-family: "Oswald", sans-serif;
-  font-size: 11px; letter-spacing: 0.10em;
+  font-family: "Barlow", sans-serif;
+  font-size: 11px; letter-spacing: 0.02em;
   color: var(--ink-soft); cursor: pointer;
   border-radius: 3px;
 }
@@ -1691,7 +1816,7 @@ body.compare-on .card .card-delta { display: inline-flex; align-items: center; g
   border-bottom: 1.5px solid var(--line);
 }
 .round-h-l {
-  font-family: "Oswald", sans-serif;
+  font-family: "Barlow", sans-serif;
   font-size: 26px; line-height: 1; font-weight: 400;
   letter-spacing: 0.01em;
   color: var(--ink);
@@ -1703,11 +1828,11 @@ body.compare-on .card .card-delta { display: inline-flex; align-items: center; g
   background: var(--ink);
   color: var(--bg);
   font-family: "JetBrains Mono", monospace;
-  font-size: 11px; letter-spacing: 0.18em;
+  font-size: 11px; letter-spacing: 0.01em;
 }
 .round-h-r {
   font-family: "Inter", sans-serif;
-  font-size: 11px; font-weight: 600; letter-spacing: 0.10em;
+  font-size: 11px; font-weight: 600; letter-spacing: 0.02em;
   color: var(--ink-dim);
   text-align: right;
 }
@@ -1722,10 +1847,10 @@ body.compare-on .card .card-delta { display: inline-flex; align-items: center; g
   color: #1a9966;
   padding: 4px 12px;
   border-radius: 12px;
-  font-family: "Oswald", sans-serif;
+  font-family: "Barlow", sans-serif;
   font-weight: 700;
   font-size: 12px;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.01em;
 }
 :root[data-theme="dark"] .rg-section.all-drafted .round-h-r {
   background: color-mix(in srgb, #1fcf8e 22%, transparent);
@@ -1764,7 +1889,7 @@ body.compare-on .card .card-delta { display: inline-flex; align-items: center; g
 }
 .board-header .h-cell {
   font-family: "Inter", sans-serif;
-  font-size: 10px; font-weight: 800; letter-spacing: 0.14em;
+  font-size: 10px; font-weight: 800; letter-spacing: 0.01em;
   color: var(--ink-dim);
   text-align: center;
   background: transparent; border: 0;
@@ -1799,7 +1924,7 @@ body.compare-on .card .card-delta { display: inline-flex; align-items: center; g
 .board-header .h-cell.h-stacked .h-pre {
   font-size: 8px;
   font-weight: 800;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.01em;
   color: var(--ink-dim);
   opacity: 0.7;
   text-transform: uppercase;
@@ -1807,7 +1932,7 @@ body.compare-on .card .card-delta { display: inline-flex; align-items: center; g
 .board-header .h-cell.h-stacked .h-main {
   font-size: 11px;
   font-weight: 800;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.02em;
   color: inherit;
   text-transform: none;
   position: relative;
@@ -1898,7 +2023,7 @@ body[data-mode="prepping"] .card-extra {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: "Oswald", sans-serif;
+  font-family: "Barlow", sans-serif;
   font-size: 14px;
   font-variant-numeric: tabular-nums;
   color: var(--ink);
@@ -1919,7 +2044,7 @@ body[data-mode="prepping"] .board-header .h-cell.h-extra {
   font-family: "Inter", sans-serif;
   font-size: 9px;
   font-weight: 800;
-  letter-spacing: 0.10em;
+  letter-spacing: 0.02em;
   border-radius: 999px;
 }
 .tier-pill.tier-elite     { background: rgba(251,99,122,0.18); color: #b91c1c; border: 1px solid rgba(251,99,122,0.38); }
@@ -1928,7 +2053,7 @@ body[data-mode="prepping"] .board-header .h-cell.h-extra {
 .tier-pill.tier-starter   { background: rgba(8,36,48,0.06);    color: var(--ink-soft); border: 1px solid var(--line-soft); }
 .tier-pill.tier-depth     { background: rgba(8,36,48,0.04);    color: var(--ink-dim);  border: 1px solid var(--line-soft); }
 .card-rk {
-  font-family: "Oswald", sans-serif;
+  font-family: "Barlow", sans-serif;
   font-size: 15px; line-height: 1;
   color: var(--ink);
   font-variant-numeric: tabular-nums;
@@ -1977,7 +2102,7 @@ body[data-mode="prepping"] .card-who-sub {
   font-family: "Inter", sans-serif;
   font-size: 11px;
   font-weight: 600;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.01em;
   color: var(--ink-dim);
 }
 /* Prep mode keeps tags visible — they help users size up players at a glance.
@@ -1985,7 +2110,8 @@ body[data-mode="prepping"] .card-who-sub {
 body[data-mode="prepping"] .card-notes-badge { display: none; }
 body[data-mode="prepping"] .card-who-main .card-pos { display: none; }
 .card-name {
-  font-family: "Oswald", sans-serif;
+  font-family: "Barlow", sans-serif;
+  font-weight: 700;
   font-size: 18px; line-height: 1;
   letter-spacing: 0.01em;
   color: var(--ink);
@@ -2125,15 +2251,15 @@ body[data-mode="prepping"] .card-who-main .card-pos { display: none; }
   font-size: 11px;
   color: var(--accent);
   font-weight: 600;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.01em;
   transition: opacity 200ms;
 }
 .card-pos {
   display: inline-grid; place-items: center;
   min-width: 36px; height: 19px; padding: 0 7px;
   background: var(--pos-bg); color: var(--pos-c);
-  font-family: "Oswald", sans-serif;
-  font-size: 11px; letter-spacing: 0.04em;
+  font-family: "Barlow", sans-serif;
+  font-size: 11px; letter-spacing: 0.01em;
   border-radius: 3px;
   font-variant-numeric: tabular-nums;
   flex-shrink: 0;
@@ -2141,7 +2267,7 @@ body[data-mode="prepping"] .card-who-main .card-pos { display: none; }
 .card-team {
   display: inline-flex; align-items: center; gap: 7px;
   font-family: "Inter", sans-serif;
-  font-size: 12px; font-weight: 800; letter-spacing: 0.06em;
+  font-size: 12px; font-weight: 800; letter-spacing: 0.02em;
   color: var(--ink-soft);
   white-space: nowrap;
   justify-self: center;
@@ -2158,7 +2284,7 @@ body[data-mode="prepping"] .card-who-main .card-pos { display: none; }
   color: var(--ink); letter-spacing: 0;
 }
 .card-adp {
-  font-family: "Oswald", sans-serif;
+  font-family: "Barlow", sans-serif;
   font-size: 18px; line-height: 1;
   color: var(--ink);
   font-variant-numeric: tabular-nums;
@@ -2257,12 +2383,12 @@ body[data-mode="prepping"] .card-who-main .card-pos { display: none; }
   justify-content: flex-start;
 }
 .card-cmp .lbl {
-  font-size: 9px; letter-spacing: 0.14em; font-weight: 800;
+  font-size: 9px; letter-spacing: 0.01em; font-weight: 800;
   color: var(--ink-dim); text-transform: none;
   flex-shrink: 0;
 }
 .card-cmp .val {
-  font-family: "Oswald", sans-serif;
+  font-family: "Barlow", sans-serif;
   font-size: 18px; line-height: 1;
   color: var(--ink);
   font-variant-numeric: tabular-nums;
@@ -2271,7 +2397,7 @@ body[data-mode="prepping"] .card-who-main .card-pos { display: none; }
 .card-cmp .delta {
   display: inline-block;
   font-size: 10px; font-weight: 800;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.02em;
   padding: 2px 7px;
   border-radius: 2px;
   text-transform: none;
@@ -2311,8 +2437,8 @@ body[data-mode="prepping"] .card-who-main .card-pos { display: none; }
   transform: rotate(45deg);
 }
 .card-cmp .tip-h {
-  font-family: "Oswald", sans-serif;
-  font-size: 16px; letter-spacing: 0.06em;
+  font-family: "Barlow", sans-serif;
+  font-size: 16px; letter-spacing: 0.02em;
   color: var(--ink);
   margin-bottom: 4px;
 }
@@ -2328,7 +2454,7 @@ body[data-mode="prepping"] .card-who-main .card-pos { display: none; }
   padding-top: 7px;
   border-top: 1px solid var(--line-soft);
   font-size: 9px; font-weight: 700;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.02em;
   color: var(--ink-soft);
   text-transform: none;
   line-height: 1.5;
@@ -2341,7 +2467,7 @@ body[data-mode="prepping"] .card-who-main .card-pos { display: none; }
   display: inline-block;
   font-family: "Inter", sans-serif;
   font-size: 9px; font-weight: 800;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.02em;
   padding: 1px 5px; border-radius: 2px;
 }
 .card-cmp .tip-legend .leg.up   { background: rgba(22,163,74,0.16);  color: #15803d; }
@@ -2365,7 +2491,7 @@ body[data-mode="prepping"] .card-who-main .card-pos { display: none; }
   display: inline-flex; align-items: center;
   height: 17px;
   font-family: "Inter", sans-serif;
-  font-size: 9px; font-weight: 700; letter-spacing: 0.06em;
+  font-size: 9px; font-weight: 700; letter-spacing: 0.02em;
   padding: 0 7px;
   background: color-mix(in srgb, var(--tbk-c, var(--ink)) 12%, transparent);
   color: var(--tbk-c, var(--ink));
@@ -2430,13 +2556,13 @@ body[data-mode="prepping"] .card-who-main .card-pos { display: none; }
 }
 .featured-pfp img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
 .featured-rk {
-  font-family: "Oswald", sans-serif;
+  font-family: "Barlow", sans-serif;
   font-size: 56px; line-height: 0.85;
   color: var(--ink);
   letter-spacing: -0.02em;
   text-align: center;
 }
-.featured-rk small { display: block; font-size: 11px; letter-spacing: 0.22em; font-weight: 400; color: var(--accent); margin-top: 4px; }
+.featured-rk small { display: block; font-size: 11px; letter-spacing: 0.01em; font-weight: 400; color: var(--accent); margin-top: 4px; }
 
 .featured-r { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
 .featured-tag-row {
@@ -2447,13 +2573,13 @@ body[data-mode="prepping"] .card-who-main .card-pos { display: none; }
   padding: 4px 10px;
   background: var(--accent);
   color: #fff;
-  font-family: "Oswald", sans-serif;
-  font-size: 12px; letter-spacing: 0.20em;
+  font-family: "Barlow", sans-serif;
+  font-size: 12px; letter-spacing: 0.01em;
 }
 .featured-tag {
   padding: 3px 8px;
-  font-family: "Oswald", sans-serif;
-  font-size: 11px; letter-spacing: 0.16em;
+  font-family: "Barlow", sans-serif;
+  font-size: 11px; letter-spacing: 0.02em;
   border: 1.5px solid var(--line);
   color: var(--ink);
 }
@@ -2461,14 +2587,14 @@ body[data-mode="prepping"] .card-who-main .card-pos { display: none; }
 .featured-tag.cyan { color: var(--accent-2); border-color: var(--accent-2); background: #259fd614; }
 .featured-tag.emerald { color: #047857; border-color: #047857; background: #04785714; }
 .featured-name {
-  font-family: "Oswald", sans-serif;
+  font-family: "Barlow", sans-serif;
   font-size: 38px; line-height: 0.95;
   color: var(--ink);
   letter-spacing: -0.01em;
 }
 .featured-sub {
   font-family: "Inter", sans-serif;
-  font-size: 11px; letter-spacing: 0.12em; font-weight: 600;
+  font-size: 11px; letter-spacing: 0.01em; font-weight: 600;
   color: var(--ink-soft);
   text-transform: none;
 }
@@ -2485,12 +2611,12 @@ body[data-mode="prepping"] .card-who-main .card-pos { display: none; }
 .featured-stat .k {
   display: block;
   font-family: "Inter", sans-serif;
-  font-size: 8px; letter-spacing: 0.20em; font-weight: 800;
+  font-size: 8px; letter-spacing: 0.01em; font-weight: 800;
   color: var(--ink-dim);
   text-transform: none;
 }
 .featured-stat .v {
-  font-family: "Oswald", sans-serif;
+  font-family: "Barlow", sans-serif;
   font-size: 24px; line-height: 1;
   color: var(--ink);
   font-variant-numeric: tabular-nums;
@@ -2512,7 +2638,7 @@ body[data-mode="prepping"] .card-who-main .card-pos { display: none; }
 .featured-foot {
   display: flex; align-items: center; gap: 16px;
   font-family: "Inter", sans-serif;
-  font-size: 10px; letter-spacing: 0.14em; font-weight: 700;
+  font-size: 10px; letter-spacing: 0.01em; font-weight: 700;
   color: var(--ink-soft);
   text-transform: none;
 }
@@ -2562,8 +2688,8 @@ body[data-mode="prepping"] .card-who-main .card-pos { display: none; }
   background: var(--card);
 }
 .pop-bar-l {
-  font-family: "Oswald", sans-serif;
-  font-size: 16px; letter-spacing: 0.18em;
+  font-family: "Barlow", sans-serif;
+  font-size: 16px; letter-spacing: 0.01em;
   color: var(--ink-soft);
 }
 .pop-bar-l b { color: var(--accent); }
@@ -2571,8 +2697,8 @@ body[data-mode="prepping"] .card-who-main .card-pos { display: none; }
   background: transparent;
   border: 1.5px solid var(--line);
   padding: 6px 12px;
-  font-family: "Oswald", sans-serif;
-  font-size: 13px; letter-spacing: 0.16em;
+  font-family: "Barlow", sans-serif;
+  font-size: 13px; letter-spacing: 0.02em;
   color: var(--ink);
   cursor: pointer;
 }
@@ -2598,12 +2724,12 @@ body[data-mode="prepping"] .card-who-main .card-pos { display: none; }
   padding: 5px 12px;
   background: var(--accent);
   color: #fff;
-  font-family: "Oswald", sans-serif;
-  font-size: 14px; letter-spacing: 0.20em;
+  font-family: "Barlow", sans-serif;
+  font-size: 14px; letter-spacing: 0.01em;
   width: fit-content;
 }
 .pop-name {
-  font-family: "Oswald", sans-serif;
+  font-family: "Barlow", sans-serif;
   font-size: 52px; line-height: 0.9;
   color: var(--ink);
   letter-spacing: -0.01em;
@@ -2611,7 +2737,7 @@ body[data-mode="prepping"] .card-who-main .card-pos { display: none; }
 }
 .pop-sub {
   font-family: "Inter", sans-serif;
-  font-size: 12px; letter-spacing: 0.14em; font-weight: 600;
+  font-size: 12px; letter-spacing: 0.01em; font-weight: 600;
   color: var(--ink-soft);
   text-transform: none;
   margin-top: 6px;
@@ -2626,12 +2752,12 @@ body[data-mode="prepping"] .card-who-main .card-pos { display: none; }
 .pop-v .k {
   display: block;
   font-family: "Inter", sans-serif;
-  font-size: 9px; letter-spacing: 0.18em; font-weight: 700;
+  font-size: 9px; letter-spacing: 0.01em; font-weight: 700;
   color: var(--ink-dim);
   text-transform: none;
 }
 .pop-v .v {
-  font-family: "Oswald", sans-serif;
+  font-family: "Barlow", sans-serif;
   font-size: 22px; line-height: 1;
   color: var(--ink);
   margin-top: 2px;
@@ -2640,8 +2766,8 @@ body[data-mode="prepping"] .card-who-main .card-pos { display: none; }
 
 .pop-r { display: flex; flex-direction: column; gap: 18px; }
 .pop-section-h {
-  font-family: "Oswald", sans-serif;
-  font-size: 24px; letter-spacing: 0.04em;
+  font-family: "Barlow", sans-serif;
+  font-size: 24px; letter-spacing: 0.01em;
   color: var(--ink);
   border-bottom: 1.5px solid var(--line);
   padding-bottom: 6px;
@@ -2649,7 +2775,7 @@ body[data-mode="prepping"] .card-who-main .card-pos { display: none; }
 }
 .pop-section-h .src {
   font-family: "Inter", sans-serif;
-  font-size: 10px; letter-spacing: 0.14em; font-weight: 500;
+  font-size: 10px; letter-spacing: 0.01em; font-weight: 500;
   color: var(--ink-dim);
   text-transform: none;
 }
@@ -2675,12 +2801,12 @@ body[data-mode="prepping"] .card-who-main .card-pos { display: none; }
 .pop-strip .k {
   display: block;
   font-family: "Inter", sans-serif;
-  font-size: 9px; letter-spacing: 0.18em; font-weight: 700;
+  font-size: 9px; letter-spacing: 0.01em; font-weight: 700;
   color: var(--ink-dim);
   text-transform: none;
 }
 .pop-strip .v {
-  font-family: "Oswald", sans-serif;
+  font-family: "Barlow", sans-serif;
   font-size: 28px; line-height: 1;
   color: var(--ink);
   margin-top: 4px;
@@ -2692,7 +2818,7 @@ body[data-mode="prepping"] .card-who-main .card-pos { display: none; }
 .pop-strip .v.rd { color: var(--accent); }
 .pop-strip .d {
   font-family: "Inter", sans-serif;
-  font-size: 10px; letter-spacing: 0.04em; font-weight: 500;
+  font-size: 10px; letter-spacing: 0.01em; font-weight: 500;
   color: var(--ink-dim);
   margin-top: 2px;
 }
@@ -2703,8 +2829,8 @@ body[data-mode="prepping"] .card-who-main .card-pos { display: none; }
   border-bottom: 1.5px solid var(--line);
 }
 .pop-tab {
-  font-family: "Oswald", sans-serif;
-  font-size: 13px; letter-spacing: 0.12em;
+  font-family: "Barlow", sans-serif;
+  font-size: 13px; letter-spacing: 0.01em;
   padding: 10px 14px;
   background: transparent;
   border: 0;
@@ -2722,8 +2848,8 @@ body[data-mode="prepping"] .card-who-main .card-pos { display: none; }
 
 /* ─── Pop-out shared widgets ─── */
 .bk-chip {
-  font-family: "Oswald", sans-serif;
-  font-size: 11px; letter-spacing: 0.16em;
+  font-family: "Barlow", sans-serif;
+  font-size: 11px; letter-spacing: 0.02em;
   padding: 4px 10px;
   background: transparent;
   border: 1.5px solid var(--line-soft);
@@ -2739,8 +2865,8 @@ body[data-mode="prepping"] .card-who-main .card-pos { display: none; }
 .sw-pill {
   display: inline-flex; align-items: center; gap: 6px;
   padding: 4px 8px;
-  font-family: "Oswald", sans-serif;
-  font-size: 11px; letter-spacing: 0.14em;
+  font-family: "Barlow", sans-serif;
+  font-size: 11px; letter-spacing: 0.01em;
   border: 1.5px solid;
 }
 .sw-pill.sw-strong { color: #047857; border-color: #047857; background: #04785714; }
@@ -2756,8 +2882,8 @@ body[data-mode="prepping"] .card-who-main .card-pos { display: none; }
   font-size: 12px;
   min-width: 0;
 }
-.vegas-row span { color: var(--ink-soft); letter-spacing: 0.10em; font-weight: 600; min-width: 0; }
-.vegas-row b { font-family: "Oswald", sans-serif; font-size: 18px; color: var(--ink); font-variant-numeric: tabular-nums; white-space: nowrap; flex-shrink: 0; }
+.vegas-row span { color: var(--ink-soft); letter-spacing: 0.02em; font-weight: 600; min-width: 0; }
+.vegas-row b { font-family: "Barlow", sans-serif; font-size: 18px; color: var(--ink); font-variant-numeric: tabular-nums; white-space: nowrap; flex-shrink: 0; }
 
 .pct-row {
   display: grid;
@@ -2767,7 +2893,7 @@ body[data-mode="prepping"] .card-who-main .card-pos { display: none; }
   border-bottom: 1px solid var(--line-soft);
 }
 .pct-row:last-child { border-bottom: 0; }
-.pct-k { font-family: "Inter", sans-serif; font-size: 11px; letter-spacing: 0.14em; font-weight: 700; color: var(--ink); }
+.pct-k { font-family: "Inter", sans-serif; font-size: 11px; letter-spacing: 0.01em; font-weight: 700; color: var(--ink); }
 .pct-bar { display: grid; grid-template-columns: repeat(15, 1fr); gap: 1.5px; }
 .pct-bar i { display: block; height: 16px; background: var(--ink-faint); }
 .pct-bar i.on {
@@ -2776,7 +2902,7 @@ body[data-mode="prepping"] .card-who-main .card-pos { display: none; }
 }
 .pct-v {
   text-align: right;
-  font-family: "Oswald", sans-serif;
+  font-family: "Barlow", sans-serif;
   font-size: 16px;
   color: var(--ink);
   font-variant-numeric: tabular-nums;
@@ -2785,7 +2911,7 @@ body[data-mode="prepping"] .card-who-main .card-pos { display: none; }
 .pct-v small {
   display: block;
   font-family: "Inter", sans-serif;
-  font-size: 9px; letter-spacing: 0.18em;
+  font-size: 9px; letter-spacing: 0.01em;
   color: var(--ink-dim);
   font-weight: 600;
   margin-top: 2px;
@@ -2799,8 +2925,8 @@ body[data-mode="prepping"] .card-who-main .card-pos { display: none; }
 }
 .stats-table th {
   text-align: right;
-  font-family: "Oswald", sans-serif;
-  font-size: 12px; letter-spacing: 0.14em;
+  font-family: "Barlow", sans-serif;
+  font-size: 12px; letter-spacing: 0.01em;
   color: var(--ink);
   padding: 8px 10px;
   background: var(--bg-soft);
@@ -2817,8 +2943,8 @@ body[data-mode="prepping"] .card-who-main .card-pos { display: none; }
 .stats-table td:nth-child(2) { color: var(--ink-soft); font-weight: 700; text-align: left; }
 
 .dsc-filter {
-  font-family: "Oswald", sans-serif;
-  font-size: 12px; letter-spacing: 0.20em;
+  font-family: "Barlow", sans-serif;
+  font-size: 12px; letter-spacing: 0.01em;
   padding: 4px 10px;
   background: transparent;
   border: 0;
@@ -2830,7 +2956,7 @@ body[data-mode="prepping"] .card-who-main .card-pos { display: none; }
 .react-btn {
   display: inline-flex; align-items: center; gap: 5px;
   font-family: "Inter", sans-serif;
-  font-size: 11px; letter-spacing: 0.06em; font-weight: 600;
+  font-size: 11px; letter-spacing: 0.02em; font-weight: 600;
   padding: 4px 9px;
   background: transparent;
   border: 1.5px solid color-mix(in srgb, var(--c, var(--ink-dim)) 30%, transparent);
@@ -2852,7 +2978,7 @@ body[data-mode="prepping"] .card-who-main .card-pos { display: none; }
   border-top: 4px double var(--line);
   display: flex; align-items: center; justify-content: space-between;
   font-family: "Inter", sans-serif;
-  font-size: 11px; letter-spacing: 0.14em; font-weight: 600;
+  font-size: 11px; letter-spacing: 0.01em; font-weight: 600;
   color: var(--ink-dim);
   text-transform: none;
 }
@@ -2884,9 +3010,9 @@ body[data-mode="prepping"] .card-who-main .card-pos { display: none; }
 .sel-bar.open { display: flex; }
 .sel-bar .sel-eye {
   display: inline-flex; align-items: center; gap: 8px;
-  font-family: "Oswald", sans-serif;
+  font-family: "Barlow", sans-serif;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.02em;
   font-size: 13px;
   font-weight: 600;
   color: var(--ink);
@@ -2895,7 +3021,7 @@ body[data-mode="prepping"] .card-who-main .card-pos { display: none; }
   font-family: "JetBrains Mono", monospace;
   font-size: 11px;
   font-weight: 700;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.01em;
   padding: 3px 7px;
   background: var(--ink);
   color: var(--bg);
@@ -3036,8 +3162,8 @@ body.vs-open[data-vs-mode="expanded"] .tb { padding-right: 752px; }
   background: var(--bg-soft);
 }
 .vs-strip-h .eye {
-  font-family: "Oswald", sans-serif;
-  font-size: 16px; letter-spacing: 0.16em;
+  font-family: "Barlow", sans-serif;
+  font-size: 16px; letter-spacing: 0.02em;
   color: var(--ink);
   display: inline-flex; align-items: center; gap: 8px;
 }
@@ -3077,12 +3203,12 @@ body.vs-open[data-vs-mode="expanded"] .tb { padding-right: 752px; }
   flex-shrink: 0;
 }
 .vs-winner .label {
-  font-family: "Oswald", sans-serif;
-  font-size: 12px; letter-spacing: 0.18em;
+  font-family: "Barlow", sans-serif;
+  font-size: 12px; letter-spacing: 0.01em;
   color: #15803d; opacity: 0.85;
 }
 .vs-winner .name {
-  font-family: "Oswald", sans-serif;
+  font-family: "Barlow", sans-serif;
   font-size: 18px; letter-spacing: 0.02em;
   color: #082430;
   margin-right: 4px;
@@ -3090,7 +3216,7 @@ body.vs-open[data-vs-mode="expanded"] .tb { padding-right: 752px; }
 .vs-winner .why {
   font-family: "Inter", sans-serif;
   font-size: 11px; font-weight: 600;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.02em;
   color: #15803d; opacity: 0.85;
 }
 .vs-winner .why b {
@@ -3100,8 +3226,8 @@ body.vs-open[data-vs-mode="expanded"] .tb { padding-right: 752px; }
   display: inline-grid; place-items: center;
   padding: 3px 10px;
   background: #16a34a; color: #fff;
-  font-family: "Oswald", sans-serif;
-  font-size: 13px; letter-spacing: 0.08em;
+  font-family: "Barlow", sans-serif;
+  font-size: 13px; letter-spacing: 0.02em;
   border-radius: 2px;
   margin-left: auto;
 }
@@ -3146,8 +3272,8 @@ body.vs-open[data-vs-mode="expanded"] .tb { padding-right: 752px; }
   position: absolute; top: -11px; left: 10px;
   display: inline-grid; place-items: center;
   min-width: 40px; height: 20px; padding: 0 8px;
-  font-family: "Oswald", sans-serif;
-  font-size: 12px; letter-spacing: 0.16em;
+  font-family: "Barlow", sans-serif;
+  font-size: 12px; letter-spacing: 0.02em;
   color: #fff;
   background: var(--ink-soft);
   border-radius: 2px;
@@ -3168,7 +3294,7 @@ body.vs-open[data-vs-mode="expanded"] .tb { padding-right: 752px; }
 }
 .vs-mini .info { flex: 1; min-width: 0; }
 .vs-mini .nm {
-  font-family: "Oswald", sans-serif;
+  font-family: "Barlow", sans-serif;
   font-weight: 700;
   font-size: 13px; line-height: 1.1;
   letter-spacing: -0.005em;
@@ -3177,7 +3303,7 @@ body.vs-open[data-vs-mode="expanded"] .tb { padding-right: 752px; }
 .vs-mini .meta {
   font-family: "Inter", sans-serif;
   font-size: 10px; font-weight: 600;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.01em;
   color: var(--ink-soft);
   margin-top: 1px; text-transform: none;
   display: flex; align-items: center; gap: 4px;
@@ -3185,23 +3311,23 @@ body.vs-open[data-vs-mode="expanded"] .tb { padding-right: 752px; }
 .vs-mini .winrow {
   font-family: "Inter", sans-serif;
   font-size: 10px; font-weight: 600;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.01em;
   color: var(--ink-soft);
   margin-top: 2px;
   display: flex; align-items: center; gap: 4px;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 .vs-mini .winrow b {
-  font-family: "Oswald", sans-serif;
-  font-size: 13px; letter-spacing: 0.04em;
+  font-family: "Barlow", sans-serif;
+  font-size: 13px; letter-spacing: 0.01em;
   color: var(--ink);
 }
 .vs-mini.winner .winrow b { color: #15803d; }
 .vs-mini .meta .pos {
   display: inline-grid; place-items: center;
   min-width: 22px; height: 14px; padding: 0 4px;
-  font-family: "Oswald", sans-serif;
-  font-size: 10px; letter-spacing: 0.06em;
+  font-family: "Barlow", sans-serif;
+  font-size: 10px; letter-spacing: 0.02em;
   border-radius: 2px;
 }
 .vs-mini[data-pos="QB"] .meta .pos { background: rgba(251,99,122,0.16); color: #e11d48; }
@@ -3218,7 +3344,7 @@ body.vs-open[data-vs-mode="expanded"] .tb { padding-right: 752px; }
   font-family: "Inter", sans-serif;
   font-size: 11px; font-weight: 600;
   color: var(--ink-dim);
-  letter-spacing: 0.06em;
+  letter-spacing: 0.02em;
   padding: 4px 10px;
 }
 
@@ -3236,8 +3362,8 @@ body.vs-open[data-vs-mode="expanded"] .tb { padding-right: 752px; }
   background: var(--accent);
   border: 1.5px solid var(--accent);
   color: #fff;
-  font-family: "Oswald", sans-serif;
-  font-size: 14px; letter-spacing: 0.16em;
+  font-family: "Barlow", sans-serif;
+  font-size: 14px; letter-spacing: 0.02em;
   padding: 6px 14px;
   cursor: pointer; line-height: 1;
   transition: background 140ms, transform 140ms;
@@ -3256,8 +3382,8 @@ body.vs-open[data-vs-mode="expanded"] .tb { padding-right: 752px; }
 .vs-strip-h .ctrl button {
   background: var(--card);
   border: 1.5px solid var(--line);
-  font-family: "Oswald", sans-serif;
-  font-size: 13px; letter-spacing: 0.06em;
+  font-family: "Barlow", sans-serif;
+  font-size: 13px; letter-spacing: 0.02em;
   padding: 5px 12px;
   color: var(--ink); cursor: pointer; line-height: 1;
   display: inline-flex; align-items: center; gap: 6px;
@@ -3309,8 +3435,8 @@ body.vs-open[data-vs-mode="expanded"] .tb { padding-right: 752px; }
 }
 .vs-cell-corner {
   background: var(--bg-soft);
-  font-family: "Oswald", sans-serif;
-  font-size: 11px; letter-spacing: 0.16em;
+  font-family: "Barlow", sans-serif;
+  font-size: 11px; letter-spacing: 0.02em;
   color: var(--ink-dim);
   border-bottom: 1.5px solid var(--line);
 }
@@ -3348,7 +3474,7 @@ body.vs-open[data-vs-mode="expanded"] .tb { padding-right: 752px; }
 .vs-head-rmv:hover { color: var(--accent); }
 .vs-head-info { flex: 1; min-width: 0; text-align: left; }
 .vs-head-nm {
-  font-family: "Oswald", sans-serif;
+  font-family: "Barlow", sans-serif;
   font-size: 16px; line-height: 1;
   letter-spacing: 0.02em;
   color: var(--ink);
@@ -3358,7 +3484,7 @@ body.vs-open[data-vs-mode="expanded"] .tb { padding-right: 752px; }
 .vs-head-meta {
   font-family: "Inter", sans-serif;
   font-size: 11px; font-weight: 700;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.02em;
   color: var(--ink-soft);
   margin-top: 4px; text-transform: none;
   display: flex; align-items: center; gap: 6px;
@@ -3366,8 +3492,8 @@ body.vs-open[data-vs-mode="expanded"] .tb { padding-right: 752px; }
 .vs-head-meta .pos {
   display: inline-grid; place-items: center;
   min-width: 26px; height: 17px; padding: 0 5px;
-  font-family: "Oswald", sans-serif;
-  font-size: 11px; letter-spacing: 0.06em;
+  font-family: "Barlow", sans-serif;
+  font-size: 11px; letter-spacing: 0.02em;
   border-radius: 2px;
 }
 .vs-head[data-pos="QB"] .vs-head-meta .pos { background: rgba(251,99,122,0.16); color: #e11d48; }
@@ -3379,7 +3505,7 @@ body.vs-open[data-vs-mode="expanded"] .tb { padding-right: 752px; }
 .vs-row-lab {
   font-family: "Inter", sans-serif;
   font-size: 11px; font-weight: 700;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.02em;
   color: var(--ink-soft);
   background: var(--card);
   justify-content: flex-start;
@@ -3389,7 +3515,7 @@ body.vs-open[data-vs-mode="expanded"] .tb { padding-right: 752px; }
 .vs-stats-grid > .vs-cell:nth-child(n):nth-child(odd of .vs-row-lab),
 .vs-stats-grid > .vs-row-lab { /* keep label flush with row */ }
 .vs-val {
-  font-family: "Oswald", sans-serif;
+  font-family: "Barlow", sans-serif;
   font-size: 15px; letter-spacing: 0.02em;
   color: var(--ink);
   font-variant-numeric: tabular-nums;
@@ -3399,7 +3525,7 @@ body.vs-open[data-vs-mode="expanded"] .tb { padding-right: 752px; }
 .vs-val .unit {
   font-family: "Inter", sans-serif;
   font-size: 9px; font-weight: 700;
-  letter-spacing: 0.10em;
+  letter-spacing: 0.02em;
   color: var(--ink-dim);
   text-transform: none;
 }
@@ -3419,14 +3545,14 @@ body.vs-open[data-vs-mode="expanded"] .tb { padding-right: 752px; }
   font-size: 12px;
   color: #15803d;
 }
-.vs-na { color: var(--ink-faint); font-family: "Inter", sans-serif; font-weight: 700; font-size: 14px; letter-spacing: 0.06em; }
+.vs-na { color: var(--ink-faint); font-family: "Inter", sans-serif; font-weight: 700; font-size: 14px; letter-spacing: 0.02em; }
 
 /* Stadium pill */
 .vs-stadium {
   display: inline-flex; align-items: center; gap: 6px;
   font-family: "Inter", sans-serif;
   font-size: 12px; font-weight: 700;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.01em;
   padding: 3px 10px 3px 8px;
   border-radius: 3px;
   text-transform: none;
@@ -3450,7 +3576,7 @@ body.vs-open[data-vs-mode="expanded"] .tb { padding-right: 752px; }
   padding: 24px 14px;
   text-align: center;
   color: var(--ink-dim);
-  font-size: 12px; letter-spacing: 0.12em;
+  font-size: 12px; letter-spacing: 0.01em;
   text-transform: none;
   font-family: "Inter", sans-serif;
   grid-column: 1 / -1;
@@ -3460,8 +3586,8 @@ body.vs-open[data-vs-mode="expanded"] .tb { padding-right: 752px; }
   display: inline-grid; place-items: center;
   min-width: 22px; height: 22px; padding: 0 6px;
   background: var(--accent-2); color: #fff;
-  font-family: "Oswald", sans-serif;
-  font-size: 13px; letter-spacing: 0.04em;
+  font-family: "Barlow", sans-serif;
+  font-size: 13px; letter-spacing: 0.01em;
   margin-left: 4px; vertical-align: -2px;
 }
 
@@ -3530,7 +3656,7 @@ body.vs-open[data-vs-mode="expanded"] .tb { padding-right: 752px; }
   border: 1px solid color-mix(in srgb, var(--vs-pink) 60%, transparent);
   font-family: "Inter", sans-serif;
   font-size: 11px; font-weight: 700;
-  letter-spacing: 0.10em;
+  letter-spacing: 0.02em;
   padding: 5px 12px;
   border-radius: 3px;
   box-shadow: none;
@@ -3552,7 +3678,7 @@ body.vs-open[data-vs-mode="expanded"] .tb { padding-right: 752px; }
   color: var(--vs-ink-soft);
   font-family: "Inter", sans-serif;
   font-size: 11px; font-weight: 600;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.02em;
   padding: 5px 11px;
   border-radius: 3px;
   box-shadow: none;
@@ -3571,7 +3697,7 @@ body.vs-open[data-vs-mode="expanded"] .tb { padding-right: 752px; }
   color: var(--vs-ink-soft);
   font-family: "Inter", sans-serif;
   font-size: 11px;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.01em;
 }
 .vs-strip .vs-winner .trophy {
   background: var(--vs-green);
@@ -3585,7 +3711,7 @@ body.vs-open[data-vs-mode="expanded"] .tb { padding-right: 752px; }
   font-family: "Inter", sans-serif;
   font-weight: 700;
   font-size: 10px;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.01em;
   text-transform: uppercase;
 }
 .vs-strip .vs-winner .name {
@@ -3612,7 +3738,7 @@ body.vs-open[data-vs-mode="expanded"] .tb { padding-right: 752px; }
   font-family: "Inter", sans-serif;
   font-weight: 700;
   font-size: 10px;
-  letter-spacing: 0.10em;
+  letter-spacing: 0.02em;
   border-radius: 3px;
   padding: 3px 8px;
 }
@@ -3709,7 +3835,7 @@ body.vs-open[data-vs-mode="expanded"] .tb { padding-right: 752px; }
   font-family: "Inter", sans-serif;
   font-size: 10px;
   font-weight: 700;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.01em;
   border-bottom: 1px solid var(--vs-line);
   text-transform: uppercase;
 }
@@ -3740,7 +3866,7 @@ body.vs-open[data-vs-mode="expanded"] .tb { padding-right: 752px; }
 .vs-strip .vs-head-info { text-align: center; flex: 0 0 auto; width: 100%; }
 .vs-strip .vs-head-nm {
   color: var(--vs-ink);
-  font-family: "Oswald", sans-serif;
+  font-family: "Barlow", sans-serif;
   font-weight: 700;
   font-size: 16px;
   letter-spacing: 0.02em;
@@ -3751,14 +3877,14 @@ body.vs-open[data-vs-mode="expanded"] .tb { padding-right: 752px; }
   font-family: "Inter", sans-serif;
   font-size: 11px;
   font-weight: 600;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.01em;
   margin-top: 4px;
 }
 .vs-strip .vs-head-meta .pos {
-  font-family: "Oswald", sans-serif;
+  font-family: "Barlow", sans-serif;
   font-weight: 700;
   font-size: 10px;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.02em;
 }
 .vs-strip .vs-head[data-pos="QB"] .vs-head-meta .pos { background: rgba(251, 99, 122, 0.18); color: #e11d48; }
 .vs-strip .vs-head[data-pos="RB"] .vs-head-meta .pos { background: rgba(22, 163, 74, 0.18); color: #15803d; }
@@ -3825,7 +3951,7 @@ body.vs-open[data-vs-mode="expanded"] .tb { padding-right: 752px; }
 .vs-strip .vs-val {
   background: var(--vs-bg);
   color: var(--vs-ink);
-  font-family: "Oswald", sans-serif;
+  font-family: "Barlow", sans-serif;
   font-weight: 600;
   font-size: 17px;
   letter-spacing: 0.01em;
@@ -3846,7 +3972,7 @@ body.vs-open[data-vs-mode="expanded"] .tb { padding-right: 752px; }
   display: inline-flex; align-items: center; gap: 4px;
   padding: 4px 11px;
   border-radius: 999px;
-  font-family: "Oswald", sans-serif;
+  font-family: "Barlow", sans-serif;
   font-weight: 700;
   font-size: 16px;
   letter-spacing: 0.02em;
@@ -3877,7 +4003,7 @@ body.vs-open[data-vs-mode="expanded"] .tb { padding-right: 752px; }
   font-family: "Inter", sans-serif;
   font-weight: 700;
   font-size: 11px;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.01em;
 }
 .vs-strip .vs-stadium.outdoor { background: rgba(251, 99, 122, 0.14); color: #b91c1c; }
 .vs-strip .vs-stadium.outdoor .ico { background: var(--vs-pink); color: #fff; }
@@ -3894,7 +4020,7 @@ body.vs-open[data-vs-mode="expanded"] .tb { padding-right: 752px; }
   font-family: "Inter", sans-serif;
   font-weight: 700;
   font-size: 9px;
-  letter-spacing: 0.10em;
+  letter-spacing: 0.02em;
 }
 
 /* Subtle row separator gets sticky-header lifted */
@@ -3926,16 +4052,14 @@ body.vs-open[data-vs-mode="expanded"] .tb { padding-right: 752px; }
   <span class="tb-acct">B · BEAU</span>
 </header>
 
-<!-- ─── HERO (just the title + a Draft Rankings sub-pill) ─── -->
-<section class="hero">
-  <h1 class="hero-h">The BDGE <span class="stripe">Big Board</span></h1>
-  <div class="hero-pill">Draft Rankings · 2026</div>
-</section>
+<!-- Hero removed per feedback — top bar + filter bar sit flush at the top -->
 
 <!-- Compare banner removed per feedback — each card already shows vs PLATFORM #N -->
 
 <!-- ─── FILTER BAR (single row: format + position + view + search) ─── -->
 <div class="fbar">
+  <div class="fbar-spacer fbar-spacer-l"></div>
+  <div class="fbar-content">
   <span class="fbar-fmt-group" id="fbarFmtGroup" style="display:none">
     <button class="fbar-pill accent active" data-fmt="ppr">PPR</button>
     <button class="fbar-pill" data-fmt="half">Half</button>
@@ -3954,7 +4078,6 @@ body.vs-open[data-vs-mode="expanded"] .tb { padding-right: 752px; }
     <button class="active" data-mode="rounds">Rounds</button>
     <button data-mode="tiers">Tiers</button>
   </div>
-  <span style="flex:1"></span>
   <span class="cmp-wrap">
     <button class="fbar-pill action compare" id="fbarCompareBtn" aria-disabled="true" aria-describedby="fbarCompareTip">
       ⚖ Pick 2 to Compare <span class="fbar-pill-ct" id="fbarCompareCt">0 / 2</span>
@@ -3976,11 +4099,15 @@ body.vs-open[data-vs-mode="expanded"] .tb { padding-right: 752px; }
   <button class="fbar-pill action clear" id="clearBtn" title="Clear all drafted and team selections" style="display:none">
     ⟲ Clear
   </button>
-  <label class="fbar-search">
-    <span style="opacity:0.6">⌕</span>
-    <input id="fbarSearch" placeholder="Search players, teams" />
-  </label>
+  </div>
+  <div class="fbar-spacer fbar-spacer-r"></div>
 </div>
+
+<!-- hidden search input — legacy JS still finds it; visible search lives in the rankings header next to Round One -->
+<label class="fbar-search" style="display:none">
+  <span style="opacity:0.6">⌕</span>
+  <input id="fbarSearch" placeholder="Search players, teams" />
+</label>
 
 <!-- ─── Selection bar (bulk actions when checkboxes are ticked) ─── -->
 <div class="sel-bar" id="selBar" aria-hidden="true">
@@ -4059,7 +4186,6 @@ body.vs-open[data-vs-mode="expanded"] .tb { padding-right: 752px; }
   <div class="intro-card">
     <div class="intro-brand">
       <img src="assets/bdge-logo-clear.png" alt="BDGE">
-      <span class="intro-brand-tag">The Fantasy Football Almanac</span>
     </div>
     <div class="intro-progress">
       <i id="introProg1"></i>
@@ -4104,45 +4230,31 @@ body.vs-open[data-vs-mode="expanded"] .tb { padding-right: 752px; }
     <div id="introStep3" style="display:none">
       <h2 class="intro-q">How many teams?</h2>
       <div class="intro-sub">Each round on the board will be sized to one pick per team.</div>
-      <div class="intro-options cols-3">
-        <button class="intro-opt" data-val="8"><span class="icon">8</span><span class="lbl">8 teams<span class="lbl-sub">small league</span></span></button>
-        <button class="intro-opt" data-val="10"><span class="icon">10</span><span class="lbl">10 teams</span></button>
-        <button class="intro-opt" data-val="12"><span class="icon">12</span><span class="lbl">12 teams<span class="lbl-sub">most common</span></span></button>
-        <button class="intro-opt" data-val="14"><span class="icon">14</span><span class="lbl">14 teams</span></button>
-        <button class="intro-opt" data-val="16"><span class="icon">16</span><span class="lbl">16 teams<span class="lbl-sub">deep league</span></span></button>
+      <div class="intro-options cols-3 teams-grid">
+        <button class="intro-opt" data-val="8"><span class="lbl">8 teams<span class="lbl-sub">small league</span></span></button>
+        <button class="intro-opt" data-val="10"><span class="lbl">10 teams</span></button>
+        <button class="intro-opt" data-val="12"><span class="lbl">12 teams<span class="lbl-sub">most common</span></span></button>
+        <button class="intro-opt" data-val="14"><span class="lbl">14 teams</span></button>
+        <button class="intro-opt" data-val="16"><span class="lbl">16 teams<span class="lbl-sub">deep league</span></span></button>
         <button class="intro-opt" data-val="custom"><span class="icon">+</span><span class="lbl">Custom</span></button>
       </div>
     </div>
 
     <div id="introStep4" style="display:none">
-      <h2 class="intro-q">Team layout?</h2>
-      <div class="intro-sub">Pick the roster format your league uses. You can change it anytime.</div>
-      <div class="intro-options" style="grid-template-columns:1fr">
-        <button class="intro-opt" data-val="standard">
-          <span class="icon roster">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="7" height="4" rx="1"/><rect x="14" y="4" width="7" height="4" rx="1"/><rect x="3" y="10" width="7" height="4" rx="1"/><rect x="14" y="10" width="7" height="4" rx="1"/><rect x="3" y="16" width="18" height="4" rx="1"/></svg>
-          </span>
-          <span>Standard PPR<span class="lbl-sub">QB · RB · RB · WR · WR · TE · FLEX · K · DST · 7 BENCH</span></span>
-        </button>
-        <button class="intro-opt" data-val="superflex">
-          <span class="icon roster">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="7" height="4" rx="1"/><rect x="14" y="4" width="7" height="4" rx="1" fill="currentColor" opacity="0.35"/><rect x="3" y="10" width="7" height="4" rx="1"/><rect x="14" y="10" width="7" height="4" rx="1"/><rect x="3" y="16" width="18" height="4" rx="1"/></svg>
-          </span>
-          <span>Superflex<span class="lbl-sub">+ SUPERFLEX slot (QB/RB/WR/TE) — 7 BENCH</span></span>
-        </button>
-        <button class="intro-opt" data-val="bestball">
-          <span class="icon roster">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.6 4.4L18 9l-4.4 1.6L12 15l-1.6-4.4L6 9l4.4-1.6z"/><path d="M5 19l-.8-2.2L2 16l2.2-.8L5 13l.8 2.2L8 16l-2.2.8z"/><path d="M19 19l-.6-1.4L17 17l1.4-.6L19 15l.6 1.4L21 17l-1.4.6z"/></svg>
-          </span>
-          <span>Best Ball<span class="lbl-sub">QB · 2 RB · 3 WR · TE · FLEX · 12 BENCH · no K/DST</span></span>
-        </button>
-        <button class="intro-opt" data-val="custom">
-          <span class="icon roster">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><circle cx="10" cy="6" r="2.5" fill="var(--bg)"/><line x1="4" y1="12" x2="20" y2="12"/><circle cx="16" cy="12" r="2.5" fill="var(--bg)"/><line x1="4" y1="18" x2="20" y2="18"/><circle cx="8" cy="18" r="2.5" fill="var(--bg)"/></svg>
-          </span>
-          <span>Custom<span class="lbl-sub">Build your own (defaults to Standard PPR)</span></span>
-        </button>
+      <h2 class="intro-q">Roster layout?</h2>
+      <div class="intro-sub">Set how many of each position your league starts. We'll size the board to match.</div>
+      <div class="roster-grid" id="rosterGrid">
+        <div class="roster-row" data-pos="QB"><span class="rp-lbl">QB</span><div class="rp-stepper"><button type="button" class="rp-btn" data-act="dec" aria-label="Decrease QB">−</button><span class="rp-val">1</span><button type="button" class="rp-btn" data-act="inc" aria-label="Increase QB">+</button></div></div>
+        <div class="roster-row" data-pos="RB"><span class="rp-lbl">RB</span><div class="rp-stepper"><button type="button" class="rp-btn" data-act="dec" aria-label="Decrease RB">−</button><span class="rp-val">2</span><button type="button" class="rp-btn" data-act="inc" aria-label="Increase RB">+</button></div></div>
+        <div class="roster-row" data-pos="WR"><span class="rp-lbl">WR</span><div class="rp-stepper"><button type="button" class="rp-btn" data-act="dec" aria-label="Decrease WR">−</button><span class="rp-val">2</span><button type="button" class="rp-btn" data-act="inc" aria-label="Increase WR">+</button></div></div>
+        <div class="roster-row" data-pos="TE"><span class="rp-lbl">TE</span><div class="rp-stepper"><button type="button" class="rp-btn" data-act="dec" aria-label="Decrease TE">−</button><span class="rp-val">1</span><button type="button" class="rp-btn" data-act="inc" aria-label="Increase TE">+</button></div></div>
+        <div class="roster-row" data-pos="FLEX"><span class="rp-lbl">FLEX<span class="rp-lbl-sub">RB/WR/TE</span></span><div class="rp-stepper"><button type="button" class="rp-btn" data-act="dec" aria-label="Decrease FLEX">−</button><span class="rp-val">1</span><button type="button" class="rp-btn" data-act="inc" aria-label="Increase FLEX">+</button></div></div>
+        <div class="roster-row" data-pos="SUPERFLEX"><span class="rp-lbl">SUPERFLEX<span class="rp-lbl-sub">QB/RB/WR/TE</span></span><div class="rp-stepper"><button type="button" class="rp-btn" data-act="dec" aria-label="Decrease SUPERFLEX">−</button><span class="rp-val">0</span><button type="button" class="rp-btn" data-act="inc" aria-label="Increase SUPERFLEX">+</button></div></div>
+        <div class="roster-row" data-pos="K"><span class="rp-lbl">K</span><div class="rp-stepper"><button type="button" class="rp-btn" data-act="dec" aria-label="Decrease K">−</button><span class="rp-val">1</span><button type="button" class="rp-btn" data-act="inc" aria-label="Increase K">+</button></div></div>
+        <div class="roster-row" data-pos="DST"><span class="rp-lbl">DST</span><div class="rp-stepper"><button type="button" class="rp-btn" data-act="dec" aria-label="Decrease DST">−</button><span class="rp-val">1</span><button type="button" class="rp-btn" data-act="inc" aria-label="Increase DST">+</button></div></div>
+        <div class="roster-row" data-pos="BENCH"><span class="rp-lbl">BENCH</span><div class="rp-stepper"><button type="button" class="rp-btn" data-act="dec" aria-label="Decrease BENCH">−</button><span class="rp-val">7</span><button type="button" class="rp-btn" data-act="inc" aria-label="Increase BENCH">+</button></div></div>
       </div>
+      <div class="roster-total"><span>Total roster</span><span class="rt-val" id="rosterTotal">17</span></div>
     </div>
 
     <div class="intro-foot">
@@ -4714,10 +4826,13 @@ function renderBoard() {
       visibleGroups.forEach((g, i) => {
         const section = document.createElement('section');
         section.className = 'rg-section';
+        const rightSide = i === 0
+          ? `<label class="round-h-search"><span aria-hidden="true">⌕</span><input id="boardSearch" placeholder="Search players, teams" /></label>`
+          : `<div class="round-h-r">${g.meta}</div>`;
         section.innerHTML = `
           <div class="round-h">
             <div class="round-h-l"><span class="num">${g.tag}</span> ${g.label}</div>
-            <div class="round-h-r">${g.meta}</div>
+            ${rightSide}
           </div>
           ${i === 0 ? boardHeaderHTML() : ''}
           <div class="board">${g.slice.map(p => cardHtml(p)).join('')}</div>
@@ -5171,9 +5286,9 @@ function renderDrawer(p) {
         const adds = [0,1,2].map(i => additionsPool[(p.rk + i*3) % additionsPool.length]);
         const cuts = [0,1].map(i => departuresPool[(p.rk + i*5) % departuresPool.length]);
         const row = ([tag,name,detail], color) => `<div style="display:grid;grid-template-columns:46px 1fr auto;gap:8px;padding:7px 0;border-bottom:1px solid var(--line-soft);align-items:center;font-family:'Inter',sans-serif;font-size:11px"><span style="font-family:'JetBrains Mono',ui-monospace,monospace;font-size:9px;font-weight:800;letter-spacing:0.12em;color:${color};border:1px solid ${color};padding:2px 4px;text-align:center">${tag}</span><span style="color:var(--ink);font-weight:600">${name}</span><span style="color:var(--ink-soft);font-size:10px">${detail}</span></div>`;
-        return `<div style="font-family:'Oswald',sans-serif;font-size:12px;letter-spacing:0.18em;color:#16a34a;margin-bottom:4px">+ ADDITIONS</div>
+        return `<div style="font-family:'Barlow',sans-serif;font-size:12px;letter-spacing:0.18em;color:#16a34a;margin-bottom:4px">+ ADDITIONS</div>
           ${adds.map(r => row(r, '#16a34a')).join('')}
-          <div style="font-family:'Oswald',sans-serif;font-size:12px;letter-spacing:0.18em;color:#dc2626;margin:14px 0 4px">− DEPARTURES</div>
+          <div style="font-family:'Barlow',sans-serif;font-size:12px;letter-spacing:0.18em;color:#dc2626;margin:14px 0 4px">− DEPARTURES</div>
           ${cuts.map(r => row(r, '#dc2626')).join('')}`;
       })()}
     </section>
@@ -5235,7 +5350,7 @@ function renderPop(p) {
 
       <!-- BUCKET assignment -->
       <div style="padding-top:12px;border-top:1.5px solid var(--line)">
-        <div style="font-family:'Oswald',sans-serif;font-size:14px;letter-spacing:0.20em;color:var(--ink);margin-bottom:8px">// Assign to Bucket</div>
+        <div style="font-family:'Barlow',sans-serif;font-size:14px;letter-spacing:0.20em;color:var(--ink);margin-bottom:8px">// Assign to Bucket</div>
         <div style="display:flex;flex-wrap:wrap;gap:4px">
           <button class="bk-chip">◉ MY GUY</button>
           <button class="bk-chip active">★ NICK'S PICK</button>
@@ -5247,14 +5362,14 @@ function renderPop(p) {
 
       <!-- Strengths / Weaknesses -->
       <div style="padding-top:12px;border-top:1.5px solid var(--line)">
-        <div style="font-family:'Oswald',sans-serif;font-size:14px;letter-spacing:0.20em;color:#047857;margin-bottom:8px">// Strengths</div>
+        <div style="font-family:'Barlow',sans-serif;font-size:14px;letter-spacing:0.20em;color:#047857;margin-bottom:8px">// Strengths</div>
         <div style="display:flex;flex-wrap:wrap;gap:4px">
           <span class="sw-pill sw-strong">VOLUME · 92</span>
           <span class="sw-pill sw-strong">DURABILITY · 87</span>
           <span class="sw-pill sw-strong">YAC OE · 84</span>
           <span class="sw-pill sw-strong">3-DOWN · 83</span>
         </div>
-        <div style="font-family:'Oswald',sans-serif;font-size:14px;letter-spacing:0.20em;color:var(--accent);margin:10px 0 8px">// Weaknesses</div>
+        <div style="font-family:'Barlow',sans-serif;font-size:14px;letter-spacing:0.20em;color:var(--accent);margin:10px 0 8px">// Weaknesses</div>
         <div style="display:flex;flex-wrap:wrap;gap:4px">
           <span class="sw-pill sw-weak">AGE · 38</span>
         </div>
@@ -5351,7 +5466,7 @@ function paneOverview(p) {
         <div class="pop-section-h">Highlight Reel<span class="src">2024 season</span></div>
         <div style="aspect-ratio:16/9;border:1.5px solid var(--line);background:var(--bg-soft);position:relative;display:grid;place-items:center;cursor:pointer">
           <img src="https://i.ytimg.com/vi/z1BU0cIz7BQ/hqdefault.jpg" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.6"/>
-          <div style="position:relative;z-index:2;background:rgba(8,36,48,0.55);color:#fff;padding:10px 18px;border:2px solid #fff;font-family:'Oswald',sans-serif;font-size:18px;letter-spacing:0.20em">▶ PLAY</div>
+          <div style="position:relative;z-index:2;background:rgba(8,36,48,0.55);color:#fff;padding:10px 18px;border:2px solid #fff;font-family:'Barlow',sans-serif;font-size:18px;letter-spacing:0.20em">▶ PLAY</div>
         </div>
       </div>
       <div>
@@ -5456,7 +5571,7 @@ function paneField(p) {
     <div class="pop-section-h">Field Chart<span class="src">// 2025 · ${p.pos==='RB'?'rush direction':p.pos==='QB'?'throw locations':'target depth'}</span></div>
 
     <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px">
-      <span style="font-family:'Oswald';font-size:13px;letter-spacing:0.20em;color:var(--ink-soft);margin-right:6px;align-self:center">${p.pos==='RB'?'GAP':'DEPTH'}</span>
+      <span style="font-family:'Barlow';font-size:13px;letter-spacing:0.20em;color:var(--ink-soft);margin-right:6px;align-self:center">${p.pos==='RB'?'GAP':'DEPTH'}</span>
       <button class="fbar-pill active" style="font-size:11px;padding:4px 10px">All</button>
       ${p.pos==='RB' ? `<button class="fbar-pill" style="font-size:11px;padding:4px 10px">Edge</button><button class="fbar-pill" style="font-size:11px;padding:4px 10px">Tackle</button><button class="fbar-pill" style="font-size:11px;padding:4px 10px">Guard</button><button class="fbar-pill" style="font-size:11px;padding:4px 10px">Middle</button>` : `<button class="fbar-pill" style="font-size:11px;padding:4px 10px">Short 0-9</button><button class="fbar-pill" style="font-size:11px;padding:4px 10px">Intermediate 10-19</button><button class="fbar-pill" style="font-size:11px;padding:4px 10px">Deep 20+</button>`}
       <button class="fbar-pill accent" style="font-size:11px;padding:4px 10px;margin-left:auto">+ ADD PLAYER</button>
@@ -5487,7 +5602,7 @@ function paneField(p) {
         : [['Behind LOS','84%','12/14'],['Short','71%','42/59'],['Intermediate','52%','24/46'],['Deep 20+','38%','14/37']]
       ).map(([l,pct,a]) => `<div style="padding:10px 12px;background:var(--bg-soft);border-left:3px solid var(--accent-2)">
         <div style="font-family:'Inter';font-size:9px;letter-spacing:0.18em;color:var(--ink-dim);font-weight:700">${l}</div>
-        <div style="font-family:'Oswald';font-size:24px;color:var(--accent-2);font-variant-numeric:tabular-nums;line-height:1;margin-top:4px">${pct}</div>
+        <div style="font-family:'Barlow';font-size:24px;color:var(--accent-2);font-variant-numeric:tabular-nums;line-height:1;margin-top:4px">${pct}</div>
         <div style="font-family:'Inter';font-size:10px;color:var(--ink-soft)">${a}</div>
       </div>`).join('')}
     </div>
@@ -5504,7 +5619,7 @@ function paneVegas(p) {
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:6px">
       ${propLabels.map(([l,v]) => `<div style="padding:12px 14px;background:var(--bg-soft);border-left:3px solid #d97706;display:flex;justify-content:space-between;align-items:baseline">
         <span style="font-family:'Inter';font-size:10px;letter-spacing:0.16em;color:var(--ink-soft);font-weight:700;text-transform:none">${l}</span>
-        <span style="font-family:'Oswald';font-size:22px;color:var(--ink);font-variant-numeric:tabular-nums">${v}</span>
+        <span style="font-family:'Barlow';font-size:22px;color:var(--ink);font-variant-numeric:tabular-nums">${v}</span>
       </div>`).join('')}
     </div>
 
@@ -5523,17 +5638,17 @@ function paneVegas(p) {
     <div class="pop-section-h" style="margin-top:18px">Off-Season Transactions</div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px">
       <div>
-        <div style="font-family:'Oswald';font-size:14px;letter-spacing:0.18em;color:#047857;padding:8px 4px 4px;border-bottom:1.5px solid #047857">+ Additions</div>
+        <div style="font-family:'Barlow';font-size:14px;letter-spacing:0.18em;color:#047857;padding:8px 4px 4px;border-bottom:1.5px solid #047857">+ Additions</div>
         ${[['HC','Kevin Stefanski','Former CLE HC'],['OC','Tommy Rees','New scheme'],['FA','Jahan Dotson','2yr / $15M'],['FA','Austin Hooper','1yr / $3.25M'],['DRAFT','Zachariah Branch','Rd 3.79 · Georgia']].map(e => `<div style="display:grid;grid-template-columns:60px 1fr auto;gap:10px;padding:8px 4px;border-bottom:1px solid var(--line-soft);align-items:center;font-family:'Inter';font-size:11px">
-          <span style="font-family:'Oswald';font-size:11px;letter-spacing:0.16em;padding:3px 7px;background:rgba(4,120,87,0.14);color:#047857;text-align:center;border:1px solid rgba(4,120,87,0.4)">${e[0]}</span>
+          <span style="font-family:'Barlow';font-size:11px;letter-spacing:0.16em;padding:3px 7px;background:rgba(4,120,87,0.14);color:#047857;text-align:center;border:1px solid rgba(4,120,87,0.4)">${e[0]}</span>
           <span style="color:var(--ink);font-weight:600">${e[1]}</span>
           <span style="font-size:10px;color:var(--ink-dim)">${e[2]}</span>
         </div>`).join('')}
       </div>
       <div>
-        <div style="font-family:'Oswald';font-size:14px;letter-spacing:0.18em;color:var(--accent);padding:8px 4px 4px;border-bottom:1.5px solid var(--accent)">– Departures</div>
+        <div style="font-family:'Barlow';font-size:14px;letter-spacing:0.18em;color:var(--accent);padding:8px 4px 4px;border-bottom:1.5px solid var(--accent)">– Departures</div>
         ${[['QB','Kirk Cousins','Released'],['WR','Darnell Mooney','Released'],['RB','Tyler Allgeier','Trade · pick swap']].map(e => `<div style="display:grid;grid-template-columns:60px 1fr auto;gap:10px;padding:8px 4px;border-bottom:1px solid var(--line-soft);align-items:center;font-family:'Inter';font-size:11px">
-          <span style="font-family:'Oswald';font-size:11px;letter-spacing:0.16em;padding:3px 7px;background:rgba(251,99,122,0.14);color:var(--accent);text-align:center;border:1px solid rgba(251,99,122,0.4)">${e[0]}</span>
+          <span style="font-family:'Barlow';font-size:11px;letter-spacing:0.16em;padding:3px 7px;background:rgba(251,99,122,0.14);color:var(--accent);text-align:center;border:1px solid rgba(251,99,122,0.4)">${e[0]}</span>
           <span style="color:var(--ink);font-weight:600">${e[1]}</span>
           <span style="font-size:10px;color:var(--ink-dim)">${e[2]}</span>
         </div>`).join('')}
@@ -5558,7 +5673,7 @@ function paneADP(p) {
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:6px">
       ${platforms.map(p => `<div style="padding:10px 14px;background:var(--bg-soft);border-left:3px solid ${p.c};display:flex;justify-content:space-between;align-items:center">
         <span style="font-family:'Inter';font-size:11px;letter-spacing:0.16em;font-weight:700;color:var(--ink)">${p.n}</span>
-        <span style="font-family:'Oswald';font-size:24px;color:${p.c};font-variant-numeric:tabular-nums">${p.v}</span>
+        <span style="font-family:'Barlow';font-size:24px;color:${p.c};font-variant-numeric:tabular-nums">${p.v}</span>
       </div>`).join('')}
     </div>
 
@@ -5591,7 +5706,7 @@ function paneUsage(p) {
       <div style="display:flex;flex-direction:column;gap:6px">
         ${slices.map(([l,pct,c]) => `<div style="display:flex;align-items:center;gap:10px;padding:6px 10px;background:var(--bg-soft);border-left:3px solid ${c}">
           <span style="font-family:'Inter';font-size:11px;letter-spacing:0.16em;font-weight:600;color:var(--ink)">${l}</span>
-          <span style="margin-left:auto;font-family:'Oswald';font-size:18px;color:${c}">${pct}</span>
+          <span style="margin-left:auto;font-family:'Barlow';font-size:18px;color:${c}">${pct}</span>
         </div>`).join('')}
       </div>
     </div>
@@ -5600,7 +5715,7 @@ function paneUsage(p) {
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
       ${rzZones.map(([l,pct,m]) => `<div style="padding:18px 14px;background:var(--bg-soft);border-left:3px solid var(--accent);text-align:center">
         <div style="font-family:'Inter';font-size:10px;letter-spacing:0.22em;color:var(--ink-soft);font-weight:800">${l}</div>
-        <div style="font-family:'Oswald';font-size:36px;color:var(--ink);font-variant-numeric:tabular-nums;margin:4px 0 6px;line-height:1">${pct}</div>
+        <div style="font-family:'Barlow';font-size:36px;color:var(--ink);font-variant-numeric:tabular-nums;margin:4px 0 6px;line-height:1">${pct}</div>
         <div style="font-family:'Inter';font-size:11px;color:var(--ink-dim)">${m}</div>
       </div>`).join('')}
     </div>
@@ -5609,8 +5724,8 @@ function paneUsage(p) {
     <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px">
       ${[22,28,24,26].map((pct,i) => `<div style="text-align:center">
         <div style="height:80px;display:flex;align-items:flex-end;justify-content:center"><div style="width:32px;height:${pct*2.5}%;background:var(--accent-2)"></div></div>
-        <div style="font-family:'Oswald';font-size:14px;letter-spacing:0.18em;color:var(--ink-soft);margin-top:6px">Q${i+1}</div>
-        <div style="font-family:'Oswald';font-size:18px;color:var(--ink);font-variant-numeric:tabular-nums">${pct}%</div>
+        <div style="font-family:'Barlow';font-size:14px;letter-spacing:0.18em;color:var(--ink-soft);margin-top:6px">Q${i+1}</div>
+        <div style="font-family:'Barlow';font-size:18px;color:var(--ink);font-variant-numeric:tabular-nums">${pct}%</div>
       </div>`).join('')}
     </div>
   `;
@@ -5625,8 +5740,8 @@ function paneReports(p) {
       {src:'BDGE Internal',grade:'A−',note:'Healthier lower-body scans than last summer per medical staff. Floor / ceiling both up vs preseason model.',color:'#d97706'},
     ].map(r => `<div style="margin-bottom:14px;border:2px solid var(--line);background:var(--bg-soft)">
       <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 16px;background:var(--card);border-bottom:1.5px solid var(--line)">
-        <div style="font-family:'Oswald';font-size:18px;letter-spacing:0.04em;color:var(--ink)">${r.src}</div>
-        <span style="font-family:'Oswald';font-size:18px;letter-spacing:0.10em;padding:4px 12px;background:${r.color};color:#fff">${r.grade}</span>
+        <div style="font-family:'Barlow';font-size:18px;letter-spacing:0.04em;color:var(--ink)">${r.src}</div>
+        <span style="font-family:'Barlow';font-size:18px;letter-spacing:0.10em;padding:4px 12px;background:${r.color};color:#fff">${r.grade}</span>
       </div>
       <div style="padding:14px 16px;font-family:'Inter';font-size:13px;line-height:1.55;color:var(--ink)">${r.note}</div>
     </div>`).join('')}
@@ -5640,7 +5755,7 @@ function paneReports(p) {
           <div style="display:inline-flex;gap:2px">
             ${[1,2,3,4,5].map(n => `<i style="width:14px;height:14px;background:${n<=filled?'var(--accent-2)':'var(--ink-faint)'};display:block"></i>`).join('')}
           </div>
-          <span style="font-family:'Oswald';font-size:14px;color:var(--ink);font-variant-numeric:tabular-nums">${filled}.${(p.rk+i)%9}</span>
+          <span style="font-family:'Barlow';font-size:14px;color:var(--ink);font-variant-numeric:tabular-nums">${filled}.${(p.rk+i)%9}</span>
         </div>`;
       }).join('')}
     </div>
@@ -5670,18 +5785,18 @@ function paneComps(p) {
   return `
     <div class="pop-section-h">Historical Comparisons<span class="src">v3_core similarity model</span></div>
     ${comps.map((c,i) => `<div style="display:grid;grid-template-columns:36px 1fr 60px 80px;gap:14px;align-items:center;padding:12px 14px;border:2px solid var(--line);background:var(--card);margin-bottom:6px">
-      <div style="font-family:'Oswald';font-size:24px;color:var(--ink-soft);text-align:center;font-variant-numeric:tabular-nums">${i+1}</div>
+      <div style="font-family:'Barlow';font-size:24px;color:var(--ink-soft);text-align:center;font-variant-numeric:tabular-nums">${i+1}</div>
       <div>
-        <div style="font-family:'Oswald';font-size:18px;color:var(--ink);letter-spacing:0.02em">${c.n}</div>
-        <div style="display:inline-block;font-family:'Oswald';font-size:10px;letter-spacing:0.18em;padding:2px 6px;background:${c.c1};color:#fff;margin-top:2px">${c.c}</div>
+        <div style="font-family:'Barlow';font-size:18px;color:var(--ink);letter-spacing:0.02em">${c.n}</div>
+        <div style="display:inline-block;font-family:'Barlow';font-size:10px;letter-spacing:0.18em;padding:2px 6px;background:${c.c1};color:#fff;margin-top:2px">${c.c}</div>
       </div>
       <div style="text-align:right">
         <div style="font-family:'Inter';font-size:9px;letter-spacing:0.18em;color:var(--ink-dim);font-weight:700">SIM</div>
-        <div style="font-family:'Oswald';font-size:22px;color:var(--accent-2);font-variant-numeric:tabular-nums;line-height:1">${c.sim}%</div>
+        <div style="font-family:'Barlow';font-size:22px;color:var(--accent-2);font-variant-numeric:tabular-nums;line-height:1">${c.sim}%</div>
       </div>
       <div style="text-align:right">
         <div style="font-family:'Inter';font-size:9px;letter-spacing:0.18em;color:var(--ink-dim);font-weight:700">CAREER</div>
-        <div style="font-family:'Oswald';font-size:22px;color:var(--ink);font-variant-numeric:tabular-nums;line-height:1">${c.pts}</div>
+        <div style="font-family:'Barlow';font-size:22px;color:var(--ink);font-variant-numeric:tabular-nums;line-height:1">${c.pts}</div>
       </div>
     </div>`).join('')}
 
@@ -5703,9 +5818,9 @@ function paneDiscussion(p) {
     <div class="pop-section-h">Discussion<span class="src">${comments.reduce((s,c)=>s+c.react.ag+c.react.dis+c.react.fire+c.react.think,0)} reactions · live</span></div>
 
     <div style="display:grid;grid-template-columns:36px 1fr auto;gap:10px;padding:14px;border:2px solid var(--line);background:var(--card);margin-bottom:14px">
-      <div style="width:36px;height:36px;background:rgba(37,159,214,0.15);border:1.5px solid var(--accent-2);color:var(--accent-2);display:grid;place-items:center;font-family:'Oswald';font-size:16px">B</div>
+      <div style="width:36px;height:36px;background:rgba(37,159,214,0.15);border:1.5px solid var(--accent-2);color:var(--accent-2);display:grid;place-items:center;font-family:'Barlow';font-size:16px">B</div>
       <textarea placeholder="Drop your take on ${p.name}..." style="font-family:'Inter';font-size:13px;background:transparent;border:1.5px solid var(--line-soft);color:var(--ink);padding:8px 10px;resize:vertical;min-height:48px"></textarea>
-      <button style="font-family:'Oswald';font-size:13px;letter-spacing:0.20em;padding:8px 18px;background:var(--accent);color:#fff;border:0;cursor:pointer;align-self:stretch">POST</button>
+      <button style="font-family:'Barlow';font-size:13px;letter-spacing:0.20em;padding:8px 18px;background:var(--accent);color:#fff;border:0;cursor:pointer;align-self:stretch">POST</button>
     </div>
 
     <div style="display:flex;align-items:center;gap:6px;padding-bottom:12px;border-bottom:1.5px solid var(--line)">
@@ -5714,15 +5829,15 @@ function paneDiscussion(p) {
       <button class="dsc-filter">// TOP</button>
       <button class="dsc-filter">// CONTRARIAN</button>
       <span style="flex:1"></span>
-      <span style="display:inline-flex;align-items:center;gap:6px;font-family:'Oswald';font-size:11px;letter-spacing:0.20em;color:#047857"><span style="width:6px;height:6px;background:#047857;border-radius:50%"></span>LIVE · ${comments.length} active</span>
+      <span style="display:inline-flex;align-items:center;gap:6px;font-family:'Barlow';font-size:11px;letter-spacing:0.20em;color:#047857"><span style="width:6px;height:6px;background:#047857;border-radius:50%"></span>LIVE · ${comments.length} active</span>
     </div>
 
     ${comments.map(c => `<div style="display:grid;grid-template-columns:36px 1fr;gap:12px;padding:14px 4px;border-bottom:1px solid var(--line-soft)">
-      <div style="width:36px;height:36px;background:color-mix(in srgb,${c.c} 18%,transparent);border:1.5px solid ${c.c};color:${c.c};display:grid;place-items:center;font-family:'Oswald';font-size:14px">${c.u[1]}</div>
+      <div style="width:36px;height:36px;background:color-mix(in srgb,${c.c} 18%,transparent);border:1.5px solid ${c.c};color:${c.c};display:grid;place-items:center;font-family:'Barlow';font-size:14px">${c.u[1]}</div>
       <div>
         <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
           <span style="font-family:'Inter';font-size:12px;font-weight:700;color:var(--ink)">${c.u}</span>
-          ${c.role ? `<span style="font-family:'Oswald';font-size:10px;letter-spacing:0.20em;padding:2px 6px;background:color-mix(in srgb,${c.c} 14%,transparent);border:1px solid ${c.c};color:${c.c}">${c.role}</span>` : ''}
+          ${c.role ? `<span style="font-family:'Barlow';font-size:10px;letter-spacing:0.20em;padding:2px 6px;background:color-mix(in srgb,${c.c} 14%,transparent);border:1px solid ${c.c};color:${c.c}">${c.role}</span>` : ''}
           <span style="font-family:'Inter';font-size:10px;color:var(--ink-dim)">${c.time} ago</span>
         </div>
         <div style="font-family:'Inter';font-size:13px;line-height:1.55;color:var(--ink);margin-bottom:8px">${c.txt}</div>
@@ -5795,14 +5910,32 @@ document.querySelectorAll('.fbar [data-pos]').forEach(b => b.addEventListener('c
 }));
 
 // ─── Search ───────────────────────────────────────────────────
-const fbarSearchEl = document.getElementById('fbarSearch');
-if (fbarSearchEl) {
+[document.getElementById('tbSearch'), document.getElementById('fbarSearch')].forEach(el => {
+  if (!el) return;
   let st;
-  fbarSearchEl.addEventListener('input', e => {
+  el.addEventListener('input', e => {
     clearTimeout(st);
     st = setTimeout(() => { activeQuery = e.target.value.trim(); renderBoard(); }, 120);
   });
-}
+});
+// The inline #boardSearch is re-rendered on every renderBoard, so delegate on the rounds container.
+(function bindBoardSearch() {
+  const roundsEl = document.getElementById('rounds');
+  if (!roundsEl) return;
+  let st;
+  roundsEl.addEventListener('input', e => {
+    if (!e.target || e.target.id !== 'boardSearch') return;
+    const v = e.target.value;
+    clearTimeout(st);
+    st = setTimeout(() => {
+      activeQuery = v.trim();
+      renderBoard();
+      // restore focus + cursor after re-render
+      const next = document.getElementById('boardSearch');
+      if (next) { next.focus(); next.value = v; next.setSelectionRange(v.length, v.length); }
+    }, 120);
+  });
+})();
 
 // ─── Rounds ↔ Tiers view toggle ───────────────────────────────
 document.querySelectorAll('#viewToggle button').forEach(b => b.addEventListener('click', () => {
@@ -5834,21 +5967,53 @@ const introProg2  = document.getElementById('introProg2');
 const introProg3  = document.getElementById('introProg3');
 const introProg4  = document.getElementById('introProg4');
 const compareBanner = null; /* banner removed per feedback */
-let introState = { drafting: null, platform: null, teams: null, format: null, step: 1 };
+const ROSTER_DEFAULTS = { QB:1, RB:2, WR:2, TE:1, FLEX:1, SUPERFLEX:0, K:1, DST:1, BENCH:7 };
+let introState = { drafting: null, platform: null, teams: null, roster: { ...ROSTER_DEFAULTS }, step: 1 };
 
 function showIntro() { intro.classList.add('open'); }
 function closeIntro() { intro.classList.remove('open'); }
 
-const STEP_KEYS  = [null, 'drafting', 'platform', 'teams', 'format']; // 1-indexed
+const STEP_KEYS  = [null, 'drafting', 'platform', 'teams', 'roster']; // 1-indexed
 const STEP_NODES = [null, introStep1, introStep2, introStep3, introStep4];
 const STEP_PROGS = [null, introProg1, introProg2, introProg3, introProg4];
 
 // Initial sync so the wizard renders consistently the first time
+syncRosterUI();
 syncIntroNav();
 document.querySelectorAll('#introStep1 .intro-opt').forEach(b => b.addEventListener('click', () => { introState.drafting = b.dataset.val; syncIntroNav(); }));
 document.querySelectorAll('#introStep2 .intro-opt').forEach(b => b.addEventListener('click', () => { introState.platform = b.dataset.val; syncIntroNav(); }));
 document.querySelectorAll('#introStep3 .intro-opt').forEach(b => b.addEventListener('click', () => { introState.teams = b.dataset.val; syncIntroNav(); }));
-document.querySelectorAll('#introStep4 .intro-opt').forEach(b => b.addEventListener('click', () => { introState.format = b.dataset.val; syncIntroNav(); }));
+
+document.querySelectorAll('#rosterGrid .rp-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const row = btn.closest('.roster-row');
+    const pos = row.dataset.pos;
+    const cur = introState.roster[pos] ?? 0;
+    const max = pos === 'BENCH' ? 20 : 6;
+    const next = btn.dataset.act === 'inc' ? Math.min(cur + 1, max) : Math.max(cur - 1, 0);
+    if (next === cur) return;
+    introState.roster[pos] = next;
+    syncRosterUI();
+  });
+});
+
+function syncRosterUI() {
+  let total = 0;
+  document.querySelectorAll('#rosterGrid .roster-row').forEach(row => {
+    const pos = row.dataset.pos;
+    const v = introState.roster[pos] ?? 0;
+    total += v;
+    row.querySelector('.rp-val').textContent = String(v);
+    row.classList.toggle('zero', v === 0);
+    const dec = row.querySelector('.rp-btn[data-act="dec"]');
+    const inc = row.querySelector('.rp-btn[data-act="inc"]');
+    const max = pos === 'BENCH' ? 20 : 6;
+    if (dec) dec.disabled = v <= 0;
+    if (inc) inc.disabled = v >= max;
+  });
+  const rt = document.getElementById('rosterTotal');
+  if (rt) rt.textContent = String(total);
+}
 
 function syncIntroNav() {
   // Show only the active step
@@ -5858,17 +6023,19 @@ function syncIntroNav() {
   // Progress dots reflect steps completed (each step with a value chosen)
   for (let s = 1; s <= 4; s++) {
     if (!STEP_PROGS[s]) continue;
-    STEP_PROGS[s].classList.toggle('done', !!introState[STEP_KEYS[s]] || s < introState.step);
+    const k = STEP_KEYS[s];
+    const filled = (k === 'roster') ? true : !!introState[k];
+    STEP_PROGS[s].classList.toggle('done', filled || s < introState.step);
   }
   // Back is disabled on step 1
   introBack.disabled = introState.step === 1;
-  // Next: needs a selection on this step; label changes on last step
+  // Next: needs a selection on this step (step 4 is always valid — roster has defaults)
   const cur = STEP_KEYS[introState.step];
-  introNext.disabled = !introState[cur];
+  introNext.disabled = (cur === 'roster') ? false : !introState[cur];
   introNext.textContent = (introState.step === 4) ? 'Done →' : 'Continue →';
-  // Reflect current selection in the visible step's option buttons
+  // Reflect current selection in the visible step's option buttons (steps 1-3 only)
   const node = STEP_NODES[introState.step];
-  if (node) {
+  if (node && cur !== 'roster') {
     node.querySelectorAll('.intro-opt').forEach(b => b.classList.toggle('selected', b.dataset.val === introState[cur]));
   }
 }
@@ -5894,7 +6061,7 @@ function finishIntro() {
     localStorage.setItem('bdgeIntroDone', '1');
     if (introState.platform) localStorage.setItem('bdgeComparePlatform', introState.platform);
     if (introState.teams)    localStorage.setItem('bdgeTeamCount', introState.teams);
-    if (introState.format)   localStorage.setItem('bdgeRosterFormat', introState.format);
+    if (introState.roster)   localStorage.setItem('bdgeRoster', JSON.stringify(introState.roster));
     // intent → layout mode (drafting → V3 side-rails, prep → V1 wide table).
     // Map the existing answer keys to clean mode strings.
     const mode = introState.drafting === 'now' ? 'drafting' : 'prepping';
@@ -5930,8 +6097,9 @@ function applyComparePlatform() {
 
 // ─── Setup gear in topbar — re-runs the intro ────────────────
 document.getElementById('setupBtn').addEventListener('click', () => {
-  introState = { drafting: null, platform: null, teams: null, format: null, step: 1 };
+  introState = { drafting: null, platform: null, teams: null, roster: { ...ROSTER_DEFAULTS }, step: 1 };
   document.querySelectorAll('.intro-opt').forEach(x => x.classList.remove('selected'));
+  syncRosterUI();
   syncIntroNav();
   showIntro();
 });
@@ -6581,12 +6749,9 @@ function renderSideRails() {
   // RIGHT: On-the-Clock (BDGE-suggested pick = top remaining player) + Watching (compare list) + Tier-Drop Alert
   const top = liveList[0];
   const suggested = top ? `
-    <div class="lbl">Your turn · Pick ${(getList('bdgeDrafted').length + getList('bdgeMyTeam').length) + 1}</div>
-    <div class="turn">2:00</div>
-    <div class="lbl" style="margin-top:14px">BDGE suggests</div>
+    <div class="clock-timer"><span class="ct-pick">Pick ${(getList('bdgeDrafted').length + getList('bdgeMyTeam').length) + 1}</span><span class="ct-time">2:00</span></div>
     <div class="sug">${top.name}</div>
-    <div class="why">Top player remaining on the board. ${top.team} · ${top.pos}${posRk(top)} · ADP ${top.adp.toFixed(1)}.</div>
-    <div class="timer"><span class="dot"></span>WATCHING THE BOARD</div>
+    <div class="why">${top.team} · ${top.pos}${posRk(top)} · ADP ${top.adp.toFixed(1)}</div>
   ` : '<div class="watch-empty">No players left on the board.</div>';
   // Watching = the user's starred players (separate from compare set)
   const watching = getWatchlist().map(rk => PLAYERS.find(x => x.rk === rk)).filter(Boolean);
@@ -6610,9 +6775,8 @@ function renderSideRails() {
         <div class="rail-card">
           <div class="rail-h"><span class="ico">!</span><span class="ttl">Tier Drop Alert</span></div>
           <div class="clock">
-            <div class="lbl">After pick ${lastInTier.rk}</div>
-            <div class="sug" style="color: var(--accent)">${tierLabels[curTier]} tier closes</div>
-            <div class="why">${remainingInTier} ${tierLabels[curTier]}-tier ${remainingInTier === 1 ? 'player' : 'players'} left. After ${remainingInTier === 1 ? 'this' : 'them'}, the board drops to ${nextTier}.</div>
+            <div class="clock-timer"><span class="ct-pick">After pick ${lastInTier.rk}</span><span class="ct-time ct-time-sm">${tierLabels[curTier]} ends</span></div>
+            <div class="why">${remainingInTier} ${tierLabels[curTier]}-tier ${remainingInTier === 1 ? 'player' : 'players'} left, then drops to ${nextTier}.</div>
           </div>
         </div>
       `;
