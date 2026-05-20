@@ -3,404 +3,719 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Wireframe — Twelve Labs Models Overview</title>
+<title>Wireframe — Twelve Labs Models Overview (exact layout)</title>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #f4f5f7;
-    --ink: #1f2530;
+    --page: #f7f6f1;          /* cream page background */
+    --ink: #1c1f24;
     --soft: #6b7280;
-    --line: #c9cdd5;
-    --line-strong: #4a5160;
-    --fill: #e6e8ec;
-    --fill-soft: #eef0f3;
+    --line: #c7c9cf;
+    --line-strong: #3a3f48;
+    --fill: #e8e9ec;
+    --fill-soft: #efefe9;
+    --footer: #d4e7c8;        /* light lime footer band */
     --accent: #2563eb;
+    --grad-a: #f3a36a;
+    --grad-b: #f5d27c;
+    --grad-c: #9ed8c0;
+    --grad-d: #c3a9d6;
   }
   * { box-sizing: border-box; }
+  html, body { background: var(--page); }
   body {
     margin: 0;
-    background: var(--bg);
     font-family: "Inter", system-ui, sans-serif;
     color: var(--ink);
-    padding: 24px 0 60px;
+    padding: 0 0 60px;
   }
-  .wrap { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
-  .meta {
-    font-family: "JetBrains Mono", ui-monospace, monospace;
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    color: var(--soft);
-    margin-bottom: 18px;
-    display: flex; justify-content: space-between; align-items: baseline;
+  .meta-bar {
+    background: var(--ink); color: var(--page);
+    padding: 8px 24px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+    display: flex; justify-content: space-between;
   }
-  .meta .title { color: var(--ink); font-weight: 700; }
+  .meta-bar b { color: #fff; }
 
-  /* Generic wireframe box */
+  /* layout helpers */
+  .wrap { max-width: 1200px; margin: 0 auto; padding: 0 32px; }
+  .wrap-narrow { max-width: 760px; margin: 0 auto; padding: 0 32px; }
+  section { padding: 0; margin: 0; }
+
+  /* generic placeholder box */
   .box {
     background: var(--fill-soft);
     border: 1.5px dashed var(--line-strong);
-    padding: 18px;
     position: relative;
   }
-  .box.solid { border-style: solid; border-color: var(--line-strong); background: var(--fill); }
+  .box.solid { border-style: solid; }
   .box .tag {
     position: absolute; top: 6px; left: 8px;
-    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-family: "JetBrains Mono", monospace;
     font-size: 9px; font-weight: 700;
     letter-spacing: 0.16em;
-    color: var(--soft);
+    color: var(--soft); text-transform: uppercase;
+    z-index: 2;
+  }
+
+  /* placeholder bars (text stand-ins) */
+  .ph-h {
+    display: block; height: 24px; border-radius: 2px;
+    background: var(--line-strong);
+    margin: 0 auto 10px;
+  }
+  .ph-h.xl { height: 52px; }
+  .ph-h.lg { height: 36px; }
+  .ph-h.sm { height: 16px; }
+  .ph-p {
+    display: block; height: 7px;
+    background: var(--line); border-radius: 2px;
+    margin: 6px auto;
+  }
+  .ph-eyebrow {
+    display: inline-block; padding: 4px 10px;
+    background: var(--fill); border: 1px solid var(--line);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 9px; font-weight: 700; letter-spacing: 0.16em;
+    color: var(--soft); text-transform: uppercase;
+  }
+
+  /* nav */
+  .nav {
+    background: #fff;
+    border-bottom: 1.5px solid var(--line-strong);
+    padding: 14px 32px;
+    display: flex; align-items: center; gap: 22px;
+    position: sticky; top: 0; z-index: 50;
+  }
+  .nav .logo { width: 130px; height: 24px; background: var(--line-strong); border-radius: 3px; }
+  .nav .nav-items { display: flex; gap: 20px; flex: 1; justify-content: center; }
+  .nav .nav-items span { width: 78px; height: 10px; background: var(--line); border-radius: 2px; }
+  .nav .cta { display: flex; gap: 10px; }
+  .pill {
+    display: inline-flex; align-items: center; justify-content: center;
+    padding: 0 16px; height: 32px;
+    border: 1.5px solid var(--line-strong);
+    border-radius: 999px;
+    background: var(--page); color: var(--ink);
+    font-family: "Inter", sans-serif; font-size: 12px; font-weight: 600;
+  }
+  .pill.solid { background: var(--ink); color: var(--page); }
+
+  /* SECTION 2 — HERO */
+  .hero { padding: 80px 0 60px; text-align: center; }
+  .hero .ph-h.xl { width: 70%; }
+  .hero .ph-p { width: 45%; }
+  .hero-blob {
+    margin: 50px auto 0;
+    width: 80%; max-width: 720px;
+    aspect-ratio: 16 / 9;
+    background:
+      radial-gradient(circle at 25% 30%, var(--grad-a) 0%, transparent 45%),
+      radial-gradient(circle at 75% 30%, var(--grad-b) 0%, transparent 45%),
+      radial-gradient(circle at 50% 75%, var(--grad-c) 0%, transparent 50%),
+      radial-gradient(circle at 80% 80%, var(--grad-d) 0%, transparent 50%),
+      var(--fill-soft);
+    filter: blur(4px) saturate(0.7);
+    border-radius: 80px;
+    border: 1.5px dashed var(--line-strong);
+    position: relative;
+  }
+  .hero-blob::after {
+    content: "Hero 3D object · gradient blob";
+    position: absolute; left: 12px; top: 10px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px; color: #2b2b2b;
+    background: rgba(255,255,255,0.7);
+    padding: 2px 8px;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
   }
-  .ph-h { /* placeholder headline */
-    display: block;
-    height: 28px;
-    background: linear-gradient(90deg, var(--line-strong) 0 60%, transparent 60% 100%);
-    margin: 18px 0 10px;
-    border-radius: 2px;
+
+  /* SECTION 3 — 2 product cards */
+  .product-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; padding: 30px 0 70px; }
+  .product-card {
+    border-radius: 24px;
+    background: linear-gradient(145deg, #fff 0%, #f0eee6 100%);
+    border: 1.5px solid var(--line);
+    padding: 28px 24px;
+    min-height: 320px;
+    display: flex; flex-direction: column; align-items: center; text-align: center;
+    position: relative;
   }
-  .ph-h.lg { height: 44px; background-size: 70% 100%; }
-  .ph-h.short { background-size: 35% 100%; }
-  .ph-p { /* placeholder paragraph */
-    display: block; height: 8px;
-    background: var(--line);
-    margin: 6px 0;
-    border-radius: 2px;
+  .product-card .visual {
+    width: 60%; aspect-ratio: 1; margin: 0 auto 18px;
+    border-radius: 16px;
+    background: repeating-linear-gradient(135deg, var(--line) 0 6px, transparent 6px 14px);
+    border: 1px solid var(--line);
   }
-  .ph-p.w90 { width: 92%; }
-  .ph-p.w70 { width: 70%; }
-  .ph-p.w55 { width: 55%; }
-  .ph-link {
-    display: inline-block;
+  .product-card .ph-h { width: 60%; height: 20px; }
+  .product-card .ph-p { width: 70%; }
+
+  /* SECTION 4 — Marengo intro + chart cards */
+  .marengo-intro { padding: 60px 0 30px; text-align: center; }
+  .marengo-intro .ph-h.lg { width: 60%; margin-left: auto; margin-right: auto; }
+  .marengo-intro .ph-p { width: 55%; }
+  .chart-grid {
+    margin-top: 36px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 18px;
+  }
+  .chart-card {
+    background: linear-gradient(170deg, #f1eee5, #e9f0e3);
+    border-radius: 28px; border: 1.5px solid var(--line);
+    padding: 32px; min-height: 220px;
+    position: relative;
+  }
+  .chart-bars { display: flex; align-items: flex-end; gap: 8px; height: 110px; margin-top: 30px; }
+  .chart-bars span {
+    flex: 1;
+    background: linear-gradient(180deg, var(--line-strong), var(--line));
+    border-radius: 4px 4px 0 0;
+  }
+
+  /* SECTION 5 — eyebrow + small cards row */
+  .eyebrow-row { text-align: center; padding: 50px 0 24px; }
+  .small-card-row { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; padding-bottom: 50px; }
+  .small-card {
+    background: linear-gradient(150deg, #fff, #f0eee6);
+    border: 1.5px solid var(--line); border-radius: 22px;
+    padding: 24px; min-height: 180px;
+    position: relative;
+  }
+  .small-card .visual-mini {
+    width: 70%; height: 70px; margin: 14px auto;
+    background: repeating-linear-gradient(90deg, var(--line) 0 4px, transparent 4px 10px);
+    border-radius: 10px;
+  }
+
+  /* SECTION 6 — wide gradient image */
+  .wide-image {
+    margin: 30px 0 50px;
+    height: 360px;
+    border-radius: 64px;
+    background:
+      radial-gradient(circle at 70% 30%, var(--grad-a) 0%, transparent 55%),
+      radial-gradient(circle at 30% 70%, var(--grad-c) 0%, transparent 60%),
+      linear-gradient(135deg, var(--grad-d), var(--grad-b));
+    filter: blur(2px) saturate(0.55);
+    border: 1.5px dashed var(--line-strong);
+    position: relative;
+  }
+  .wide-image::after {
+    content: "Wide gradient image card · 64px radius";
+    position: absolute; top: 12px; left: 20px;
+    background: rgba(255,255,255,0.75); padding: 3px 10px;
     font-family: "JetBrains Mono", monospace;
-    font-size: 11px;
-    color: var(--accent);
-    margin-top: 12px;
-    border-bottom: 1px solid var(--accent);
-    padding-bottom: 1px;
+    font-size: 10px; letter-spacing: 0.1em; color: #2b2b2b;
   }
+
+  /* SECTION 7 — logo lockup + 3 cards row */
+  .logo-lockup { text-align: center; padding: 30px 0 20px; }
+  .logo-lockup .lockup {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 6px 14px; background: var(--fill); border: 1.5px solid var(--line);
+    border-radius: 999px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px; letter-spacing: 0.12em;
+    color: var(--soft); text-transform: uppercase;
+  }
+  .lockup .glyph { width: 18px; height: 12px; background: var(--line-strong); clip-path: polygon(0 30%, 100% 0, 100% 70%, 0 100%); }
+  .three-card-row {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
+    margin: 30px 0 60px;
+  }
+  .mini-card {
+    background: linear-gradient(150deg, #fff, #ece9df);
+    border: 1.5px solid var(--line); border-radius: 18px;
+    padding: 18px; min-height: 200px;
+    position: relative;
+  }
+  .mini-card .visual-stack {
+    margin-top: 14px;
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .mini-card .visual-stack span {
+    height: 14px; background: var(--line); border-radius: 4px;
+  }
+
+  /* SECTION 11 — Pegasus intro (mirrors Marengo intro) */
+  .pegasus-intro { padding: 50px 0 0; text-align: center; }
+
+  /* SECTION 13 — wide gradient image variant */
+  .wide-image.v2 {
+    height: 320px; border-radius: 48px;
+    background:
+      radial-gradient(circle at 50% 50%, var(--grad-c) 0%, transparent 60%),
+      linear-gradient(135deg, var(--grad-a), var(--grad-d));
+  }
+
+  /* SECTION 15 — wide video card */
+  .video-card {
+    height: 380px; border-radius: 56px;
+    background: linear-gradient(180deg, #d4e0d3, #97a89e);
+    border: 1.5px dashed var(--line-strong);
+    position: relative; margin: 30px 0 24px;
+    display: grid; place-items: center;
+  }
+  .video-card .play {
+    width: 64px; height: 64px; border-radius: 50%;
+    background: rgba(255,255,255,0.85);
+    border: 2px solid var(--ink);
+    display: grid; place-items: center;
+  }
+  .video-card .play::after {
+    content: ""; width: 0; height: 0;
+    border-left: 20px solid var(--ink);
+    border-top: 12px solid transparent;
+    border-bottom: 12px solid transparent;
+    margin-left: 5px;
+  }
+  .video-card::before {
+    content: "Wide video/image card · embedded play"; position: absolute; top: 12px; left: 20px;
+    background: rgba(255,255,255,0.75); padding: 3px 10px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px; letter-spacing: 0.1em; color: #2b2b2b;
+  }
+
+  /* SECTION 17 — two big product cards (Pegasus 1.1 / 1.2) */
+  .big-pair {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 18px;
+    padding: 50px 0 30px;
+  }
+  .big-card {
+    background: linear-gradient(150deg, #fff, #ece9df);
+    border-radius: 32px; border: 1.5px solid var(--line);
+    padding: 36px 28px; min-height: 340px;
+    position: relative;
+    display: flex; flex-direction: column;
+  }
+  .big-card .badge-top {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px; letter-spacing: 0.16em;
+    color: var(--soft); text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .big-card .pegasus-logo {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: "Inter", sans-serif; font-size: 36px; font-weight: 700;
+    color: var(--line-strong);
+  }
+  .big-card .pegasus-logo .glyph {
+    width: 32px; height: 22px; background: var(--line-strong);
+    clip-path: polygon(0 30%, 100% 0, 100% 70%, 0 100%);
+  }
+  .big-card .visual-tall {
+    margin-top: auto; height: 80px;
+    background: repeating-linear-gradient(90deg, var(--line) 0 6px, transparent 6px 14px);
+    border-radius: 12px;
+  }
+
+  /* SECTION 18 — transformation block (heading + 4-col text) */
+  .xform { padding: 60px 0 50px; text-align: center; }
+  .xform .ph-h.lg { width: 65%; margin: 0 auto 18px; }
+  .xform .ph-p { width: 55%; margin-left: auto; margin-right: auto; }
+  .xform-cols {
+    margin-top: 40px;
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px;
+    text-align: left;
+  }
+  .xform-col {
+    background: var(--fill-soft);
+    border: 1.5px dashed var(--line-strong);
+    border-radius: 14px;
+    padding: 18px;
+    min-height: 160px;
+  }
+  .xform-col .ph-h.sm { width: 60%; }
+
+  /* SECTION 19 — closing CTA */
+  .closing {
+    padding: 70px 0 80px; text-align: center;
+    border-top: 1.5px solid var(--line);
+    border-bottom: 1.5px solid var(--line);
+    background: var(--page);
+    margin-top: 30px;
+  }
+  .closing .ph-h.xl { width: 60%; margin: 0 auto 32px; }
+  .closing .btn-row { display: flex; gap: 14px; justify-content: center; }
   .ph-btn {
     display: inline-flex; align-items: center; gap: 6px;
-    height: 34px; padding: 0 18px;
-    background: var(--ink); color: var(--bg);
-    border-radius: 4px;
-    font-family: "Inter", sans-serif; font-size: 12px; font-weight: 600;
-    letter-spacing: 0.02em;
-  }
-  .ph-btn.ghost {
-    background: transparent; color: var(--ink);
+    height: 44px; padding: 0 24px;
+    border-radius: 999px;
     border: 1.5px solid var(--ink);
+    background: var(--page); color: var(--ink);
+    font-family: "Inter", sans-serif; font-size: 13px; font-weight: 600;
   }
+  .ph-btn.solid { background: var(--ink); color: var(--page); }
 
-  /* ── Global nav ── */
-  .nav {
-    display: flex; align-items: center; gap: 18px;
-    padding: 14px 22px;
-    background: #fff;
-    border: 1.5px solid var(--line-strong);
+  /* SECTION 20 — footer (lime tinted band) */
+  .footer {
+    background: var(--footer);
+    padding: 50px 0 30px;
+    border-top: 1.5px solid var(--line);
   }
-  .nav .logo {
-    width: 110px; height: 26px;
-    background: var(--line-strong);
-    border-radius: 3px;
-  }
-  .nav .nav-items {
-    display: flex; gap: 18px; flex: 1; justify-content: center;
-  }
-  .nav .nav-items span {
-    display: inline-block;
-    width: 72px; height: 10px;
-    background: var(--line);
-    border-radius: 2px;
-  }
-  .nav .nav-cta { display: flex; gap: 10px; }
-
-  /* ── Section frames ── */
-  section { margin-top: 22px; }
-  section .section-head {
-    font-family: "JetBrains Mono", monospace;
-    font-size: 10px; font-weight: 700;
-    letter-spacing: 0.18em;
-    color: var(--soft);
-    text-transform: uppercase;
-    margin-bottom: 10px;
-    display: flex; align-items: center; gap: 10px;
-  }
-  section .section-head::after {
-    content: ""; flex: 1; height: 1px;
-    background: var(--line);
-  }
-
-  /* Hero */
-  .hero { text-align: center; padding: 60px 24px; }
-  .hero .ph-h.lg { margin: 0 auto 14px; width: 70%; background-image: linear-gradient(90deg, var(--line-strong), var(--line-strong)); }
-  .hero .ph-p { margin-left: auto; margin-right: auto; }
-
-  /* 2-col grid */
-  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
-  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 18px; }
-  .grid-6 { display: grid; grid-template-columns: repeat(6, 1fr); gap: 14px; }
-
-  /* Card */
-  .card { min-height: 200px; }
-  .card .img-zone {
-    height: 110px;
-    background: repeating-linear-gradient(
-      45deg, var(--line) 0 8px, transparent 8px 16px
-    );
-    border: 1px solid var(--line);
-    margin-bottom: 14px;
-  }
-
-  /* News list row */
-  .news-row {
-    display: flex; align-items: center; gap: 14px;
-    padding: 12px 0;
-    border-bottom: 1px solid var(--line);
-  }
-  .news-row:last-child { border-bottom: 0; }
-  .news-row .ph-p { flex: 1; margin: 0; }
-  .news-row .ph-arrow {
-    width: 18px; height: 10px; background: var(--line-strong);
-    clip-path: polygon(0 40%, 70% 40%, 70% 0, 100% 50%, 70% 100%, 70% 60%, 0 60%);
-  }
-
-  /* Citation list */
-  .cite-row {
-    padding: 10px 0;
-    border-bottom: 1px solid var(--line);
-    display: flex; align-items: center; gap: 14px;
-  }
-  .cite-row:last-child { border-bottom: 0; }
-  .cite-row .ph-p { flex: 1; margin: 0; }
-  .cite-row .tag-conf {
-    font-family: "JetBrains Mono", monospace;
-    font-size: 9px; font-weight: 700;
-    letter-spacing: 0.12em;
-    color: var(--soft);
-    background: var(--fill);
-    padding: 3px 8px;
-    border: 1px solid var(--line);
-    white-space: nowrap;
-  }
-
-  /* Closing CTA */
-  .cta-strip {
-    text-align: center;
-    padding: 50px 24px;
-    background: var(--fill);
-    border: 1.5px solid var(--line-strong);
-  }
-  .cta-strip .ph-h { margin: 0 auto 24px; width: 50%; background-image: linear-gradient(90deg, var(--line-strong), var(--line-strong)); }
-  .cta-strip .btn-row { display: flex; gap: 12px; justify-content: center; }
-
-  /* Footer */
-  .footer-block {
-    background: #fff;
-    border: 1.5px solid var(--line-strong);
-    padding: 24px;
+  .footer-grid {
+    display: grid; grid-template-columns: repeat(6, 1fr); gap: 28px;
   }
   .footer-col h4 {
     font-family: "JetBrains Mono", monospace;
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.16em;
-    color: var(--soft);
-    text-transform: uppercase;
-    margin: 0 0 12px;
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.18em; color: var(--ink);
+    text-transform: uppercase; margin: 0 0 12px;
   }
-  .footer-col .ph-p { width: 80%; margin: 8px 0; }
+  .footer-col .ph-p { width: 80%; margin: 8px 0; background: rgba(0,0,0,0.18); }
+  .footer-logo-row {
+    margin-top: 50px;
+    display: flex; justify-content: center; align-items: center;
+    gap: 14px;
+  }
+  .footer-logo-row .glyph {
+    width: 56px; height: 36px;
+    background: var(--ink);
+    clip-path: polygon(0 30%, 100% 0, 100% 70%, 0 100%);
+  }
+  .footer-logo-row .wordmark {
+    font-family: "Inter", sans-serif; font-size: 38px; font-weight: 700;
+    color: var(--ink);
+  }
   .footer-bottom {
-    margin-top: 22px;
-    padding-top: 18px;
-    border-top: 1px solid var(--line);
     display: flex; justify-content: space-between; align-items: center;
+    margin-top: 30px;
+    padding: 0 32px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px; color: var(--ink);
   }
   .social-row { display: flex; gap: 10px; }
   .social-row .ico {
-    width: 22px; height: 22px;
-    background: var(--line-strong);
-    border-radius: 50%;
-  }
-  .copy {
-    font-family: "JetBrains Mono", monospace;
-    font-size: 11px; color: var(--soft);
+    width: 22px; height: 22px; border-radius: 50%; background: var(--ink);
   }
 
-  /* Responsive — collapse grids */
+  /* divider */
+  .hr-soft { height: 1px; background: var(--line); margin: 60px auto; max-width: 1200px; }
+
+  /* small-card visual styles (variations) */
+  .visual-grid {
+    margin: 14px auto; width: 60%; height: 80px;
+    display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px;
+  }
+  .visual-grid span { background: var(--line); border-radius: 3px; }
+
   @media (max-width: 880px) {
-    .grid-2 { grid-template-columns: 1fr; }
-    .grid-6 { grid-template-columns: repeat(2, 1fr); }
+    .product-grid, .small-card-row, .chart-grid, .big-pair { grid-template-columns: 1fr; }
+    .three-card-row { grid-template-columns: 1fr; }
+    .xform-cols, .footer-grid { grid-template-columns: repeat(2, 1fr); }
     .nav .nav-items { display: none; }
+    .hero .ph-h.xl, .hero .ph-p,
+    .marengo-intro .ph-h.lg, .marengo-intro .ph-p,
+    .closing .ph-h.xl, .xform .ph-h.lg, .xform .ph-p { width: 90%; }
   }
 </style>
 </head>
 <body>
-<div class="wrap">
 
-<div class="meta">
-  <span><span class="title">WIREFRAME</span> &nbsp;·&nbsp; twelvelabs.io/product/models-overview</span>
-  <span>structural skeleton · placeholder content</span>
+<div class="meta-bar">
+  <span><b>WIREFRAME · structural layout match</b> &nbsp;·&nbsp; twelvelabs.io/product/models-overview</span>
+  <span>20 sections · placeholder content · no marketing copy</span>
 </div>
 
-<!-- ─────────────── GLOBAL NAV ─────────────── -->
-<nav class="nav" aria-label="Global navigation wireframe">
+<!-- ─── 1. NAV ─── -->
+<nav class="nav" aria-label="Sticky top nav">
   <div class="logo" title="Logo"></div>
   <div class="nav-items">
     <span></span><span></span><span></span><span></span><span></span><span></span>
   </div>
-  <div class="nav-cta">
-    <span class="ph-btn ghost">Playground</span>
-    <span class="ph-btn">Talk to Sales</span>
+  <div class="cta">
+    <span class="pill">Playground</span>
+    <span class="pill solid">Talk to Sales</span>
   </div>
 </nav>
 
-<!-- ─────────────── 1. HERO ─────────────── -->
-<section>
-  <div class="section-head">1 · Hero</div>
-  <div class="box hero">
-    <span class="tag">Hero · single col centered</span>
-    <span class="ph-h lg"></span>
-    <span class="ph-p w70" style="display:block; width:60%"></span>
-    <span class="ph-p w70" style="display:block; width:55%; margin-top:8px"></span>
+<!-- ─── 2. HERO ─── -->
+<section class="hero">
+  <div class="wrap-narrow">
+    <span class="ph-h xl"></span>
+    <span class="ph-p"></span>
+    <span class="ph-p" style="width:35%"></span>
+  </div>
+  <div class="wrap">
+    <div class="hero-blob"></div>
   </div>
 </section>
 
-<!-- ─────────────── 2. PRODUCT OVERVIEW (2-col) ─────────────── -->
+<!-- ─── 3. TWO PRODUCT CARDS ─── -->
 <section>
-  <div class="section-head">2 · Product overview · 2-col</div>
-  <div class="grid-2">
-    <div class="box card">
-      <span class="tag">Product card · Marengo 3.0</span>
-      <div class="img-zone" style="margin-top:18px"></div>
-      <span class="ph-h short"></span>
-      <span class="ph-p w90"></span>
-      <span class="ph-p w70"></span>
-      <a class="ph-link">Learn more →</a>
-    </div>
-    <div class="box card">
-      <span class="tag">Product card · Pegasus 1.5</span>
-      <div class="img-zone" style="margin-top:18px"></div>
-      <span class="ph-h short"></span>
-      <span class="ph-p w90"></span>
-      <span class="ph-p w70"></span>
-      <a class="ph-link">Learn more →</a>
-    </div>
-  </div>
-</section>
-
-<!-- ─────────────── 3. MARENGO · Description ─────────────── -->
-<section>
-  <div class="section-head">3 · Marengo · embeddings explanation</div>
-  <div class="box">
-    <span class="tag">1-col description</span>
-    <span class="ph-h"></span>
-    <span class="ph-p w90"></span>
-    <span class="ph-p w90"></span>
-    <span class="ph-p w70"></span>
-  </div>
-</section>
-
-<!-- ─────────────── 4. MARENGO · Capabilities (2-col) ─────────────── -->
-<section>
-  <div class="section-head">4 · Marengo capabilities · 2-col</div>
-  <div class="grid-2">
-    <div class="box card">
-      <span class="tag">Capability · Search</span>
-      <span class="ph-h short" style="margin-top:18px"></span>
-      <span class="ph-p w90"></span>
-      <span class="ph-p w70"></span>
-      <a class="ph-link">Learn more →</a>
-    </div>
-    <div class="box card">
-      <span class="tag">Capability · Embed</span>
-      <span class="ph-h short" style="margin-top:18px"></span>
-      <span class="ph-p w90"></span>
-      <span class="ph-p w70"></span>
-      <a class="ph-link">Learn more →</a>
+  <div class="wrap">
+    <div class="product-grid">
+      <div class="product-card">
+        <span class="tag">Product card · Marengo 3.0</span>
+        <div class="visual"></div>
+        <span class="ph-h"></span>
+        <span class="ph-p"></span>
+        <span class="ph-p" style="width:50%"></span>
+      </div>
+      <div class="product-card">
+        <span class="tag">Product card · Pegasus 1.5</span>
+        <div class="visual"></div>
+        <span class="ph-h"></span>
+        <span class="ph-p"></span>
+        <span class="ph-p" style="width:50%"></span>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ─────────────── 5. MARENGO · What's New ─────────────── -->
+<!-- ─── 4. MARENGO INTRO + 2 CHART CARDS ─── -->
 <section>
-  <div class="section-head">5 · Marengo · what's new (linked articles)</div>
-  <div class="box">
-    <span class="tag">News list · 1-col</span>
-    <span class="ph-h short" style="margin-bottom:14px"></span>
-    <div class="news-row"><span class="ph-p w90"></span><span class="ph-arrow"></span></div>
-    <div class="news-row"><span class="ph-p w70"></span><span class="ph-arrow"></span></div>
+  <div class="wrap">
+    <div class="marengo-intro">
+      <span class="ph-eyebrow">Marengo</span>
+      <span class="ph-h lg" style="margin-top:16px"></span>
+      <span class="ph-p"></span>
+      <span class="ph-p" style="width:40%"></span>
+    </div>
+    <div class="chart-grid">
+      <div class="chart-card">
+        <span class="tag">Chart card · embedding visualization</span>
+        <div class="chart-bars">
+          <span style="height:40%"></span><span style="height:75%"></span>
+          <span style="height:55%"></span><span style="height:90%"></span>
+          <span style="height:30%"></span><span style="height:65%"></span>
+        </div>
+      </div>
+      <div class="chart-card">
+        <span class="tag">Chart card · comparison/groups</span>
+        <div class="chart-bars">
+          <span style="height:60%"></span><span style="height:45%"></span>
+          <span style="height:80%"></span><span style="height:35%"></span>
+          <span style="height:70%"></span><span style="height:50%"></span>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
-<!-- ─────────────── 6. PEGASUS · Description ─────────────── -->
+<!-- ─── 5. EYEBROW + 2 SMALL CARDS ─── -->
 <section>
-  <div class="section-head">6 · Pegasus · description</div>
-  <div class="box">
-    <span class="tag">1-col description + use cases</span>
-    <span class="ph-h"></span>
-    <span class="ph-p w90"></span>
-    <span class="ph-p w90"></span>
-    <span class="ph-p w70"></span>
-    <span class="ph-p w55"></span>
+  <div class="wrap">
+    <div class="eyebrow-row"><span class="ph-eyebrow">Sub-section divider</span></div>
+    <div class="small-card-row">
+      <div class="small-card">
+        <span class="tag">Small card · feature A</span>
+        <div class="visual-grid">
+          <span></span><span></span><span></span><span></span><span></span><span></span>
+          <span></span><span></span><span></span><span></span><span></span><span></span>
+        </div>
+        <span class="ph-p" style="width:80%"></span>
+        <span class="ph-p" style="width:60%"></span>
+      </div>
+      <div class="small-card">
+        <span class="tag">Small card · feature B</span>
+        <div class="visual-mini"></div>
+        <span class="ph-p" style="width:80%"></span>
+        <span class="ph-p" style="width:60%"></span>
+      </div>
+    </div>
   </div>
 </section>
 
-<!-- ─────────────── 7. PEGASUS · Capability (wide) ─────────────── -->
+<!-- ─── 6. WIDE GRADIENT IMAGE ─── -->
 <section>
-  <div class="section-head">7 · Pegasus capability · single wide card</div>
-  <div class="box card" style="min-height: 180px">
-    <span class="tag">Capability · Analyze</span>
-    <span class="ph-h short" style="margin-top:18px"></span>
-    <span class="ph-p w90"></span>
-    <span class="ph-p w70"></span>
-    <a class="ph-link">Learn more →</a>
+  <div class="wrap">
+    <div class="wide-image"></div>
   </div>
 </section>
 
-<!-- ─────────────── 8. PEGASUS · What's New ─────────────── -->
+<!-- ─── 7. MARENGO LOGO LOCKUP + 3 SMALL CARDS ─── -->
 <section>
-  <div class="section-head">8 · Pegasus · what's new (linked articles)</div>
-  <div class="box">
-    <span class="tag">News list · 1-col</span>
-    <span class="ph-h short" style="margin-bottom:14px"></span>
-    <div class="news-row"><span class="ph-p w90"></span><span class="ph-arrow"></span></div>
-    <div class="news-row"><span class="ph-p w70"></span><span class="ph-arrow"></span></div>
+  <div class="wrap">
+    <div class="logo-lockup">
+      <span class="lockup"><span class="glyph"></span>Marengo 3.0</span>
+      <div style="margin-top:14px">
+        <span class="ph-h" style="width:50%"></span>
+      </div>
+    </div>
+    <div class="three-card-row">
+      <div class="mini-card">
+        <span class="tag">Mini card · view 1</span>
+        <div class="visual-stack">
+          <span style="width:90%"></span>
+          <span style="width:70%"></span>
+          <span style="width:80%"></span>
+        </div>
+      </div>
+      <div class="mini-card">
+        <span class="tag">Mini card · view 2</span>
+        <div class="visual-stack">
+          <span style="width:80%"></span>
+          <span style="width:90%"></span>
+          <span style="width:60%"></span>
+        </div>
+      </div>
+      <div class="mini-card">
+        <span class="tag">Mini card · view 3</span>
+        <div class="visual-stack">
+          <span style="width:70%"></span>
+          <span style="width:85%"></span>
+          <span style="width:75%"></span>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
-<!-- ─────────────── 9. RESEARCH & VALUES ─────────────── -->
+<div class="hr-soft"></div>
+
+<!-- ─── 8. PEGASUS INTRO ─── -->
 <section>
-  <div class="section-head">9 · Research &amp; values · paper citations</div>
-  <div class="box">
-    <span class="tag">1-col headline + paper list</span>
-    <span class="ph-h"></span>
-    <span class="ph-p w90"></span>
-    <span class="ph-p w70" style="margin-bottom:14px"></span>
-    <div class="cite-row"><span class="ph-p w90"></span><span class="tag-conf">CONF</span></div>
-    <div class="cite-row"><span class="ph-p w90"></span><span class="tag-conf">CONF</span></div>
-    <div class="cite-row"><span class="ph-p w90"></span><span class="tag-conf">CONF</span></div>
-    <div class="cite-row"><span class="ph-p w90"></span><span class="tag-conf">CONF</span></div>
+  <div class="wrap">
+    <div class="pegasus-intro">
+      <span class="ph-eyebrow">Pegasus</span>
+      <span class="ph-h lg" style="margin-top:16px; width:55%; margin-left:auto; margin-right:auto"></span>
+      <span class="ph-p" style="width:55%; margin:6px auto"></span>
+      <span class="ph-p" style="width:40%; margin:6px auto 30px"></span>
+    </div>
   </div>
 </section>
 
-<!-- ─────────────── 10. CLOSING CTA ─────────────── -->
+<!-- ─── 9. 3 SMALL VISUALIZATION CARDS (Pegasus) ─── -->
 <section>
-  <div class="section-head">10 · Closing CTA strip</div>
-  <div class="cta-strip">
-    <span class="ph-h"></span>
+  <div class="wrap">
+    <div class="three-card-row" style="margin-top:0">
+      <div class="mini-card">
+        <span class="tag">Pegasus · view 1</span>
+        <div class="visual-stack">
+          <span style="width:90%"></span><span style="width:70%"></span><span style="width:80%"></span>
+        </div>
+      </div>
+      <div class="mini-card">
+        <span class="tag">Pegasus · view 2</span>
+        <div class="visual-stack">
+          <span style="width:80%"></span><span style="width:90%"></span><span style="width:60%"></span>
+        </div>
+      </div>
+      <div class="mini-card">
+        <span class="tag">Pegasus · view 3</span>
+        <div class="visual-stack">
+          <span style="width:70%"></span><span style="width:85%"></span><span style="width:75%"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── 10. WIDE GRADIENT IMAGE (variant) ─── -->
+<section>
+  <div class="wrap">
+    <div class="wide-image v2"></div>
+  </div>
+</section>
+
+<!-- ─── 11. SMALL EYEBROW + ICON ─── -->
+<section>
+  <div class="wrap">
+    <div class="eyebrow-row"><span class="ph-eyebrow">Sub-section divider</span></div>
+  </div>
+</section>
+
+<!-- ─── 12. WIDE VIDEO/IMAGE CARD ─── -->
+<section>
+  <div class="wrap">
+    <div class="video-card">
+      <div class="play"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── 13. CENTERED EYEBROW (latest frontiers) ─── -->
+<section>
+  <div class="wrap">
+    <div class="eyebrow-row" style="padding:20px 0 0">
+      <span class="ph-eyebrow">"Latest frontiers" sub-title</span>
+    </div>
+  </div>
+</section>
+
+<!-- ─── 14. TWO BIG PRODUCT CARDS (Pegasus 1.1 / 1.2) ─── -->
+<section>
+  <div class="wrap">
+    <div class="big-pair">
+      <div class="big-card">
+        <span class="tag">Big card · Pegasus (current)</span>
+        <span class="badge-top">Introducing</span>
+        <div class="pegasus-logo"><span class="glyph"></span>Pegasus</div>
+        <span class="ph-p" style="width:80%; margin-top:14px"></span>
+        <span class="ph-p" style="width:65%"></span>
+        <div class="visual-tall"></div>
+      </div>
+      <div class="big-card">
+        <span class="tag">Big card · Pegasus 1.2</span>
+        <span class="badge-top">Introducing</span>
+        <div class="pegasus-logo"><span class="glyph"></span>Pegasus 1.2</div>
+        <span class="ph-p" style="width:80%; margin-top:14px"></span>
+        <span class="ph-p" style="width:65%"></span>
+        <div class="visual-tall"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── 15. TRANSFORMATION BLOCK (heading + 4-col text) ─── -->
+<section>
+  <div class="wrap">
+    <div class="xform">
+      <span class="ph-h lg"></span>
+      <span class="ph-p"></span>
+      <span class="ph-p" style="width:40%; margin:6px auto"></span>
+      <div class="xform-cols">
+        <div class="xform-col">
+          <span class="tag">Pillar 1</span>
+          <span class="ph-h sm" style="margin-top:18px"></span>
+          <span class="ph-p" style="width:90%"></span>
+          <span class="ph-p" style="width:80%"></span>
+          <span class="ph-p" style="width:60%"></span>
+        </div>
+        <div class="xform-col">
+          <span class="tag">Pillar 2</span>
+          <span class="ph-h sm" style="margin-top:18px"></span>
+          <span class="ph-p" style="width:90%"></span>
+          <span class="ph-p" style="width:80%"></span>
+          <span class="ph-p" style="width:60%"></span>
+        </div>
+        <div class="xform-col">
+          <span class="tag">Pillar 3</span>
+          <span class="ph-h sm" style="margin-top:18px"></span>
+          <span class="ph-p" style="width:90%"></span>
+          <span class="ph-p" style="width:80%"></span>
+          <span class="ph-p" style="width:60%"></span>
+        </div>
+        <div class="xform-col">
+          <span class="tag">Pillar 4</span>
+          <span class="ph-h sm" style="margin-top:18px"></span>
+          <span class="ph-p" style="width:90%"></span>
+          <span class="ph-p" style="width:80%"></span>
+          <span class="ph-p" style="width:60%"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── 16. CLOSING CTA ─── -->
+<section class="closing">
+  <div class="wrap">
+    <span class="ph-h xl"></span>
     <div class="btn-row">
-      <span class="ph-btn">Playground →</span>
-      <span class="ph-btn ghost">Talk to Sales →</span>
+      <span class="ph-btn solid">Playground</span>
+      <span class="ph-btn">Talk to Sales</span>
     </div>
   </div>
 </section>
 
-<!-- ─────────────── 11. FOOTER ─────────────── -->
-<section>
-  <div class="section-head">11 · Footer · 6-col grid + social row</div>
-  <div class="footer-block">
-    <div class="grid-6">
+<!-- ─── 17. FOOTER (lime band) ─── -->
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-grid">
       <div class="footer-col">
         <h4>Platform</h4>
         <span class="ph-p"></span><span class="ph-p"></span><span class="ph-p"></span><span class="ph-p"></span>
@@ -426,15 +741,20 @@
         <span class="ph-p"></span><span class="ph-p"></span><span class="ph-p"></span><span class="ph-p"></span>
       </div>
     </div>
+
+    <div class="footer-logo-row">
+      <span class="glyph"></span>
+      <span class="wordmark">TwelveLabs</span>
+    </div>
+
     <div class="footer-bottom">
       <div class="social-row">
         <span class="ico"></span><span class="ico"></span><span class="ico"></span>
       </div>
-      <span class="copy">© YYYY–YYYY · Company name</span>
+      <span>© YYYY-YYYY · Company name</span>
     </div>
   </div>
-</section>
+</footer>
 
-</div>
 </body>
 </html>
