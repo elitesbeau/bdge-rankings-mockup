@@ -4029,6 +4029,173 @@ body.vs-open[data-vs-mode="expanded"] .tb { padding-right: 752px; }
 /* The Count badge in the strip header (uses .count selector w/ different class) */
 .vs-strip .vs-strip-h .eye .count { vertical-align: 1px; }
 
+/* ─── Mobile pass (phone widths ≤ 600px) ────────────────────────────────
+   Desktop layout assumes ≥ 1080px for the rail+rankings+rail grid.
+   Below 1080 the rails already collapse; this block makes the rest
+   (top bar, filter pills, cards, intro modal, pop-out) usable on phones
+   without disturbing tablet/desktop layouts above 600px. */
+@media (max-width: 600px) {
+  /* Top bar — compact, hide non-essential chrome */
+  .tb { padding: 8px 12px; gap: 8px; }
+  .tb-brand img { height: 42px; margin: -6px -4px; }
+  .tb-spacer { flex: 1; }
+  .tb-mode button { padding: 6px 8px; font-size: 11px; letter-spacing: 0; }
+  .tb-acct { display: none; }
+  .tut-help-btn { display: none; }
+  .tb-icon-btn { padding: 6px 8px; font-size: 14px; }
+  .tb-theme button { padding: 6px 8px; font-size: 13px; }
+  .tb-search { display: none; }
+
+  /* Filter bar — full-bleed, allow wrap, kill min-widths */
+  .fbar,
+  body[data-mode="drafting"] .fbar,
+  body[data-mode="drafting"].drawer-open .fbar {
+    grid-template-columns: 1fr;
+    padding: 10px 12px;
+    gap: 8px;
+  }
+  .fbar-spacer, body[data-mode="drafting"] .fbar-spacer { display: none; }
+  .fbar-content { gap: 6px; }
+  .fbar-pill { padding: 5px 10px; font-size: 12px; }
+  .fbar-pill.staff { padding: 3px 10px 3px 3px; }
+  .fbar-pill.staff .ava { width: 18px; height: 18px; font-size: 9px; }
+  .fbar-l { font-size: 12px; margin-left: 0 !important; }
+  .cmp-wrap { margin-left: 0; }
+  .cmp-fbar-tip { display: none !important; }  /* hover tooltips don't work on touch */
+  .round-h-search { min-width: 0; width: 100%; }
+
+  /* Rounds container — tight padding, more compact gaps */
+  .rounds,
+  body[data-mode="drafting"] .rounds,
+  body[data-mode="drafting"].drawer-open .rounds,
+  body[data-mode="drafting"].vs-open .rounds,
+  body[data-mode="drafting"].vs-open[data-vs-mode="expanded"] .rounds {
+    padding: 16px 10px 40px;
+    gap: 28px;
+  }
+  body[data-mode="drafting"] .board-shell { padding: 0; }
+
+  /* Round section header — let title + search stack */
+  .round-h { flex-wrap: wrap; gap: 8px; }
+  .round-h-l { font-size: 18px; }
+  .round-h-r { width: 100%; }
+
+  /* Section / board widths */
+  .rg-section,
+  body[data-mode="prepping"] .rg-section { max-width: 100%; }
+  .board, .board-header { max-width: 100%; }
+  .board-header { padding: 0 8px 6px; }
+
+  /* Card grid — collapse to 5 essential columns (chk · rank · avatar · name · chev).
+     Inline action buttons hide on mobile; same actions live in the player drawer. */
+  body[data-mode="drafting"] .card,
+  body[data-mode="drafting"] .board-header,
+  body[data-mode="prepping"] .card,
+  body[data-mode="prepping"] .board-header {
+    grid-template-columns: 20px 38px 32px minmax(0, 1fr) 16px;
+    gap: 8px;
+    padding: 8px 10px;
+    height: 56px;
+    min-height: 56px;
+    max-height: 56px;
+  }
+  body[data-mode="prepping"] .board-header { height: auto; max-height: none; }
+  .card-team, .card-props, .card-extra,
+  .board-header .h-team, .board-header .h-props, .board-header .h-extra { display: none !important; }
+  /* Inline per-card action row — keep star (watchlist), hide the rest;
+     star is overlaid in the name column corner so it doesn't need a grid cell. */
+  .card .card-act-row { display: none; }
+  .card-pfp,
+  body[data-mode="prepping"] .card-pfp { width: 32px; height: 32px; }
+  .card-rk { width: 38px; font-size: 13px; padding: 3px 0; }
+  .card-name,
+  body[data-mode="prepping"] .card-name { font-size: 15px; }
+  .card-who { gap: 8px; max-height: none; }
+  body[data-mode="prepping"] .card-who {
+    flex-direction: row;
+    align-items: center;
+  }
+  body[data-mode="prepping"] .card-who-sub { display: none; }
+
+  /* Selection bar — vertical stack so buttons don't wrap awkwardly */
+  .sel-bar {
+    margin: 6px 10px;
+    padding: 8px 10px;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+  .sel-bar .sel-eye { order: 0; margin-left: 0; justify-content: center; text-align: center; }
+  .sel-bar .sel-actions { order: 1; flex-wrap: wrap; justify-content: center; gap: 6px; }
+  .sel-bar button { font-size: 11px; padding: 6px 10px; flex: 1 1 auto; min-width: 0; }
+
+  /* Tag-filter chips — wrap tight */
+  .tagchips { padding: 8px 10px; gap: 6px; flex-wrap: wrap; }
+
+  /* Intro modal — full-bleed comfortable, smaller headers */
+  .intro-overlay { padding: 10px; }
+  .intro-card { padding: 22px 18px 20px; max-width: 100%; }
+  .intro-brand img { height: 56px; }
+  .intro-q { font-size: 28px; }
+  .intro-sub { font-size: 12px; margin-bottom: 16px; }
+  .intro-options.cols-3 { grid-template-columns: 1fr 1fr; }  /* fall to 2 cols */
+  .intro-opt { padding: 12px 12px; font-size: 16px; gap: 10px; }
+  .intro-opt .icon.plat { width: 38px; height: 38px; }
+  .roster-row { padding: 10px 10px; min-height: 46px; }
+  .roster-row .rp-lbl { font-size: 14px; }
+
+  /* Player drawer (already full-width <980px) — tighten inner padding */
+  .drw-hero { padding: 16px 14px; }
+  .drw-sec { padding: 16px 14px; }
+
+  /* Pop-out modal */
+  .pop { padding: 8px; }
+  .pop-shell { max-width: 100%; }
+  .pop-bar { padding: 10px 14px; }
+  .pop-bar-l { font-size: 14px; }
+  .pop-body { padding: 16px; gap: 18px; }
+  .pop-name { font-size: 32px; }
+
+  /* Compare drawer header — tighten inner */
+  .vs-strip .vs-strip-h { padding: 12px 14px; gap: 8px; }
+
+  /* Tutorial spotlight popovers — keep on screen */
+  .tut-card { max-width: calc(100vw - 24px); }
+
+  /* Lighten the body grid texture so it doesn't dominate small screens */
+  body {
+    background-image: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 39px,
+      color-mix(in srgb, var(--ink) 2.5%, transparent) 39px,
+      color-mix(in srgb, var(--ink) 2.5%, transparent) 40px
+    );
+  }
+}
+
+/* Extra-narrow polish (small phones, 320–400px) */
+@media (max-width: 400px) {
+  .tb { padding: 6px 10px; gap: 6px; }
+  .tb-brand img { height: 38px; }
+  .tb-mode button { padding: 5px 6px; font-size: 10px; }
+  .fbar-pill { padding: 4px 8px; font-size: 11px; }
+  .card-name,
+  body[data-mode="prepping"] .card-name { font-size: 14px; }
+  body[data-mode="drafting"] .card,
+  body[data-mode="drafting"] .board-header,
+  body[data-mode="prepping"] .card,
+  body[data-mode="prepping"] .board-header {
+    grid-template-columns: 18px 34px 30px minmax(0, 1fr) 14px;
+    gap: 7px;
+    padding: 8px 8px;
+  }
+  .card-rk { width: 34px; font-size: 12px; }
+  .card-pfp,
+  body[data-mode="prepping"] .card-pfp { width: 30px; height: 30px; }
+  .intro-q { font-size: 24px; }
+}
+
 </style>
 </head>
 <body data-theme="light">
