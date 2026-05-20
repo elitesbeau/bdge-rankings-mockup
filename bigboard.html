@@ -4175,11 +4175,56 @@ body.vs-open[data-vs-mode="expanded"] .tb { padding-right: 752px; }
   .pop-body { padding: 16px; gap: 18px; }
   .pop-name { font-size: 32px; }
 
-  /* Compare drawer header — tighten inner */
-  .vs-strip .vs-strip-h { padding: 12px 14px; gap: 8px; }
+  /* Compare drawer header — tighten inner, keep buttons + heading from wrapping.
+     "HIDE STATS" was breaking onto 2 lines; force nowrap and trim padding so it
+     plus Close fit on the same row as the "Compare 2 Players" title. */
+  .vs-strip .vs-strip-h { padding: 12px 14px; gap: 8px; flex-wrap: wrap; }
+  .vs-strip .vs-strip-h .eye { font-size: 16px; }
+  .vs-strip .vs-strip-h .ctrl { gap: 6px; }
+  .vs-strip .vs-strip-h .ctrl button { white-space: nowrap; padding: 5px 9px; font-size: 10px; }
+  .vs-strip .vs-strip-h .ctrl button .chev { display: none; }
+  /* Tighten the stats table cells so the label column doesn't eat the row.
+     Player column widths are set inline by JS — also patched there. */
+  .vs-strip .vs-cell { padding: 8px 10px; min-height: 38px; font-size: 12px; }
+  .vs-strip .vs-row-lab { padding-left: 12px; font-size: 12px; }
+  .vs-strip .vs-cell-corner { padding: 8px 10px; }
 
-  /* Tutorial spotlight popovers — keep on screen */
-  .tut-card { max-width: calc(100vw - 24px); }
+  /* Tutorial overlay — keep on screen, prevent action-button line wraps.
+     Was: ←/Back on two lines because button was too narrow.
+     Was: "Skip tour" wrapping mid-phrase. */
+  .tut-card { max-width: calc(100vw - 24px); padding: 14px 16px; }
+  .tut-foot { gap: 8px; flex-wrap: wrap; }
+  .tut-skip, .tut-back, .tut-next { white-space: nowrap; }
+  .tut-back { padding: 7px 10px; font-size: 12px; }
+  .tut-next { padding: 8px 14px; font-size: 13px; }
+  .tut-skip { padding: 6px 8px; font-size: 11px; }
+  .tut-prog i { width: 14px; }
+
+  /* Filter bar — hide the "View" sub-label so it doesn't dangle at the end
+     of the position-pill row when the toggle wraps to the next line.
+     Only the inline-styled "View" label has style="margin-left:18px";
+     "Position" has no inline style and stays. */
+  .fbar-l[style*="margin-left"] { display: none; }
+
+  /* Player drawer action row — was a 4-up flex row with text bleeding between
+     buttons. Switch to 2×2 grid so each button gets enough width to breathe. */
+  .drw-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    padding: 12px 14px;
+  }
+  .drw-act { padding: 9px 6px; font-size: 12px; gap: 4px; flex: none; }
+
+  /* Selection bar — compress further; was eating ~25% of viewport */
+  .sel-bar {
+    padding: 6px 8px;
+    margin: 4px 10px;
+    gap: 6px;
+  }
+  .sel-bar .sel-eye { font-size: 11px; padding: 2px 0; }
+  .sel-bar .sel-actions { gap: 5px; }
+  .sel-bar button { padding: 6px 8px; font-size: 10px; }
 
   /* Lighten the body grid texture so it doesn't dominate small screens */
   body {
@@ -6774,8 +6819,15 @@ function renderVsStrip() {
   // Column widths are tuned so 2–4 players fit in the 720px drawer without
   // needing horizontal scroll. The label column shrinks when there are more
   // players so the player columns stay readable.
-  const labelCol = N >= 4 ? 160 : N === 3 ? 180 : 200;
-  const minCol = N >= 4 ? 118 : N === 3 ? 140 : 170;
+  // On mobile (≤600px), label column shrinks further so at least one player
+  // column gets ~60% of viewport; second player is reached by horizontal scroll.
+  const isMobile = window.matchMedia('(max-width: 600px)').matches;
+  const labelCol = isMobile
+    ? 108
+    : (N >= 4 ? 160 : N === 3 ? 180 : 200);
+  const minCol = isMobile
+    ? 170
+    : (N >= 4 ? 118 : N === 3 ? 140 : 170);
   const tplCol = `${labelCol}px repeat(${N}, minmax(${minCol}px, 1fr))`;
   const headers = document.getElementById('vsHeaders');
   const grid    = document.getElementById('vsStatsGrid');
