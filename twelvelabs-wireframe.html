@@ -1,0 +1,440 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Wireframe — Twelve Labs Models Overview</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f4f5f7;
+    --ink: #1f2530;
+    --soft: #6b7280;
+    --line: #c9cdd5;
+    --line-strong: #4a5160;
+    --fill: #e6e8ec;
+    --fill-soft: #eef0f3;
+    --accent: #2563eb;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    font-family: "Inter", system-ui, sans-serif;
+    color: var(--ink);
+    padding: 24px 0 60px;
+  }
+  .wrap { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+  .meta {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--soft);
+    margin-bottom: 18px;
+    display: flex; justify-content: space-between; align-items: baseline;
+  }
+  .meta .title { color: var(--ink); font-weight: 700; }
+
+  /* Generic wireframe box */
+  .box {
+    background: var(--fill-soft);
+    border: 1.5px dashed var(--line-strong);
+    padding: 18px;
+    position: relative;
+  }
+  .box.solid { border-style: solid; border-color: var(--line-strong); background: var(--fill); }
+  .box .tag {
+    position: absolute; top: 6px; left: 8px;
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 9px; font-weight: 700;
+    letter-spacing: 0.16em;
+    color: var(--soft);
+    text-transform: uppercase;
+  }
+  .ph-h { /* placeholder headline */
+    display: block;
+    height: 28px;
+    background: linear-gradient(90deg, var(--line-strong) 0 60%, transparent 60% 100%);
+    margin: 18px 0 10px;
+    border-radius: 2px;
+  }
+  .ph-h.lg { height: 44px; background-size: 70% 100%; }
+  .ph-h.short { background-size: 35% 100%; }
+  .ph-p { /* placeholder paragraph */
+    display: block; height: 8px;
+    background: var(--line);
+    margin: 6px 0;
+    border-radius: 2px;
+  }
+  .ph-p.w90 { width: 92%; }
+  .ph-p.w70 { width: 70%; }
+  .ph-p.w55 { width: 55%; }
+  .ph-link {
+    display: inline-block;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    color: var(--accent);
+    margin-top: 12px;
+    border-bottom: 1px solid var(--accent);
+    padding-bottom: 1px;
+  }
+  .ph-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    height: 34px; padding: 0 18px;
+    background: var(--ink); color: var(--bg);
+    border-radius: 4px;
+    font-family: "Inter", sans-serif; font-size: 12px; font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .ph-btn.ghost {
+    background: transparent; color: var(--ink);
+    border: 1.5px solid var(--ink);
+  }
+
+  /* ── Global nav ── */
+  .nav {
+    display: flex; align-items: center; gap: 18px;
+    padding: 14px 22px;
+    background: #fff;
+    border: 1.5px solid var(--line-strong);
+  }
+  .nav .logo {
+    width: 110px; height: 26px;
+    background: var(--line-strong);
+    border-radius: 3px;
+  }
+  .nav .nav-items {
+    display: flex; gap: 18px; flex: 1; justify-content: center;
+  }
+  .nav .nav-items span {
+    display: inline-block;
+    width: 72px; height: 10px;
+    background: var(--line);
+    border-radius: 2px;
+  }
+  .nav .nav-cta { display: flex; gap: 10px; }
+
+  /* ── Section frames ── */
+  section { margin-top: 22px; }
+  section .section-head {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.18em;
+    color: var(--soft);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  section .section-head::after {
+    content: ""; flex: 1; height: 1px;
+    background: var(--line);
+  }
+
+  /* Hero */
+  .hero { text-align: center; padding: 60px 24px; }
+  .hero .ph-h.lg { margin: 0 auto 14px; width: 70%; background-image: linear-gradient(90deg, var(--line-strong), var(--line-strong)); }
+  .hero .ph-p { margin-left: auto; margin-right: auto; }
+
+  /* 2-col grid */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 18px; }
+  .grid-6 { display: grid; grid-template-columns: repeat(6, 1fr); gap: 14px; }
+
+  /* Card */
+  .card { min-height: 200px; }
+  .card .img-zone {
+    height: 110px;
+    background: repeating-linear-gradient(
+      45deg, var(--line) 0 8px, transparent 8px 16px
+    );
+    border: 1px solid var(--line);
+    margin-bottom: 14px;
+  }
+
+  /* News list row */
+  .news-row {
+    display: flex; align-items: center; gap: 14px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .news-row:last-child { border-bottom: 0; }
+  .news-row .ph-p { flex: 1; margin: 0; }
+  .news-row .ph-arrow {
+    width: 18px; height: 10px; background: var(--line-strong);
+    clip-path: polygon(0 40%, 70% 40%, 70% 0, 100% 50%, 70% 100%, 70% 60%, 0 60%);
+  }
+
+  /* Citation list */
+  .cite-row {
+    padding: 10px 0;
+    border-bottom: 1px solid var(--line);
+    display: flex; align-items: center; gap: 14px;
+  }
+  .cite-row:last-child { border-bottom: 0; }
+  .cite-row .ph-p { flex: 1; margin: 0; }
+  .cite-row .tag-conf {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 9px; font-weight: 700;
+    letter-spacing: 0.12em;
+    color: var(--soft);
+    background: var(--fill);
+    padding: 3px 8px;
+    border: 1px solid var(--line);
+    white-space: nowrap;
+  }
+
+  /* Closing CTA */
+  .cta-strip {
+    text-align: center;
+    padding: 50px 24px;
+    background: var(--fill);
+    border: 1.5px solid var(--line-strong);
+  }
+  .cta-strip .ph-h { margin: 0 auto 24px; width: 50%; background-image: linear-gradient(90deg, var(--line-strong), var(--line-strong)); }
+  .cta-strip .btn-row { display: flex; gap: 12px; justify-content: center; }
+
+  /* Footer */
+  .footer-block {
+    background: #fff;
+    border: 1.5px solid var(--line-strong);
+    padding: 24px;
+  }
+  .footer-col h4 {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    color: var(--soft);
+    text-transform: uppercase;
+    margin: 0 0 12px;
+  }
+  .footer-col .ph-p { width: 80%; margin: 8px 0; }
+  .footer-bottom {
+    margin-top: 22px;
+    padding-top: 18px;
+    border-top: 1px solid var(--line);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .social-row { display: flex; gap: 10px; }
+  .social-row .ico {
+    width: 22px; height: 22px;
+    background: var(--line-strong);
+    border-radius: 50%;
+  }
+  .copy {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px; color: var(--soft);
+  }
+
+  /* Responsive — collapse grids */
+  @media (max-width: 880px) {
+    .grid-2 { grid-template-columns: 1fr; }
+    .grid-6 { grid-template-columns: repeat(2, 1fr); }
+    .nav .nav-items { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="meta">
+  <span><span class="title">WIREFRAME</span> &nbsp;·&nbsp; twelvelabs.io/product/models-overview</span>
+  <span>structural skeleton · placeholder content</span>
+</div>
+
+<!-- ─────────────── GLOBAL NAV ─────────────── -->
+<nav class="nav" aria-label="Global navigation wireframe">
+  <div class="logo" title="Logo"></div>
+  <div class="nav-items">
+    <span></span><span></span><span></span><span></span><span></span><span></span>
+  </div>
+  <div class="nav-cta">
+    <span class="ph-btn ghost">Playground</span>
+    <span class="ph-btn">Talk to Sales</span>
+  </div>
+</nav>
+
+<!-- ─────────────── 1. HERO ─────────────── -->
+<section>
+  <div class="section-head">1 · Hero</div>
+  <div class="box hero">
+    <span class="tag">Hero · single col centered</span>
+    <span class="ph-h lg"></span>
+    <span class="ph-p w70" style="display:block; width:60%"></span>
+    <span class="ph-p w70" style="display:block; width:55%; margin-top:8px"></span>
+  </div>
+</section>
+
+<!-- ─────────────── 2. PRODUCT OVERVIEW (2-col) ─────────────── -->
+<section>
+  <div class="section-head">2 · Product overview · 2-col</div>
+  <div class="grid-2">
+    <div class="box card">
+      <span class="tag">Product card · Marengo 3.0</span>
+      <div class="img-zone" style="margin-top:18px"></div>
+      <span class="ph-h short"></span>
+      <span class="ph-p w90"></span>
+      <span class="ph-p w70"></span>
+      <a class="ph-link">Learn more →</a>
+    </div>
+    <div class="box card">
+      <span class="tag">Product card · Pegasus 1.5</span>
+      <div class="img-zone" style="margin-top:18px"></div>
+      <span class="ph-h short"></span>
+      <span class="ph-p w90"></span>
+      <span class="ph-p w70"></span>
+      <a class="ph-link">Learn more →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────── 3. MARENGO · Description ─────────────── -->
+<section>
+  <div class="section-head">3 · Marengo · embeddings explanation</div>
+  <div class="box">
+    <span class="tag">1-col description</span>
+    <span class="ph-h"></span>
+    <span class="ph-p w90"></span>
+    <span class="ph-p w90"></span>
+    <span class="ph-p w70"></span>
+  </div>
+</section>
+
+<!-- ─────────────── 4. MARENGO · Capabilities (2-col) ─────────────── -->
+<section>
+  <div class="section-head">4 · Marengo capabilities · 2-col</div>
+  <div class="grid-2">
+    <div class="box card">
+      <span class="tag">Capability · Search</span>
+      <span class="ph-h short" style="margin-top:18px"></span>
+      <span class="ph-p w90"></span>
+      <span class="ph-p w70"></span>
+      <a class="ph-link">Learn more →</a>
+    </div>
+    <div class="box card">
+      <span class="tag">Capability · Embed</span>
+      <span class="ph-h short" style="margin-top:18px"></span>
+      <span class="ph-p w90"></span>
+      <span class="ph-p w70"></span>
+      <a class="ph-link">Learn more →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────── 5. MARENGO · What's New ─────────────── -->
+<section>
+  <div class="section-head">5 · Marengo · what's new (linked articles)</div>
+  <div class="box">
+    <span class="tag">News list · 1-col</span>
+    <span class="ph-h short" style="margin-bottom:14px"></span>
+    <div class="news-row"><span class="ph-p w90"></span><span class="ph-arrow"></span></div>
+    <div class="news-row"><span class="ph-p w70"></span><span class="ph-arrow"></span></div>
+  </div>
+</section>
+
+<!-- ─────────────── 6. PEGASUS · Description ─────────────── -->
+<section>
+  <div class="section-head">6 · Pegasus · description</div>
+  <div class="box">
+    <span class="tag">1-col description + use cases</span>
+    <span class="ph-h"></span>
+    <span class="ph-p w90"></span>
+    <span class="ph-p w90"></span>
+    <span class="ph-p w70"></span>
+    <span class="ph-p w55"></span>
+  </div>
+</section>
+
+<!-- ─────────────── 7. PEGASUS · Capability (wide) ─────────────── -->
+<section>
+  <div class="section-head">7 · Pegasus capability · single wide card</div>
+  <div class="box card" style="min-height: 180px">
+    <span class="tag">Capability · Analyze</span>
+    <span class="ph-h short" style="margin-top:18px"></span>
+    <span class="ph-p w90"></span>
+    <span class="ph-p w70"></span>
+    <a class="ph-link">Learn more →</a>
+  </div>
+</section>
+
+<!-- ─────────────── 8. PEGASUS · What's New ─────────────── -->
+<section>
+  <div class="section-head">8 · Pegasus · what's new (linked articles)</div>
+  <div class="box">
+    <span class="tag">News list · 1-col</span>
+    <span class="ph-h short" style="margin-bottom:14px"></span>
+    <div class="news-row"><span class="ph-p w90"></span><span class="ph-arrow"></span></div>
+    <div class="news-row"><span class="ph-p w70"></span><span class="ph-arrow"></span></div>
+  </div>
+</section>
+
+<!-- ─────────────── 9. RESEARCH & VALUES ─────────────── -->
+<section>
+  <div class="section-head">9 · Research &amp; values · paper citations</div>
+  <div class="box">
+    <span class="tag">1-col headline + paper list</span>
+    <span class="ph-h"></span>
+    <span class="ph-p w90"></span>
+    <span class="ph-p w70" style="margin-bottom:14px"></span>
+    <div class="cite-row"><span class="ph-p w90"></span><span class="tag-conf">CONF</span></div>
+    <div class="cite-row"><span class="ph-p w90"></span><span class="tag-conf">CONF</span></div>
+    <div class="cite-row"><span class="ph-p w90"></span><span class="tag-conf">CONF</span></div>
+    <div class="cite-row"><span class="ph-p w90"></span><span class="tag-conf">CONF</span></div>
+  </div>
+</section>
+
+<!-- ─────────────── 10. CLOSING CTA ─────────────── -->
+<section>
+  <div class="section-head">10 · Closing CTA strip</div>
+  <div class="cta-strip">
+    <span class="ph-h"></span>
+    <div class="btn-row">
+      <span class="ph-btn">Playground →</span>
+      <span class="ph-btn ghost">Talk to Sales →</span>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────── 11. FOOTER ─────────────── -->
+<section>
+  <div class="section-head">11 · Footer · 6-col grid + social row</div>
+  <div class="footer-block">
+    <div class="grid-6">
+      <div class="footer-col">
+        <h4>Platform</h4>
+        <span class="ph-p"></span><span class="ph-p"></span><span class="ph-p"></span><span class="ph-p"></span>
+      </div>
+      <div class="footer-col">
+        <h4>Enterprise</h4>
+        <span class="ph-p"></span><span class="ph-p"></span><span class="ph-p"></span><span class="ph-p"></span>
+      </div>
+      <div class="footer-col">
+        <h4>Developers</h4>
+        <span class="ph-p"></span><span class="ph-p"></span><span class="ph-p"></span><span class="ph-p"></span>
+      </div>
+      <div class="footer-col">
+        <h4>Capabilities</h4>
+        <span class="ph-p"></span><span class="ph-p"></span><span class="ph-p"></span><span class="ph-p"></span>
+      </div>
+      <div class="footer-col">
+        <h4>Solutions</h4>
+        <span class="ph-p"></span><span class="ph-p"></span><span class="ph-p"></span><span class="ph-p"></span>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <span class="ph-p"></span><span class="ph-p"></span><span class="ph-p"></span><span class="ph-p"></span>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="social-row">
+        <span class="ico"></span><span class="ico"></span><span class="ico"></span>
+      </div>
+      <span class="copy">© YYYY–YYYY · Company name</span>
+    </div>
+  </div>
+</section>
+
+</div>
+</body>
+</html>
