@@ -4132,15 +4132,34 @@ body.vs-open[data-vs-mode="expanded"] .tb { padding-right: 752px; }
   /* Tag-filter chips — wrap tight */
   .tagchips { padding: 8px 10px; gap: 6px; flex-wrap: wrap; }
 
-  /* Intro modal — full-bleed comfortable, smaller headers */
-  .intro-overlay { padding: 10px; }
-  .intro-card { padding: 22px 18px 20px; max-width: 100%; }
+  /* Intro modal — full-bleed scrollable on mobile.
+     Overlay becomes a scrolling column (top-aligned) so tall steps
+     like Roster Layout can reach Back/Continue by scrolling.
+     Card fills edge-to-edge — no decorative border eating viewport. */
+  .intro-overlay {
+    padding: 0;
+    align-items: flex-start;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .intro-card {
+    width: 100%; max-width: 100%;
+    min-height: 100vh;
+    padding: 20px 16px 24px;
+    border: none;
+    box-shadow: none;
+  }
   .intro-brand img { height: 56px; }
   .intro-q { font-size: 28px; }
   .intro-sub { font-size: 12px; margin-bottom: 16px; }
   .intro-options.cols-3 { grid-template-columns: 1fr 1fr; }  /* fall to 2 cols */
-  .intro-opt { padding: 12px 12px; font-size: 16px; gap: 10px; }
+  /* Grid items must allow shrink below content min-size; subtitle must wrap
+     so its `white-space: nowrap` doesn't force the card past 1fr. */
+  .intro-opt { padding: 12px 12px; font-size: 16px; gap: 10px; min-width: 0; }
+  .intro-opt .lbl-sub { white-space: normal; overflow: visible; text-overflow: clip; }
   .intro-opt .icon.plat { width: 38px; height: 38px; }
+  /* Step 1 (Drafting/Prepping) — calmer mobile padding so 2 cards fit cleanly */
+  #introStep1 .intro-opt { padding: 16px 14px; min-height: 130px; gap: 12px; }
   .roster-row { padding: 10px 10px; min-height: 46px; }
   .roster-row .rp-lbl { font-size: 14px; }
 
