@@ -3,23 +3,26 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Wireframe — Twelve Labs Models Overview (exact layout)</title>
+<title>Wireframe spec — Twelve Labs Models Overview</title>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --page: #f7f6f1;          /* cream page background */
+    --page: #f7f6f1;
     --ink: #1c1f24;
     --soft: #6b7280;
     --line: #c7c9cf;
     --line-strong: #3a3f48;
     --fill: #e8e9ec;
     --fill-soft: #efefe9;
-    --footer: #d4e7c8;        /* light lime footer band */
+    --footer: #d4e7c8;
     --accent: #2563eb;
     --grad-a: #f3a36a;
     --grad-b: #f5d27c;
     --grad-c: #9ed8c0;
     --grad-d: #c3a9d6;
+    --spec-bg: #1c1f24;
+    --spec-ink: #f3f4f6;
+    --spec-accent: #fbbf24;
   }
   * { box-sizing: border-box; }
   html, body { background: var(--page); }
@@ -31,35 +34,53 @@
   }
   .meta-bar {
     background: var(--ink); color: var(--page);
-    padding: 8px 24px;
+    padding: 10px 24px;
     font-family: "JetBrains Mono", monospace;
     font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
-    display: flex; justify-content: space-between;
+    display: flex; justify-content: space-between; align-items: center;
   }
-  .meta-bar b { color: #fff; }
+  .meta-bar b { color: var(--spec-accent); }
 
-  /* layout helpers */
   .wrap { max-width: 1200px; margin: 0 auto; padding: 0 32px; }
   .wrap-narrow { max-width: 760px; margin: 0 auto; padding: 0 32px; }
-  section { padding: 0; margin: 0; }
 
-  /* generic placeholder box */
-  .box {
-    background: var(--fill-soft);
-    border: 1.5px dashed var(--line-strong);
-    position: relative;
-  }
-  .box.solid { border-style: solid; }
-  .box .tag {
-    position: absolute; top: 6px; left: 8px;
+  /* ─── Spec header bar (above every section) ─── */
+  .spec-bar {
+    background: var(--spec-bg); color: var(--spec-ink);
     font-family: "JetBrains Mono", monospace;
-    font-size: 9px; font-weight: 700;
-    letter-spacing: 0.16em;
-    color: var(--soft); text-transform: uppercase;
-    z-index: 2;
+    padding: 10px 18px;
+    display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+    margin: 36px 0 0;
+    border-radius: 4px 4px 0 0;
+  }
+  .spec-bar .idx {
+    background: var(--spec-accent); color: var(--ink);
+    font-weight: 700; font-size: 11px;
+    padding: 3px 8px; border-radius: 3px;
+    letter-spacing: 0.04em;
+  }
+  .spec-bar .name {
+    font-size: 12px; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--spec-ink);
+  }
+  .spec-bar .specs {
+    margin-left: auto;
+    display: flex; gap: 14px; flex-wrap: wrap;
+    font-size: 10px; letter-spacing: 0.06em;
+    color: #cbd5e1;
+  }
+  .spec-bar .specs b { color: var(--spec-accent); font-weight: 700; }
+  .spec-section {
+    background: var(--fill-soft);
+    border: 1px solid var(--line);
+    border-top: 0;
+    border-radius: 0 0 4px 4px;
+    padding: 24px;
+    margin-bottom: 6px;
   }
 
-  /* placeholder bars (text stand-ins) */
+  /* placeholders */
   .ph-h {
     display: block; height: 24px; border-radius: 2px;
     background: var(--line-strong);
@@ -81,13 +102,26 @@
     color: var(--soft); text-transform: uppercase;
   }
 
+  /* Element-level measurement callout */
+  .dim {
+    position: absolute; top: 8px; right: 8px;
+    background: var(--spec-bg); color: var(--spec-accent);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 9px; font-weight: 700;
+    padding: 2px 6px; border-radius: 3px;
+    letter-spacing: 0.04em;
+    z-index: 3;
+  }
+  .dim.tl { right: auto; left: 8px; top: 8px; }
+  .dim.b { top: auto; bottom: 8px; }
+
   /* nav */
   .nav {
     background: #fff;
     border-bottom: 1.5px solid var(--line-strong);
     padding: 14px 32px;
     display: flex; align-items: center; gap: 22px;
-    position: sticky; top: 0; z-index: 50;
+    position: relative;
   }
   .nav .logo { width: 130px; height: 24px; background: var(--line-strong); border-radius: 3px; }
   .nav .nav-items { display: flex; gap: 20px; flex: 1; justify-content: center; }
@@ -103,12 +137,12 @@
   }
   .pill.solid { background: var(--ink); color: var(--page); }
 
-  /* SECTION 2 — HERO */
-  .hero { padding: 80px 0 60px; text-align: center; }
-  .hero .ph-h.xl { width: 70%; }
+  /* hero blob */
+  .hero { padding: 60px 0 40px; text-align: center; position: relative; }
+  .hero .ph-h.xl { width: 70%; margin-left: auto; margin-right: auto; }
   .hero .ph-p { width: 45%; }
   .hero-blob {
-    margin: 50px auto 0;
+    margin: 40px auto 0;
     width: 80%; max-width: 720px;
     aspect-ratio: 16 / 9;
     border-radius: 80px;
@@ -127,21 +161,9 @@
     filter: blur(28px) saturate(0.9);
     z-index: 0;
   }
-  .hero-blob .lbl {
-    position: absolute; left: 12px; top: 10px;
-    font-family: "JetBrains Mono", monospace;
-    font-size: 10px; color: #1c1f24;
-    background: rgba(255,255,255,0.85);
-    padding: 3px 10px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    z-index: 2;
-    border: 1px solid var(--line);
-    border-radius: 3px;
-  }
 
-  /* SECTION 3 — 2 product cards */
-  .product-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; padding: 30px 0 70px; }
+  /* product cards */
+  .product-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; padding: 20px 0; }
   .product-card {
     border-radius: 24px;
     background: linear-gradient(145deg, #fff 0%, #f0eee6 100%);
@@ -152,20 +174,24 @@
     position: relative;
   }
   .product-card .visual {
-    width: 60%; aspect-ratio: 1; margin: 0 auto 18px;
+    width: 60%; aspect-ratio: 1; margin: 14px auto 18px;
     border-radius: 16px;
     background: repeating-linear-gradient(135deg, var(--line) 0 6px, transparent 6px 14px);
     border: 1px solid var(--line);
   }
   .product-card .ph-h { width: 60%; height: 20px; }
   .product-card .ph-p { width: 70%; }
+  .product-card .label-strip {
+    background: var(--spec-bg); color: var(--spec-ink);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px; letter-spacing: 0.08em;
+    padding: 4px 10px; border-radius: 3px;
+    margin-bottom: 14px;
+  }
 
-  /* SECTION 4 — Marengo intro + chart cards */
-  .marengo-intro { padding: 60px 0 30px; text-align: center; }
-  .marengo-intro .ph-h.lg { width: 60%; margin-left: auto; margin-right: auto; }
-  .marengo-intro .ph-p { width: 55%; }
+  /* chart cards */
   .chart-grid {
-    margin-top: 36px;
+    margin-top: 24px;
     display: grid; grid-template-columns: 1fr 1fr; gap: 18px;
   }
   .chart-card {
@@ -181,13 +207,12 @@
     border-radius: 4px 4px 0 0;
   }
 
-  /* SECTION 5 — eyebrow + small cards row */
-  .eyebrow-row { text-align: center; padding: 50px 0 24px; }
-  .small-card-row { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; padding-bottom: 50px; }
+  /* small/mini card row */
+  .small-card-row { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
   .small-card {
     background: linear-gradient(150deg, #fff, #f0eee6);
     border: 1.5px solid var(--line); border-radius: 22px;
-    padding: 24px; min-height: 180px;
+    padding: 24px; min-height: 200px;
     position: relative;
   }
   .small-card .visual-mini {
@@ -195,10 +220,14 @@
     background: repeating-linear-gradient(90deg, var(--line) 0 4px, transparent 4px 10px);
     border-radius: 10px;
   }
+  .visual-grid {
+    margin: 14px auto; width: 60%; height: 80px;
+    display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px;
+  }
+  .visual-grid span { background: var(--line); border-radius: 3px; }
 
-  /* SECTION 6 — wide gradient image */
+  /* wide image */
   .wide-image {
-    margin: 30px 0 50px;
     height: 360px;
     border-radius: 64px;
     border: 1.5px dashed var(--line-strong);
@@ -215,18 +244,17 @@
     filter: blur(18px) saturate(0.7);
     z-index: 0;
   }
-  .wide-image .lbl {
-    position: absolute; top: 12px; left: 20px;
-    background: rgba(255,255,255,0.85); padding: 3px 10px;
-    font-family: "JetBrains Mono", monospace;
-    font-size: 10px; letter-spacing: 0.1em; color: #1c1f24;
-    z-index: 2;
-    border: 1px solid var(--line);
-    border-radius: 3px;
+  .wide-image.v2 {
+    height: 320px; border-radius: 48px;
+  }
+  .wide-image.v2 .grad {
+    background:
+      radial-gradient(circle at 50% 50%, var(--grad-c) 0%, transparent 60%),
+      linear-gradient(135deg, var(--grad-a), var(--grad-d));
   }
 
-  /* SECTION 7 — logo lockup + 3 cards row */
-  .logo-lockup { text-align: center; padding: 30px 0 20px; }
+  /* logo lockup + mini row */
+  .logo-lockup { text-align: center; padding: 8px 0 20px; }
   .logo-lockup .lockup {
     display: inline-flex; align-items: center; gap: 10px;
     padding: 6px 14px; background: var(--fill); border: 1.5px solid var(--line);
@@ -238,7 +266,6 @@
   .lockup .glyph { width: 18px; height: 12px; background: var(--line-strong); clip-path: polygon(0 30%, 100% 0, 100% 70%, 0 100%); }
   .three-card-row {
     display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
-    margin: 30px 0 60px;
   }
   .mini-card {
     background: linear-gradient(150deg, #fff, #ece9df);
@@ -247,37 +274,28 @@
     position: relative;
   }
   .mini-card .visual-stack {
-    margin-top: 14px;
+    margin-top: 36px;
     display: flex; flex-direction: column; gap: 8px;
   }
   .mini-card .visual-stack span {
     height: 14px; background: var(--line); border-radius: 4px;
   }
 
-  /* SECTION 11 — Pegasus intro (mirrors Marengo intro) */
-  .pegasus-intro { padding: 50px 0 0; text-align: center; }
-
-  /* SECTION 13 — wide gradient image variant */
-  .wide-image.v2 {
-    height: 320px; border-radius: 48px;
-    background:
-      radial-gradient(circle at 50% 50%, var(--grad-c) 0%, transparent 60%),
-      linear-gradient(135deg, var(--grad-a), var(--grad-d));
-  }
-
-  /* SECTION 15 — wide video card */
+  /* video card */
   .video-card {
     height: 380px; border-radius: 56px;
     background: linear-gradient(180deg, #d4e0d3, #97a89e);
     border: 1.5px dashed var(--line-strong);
-    position: relative; margin: 30px 0 24px;
+    position: relative;
     display: grid; place-items: center;
+    overflow: hidden;
   }
   .video-card .play {
     width: 64px; height: 64px; border-radius: 50%;
     background: rgba(255,255,255,0.85);
     border: 2px solid var(--ink);
     display: grid; place-items: center;
+    z-index: 2;
   }
   .video-card .play::after {
     content: ""; width: 0; height: 0;
@@ -286,21 +304,9 @@
     border-bottom: 12px solid transparent;
     margin-left: 5px;
   }
-  .video-card .lbl {
-    position: absolute; top: 12px; left: 20px;
-    background: rgba(255,255,255,0.85); padding: 3px 10px;
-    font-family: "JetBrains Mono", monospace;
-    font-size: 10px; letter-spacing: 0.1em; color: #1c1f24;
-    border: 1px solid var(--line);
-    border-radius: 3px;
-    z-index: 2;
-  }
 
-  /* SECTION 17 — two big product cards (Pegasus 1.1 / 1.2) */
-  .big-pair {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 18px;
-    padding: 50px 0 30px;
-  }
+  /* big-pair */
+  .big-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
   .big-card {
     background: linear-gradient(150deg, #fff, #ece9df);
     border-radius: 32px; border: 1.5px solid var(--line);
@@ -329,12 +335,12 @@
     border-radius: 12px;
   }
 
-  /* SECTION 18 — transformation block (heading + 4-col text) */
-  .xform { padding: 60px 0 50px; text-align: center; }
+  /* transformation */
+  .xform { text-align: center; padding: 8px 0; }
   .xform .ph-h.lg { width: 65%; margin: 0 auto 18px; }
   .xform .ph-p { width: 55%; margin-left: auto; margin-right: auto; }
   .xform-cols {
-    margin-top: 40px;
+    margin-top: 30px;
     display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px;
     text-align: left;
   }
@@ -344,18 +350,13 @@
     border-radius: 14px;
     padding: 18px;
     min-height: 160px;
+    position: relative;
   }
-  .xform-col .ph-h.sm { width: 60%; }
+  .xform-col .ph-h.sm { width: 60%; margin-top: 18px; }
 
-  /* SECTION 19 — closing CTA */
-  .closing {
-    padding: 70px 0 80px; text-align: center;
-    border-top: 1.5px solid var(--line);
-    border-bottom: 1.5px solid var(--line);
-    background: var(--page);
-    margin-top: 30px;
-  }
-  .closing .ph-h.xl { width: 60%; margin: 0 auto 32px; }
+  /* closing */
+  .closing { text-align: center; padding: 40px 0; position: relative; }
+  .closing .ph-h.xl { width: 60%; margin: 0 auto 28px; }
   .closing .btn-row { display: flex; gap: 14px; justify-content: center; }
   .ph-btn {
     display: inline-flex; align-items: center; gap: 6px;
@@ -367,15 +368,16 @@
   }
   .ph-btn.solid { background: var(--ink); color: var(--page); }
 
-  /* SECTION 20 — footer (lime tinted band) */
+  /* footer */
   .footer {
     background: var(--footer);
-    padding: 50px 0 30px;
-    border-top: 1.5px solid var(--line);
+    padding: 40px 0 24px;
+    border-radius: 4px;
   }
   .footer-grid {
     display: grid; grid-template-columns: repeat(6, 1fr); gap: 28px;
   }
+  .footer-col { position: relative; }
   .footer-col h4 {
     font-family: "JetBrains Mono", monospace;
     font-size: 10px; font-weight: 700;
@@ -384,7 +386,7 @@
   }
   .footer-col .ph-p { width: 80%; margin: 8px 0; background: rgba(0,0,0,0.18); }
   .footer-logo-row {
-    margin-top: 50px;
+    margin-top: 36px;
     display: flex; justify-content: center; align-items: center;
     gap: 14px;
   }
@@ -399,7 +401,7 @@
   }
   .footer-bottom {
     display: flex; justify-content: space-between; align-items: center;
-    margin-top: 30px;
+    margin-top: 24px;
     padding: 0 32px;
     font-family: "JetBrains Mono", monospace;
     font-size: 11px; color: var(--ink);
@@ -409,35 +411,36 @@
     width: 22px; height: 22px; border-radius: 50%; background: var(--ink);
   }
 
-  /* divider */
-  .hr-soft { height: 1px; background: var(--line); margin: 60px auto; max-width: 1200px; }
-
-  /* small-card visual styles (variations) */
-  .visual-grid {
-    margin: 14px auto; width: 60%; height: 80px;
-    display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px;
-  }
-  .visual-grid span { background: var(--line); border-radius: 3px; }
-
   @media (max-width: 880px) {
     .product-grid, .small-card-row, .chart-grid, .big-pair { grid-template-columns: 1fr; }
     .three-card-row { grid-template-columns: 1fr; }
     .xform-cols, .footer-grid { grid-template-columns: repeat(2, 1fr); }
     .nav .nav-items { display: none; }
-    .hero .ph-h.xl, .hero .ph-p,
-    .marengo-intro .ph-h.lg, .marengo-intro .ph-p,
-    .closing .ph-h.xl, .xform .ph-h.lg, .xform .ph-p { width: 90%; }
+    .spec-bar .specs { font-size: 9px; gap: 8px; }
   }
 </style>
 </head>
 <body>
 
 <div class="meta-bar">
-  <span><b>WIREFRAME · structural layout match</b> &nbsp;·&nbsp; twelvelabs.io/product/models-overview</span>
-  <span>20 sections · placeholder content · no marketing copy</span>
+  <span><b>WIREFRAME SPEC</b> &nbsp;·&nbsp; layout match for twelvelabs.io/product/models-overview</span>
+  <span>17 sections · all placeholders · measurements in spec bars</span>
 </div>
 
-<!-- ─── 1. NAV ─── -->
+<div class="wrap">
+
+<!-- ─── 01 NAV ─── -->
+<div class="spec-bar">
+  <span class="idx">01</span>
+  <span class="name">Top nav (sticky, slim)</span>
+  <span class="specs">
+    <span><b>Height:</b> ~64px</span>
+    <span><b>Pad:</b> 14px 32px</span>
+    <span><b>Layout:</b> logo · 6 nav items · 2 CTAs (ghost + solid)</span>
+    <span><b>BG:</b> white</span>
+  </span>
+</div>
+<div class="spec-section" style="padding:0">
 <nav class="nav" aria-label="Sticky top nav">
   <div class="logo" title="Logo"></div>
   <div class="nav-items">
@@ -448,301 +451,386 @@
     <span class="pill solid">Talk to Sales</span>
   </div>
 </nav>
+</div>
 
-<!-- ─── 2. HERO ─── -->
-<section class="hero">
-  <div class="wrap-narrow">
-    <span class="ph-h xl"></span>
-    <span class="ph-p"></span>
-    <span class="ph-p" style="width:35%"></span>
-  </div>
-  <div class="wrap">
+<!-- ─── 02 HERO ─── -->
+<div class="spec-bar">
+  <span class="idx">02</span>
+  <span class="name">Hero (centered headline + 3D gradient object)</span>
+  <span class="specs">
+    <span><b>Height:</b> ~720px</span>
+    <span><b>Pad:</b> 60/0/40</span>
+    <span><b>Text col:</b> max 760px</span>
+    <span><b>Blob:</b> 80% w · 16:9 · radius 80px · blur(28px)</span>
+  </span>
+</div>
+<div class="spec-section">
+  <div class="hero">
+    <div class="wrap-narrow">
+      <span class="ph-h xl"></span>
+      <span class="ph-p"></span>
+      <span class="ph-p" style="width:35%"></span>
+    </div>
     <div class="hero-blob">
       <div class="grad"></div>
-      <span class="lbl">Hero 3D object · gradient blob</span>
     </div>
   </div>
-</section>
+</div>
 
-<!-- ─── 3. TWO PRODUCT CARDS ─── -->
-<section>
-  <div class="wrap">
-    <div class="product-grid">
-      <div class="product-card">
-        <span class="tag">Product card · Marengo 3.0</span>
-        <div class="visual"></div>
-        <span class="ph-h"></span>
-        <span class="ph-p"></span>
-        <span class="ph-p" style="width:50%"></span>
-      </div>
-      <div class="product-card">
-        <span class="tag">Product card · Pegasus 1.5</span>
-        <div class="visual"></div>
-        <span class="ph-h"></span>
-        <span class="ph-p"></span>
-        <span class="ph-p" style="width:50%"></span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ─── 4. MARENGO INTRO + 2 CHART CARDS ─── -->
-<section>
-  <div class="wrap">
-    <div class="marengo-intro">
-      <span class="ph-eyebrow">Marengo</span>
-      <span class="ph-h lg" style="margin-top:16px"></span>
+<!-- ─── 03 PRODUCT CARDS ─── -->
+<div class="spec-bar">
+  <span class="idx">03</span>
+  <span class="name">Two product cards (Marengo · Pegasus)</span>
+  <span class="specs">
+    <span><b>Grid:</b> 1fr 1fr</span>
+    <span><b>Gap:</b> 18px</span>
+    <span><b>Card:</b> min 320px · radius 24px · pad 28/24</span>
+    <span><b>Visual:</b> 60% w · 1:1</span>
+  </span>
+</div>
+<div class="spec-section">
+  <div class="product-grid">
+    <div class="product-card">
+      <span class="label-strip">PRODUCT CARD · Marengo 3.0</span>
+      <div class="visual"></div>
+      <span class="ph-h"></span>
       <span class="ph-p"></span>
-      <span class="ph-p" style="width:40%"></span>
+      <span class="ph-p" style="width:50%"></span>
     </div>
-    <div class="chart-grid">
-      <div class="chart-card">
-        <span class="tag">Chart card · embedding visualization</span>
-        <div class="chart-bars">
-          <span style="height:40%"></span><span style="height:75%"></span>
-          <span style="height:55%"></span><span style="height:90%"></span>
-          <span style="height:30%"></span><span style="height:65%"></span>
-        </div>
+    <div class="product-card">
+      <span class="label-strip">PRODUCT CARD · Pegasus 1.5</span>
+      <div class="visual"></div>
+      <span class="ph-h"></span>
+      <span class="ph-p"></span>
+      <span class="ph-p" style="width:50%"></span>
+    </div>
+  </div>
+</div>
+
+<!-- ─── 04 MARENGO INTRO + 2 CHART CARDS ─── -->
+<div class="spec-bar">
+  <span class="idx">04</span>
+  <span class="name">Marengo intro · eyebrow + heading + body + 2-card chart grid</span>
+  <span class="specs">
+    <span><b>Eyebrow:</b> 9px mono</span>
+    <span><b>Heading:</b> ~36px</span>
+    <span><b>Charts grid:</b> 1fr 1fr · gap 18 · radius 28</span>
+  </span>
+</div>
+<div class="spec-section">
+  <div style="text-align:center; padding: 30px 0 10px">
+    <span class="ph-eyebrow">Marengo</span>
+    <div style="margin-top:16px"><span class="ph-h lg" style="width:60%; margin:0 auto"></span></div>
+    <span class="ph-p" style="width:55%; margin:6px auto"></span>
+    <span class="ph-p" style="width:40%; margin:6px auto"></span>
+  </div>
+  <div class="chart-grid">
+    <div class="chart-card">
+      <span class="label-strip" style="display:inline-block;background:var(--spec-bg);color:var(--spec-ink);font-family:JetBrains Mono,monospace;font-size:10px;padding:4px 10px;border-radius:3px">CHART · embedding viz</span>
+      <div class="chart-bars">
+        <span style="height:40%"></span><span style="height:75%"></span>
+        <span style="height:55%"></span><span style="height:90%"></span>
+        <span style="height:30%"></span><span style="height:65%"></span>
       </div>
-      <div class="chart-card">
-        <span class="tag">Chart card · comparison/groups</span>
-        <div class="chart-bars">
-          <span style="height:60%"></span><span style="height:45%"></span>
-          <span style="height:80%"></span><span style="height:35%"></span>
-          <span style="height:70%"></span><span style="height:50%"></span>
-        </div>
+    </div>
+    <div class="chart-card">
+      <span class="label-strip" style="display:inline-block;background:var(--spec-bg);color:var(--spec-ink);font-family:JetBrains Mono,monospace;font-size:10px;padding:4px 10px;border-radius:3px">CHART · comparison</span>
+      <div class="chart-bars">
+        <span style="height:60%"></span><span style="height:45%"></span>
+        <span style="height:80%"></span><span style="height:35%"></span>
+        <span style="height:70%"></span><span style="height:50%"></span>
       </div>
     </div>
   </div>
-</section>
+</div>
 
-<!-- ─── 5. EYEBROW + 2 SMALL CARDS ─── -->
-<section>
-  <div class="wrap">
-    <div class="eyebrow-row"><span class="ph-eyebrow">Sub-section divider</span></div>
-    <div class="small-card-row">
-      <div class="small-card">
-        <span class="tag">Small card · feature A</span>
-        <div class="visual-grid">
-          <span></span><span></span><span></span><span></span><span></span><span></span>
-          <span></span><span></span><span></span><span></span><span></span><span></span>
-        </div>
+<!-- ─── 05 SMALL CARD ROW ─── -->
+<div class="spec-bar">
+  <span class="idx">05</span>
+  <span class="name">Eyebrow divider + 2 small feature cards</span>
+  <span class="specs">
+    <span><b>Grid:</b> 1fr 1fr</span>
+    <span><b>Card:</b> min 200px · radius 22 · pad 24</span>
+  </span>
+</div>
+<div class="spec-section">
+  <div style="text-align:center; padding:14px 0 24px">
+    <span class="ph-eyebrow">Sub-section divider</span>
+  </div>
+  <div class="small-card-row">
+    <div class="small-card">
+      <span class="label-strip" style="display:inline-block;background:var(--spec-bg);color:var(--spec-ink);font-family:JetBrains Mono,monospace;font-size:10px;padding:4px 10px;border-radius:3px">SMALL CARD · feature A</span>
+      <div class="visual-grid">
+        <span></span><span></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span><span></span><span></span>
+      </div>
+      <span class="ph-p" style="width:80%"></span>
+      <span class="ph-p" style="width:60%"></span>
+    </div>
+    <div class="small-card">
+      <span class="label-strip" style="display:inline-block;background:var(--spec-bg);color:var(--spec-ink);font-family:JetBrains Mono,monospace;font-size:10px;padding:4px 10px;border-radius:3px">SMALL CARD · feature B</span>
+      <div class="visual-mini"></div>
+      <span class="ph-p" style="width:80%"></span>
+      <span class="ph-p" style="width:60%"></span>
+    </div>
+  </div>
+</div>
+
+<!-- ─── 06 WIDE GRADIENT IMAGE ─── -->
+<div class="spec-bar">
+  <span class="idx">06</span>
+  <span class="name">Wide gradient image card (large radius)</span>
+  <span class="specs">
+    <span><b>Height:</b> 360px</span>
+    <span><b>Radius:</b> 64px</span>
+    <span><b>FX:</b> blur(18px) · saturate(0.7)</span>
+  </span>
+</div>
+<div class="spec-section">
+  <div class="wide-image"><div class="grad"></div></div>
+</div>
+
+<!-- ─── 07 MARENGO LOGO LOCKUP + 3 MINI CARDS ─── -->
+<div class="spec-bar">
+  <span class="idx">07</span>
+  <span class="name">Marengo logo lockup + 3-card capability row</span>
+  <span class="specs">
+    <span><b>Grid:</b> repeat(3, 1fr)</span>
+    <span><b>Gap:</b> 14px</span>
+    <span><b>Mini:</b> min 200px · radius 18 · pad 18</span>
+  </span>
+</div>
+<div class="spec-section">
+  <div class="logo-lockup">
+    <span class="lockup"><span class="glyph"></span>Marengo 3.0</span>
+    <div style="margin-top:14px"><span class="ph-h" style="width:50%; margin:0 auto"></span></div>
+  </div>
+  <div class="three-card-row">
+    <div class="mini-card">
+      <span class="label-strip" style="display:inline-block;background:var(--spec-bg);color:var(--spec-ink);font-family:JetBrains Mono,monospace;font-size:10px;padding:4px 10px;border-radius:3px">MINI · view 1</span>
+      <div class="visual-stack"><span style="width:90%"></span><span style="width:70%"></span><span style="width:80%"></span></div>
+    </div>
+    <div class="mini-card">
+      <span class="label-strip" style="display:inline-block;background:var(--spec-bg);color:var(--spec-ink);font-family:JetBrains Mono,monospace;font-size:10px;padding:4px 10px;border-radius:3px">MINI · view 2</span>
+      <div class="visual-stack"><span style="width:80%"></span><span style="width:90%"></span><span style="width:60%"></span></div>
+    </div>
+    <div class="mini-card">
+      <span class="label-strip" style="display:inline-block;background:var(--spec-bg);color:var(--spec-ink);font-family:JetBrains Mono,monospace;font-size:10px;padding:4px 10px;border-radius:3px">MINI · view 3</span>
+      <div class="visual-stack"><span style="width:70%"></span><span style="width:85%"></span><span style="width:75%"></span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── 08 PEGASUS INTRO ─── -->
+<div class="spec-bar">
+  <span class="idx">08</span>
+  <span class="name">Pegasus intro · eyebrow + heading + body</span>
+  <span class="specs">
+    <span><b>Text col:</b> max 760px</span>
+    <span><b>Heading:</b> ~36px</span>
+    <span><b>Align:</b> center</span>
+  </span>
+</div>
+<div class="spec-section">
+  <div style="text-align:center; padding:20px 0">
+    <span class="ph-eyebrow">Pegasus</span>
+    <div style="margin-top:16px"><span class="ph-h lg" style="width:55%; margin:0 auto"></span></div>
+    <span class="ph-p" style="width:55%; margin:6px auto"></span>
+    <span class="ph-p" style="width:40%; margin:6px auto"></span>
+  </div>
+</div>
+
+<!-- ─── 09 PEGASUS 3-CARD ROW ─── -->
+<div class="spec-bar">
+  <span class="idx">09</span>
+  <span class="name">Pegasus · 3 small visualization cards</span>
+  <span class="specs">
+    <span><b>Grid:</b> repeat(3, 1fr)</span>
+    <span><b>Gap:</b> 14px</span>
+    <span><b>Mini:</b> min 200px · radius 18</span>
+  </span>
+</div>
+<div class="spec-section">
+  <div class="three-card-row">
+    <div class="mini-card">
+      <span class="label-strip" style="display:inline-block;background:var(--spec-bg);color:var(--spec-ink);font-family:JetBrains Mono,monospace;font-size:10px;padding:4px 10px;border-radius:3px">PEGASUS · view 1</span>
+      <div class="visual-stack"><span style="width:90%"></span><span style="width:70%"></span><span style="width:80%"></span></div>
+    </div>
+    <div class="mini-card">
+      <span class="label-strip" style="display:inline-block;background:var(--spec-bg);color:var(--spec-ink);font-family:JetBrains Mono,monospace;font-size:10px;padding:4px 10px;border-radius:3px">PEGASUS · view 2</span>
+      <div class="visual-stack"><span style="width:80%"></span><span style="width:90%"></span><span style="width:60%"></span></div>
+    </div>
+    <div class="mini-card">
+      <span class="label-strip" style="display:inline-block;background:var(--spec-bg);color:var(--spec-ink);font-family:JetBrains Mono,monospace;font-size:10px;padding:4px 10px;border-radius:3px">PEGASUS · view 3</span>
+      <div class="visual-stack"><span style="width:70%"></span><span style="width:85%"></span><span style="width:75%"></span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── 10 WIDE GRADIENT (variant) ─── -->
+<div class="spec-bar">
+  <span class="idx">10</span>
+  <span class="name">Wide gradient image card · variant</span>
+  <span class="specs">
+    <span><b>Height:</b> 320px</span>
+    <span><b>Radius:</b> 48px</span>
+    <span><b>FX:</b> blur(18px) · saturate(0.7)</span>
+  </span>
+</div>
+<div class="spec-section">
+  <div class="wide-image v2"><div class="grad"></div></div>
+</div>
+
+<!-- ─── 11 EYEBROW DIVIDER ─── -->
+<div class="spec-bar">
+  <span class="idx">11</span>
+  <span class="name">Sub-section eyebrow divider</span>
+  <span class="specs"><span><b>Centered</b> · 9px mono · ~24px tall</span></span>
+</div>
+<div class="spec-section">
+  <div style="text-align:center; padding:20px 0">
+    <span class="ph-eyebrow">Sub-section divider</span>
+  </div>
+</div>
+
+<!-- ─── 12 WIDE VIDEO ─── -->
+<div class="spec-bar">
+  <span class="idx">12</span>
+  <span class="name">Wide video / image card with play affordance</span>
+  <span class="specs">
+    <span><b>Height:</b> 380px</span>
+    <span><b>Radius:</b> 56px</span>
+    <span><b>Play:</b> 64×64 circle, centered</span>
+  </span>
+</div>
+<div class="spec-section">
+  <div class="video-card">
+    <div class="play"></div>
+  </div>
+</div>
+
+<!-- ─── 13 LATEST FRONTIERS EYEBROW ─── -->
+<div class="spec-bar">
+  <span class="idx">13</span>
+  <span class="name">"Latest frontiers" centered sub-title</span>
+  <span class="specs"><span><b>Centered eyebrow</b> · 9px mono</span></span>
+</div>
+<div class="spec-section">
+  <div style="text-align:center; padding:14px 0">
+    <span class="ph-eyebrow">"Latest frontiers" sub-title</span>
+  </div>
+</div>
+
+<!-- ─── 14 BIG CARD PAIR ─── -->
+<div class="spec-bar">
+  <span class="idx">14</span>
+  <span class="name">Two big product cards (Pegasus · Pegasus 1.2)</span>
+  <span class="specs">
+    <span><b>Grid:</b> 1fr 1fr</span>
+    <span><b>Card:</b> min 340px · radius 32 · pad 36/28</span>
+    <span><b>Logo type:</b> 36px Inter 700</span>
+  </span>
+</div>
+<div class="spec-section">
+  <div class="big-pair">
+    <div class="big-card">
+      <span class="label-strip" style="display:inline-block;background:var(--spec-bg);color:var(--spec-ink);font-family:JetBrains Mono,monospace;font-size:10px;padding:4px 10px;border-radius:3px;margin-bottom:14px;align-self:flex-start">BIG CARD · Pegasus (current)</span>
+      <span class="badge-top">Introducing</span>
+      <div class="pegasus-logo"><span class="glyph"></span>Pegasus</div>
+      <span class="ph-p" style="width:80%; margin-top:14px"></span>
+      <span class="ph-p" style="width:65%"></span>
+      <div class="visual-tall"></div>
+    </div>
+    <div class="big-card">
+      <span class="label-strip" style="display:inline-block;background:var(--spec-bg);color:var(--spec-ink);font-family:JetBrains Mono,monospace;font-size:10px;padding:4px 10px;border-radius:3px;margin-bottom:14px;align-self:flex-start">BIG CARD · Pegasus 1.2</span>
+      <span class="badge-top">Introducing</span>
+      <div class="pegasus-logo"><span class="glyph"></span>Pegasus 1.2</div>
+      <span class="ph-p" style="width:80%; margin-top:14px"></span>
+      <span class="ph-p" style="width:65%"></span>
+      <div class="visual-tall"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── 15 TRANSFORMATION BLOCK ─── -->
+<div class="spec-bar">
+  <span class="idx">15</span>
+  <span class="name">Transformation block · heading + body + 4-col pillar grid</span>
+  <span class="specs">
+    <span><b>Cols:</b> repeat(4, 1fr)</span>
+    <span><b>Pillar:</b> min 160px · radius 14 · pad 18</span>
+  </span>
+</div>
+<div class="spec-section">
+  <div class="xform">
+    <span class="ph-h lg"></span>
+    <span class="ph-p"></span>
+    <span class="ph-p" style="width:40%; margin:6px auto"></span>
+    <div class="xform-cols">
+      <div class="xform-col">
+        <span class="label-strip" style="display:inline-block;background:var(--spec-bg);color:var(--spec-ink);font-family:JetBrains Mono,monospace;font-size:10px;padding:4px 10px;border-radius:3px">PILLAR 1</span>
+        <span class="ph-h sm"></span>
+        <span class="ph-p" style="width:90%"></span>
         <span class="ph-p" style="width:80%"></span>
         <span class="ph-p" style="width:60%"></span>
       </div>
-      <div class="small-card">
-        <span class="tag">Small card · feature B</span>
-        <div class="visual-mini"></div>
+      <div class="xform-col">
+        <span class="label-strip" style="display:inline-block;background:var(--spec-bg);color:var(--spec-ink);font-family:JetBrains Mono,monospace;font-size:10px;padding:4px 10px;border-radius:3px">PILLAR 2</span>
+        <span class="ph-h sm"></span>
+        <span class="ph-p" style="width:90%"></span>
+        <span class="ph-p" style="width:80%"></span>
+        <span class="ph-p" style="width:60%"></span>
+      </div>
+      <div class="xform-col">
+        <span class="label-strip" style="display:inline-block;background:var(--spec-bg);color:var(--spec-ink);font-family:JetBrains Mono,monospace;font-size:10px;padding:4px 10px;border-radius:3px">PILLAR 3</span>
+        <span class="ph-h sm"></span>
+        <span class="ph-p" style="width:90%"></span>
+        <span class="ph-p" style="width:80%"></span>
+        <span class="ph-p" style="width:60%"></span>
+      </div>
+      <div class="xform-col">
+        <span class="label-strip" style="display:inline-block;background:var(--spec-bg);color:var(--spec-ink);font-family:JetBrains Mono,monospace;font-size:10px;padding:4px 10px;border-radius:3px">PILLAR 4</span>
+        <span class="ph-h sm"></span>
+        <span class="ph-p" style="width:90%"></span>
         <span class="ph-p" style="width:80%"></span>
         <span class="ph-p" style="width:60%"></span>
       </div>
     </div>
   </div>
-</section>
+</div>
 
-<!-- ─── 6. WIDE GRADIENT IMAGE ─── -->
-<section>
-  <div class="wrap">
-    <div class="wide-image">
-      <div class="grad"></div>
-      <span class="lbl">Wide gradient image card · 64px radius</span>
-    </div>
-  </div>
-</section>
-
-<!-- ─── 7. MARENGO LOGO LOCKUP + 3 SMALL CARDS ─── -->
-<section>
-  <div class="wrap">
-    <div class="logo-lockup">
-      <span class="lockup"><span class="glyph"></span>Marengo 3.0</span>
-      <div style="margin-top:14px">
-        <span class="ph-h" style="width:50%"></span>
-      </div>
-    </div>
-    <div class="three-card-row">
-      <div class="mini-card">
-        <span class="tag">Mini card · view 1</span>
-        <div class="visual-stack">
-          <span style="width:90%"></span>
-          <span style="width:70%"></span>
-          <span style="width:80%"></span>
-        </div>
-      </div>
-      <div class="mini-card">
-        <span class="tag">Mini card · view 2</span>
-        <div class="visual-stack">
-          <span style="width:80%"></span>
-          <span style="width:90%"></span>
-          <span style="width:60%"></span>
-        </div>
-      </div>
-      <div class="mini-card">
-        <span class="tag">Mini card · view 3</span>
-        <div class="visual-stack">
-          <span style="width:70%"></span>
-          <span style="width:85%"></span>
-          <span style="width:75%"></span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div class="hr-soft"></div>
-
-<!-- ─── 8. PEGASUS INTRO ─── -->
-<section>
-  <div class="wrap">
-    <div class="pegasus-intro">
-      <span class="ph-eyebrow">Pegasus</span>
-      <span class="ph-h lg" style="margin-top:16px; width:55%; margin-left:auto; margin-right:auto"></span>
-      <span class="ph-p" style="width:55%; margin:6px auto"></span>
-      <span class="ph-p" style="width:40%; margin:6px auto 30px"></span>
-    </div>
-  </div>
-</section>
-
-<!-- ─── 9. 3 SMALL VISUALIZATION CARDS (Pegasus) ─── -->
-<section>
-  <div class="wrap">
-    <div class="three-card-row" style="margin-top:0">
-      <div class="mini-card">
-        <span class="tag">Pegasus · view 1</span>
-        <div class="visual-stack">
-          <span style="width:90%"></span><span style="width:70%"></span><span style="width:80%"></span>
-        </div>
-      </div>
-      <div class="mini-card">
-        <span class="tag">Pegasus · view 2</span>
-        <div class="visual-stack">
-          <span style="width:80%"></span><span style="width:90%"></span><span style="width:60%"></span>
-        </div>
-      </div>
-      <div class="mini-card">
-        <span class="tag">Pegasus · view 3</span>
-        <div class="visual-stack">
-          <span style="width:70%"></span><span style="width:85%"></span><span style="width:75%"></span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ─── 10. WIDE GRADIENT IMAGE (variant) ─── -->
-<section>
-  <div class="wrap">
-    <div class="wide-image v2">
-      <div class="grad"></div>
-      <span class="lbl">Wide gradient image card · variant</span>
-    </div>
-  </div>
-</section>
-
-<!-- ─── 11. SMALL EYEBROW + ICON ─── -->
-<section>
-  <div class="wrap">
-    <div class="eyebrow-row"><span class="ph-eyebrow">Sub-section divider</span></div>
-  </div>
-</section>
-
-<!-- ─── 12. WIDE VIDEO/IMAGE CARD ─── -->
-<section>
-  <div class="wrap">
-    <div class="video-card">
-      <span class="lbl">Wide video/image card · embedded play</span>
-      <div class="play"></div>
-    </div>
-  </div>
-</section>
-
-<!-- ─── 13. CENTERED EYEBROW (latest frontiers) ─── -->
-<section>
-  <div class="wrap">
-    <div class="eyebrow-row" style="padding:20px 0 0">
-      <span class="ph-eyebrow">"Latest frontiers" sub-title</span>
-    </div>
-  </div>
-</section>
-
-<!-- ─── 14. TWO BIG PRODUCT CARDS (Pegasus 1.1 / 1.2) ─── -->
-<section>
-  <div class="wrap">
-    <div class="big-pair">
-      <div class="big-card">
-        <span class="tag">Big card · Pegasus (current)</span>
-        <span class="badge-top">Introducing</span>
-        <div class="pegasus-logo"><span class="glyph"></span>Pegasus</div>
-        <span class="ph-p" style="width:80%; margin-top:14px"></span>
-        <span class="ph-p" style="width:65%"></span>
-        <div class="visual-tall"></div>
-      </div>
-      <div class="big-card">
-        <span class="tag">Big card · Pegasus 1.2</span>
-        <span class="badge-top">Introducing</span>
-        <div class="pegasus-logo"><span class="glyph"></span>Pegasus 1.2</div>
-        <span class="ph-p" style="width:80%; margin-top:14px"></span>
-        <span class="ph-p" style="width:65%"></span>
-        <div class="visual-tall"></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ─── 15. TRANSFORMATION BLOCK (heading + 4-col text) ─── -->
-<section>
-  <div class="wrap">
-    <div class="xform">
-      <span class="ph-h lg"></span>
-      <span class="ph-p"></span>
-      <span class="ph-p" style="width:40%; margin:6px auto"></span>
-      <div class="xform-cols">
-        <div class="xform-col">
-          <span class="tag">Pillar 1</span>
-          <span class="ph-h sm" style="margin-top:18px"></span>
-          <span class="ph-p" style="width:90%"></span>
-          <span class="ph-p" style="width:80%"></span>
-          <span class="ph-p" style="width:60%"></span>
-        </div>
-        <div class="xform-col">
-          <span class="tag">Pillar 2</span>
-          <span class="ph-h sm" style="margin-top:18px"></span>
-          <span class="ph-p" style="width:90%"></span>
-          <span class="ph-p" style="width:80%"></span>
-          <span class="ph-p" style="width:60%"></span>
-        </div>
-        <div class="xform-col">
-          <span class="tag">Pillar 3</span>
-          <span class="ph-h sm" style="margin-top:18px"></span>
-          <span class="ph-p" style="width:90%"></span>
-          <span class="ph-p" style="width:80%"></span>
-          <span class="ph-p" style="width:60%"></span>
-        </div>
-        <div class="xform-col">
-          <span class="tag">Pillar 4</span>
-          <span class="ph-h sm" style="margin-top:18px"></span>
-          <span class="ph-p" style="width:90%"></span>
-          <span class="ph-p" style="width:80%"></span>
-          <span class="ph-p" style="width:60%"></span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ─── 16. CLOSING CTA ─── -->
-<section class="closing">
-  <div class="wrap">
+<!-- ─── 16 CLOSING CTA ─── -->
+<div class="spec-bar">
+  <span class="idx">16</span>
+  <span class="name">Closing CTA strip · centered title + 2 buttons</span>
+  <span class="specs">
+    <span><b>Pad:</b> 40/0</span>
+    <span><b>Buttons:</b> 44px tall · pill · solid+ghost</span>
+  </span>
+</div>
+<div class="spec-section">
+  <div class="closing">
     <span class="ph-h xl"></span>
     <div class="btn-row">
       <span class="ph-btn solid">Playground</span>
       <span class="ph-btn">Talk to Sales</span>
     </div>
   </div>
-</section>
+</div>
 
-<!-- ─── 17. FOOTER (lime band) ─── -->
+<!-- ─── 17 FOOTER ─── -->
+<div class="spec-bar">
+  <span class="idx">17</span>
+  <span class="name">Footer · lime-tinted band</span>
+  <span class="specs">
+    <span><b>Grid:</b> repeat(6, 1fr) link cols</span>
+    <span><b>Then:</b> big wordmark + social row + copy line</span>
+    <span><b>BG:</b> lime tint</span>
+  </span>
+</div>
+<div class="spec-section" style="padding:0">
 <footer class="footer">
-  <div class="wrap">
+  <div style="padding: 0 32px">
     <div class="footer-grid">
       <div class="footer-col">
         <h4>Platform</h4>
@@ -783,6 +871,9 @@
     </div>
   </div>
 </footer>
+</div>
+
+</div><!-- /.wrap -->
 
 </body>
 </html>
