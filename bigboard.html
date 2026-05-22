@@ -4086,36 +4086,139 @@ body.vs-open[data-vs-mode="expanded"] .tb { padding-right: 752px; }
   .board, .board-header { max-width: 100%; }
   .board-header { padding: 0 8px 6px; }
 
-  /* Card grid — collapse to 5 essential columns (chk · rank · avatar · name · chev).
-     Inline action buttons hide on mobile; same actions live in the player drawer. */
+  /* === MOBILE CARDS — "C-style" tap-to-open-drawer layout.
+     6 cols: chk · rank · pfp · who · adp · chev. Position is signaled by
+     the pfp's colored border ring (RB=green, WR=blue, QB=red, TE=orange)
+     so the name gets the full column width. Below the name, a small
+     "Pos·Team" meta line. Inline pos pill, star, notes badge, and the
+     tiebreaker tag row are hidden — those live in the player drawer
+     that opens on tap. Card height = single-row 56px. */
   body[data-mode="drafting"] .card,
   body[data-mode="drafting"] .board-header,
   body[data-mode="prepping"] .card,
   body[data-mode="prepping"] .board-header {
-    grid-template-columns: 20px 38px 32px minmax(0, 1fr) 16px;
+    grid-template-columns: 22px 30px 38px minmax(0, 1fr) 44px 14px;
     gap: 8px;
     padding: 8px 10px;
     height: 56px;
     min-height: 56px;
     max-height: 56px;
+    align-items: center;
   }
   body[data-mode="prepping"] .board-header { height: auto; max-height: none; }
   .card-team, .card-props, .card-extra,
   .board-header .h-team, .board-header .h-props, .board-header .h-extra { display: none !important; }
-  /* Inline per-card action row — keep star (watchlist), hide the rest;
-     star is overlaid in the name column corner so it doesn't need a grid cell. */
-  .card .card-act-row { display: none; }
+
+  /* Pfp gets a thicker pos-colored ring on mobile (replaces inline pos pill) */
   .card-pfp,
-  body[data-mode="prepping"] .card-pfp { width: 32px; height: 32px; }
-  .card-rk { width: 38px; font-size: 13px; padding: 3px 0; }
-  .card-name,
-  body[data-mode="prepping"] .card-name { font-size: 15px; }
-  .card-who { gap: 8px; max-height: none; }
+  body[data-mode="prepping"] .card-pfp { width: 38px; height: 38px; border-width: 2.5px; }
+  .card[data-pos="QB"] .card-pfp { border-color: #e11d48; }
+  .card[data-pos="RB"] .card-pfp { border-color: #16a34a; }
+  .card[data-pos="WR"] .card-pfp { border-color: #2563eb; }
+  .card[data-pos="TE"] .card-pfp { border-color: #d97706; }
+
+  /* Who: name on top, "Pos·Team" meta line below. No competing inline
+     elements (pos pill, star, notes badge, tiebreaker tag row all hidden). */
+  body[data-mode="drafting"] .card-who,
   body[data-mode="prepping"] .card-who {
-    flex-direction: row;
-    align-items: center;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1px;
+    max-height: none;
+    overflow: visible;
   }
-  body[data-mode="prepping"] .card-who-sub { display: none; }
+  .card-who-main { display: contents; }
+  .card-name,
+  body[data-mode="prepping"] .card-name { font-size: 15px; line-height: 1.1; width: 100%; }
+  .card-pos, .card-star.card-act, .card-notes-badge, .card-tag-row { display: none !important; }
+  /* Force the sub-line on in BOTH modes (desktop default hides it in drafting) */
+  .card-who-sub,
+  body[data-mode="drafting"] .card-who-sub,
+  body[data-mode="prepping"] .card-who-sub {
+    display: inline !important;
+    font-family: "Oswald", sans-serif;
+    font-weight: 600;
+    font-size: 11px;
+    color: var(--ink-soft);
+    letter-spacing: 0.04em;
+    line-height: 1.2;
+  }
+
+  .card-rk { width: 30px; font-size: 13px; padding: 3px 0; }
+
+  /* Right-most data cell —
+       Drafting mode: show ADP (the live-draft signal)
+       Prepping mode: swap ADP for PROJ (the research signal) — matches
+                      the Prep C mockup that Nick approved. */
+  .card-adp, body[data-mode="prepping"] .card-proj {
+    font-family: 'Oswald', sans-serif;
+    font-size: 15px;
+    text-align: center;
+    font-weight: 700;
+    line-height: 1;
+  }
+  .card-adp::before {
+    content: 'ADP';
+    display: block;
+    font-family: 'Barlow', sans-serif;
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--ink-dim);
+    text-transform: uppercase;
+    margin-bottom: 2px;
+  }
+  /* Prepping mode: hide the ADP cell, show PROJ instead with same caption styling */
+  body[data-mode="prepping"] .card-adp { display: none !important; }
+  body[data-mode="prepping"] .card-proj {
+    display: block !important;
+    color: var(--ink);
+  }
+  body[data-mode="prepping"] .card-proj::before {
+    content: 'PROJ';
+    display: block;
+    font-family: 'Barlow', sans-serif;
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--ink-dim);
+    text-transform: uppercase;
+    margin-bottom: 2px;
+  }
+  /* Center the ADP column header so it lines up with the value cell below,
+     which is text-align: center. In prepping mode, swap the visible label
+     to "Proj" via ::before so it matches the projection values in that column. */
+  .board-header [data-sort="adp"] {
+    text-align: center;
+    font-size: 10px;
+    padding-right: 0;
+    position: relative;
+  }
+  body[data-mode="prepping"] .board-header [data-sort="adp"] {
+    font-size: 0; /* hide the literal "ADP" text node */
+    letter-spacing: 0;
+  }
+  body[data-mode="prepping"] .board-header [data-sort="adp"]::before {
+    content: 'Proj';
+    font-size: 10px;
+    letter-spacing: 0.06em;
+  }
+  body[data-mode="prepping"] .board-header [data-sort="adp"] .arrow {
+    font-size: 10px;
+    margin-left: 2px;
+  }
+
+  /* Chev arrow signals "tap to open player drawer" */
+  .card-chev {
+    display: block !important;
+    color: var(--ink-dim);
+    font-size: 16px;
+    text-align: right;
+    font-family: 'Oswald', sans-serif;
+  }
+
+  /* Inline per-card action row — hidden on mobile (all actions live in the drawer) */
+  .card .card-act-row { display: none; }
 
   /* Selection bar — vertical stack so buttons don't wrap awkwardly */
   .sel-bar {
@@ -4167,6 +4270,43 @@ body.vs-open[data-vs-mode="expanded"] .tb { padding-right: 752px; }
   .drw-hero { padding: 16px 14px; }
   .drw-sec { padding: 16px 14px; }
 
+  /* Restyle the rank tag inside the drawer hero to match the mockup's
+     colored 2-tag bar — pos-colored block on the left, pink RANK #N on
+     the right. Uses the existing 3-span structure: .pos span, ·, "RANK #N". */
+  .drw-rank-tag {
+    display: grid !important;
+    grid-template-columns: minmax(80px, 1fr) minmax(80px, 1.6fr);
+    gap: 0;
+    padding: 0 !important;
+    background: transparent !important;
+    border: 0 !important;
+    width: 100%;
+    margin-top: 10px;
+    font-family: 'Barlow', sans-serif !important;
+    font-weight: 800 !important;
+    font-size: 13px !important;
+    letter-spacing: 0.14em !important;
+  }
+  .drw-rank-tag > span:nth-child(2) { display: none; }  /* hide the · separator */
+  .drw-rank-tag .pos {
+    background: var(--accent-2);
+    color: var(--bg) !important;
+    padding: 8px 12px;
+    text-align: center;
+  }
+  /* Last span is the "RANK #N" — turn it into the pink bar */
+  .drw-rank-tag > span:nth-child(3) {
+    background: var(--accent);
+    color: var(--bg);
+    padding: 8px 12px;
+    text-align: center;
+  }
+  /* Position-colored left block per pos */
+  .drw-rank-tag[data-pos="QB"] .pos { background: #e11d48; }
+  .drw-rank-tag[data-pos="RB"] .pos { background: #16a34a; }
+  .drw-rank-tag[data-pos="WR"] .pos { background: #2563eb; }
+  .drw-rank-tag[data-pos="TE"] .pos { background: #d97706; }
+
   /* Pop-out modal */
   .pop { padding: 8px; }
   .pop-shell { max-width: 100%; }
@@ -4175,19 +4315,128 @@ body.vs-open[data-vs-mode="expanded"] .tb { padding-right: 752px; }
   .pop-body { padding: 16px; gap: 18px; }
   .pop-name { font-size: 32px; }
 
-  /* Compare drawer header — tighten inner, keep buttons + heading from wrapping.
-     "HIDE STATS" was breaking onto 2 lines; force nowrap and trim padding so it
-     plus Close fit on the same row as the "Compare 2 Players" title. */
+  /* Compare drawer header — tighten inner, keep buttons + heading from wrapping. */
   .vs-strip .vs-strip-h { padding: 12px 14px; gap: 8px; flex-wrap: wrap; }
   .vs-strip .vs-strip-h .eye { font-size: 16px; }
   .vs-strip .vs-strip-h .ctrl { gap: 6px; }
   .vs-strip .vs-strip-h .ctrl button { white-space: nowrap; padding: 5px 9px; font-size: 10px; }
   .vs-strip .vs-strip-h .ctrl button .chev { display: none; }
-  /* Tighten the stats table cells so the label column doesn't eat the row.
-     Player column widths are set inline by JS — also patched there. */
   .vs-strip .vs-cell { padding: 8px 10px; min-height: 38px; font-size: 12px; }
-  .vs-strip .vs-row-lab { padding-left: 12px; font-size: 12px; }
+  .vs-strip .vs-row-lab { padding: 8px 4px; font-size: 10px; text-align: center; letter-spacing: 0.12em; text-transform: uppercase; font-family: 'Barlow', sans-serif; font-weight: 700; color: var(--ink-soft); }
   .vs-strip .vs-cell-corner { padding: 8px 10px; }
+
+  /* === Compare A mockup styling — overrides the desktop vs-strip on mobile.
+     Goal: pure mockup look — pink pill winner, no column tint, centered
+     heads, 50/50 columns aligned with the label-in-middle stats grid. */
+  .vs-strip .vs-pill.win {
+    background: var(--accent) !important;
+    color: var(--bg) !important;
+    border: 1.5px solid var(--accent) !important;
+  }
+  .vs-strip .vs-pill.win .vs-trophy,
+  .vs-strip .vs-pill.win { color: var(--bg) !important; }
+  .vs-strip .vs-pill.win .vs-trophy { display: none; }
+
+  /* Kill the desktop green column-tint on the winner head and value cells —
+     mockup has zero column tint, only the pink pill marks the winner. */
+  .vs-strip .vs-head.winner,
+  .vs-strip .vs-cell.vs-val.col-suggested,
+  .vs-strip .vs-cell.vs-val.col-suggested.win,
+  .vs-strip .vs-cell.vs-val.col-suggested.tie {
+    background: var(--card) !important;
+    box-shadow: none !important;
+  }
+
+  /* Head layout: vertical, centered, with a small top-border accent
+     in the player's pos color. Matches Compare A's "1ST PICK / 2ND PICK
+     above headshot, name + meta centered below". */
+  .vs-strip .vs-head {
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 18px 10px 12px !important;
+    gap: 6px !important;
+    border-top: 3px solid var(--line) !important;
+    background: var(--card) !important;
+  }
+  .vs-strip .vs-head[data-pos="QB"] { border-top-color: #e11d48 !important; }
+  .vs-strip .vs-head[data-pos="RB"] { border-top-color: #16a34a !important; }
+  .vs-strip .vs-head[data-pos="WR"] { border-top-color: #2563eb !important; }
+  .vs-strip .vs-head[data-pos="TE"] { border-top-color: #d97706 !important; }
+  .vs-strip .vs-head img {
+    width: 56px !important; height: 56px !important;
+    border-width: 2px !important;
+    margin: 0 auto 4px !important;
+  }
+  .vs-strip .vs-head[data-pos="QB"] img { border-color: #e11d48 !important; }
+  .vs-strip .vs-head[data-pos="RB"] img { border-color: #16a34a !important; }
+  .vs-strip .vs-head[data-pos="WR"] img { border-color: #2563eb !important; }
+  .vs-strip .vs-head[data-pos="TE"] img { border-color: #d97706 !important; }
+  .vs-strip .vs-head-nm {
+    font-family: 'Barlow', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 1.1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    text-align: center;
+  }
+  .vs-strip .vs-head-meta {
+    font-family: 'Oswald', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--ink-soft);
+    margin-top: 4px;
+    justify-content: center;
+    display: flex;
+    gap: 5px;
+    align-items: center;
+  }
+  /* Center the rank badge ("1ST PICK", "2ND PICK") above the headshot */
+  .vs-strip .vs-rank-badge {
+    position: absolute !important;
+    top: -3px !important;
+    left: 50% !important;
+    right: auto !important;
+    transform: translateX(-50%) !important;
+    margin: 0 !important;
+    padding: 2px 9px !important;
+    font-size: 9px !important;
+    letter-spacing: 0.16em !important;
+    border-radius: 0 0 3px 3px !important;
+  }
+  .vs-strip .vs-head-rmv { display: none; }  /* hide the × on each head — close lives in the strip header */
+
+  /* Stat value cells — large Oswald numbers, centered */
+  .vs-strip .vs-cell.vs-val {
+    text-align: center !important;
+    padding: 12px 6px !important;
+    font-family: 'Oswald', sans-serif !important;
+    font-weight: 600 !important;
+    font-size: 16px !important;
+    font-variant-numeric: tabular-nums;
+    border-right: 0 !important;
+    border-bottom: 1px solid var(--line-soft) !important;
+  }
+  /* Center label cell — uppercase, Barlow, ink-soft, no caret/dot */
+  .vs-strip .vs-row-lab {
+    padding: 12px 4px !important;
+    text-align: center !important;
+    font-family: 'Barlow', sans-serif !important;
+    font-weight: 700 !important;
+    font-size: 10px !important;
+    letter-spacing: 0.1em !important;
+    text-transform: uppercase !important;
+    color: var(--ink-soft) !important;
+    border-bottom: 1px solid var(--line-soft) !important;
+    background: var(--card) !important;
+    line-height: 1.15;
+  }
+  /* Remove any indicator dot/star on the label cell that desktop adds */
+  .vs-strip .vs-row-lab::before,
+  .vs-strip .vs-row-lab::after { display: none !important; }
 
   /* Tutorial overlay — keep on screen, prevent action-button line wraps.
      Was: ←/Back on two lines because button was too narrow.
@@ -4226,6 +4475,17 @@ body.vs-open[data-vs-mode="expanded"] .tb { padding-right: 752px; }
   .sel-bar .sel-actions { gap: 5px; }
   .sel-bar button { padding: 6px 8px; font-size: 10px; }
 
+  /* Sort banner — compact on mobile: tighten padding/font, wrap the button
+     under the text instead of fighting for the same row. */
+  .sort-banner {
+    margin: 0 10px 12px;
+    padding: 8px 10px;
+    font-size: 11px;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .sort-banner button { padding: 3px 8px; font-size: 10px; }
+
   /* Lighten the body grid texture so it doesn't dominate small screens */
   body {
     background-image: repeating-linear-gradient(
@@ -4250,13 +4510,15 @@ body.vs-open[data-vs-mode="expanded"] .tb { padding-right: 752px; }
   body[data-mode="drafting"] .board-header,
   body[data-mode="prepping"] .card,
   body[data-mode="prepping"] .board-header {
-    grid-template-columns: 18px 34px 30px minmax(0, 1fr) 14px;
-    gap: 7px;
-    padding: 8px 8px;
+    grid-template-columns: 18px 30px 32px minmax(0, 1fr) 36px;
+    gap: 6px;
+    padding: 7px 8px;
   }
-  .card-rk { width: 34px; font-size: 12px; }
+  .card-rk { width: 30px; font-size: 12px; }
   .card-pfp,
-  body[data-mode="prepping"] .card-pfp { width: 30px; height: 30px; }
+  body[data-mode="prepping"] .card-pfp { width: 32px; height: 32px; }
+  .card-name { font-size: 14px; }
+  .card-adp { font-size: 13px; }
   .intro-q { font-size: 24px; }
 }
 
@@ -5371,7 +5633,7 @@ function renderDrawer(p) {
             <span class="drw-team-logo"><img src="https://a.espncdn.com/i/teamlogos/nfl/500/${p.team.toLowerCase()}.png" alt="${p.team}" onerror="this.replaceWith(document.createTextNode('${p.team}'))"/></span>
             <span class="drw-team-name">${TEAM_FULL[p.team] || p.team}</span>
           </div>
-          <div class="drw-rank-tag">
+          <div class="drw-rank-tag" data-pos="${p.pos}">
             <span class="pos">${p.pos}</span><span style="color:var(--ink-dim)">·</span><span>RANK #${p.rk}</span>
           </div>
         </div>
@@ -6199,9 +6461,33 @@ const introProg3  = document.getElementById('introProg3');
 const introProg4  = document.getElementById('introProg4');
 const compareBanner = null; /* banner removed per feedback */
 const ROSTER_DEFAULTS = { QB:1, RB:2, WR:2, TE:1, FLEX:1, SUPERFLEX:0, K:1, DST:1, BENCH:7 };
-let introState = { drafting: null, platform: null, teams: null, roster: { ...ROSTER_DEFAULTS }, step: 1 };
+function initialIntroState() {
+  const s = { drafting: null, platform: null, teams: null, roster: { ...ROSTER_DEFAULTS }, step: 1 };
+  try {
+    const savedMode = localStorage.getItem('bdgeLayoutMode');
+    if (savedMode === 'drafting') s.drafting = 'now';
+    else if (savedMode === 'prepping') s.drafting = 'later';
+    const plat = localStorage.getItem('bdgeComparePlatform');
+    if (plat) s.platform = plat;
+    const teams = localStorage.getItem('bdgeTeamCount');
+    if (teams) s.teams = teams;
+    const roster = localStorage.getItem('bdgeRoster');
+    if (roster) {
+      const parsed = JSON.parse(roster);
+      if (parsed && typeof parsed === 'object') s.roster = { ...ROSTER_DEFAULTS, ...parsed };
+    }
+  } catch(e){}
+  return s;
+}
+let introState = initialIntroState();
 
-function showIntro() { intro.classList.add('open'); }
+function showIntro() {
+  // Re-pull saved answers so returning users see their prior setup pre-selected
+  introState = initialIntroState();
+  syncRosterUI();
+  syncIntroNav();
+  intro.classList.add('open');
+}
 function closeIntro() { intro.classList.remove('open'); }
 
 const STEP_KEYS  = [null, 'drafting', 'platform', 'teams', 'roster']; // 1-indexed
@@ -6822,19 +7108,24 @@ function renderVsStrip() {
   // On mobile (≤600px), label column shrinks further so at least one player
   // column gets ~60% of viewport; second player is reached by horizontal scroll.
   const isMobile = window.matchMedia('(max-width: 600px)').matches;
+  // Compare A mockup layout for mobile: 2 players → label sits between
+  // the two value columns so each value centers under its head above.
+  const mobile2 = isMobile && N === 2;
   const labelCol = isMobile
     ? 108
     : (N >= 4 ? 160 : N === 3 ? 180 : 200);
   const minCol = isMobile
     ? 170
     : (N >= 4 ? 118 : N === 3 ? 140 : 170);
-  const tplCol = `${labelCol}px repeat(${N}, minmax(${minCol}px, 1fr))`;
+  const tplCol = mobile2
+    ? '1fr 76px 1fr'
+    : `${labelCol}px repeat(${N}, minmax(${minCol}px, 1fr))`;
   const headers = document.getElementById('vsHeaders');
   const grid    = document.getElementById('vsStatsGrid');
   headers.style.gridTemplateColumns = tplCol;
   grid.style.gridTemplateColumns    = tplCol;
 
-  let h = '<div class="vs-cell vs-cell-corner">PLAYER</div>';
+  let h = mobile2 ? '' : '<div class="vs-cell vs-cell-corner">PLAYER</div>';
   players.forEach((p, i) => {
     const rank = i + 1;
     const ord = ORDINALS[i] || `${rank}TH`;
@@ -6849,17 +7140,43 @@ function renderVsStrip() {
         <div class="vs-head-meta"><span class="pos">${p.pos}</span>${p.team} · #${p.rk} · ADP ${p.adp}</div>
       </div>
     </div>`;
+    // For mobile2, drop the empty middle column between the two heads
+    if (mobile2 && i === 0) h += '<div class="vs-cell vs-cell-corner" style="border:0;background:transparent"></div>';
   });
   headers.innerHTML = h;
 
   const suggestedIdx = winner && !winner.isTossup ? winner.idx : -1;
+  // === Compare A mockup labels — short uppercase labels that fit the 76px
+  // center column. Long desktop labels like "BDGE Positional Rank" get
+  // abbreviated. Stats not in this map keep their original label. */
+  const MOBILE_LABELS = {
+    adp:     'ADP',
+    posRk:   'POS RANK',
+    rk:      'OVR RANK',
+    stadium: 'STADIUM',
+    wins:    'WIN TOTAL',
+    oline:   'OL RANK',
+    sos:     'SOS',
+    psos:    'PLAYOFF SOS',
+    passYds: 'PASS YDS',
+    passTds: 'PASS TDS',
+    rushYds: 'RUSH YDS',
+    rushTds: 'RUSH TDS',
+    rec:     'RECEPTIONS',
+    recYds:  'REC YDS',
+    recTds:  'REC TDS',
+  };
+  const statsToRender = mobile2
+    // Limit to ~8 most relevant stats on mobile (matches Compare A density)
+    ? VS_STATS.filter(s => ['adp','posRk','rk','wins','oline','sos','psos','stadium','rushYds','recYds','passYds','rec'].includes(s.key)).slice(0, 8)
+    : VS_STATS;
   let g = '';
-  VS_STATS.forEach(stat => {
-    g += `<div class="vs-cell vs-row-lab">${stat.label}</div>`;
+  statsToRender.forEach(stat => {
     const winners = winnersByStat[stat.key] || [];
     const isTie   = winners.length > 1 && N > 1;
     const showWin = N > 1 && winners.length === 1;
-    players.forEach((p, i) => {
+    const labelText = mobile2 ? (MOBILE_LABELS[stat.key] || stat.label) : stat.label;
+    const cellHtml = (p, i) => {
       const v = vsValue(p, stat.key);
       const isWin = winners.includes(i) && showWin;
       const isTied = isTie && winners.includes(i);
@@ -6867,13 +7184,20 @@ function renderVsStrip() {
       const suggestedCls = i === suggestedIdx ? 'col-suggested' : '';
       const trophy = isWin ? '<span class="vs-trophy">♛</span>' : '';
       const formatted = vsFormat(stat, v, p);
-      // Wrap winning/tied values in a small pill so the highlight is contained
-      // to the value rather than filling the whole cell.
       const inner = (isWin || isTied)
         ? `<span class="vs-pill ${isWin ? 'win' : 'tie'}">${trophy}${formatted}</span>`
         : formatted;
-      g += `<div class="vs-cell vs-val ${cls} ${suggestedCls}">${inner}</div>`;
-    });
+      return `<div class="vs-cell vs-val ${cls} ${suggestedCls}">${inner}</div>`;
+    };
+    if (mobile2) {
+      // Compare A layout: [valA] [label] [valB]
+      g += cellHtml(players[0], 0);
+      g += `<div class="vs-cell vs-row-lab">${labelText}</div>`;
+      g += cellHtml(players[1], 1);
+    } else {
+      g += `<div class="vs-cell vs-row-lab">${stat.label}</div>`;
+      players.forEach((p, i) => { g += cellHtml(p, i); });
+    }
   });
   grid.innerHTML = g;
   // Set --n-players on the strip so the drawer width adapts to the column count.
@@ -7161,20 +7485,10 @@ document.addEventListener('click', e => {
 });
 renderTagChips();
 
-// First-visit fire (skip on hard reload if already dismissed)
-try {
-  if (!localStorage.getItem('bdgeIntroDone')) {
-    setTimeout(showIntro, 250);
-  } else {
-    applyComparePlatform();
-    // Setup done but tutorial never seen → fire tour
-    if (!localStorage.getItem('bdgeTutorialDone')) {
-      setTimeout(startTutorial, 400);
-    }
-  }
-} catch(e){
-  setTimeout(showIntro, 250);
-}
+// Quick Setup fires on every load; tutorial stays first-login-only and is
+// triggered from finishIntro() when bdgeTutorialDone is unset.
+try { applyComparePlatform(); } catch(e){}
+setTimeout(showIntro, 250);
 
 // ─── Tutorial spotlight tour ────────────────────────────────
 const TUTORIAL_STEPS = [
